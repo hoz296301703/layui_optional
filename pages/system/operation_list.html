@@ -145,9 +145,7 @@
 				laydate.render({
 					elem: '#endDate'
 					, type: 'datetime'
-					
 				});
-
 				table.render({
 					elem: '#articleList',
 					cellMinWidth: 80,
@@ -235,20 +233,22 @@
 							"data": res.datas //解析数据列表
 						};
 					},
+					where: {
+						startDate: appendStartDate(getDay(-7))
+					},
 					done: function (res, curr, count) {
 						//如果是异步请求数据方式，res即为你接口返回的信息。
 						//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
 						// console.log(res);
-
 						// //得到当前页码
 						// console.log(curr);
-
 						// //得到数据总量
 						// console.log(count);
 					}
 				});
 				// 重载公共方法
 				var _reload = function () {
+					console.info('ssssss初始化')
 					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
 					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
 					setTimeout(function () {
@@ -281,6 +281,7 @@
 						var startDate = $('#form_sreach').find('[name=startDate]');
 						var entDate = $('#form_sreach').find('[name=entDate]');
 						startDate = appendStartDate(startDate.val());
+
 						//执行重载
 						setTimeout(function () {
 							table.reload('articleList', {

@@ -47,9 +47,6 @@ function appendStartDate(value) {
   }
 }
 
-
-
-
 function getDay(day) {
   //Date()返回当日的日期和时间。
   var days = new Date();
