@@ -204,7 +204,7 @@
 					"id": 1,
 					"name": "商户管理",
 					"icon": "",
-					"url": "./pages/manager/manager_list.html"
+					"url": "./pages/manager/merchant_list.html"
 				},
 				{
 					"id": 2,
