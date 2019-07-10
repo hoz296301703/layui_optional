@@ -32,3 +32,39 @@ var G_format = function (datetime, fmt) {
 var empty = function (value) {
   return value == null || (value + "").trim() == "null" || (value + "").trim() == "" || (value + "").trim() == "undefined"
 }
+
+/**
+ * 拼接默认起始时间，默认位0点
+ * @param {*} value 
+ */
+function appendStartDate(value) {
+  if (empty(value)) {
+    return '';
+  } else if (value.length == 10) {//10位格式时yyyy-MM-dd
+    return value + ' 00:00:00';
+  } else {
+    return value;
+  }
+}
+
+
+
+
+function getDay(day) {
+  //Date()返回当日的日期和时间。
+  var days = new Date();
+  //getTime()返回 1970 年 1 月 1 日至今的毫秒数。
+  var gettimes = days.getTime() + 1000 * 60 * 60 * 24 * day;
+  //setTime()以毫秒设置 Date 对象。
+  days.setTime(gettimes);
+  var year = days.getFullYear();
+  var month = days.getMonth() + 1;
+  if (month < 10) {
+    month = "0" + month;
+  }
+  var today = days.getDate();
+  if (today < 10) {
+    today = "0" + today;
+  }
+  return year + "-" + month + "-" + today;
+}

@@ -49,8 +49,7 @@
 				<li class="layui-this">操作日志</li>
 				<li>短信日志</li>
 				<li>实名日志</li>
-				<li>商品管理</li>
-				<!-- <li>订单管理</li> -->
+
 			</ul>
 			<div class="layui-tab-content">
 				<div class="layui-tab-item layui-show">
@@ -59,23 +58,20 @@
 							<div id="form_sreach" class="layui-row">
 								IP
 								<div class="layui-inline">
-									<input type="text" name="ipAddress" placeholder="请输入ip地址" autocomplete="off"
-										class="layui-input">
+									<input type="text" name="ipAddress" placeholder="请输入ip地址" class="layui-input">
 								</div>
 								操作人编号
 								<div class="layui-inline">
-									<input type="text" name="operatorId" placeholder="请输入ip地址" autocomplete="off"
-										class="layui-input">
+									<input type="text" name="operatorId" placeholder="请输入操作人编号" class="layui-input">
 								</div>
 								操作人名称
 								<div class="layui-inline">
-									<input type="text" name="operatorName" placeholder="请输入ip地址" autocomplete="off"
-										class="layui-input">
+									<input type="text" name="operatorName" placeholder="请输入操作人名称" class="layui-input">
 								</div>
 								角色
 								<div class="layui-inline">
 									<div class="layui-input-inline">
-										<select name="modules" lay-verify="required" lay-search="">
+										<select name="role" lay-verify="required" lay-search="">
 											<option value="">全部</option>
 											<option value="manager">管理员</option>
 											<option value="merchant">商户</option>
@@ -94,7 +90,7 @@
 								</div>
 								模块
 								<div class="layui-inline">
-									<select name="modules" lay-verify="required" lay-search="">
+									<select name="module" lay-verify="required" lay-search="">
 										<option value="">全部</option>
 										<option value="stock">库存</option>
 										<option value="goodsSupply">商品供货</option>
@@ -107,15 +103,15 @@
 								</div>
 								日期
 								<div class="layui-inline">
-									<input type="text" class="layui-input" id="startDate" placeholder="年-月-日"
-										autocomplete="off">
+									<input type="text" class="layui-input" id="startDate" name="startDate"
+										placeholder="年-月-日" autocomplete="off">
 								</div>
 								-
 								<div class="layui-inline">
-									<input type="text" class="layui-input" id="endDate" placeholder="年-月-日"
-										autocomplete="off">
+									<input type="text" class="layui-input" id="endDate" name="endDate"
+										placeholder="年-月-日" autocomplete="off">
 								</div>
-								<button class="layui-btn" data-type="reload">搜索</button>
+								<button type="button" class="layui-btn" data-type="reload">搜索</button>
 							</div>
 						</div>
 					</form>
@@ -124,12 +120,9 @@
 					<ul id="maangerAllot" style="display: none;"></ul>
 					<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 					<script src="../../static/js/common.js" charset="utf-8"></script>
-					<!-- <script src="manager_list.js" type="text/javascript" charset="utf-8"></script> -->
 				</div>
 				<div class="layui-tab-item">内容2</div>
 				<div class="layui-tab-item">内容3</div>
-				<div class="layui-tab-item">内容4</div>
-				<!-- <div class="layui-tab-item">内容5</div> -->
 			</div>
 		</div>
 		<script>
@@ -146,10 +139,13 @@
 				//日期时间选择器
 				laydate.render({
 					elem: '#startDate'
+					, value: getDay(-7)
+					, isInitValue: true
 				});
 				laydate.render({
 					elem: '#endDate'
 					, type: 'datetime'
+					
 				});
 
 				table.render({
@@ -184,7 +180,7 @@
 									}
 								},
 							}, {
-								field: 'module', width: 80, title: '模块', templet: function (item) {
+								field: 'module', width: 90, title: '模块', templet: function (item) {
 									if (item.module == 'stock') {
 										return '库存';
 									} else if (item.module == 'goodsSupply') {
@@ -254,16 +250,16 @@
 				// 重载公共方法
 				var _reload = function () {
 					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
-
-
-
+					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
 					setTimeout(function () {
 						table.reload('articleList', {
 							url: urlPrefix + 'silver-web-shop/opeLogs/getInfo',
 							page: {
 								curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 							},
-							where: data
+							where: {
+								ipAddress: ipAddress.val()
+							}
 						});
 					}, 800)
 				}
@@ -276,16 +272,15 @@
 				// });
 				var active = {
 					reload: function () {
-						var ipAddress = $('#form_sreach').find('[name=ipAddress]');						
-						var data = {
-							ipAddress: ipAddress.val()
-						}
-						for (var key in data) {							
-							if (empty(data[key])) {
-								delete data[key];
-							}
-						}
-						console.log( data);
+						var ipAddress = $('#form_sreach').find('[name=ipAddress]');
+						var operatorId = $('#form_sreach').find('[name=operatorId]');
+						var operatorName = $('#form_sreach').find('[name=operatorName]');
+						var role = $('#form_sreach').find('[name=role]');
+						var modules = $('#form_sreach').find('[name=module]');
+						var action = $('#form_sreach').find('[name=action]');
+						var startDate = $('#form_sreach').find('[name=startDate]');
+						var entDate = $('#form_sreach').find('[name=entDate]');
+						startDate = appendStartDate(startDate.val());
 						//执行重载
 						setTimeout(function () {
 							table.reload('articleList', {
@@ -293,7 +288,16 @@
 								page: {
 									curr: 1 //重新从第 1 页开始
 								},
-								where: data
+								where: {
+									ipAddress: ipAddress.val(),
+									operatorId: operatorId.val(),
+									operatorNameBlurry: operatorName.val(),
+									role: role.val(),
+									module: modules.val(),
+									action: action.val(),
+									startDate: startDate,
+									entDate: entDate.val()
+								}
 							});
 						}, 800)
 					}
@@ -303,7 +307,6 @@
 					var type = $(this).data('type');
 					active[type] ? active[type].call(this) : '';
 				});
-
 				//监听工具条
 				table.on('tool(articleList)', function (obj) {
 					var data = obj.data;
