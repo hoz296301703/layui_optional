@@ -126,8 +126,7 @@
 				<!----系统操作日志---end--------------------------------->
 				<!----系统短信日志------------start----------------------->
 				<div class="layui-tab-item" id="smslogs">
-					<iframe width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"
-						scrolling="no" allowtransparency="yes"></iframe>
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
 				<!----系统短信日志------------end----------------------->
 				<div class="layui-tab-item">内容3</div>
@@ -315,7 +314,8 @@
 				});
 				//跳转至短信日志
 				$('#smsLogs_btn').on('click', function () {
-					$("#smslogs").find('iframe').attr('src', "sms_list.html");
+					var h = $(window).height() - 30;
+					$("#smslogs").find('iframe').attr('src', "sms_list.html").css('height', h + 'px');
 				})
 			});
 		</script>

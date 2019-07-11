@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <form class="layui-form" id="manager_detail_form" lay-filter="example">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">管理员编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="managerId" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">管理员名称</label>
+          <div class="layui-input-inline">
+            <input type="text" name="managerName" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">姓名</label>
+          <div class="layui-input-inline">
+            <input type="text" name="realName" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">日期</label>
+          <div class="layui-input-inline">
+            <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">角色</label>
+          <div class="layui-input-inline">
+            <select name="managerMarks" lay-filter="aihao" class="layui-disabled" disabled>
+              <option value=""></option>
+              <option value="1">超级管理员</option>
+              <option value="2">运营管理员</option>
+              <option value="3">财务</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">状态</label>
+          <div class="layui-input-inline">
+            <select name="status" lay-filter="aihao" class="layui-disabled" disabled>
+              <option value=""></option>
+              <option value="enable">启用</option>
+              <option value="disabled">禁用</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- <div class="layui-form-item">
+        <label for="L_repass" class="layui-form-label">
+        </label>
+        <button class="layui-btn" lay-filter="add" lay-submit="">
+          增加
+        </button>
+      </div> -->
+    </form>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量
+    function getParent_data(obj) {
+      g_data = obj.data;
+    }
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form', 'jquery', 'layer', 'admin'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        admin = layui.admin,
+        layer = layui.layer;
+      console.log(g_data)
+      //表单初始赋值
+      form.val('example', {
+        "managerId": g_data.managerId
+        , "managerName": g_data.managerName
+        , "realName": g_data.realName
+        , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
+        , "managerMarks": g_data.managerMarks
+        , "status": g_data.status
+      })
+    });
+  </script>
+</body>
+
+</html>
