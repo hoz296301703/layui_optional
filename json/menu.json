@@ -201,19 +201,19 @@
 			"url": "",
 			"children": [
 				{
-					"id": 1,
+					"id": 71,
 					"name": "商户管理",
 					"icon": "",
 					"url": "./pages/manager/merchant_list.html"
 				},
 				{
-					"id": 2,
+					"id": 72,
 					"name": "会员管理",
 					"icon": "",
 					"url": "./pages/manager/manager_list.html"
 				},
 				{
-					"id": 3,
+					"id": 73,
 					"name": "运营管理",
 					"icon": "",
 					"url": "./pages/manager/manager_list.html"

@@ -181,6 +181,8 @@ body {
 }
 .weadmin-body {
   padding: 6px 20px;
+  /* hdz 为了界面更好看设置的样式 */
+  padding-bottom: 0; 
 }
 .weadmin-nav {
   padding: 0 20px;
@@ -307,7 +309,8 @@ body {
 .left-nav {
   position: absolute;
   top: 46px;
-  bottom: 42px;
+  bottom: 2px;
+  /* bottom: 42px; */
   left: 0;
   z-index: 2;
   padding-top: 10px;
@@ -386,7 +389,8 @@ body {
   position: absolute;
   top: 46px;
   right: 0;
-  bottom: 42px;
+  bottom: 2px;
+  /* bottom: 42px; */
   left: 221px;
   overflow: hidden;
   z-index: 1;
@@ -621,3 +625,8 @@ table td {
   background-color: #999;
 }
 /*# sourceMappingURL=weadmin.css.map */
+
+/* hdz 覆盖影响界面显示样式 */
+.layui-tab{
+  margin: 0;
+}

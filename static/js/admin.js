@@ -281,7 +281,9 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 	 * @todo 重新计算iframe高度
 	 */
 	function FrameWH() {
-		var h = $(window).height() - 164;
+		// console.log($('.layui-tab-title').height())
+
+		var h = $(window).height() - 85 -$('#form_sreach').height();
 		$("iframe").css("height", h + "px");
 	}
 	$(window).resize(function() {

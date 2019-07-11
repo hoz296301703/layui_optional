@@ -146,10 +146,16 @@
 					elem: '#endDate'
 					, type: 'datetime'
 				});
+				console.log($(window).height())
+				console.log($('.layui-tab-title').height())
+				console.log($('#form_sreach').outerHeight(true))
+				console.log($('.weadmin-block').outerHeight(true))
+				var tableHeight = $(window).height() - $('.layui-tab-title').height() - 50 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+				console.log(tableHeight)
 				table.render({
 					elem: '#articleList',
 					cellMinWidth: 80,
-					height: 450,
+					height: tableHeight,
 					url: urlPrefix + 'silver-web-shop/opeLogs/getInfo',
 					method: 'post',
 					cols: [

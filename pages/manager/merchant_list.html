@@ -81,10 +81,11 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" name="startDate" autocomplete="off" placeholder="yyyy-MM-dd">
+						<input type="text" class="layui-input" name="startDate" autocomplete="off" placeholder="年-月-日">
 					</div>
+					<div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" name="endDate" autocomplete="off" placeholder="yyyy-MM-dd">
+						<input type="text" class="layui-input" name="endDate" autocomplete="off" placeholder="年-月-日">
 					</div>
 				</div>
 			</div>
@@ -132,17 +133,18 @@
 				admin = layui.admin;
 			// 初始化日期
 			laydate.render({
-				elem: '#form_sreach [name=startDate]',
-				value: getDay(-7)
+				elem: '#form_sreach [name=startDate]'
 			});
 			laydate.render({
 				elem: '#form_sreach [name=endDate]'
 			});
+			
+			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			// 初始化表格
 			table.render({
 				elem: '#articleList',
 				cellMinWidth: 80,
-				height: 380,
+				height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
 				method: 'post',
 				cols: [
@@ -179,8 +181,7 @@
 				event: true,
 				page: true,
 				where: {
-					loginAccount: $('#form_sreach').find('[name=merchantStatus]').val(),
-					startDate: getDay(-7)
+					loginAccount: $('#form_sreach').find('[name=merchantStatus]').val()
 				},
 				response: {
 					statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
