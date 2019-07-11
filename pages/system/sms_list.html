@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+  <div class="layui-tab-content">
+    <form id="form_sreach" class="layui-form">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">手机号码</label>
+          <div class="layui-input-inline">
+            <input type="text" name="phone" placeholder="请输入手机号码" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">类型</label>
+          <div class="layui-input-inline">
+            <select name="action" lay-verify="required" lay-search="">
+              <option value="">全部</option>
+              <option value="1">专柜下单</option>
+              <option value="2">注册推广商</option>
+              <option value="3">用户注册</option>
+              <option value="4">用户修改登陆密码</option>
+              <option value="5">用户设置支付密码</option>
+              <option value="6">用户修改支付密码</option>
+              <option value="7">用户重置登录密码</option>
+              <option value="8">用户更换手机</option>
+              <option value="9">用户重置支付密码</option>
+              <option value="10">移动端实名认证</option>
+              <option value="11">商户重置登录密码</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">日期</label>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+              placeholder="年-月-日">
+          </div>
+              <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" placeholder="年-月-日">
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
+      </div>
+
+    </form>
+  </div>
+  <table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+
+  <script type="text/javascript">
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+      var table = layui.table,
+        $ = layui.jquery,
+        form = layui.form,
+        tree = layui.tree,
+        admin = layui.admin,
+        laydate = layui.laydate;
+      //日期时间选择器
+      laydate.render({
+        elem: '#startDate'
+        , value: getDay(-7)
+        , isInitValue: true
+      });
+      laydate.render({
+        elem: '#endDate'
+        , type: 'datetime'
+      });
+      // var tableHeight = $(window).height() - 30 - $('#form_sreach').outerHeight(true);
+      table.render({
+        elem: '#articleList',
+        cellMinWidth: 80,
+        height: 850,
+        url: urlPrefix + 'silver-web-shop/smsLogs/getInfo',
+        method: 'post',
+        cols: [
+          [
+            {
+              field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
+            }, {
+              field: 'createDate', width: 170, title: '日期', fixed: 'left', templet: function (item) {
+                return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
+              }
+            }, {
+              field: 'ipAddress', width: 130, title: '手机号码'
+            },{
+              field: 'module', width: 90, title: '模块', templet: function (item) {
+                if (item.module == 'stock') {
+                  return '库存';
+                } else if (item.module == 'goodsSupply') {
+                  return '商品供货';
+                } else if (item.module == 'order') {
+                  return '订单';
+                } else if (item.module == 'merchant') {
+                  return '商户';
+                } else if (item.module == 'manager') {
+                  return '管理员';
+                } else if (item.module == 'merDivRate') {
+                  return '分润费率';
+                } else if (item.module == 'member') {
+                  return '会员';
+                }
+              }
+            }, {
+              field: 'content', title: '内容'
+            }
+            // {
+            // 	field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+            // }
+          ]
+        ],
+        // skin: 'row', //行边框风格
+        event: true,
+        page: true,
+        response: {
+          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+        },
+        request: {
+          pageName: 'page', //页码的参数名称，默认：page
+          limitName: 'size' //每页数据量的参数名，默认：limit
+        },
+        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+          return {
+            "code": res.status, //解析接口状态
+            "msg": res.msg, //解析提示文本
+            "count": res.totalCount, //解析数据长度
+            "data": res.datas //解析数据列表
+          };
+        },
+        where: {
+          startDate: appendStartDate(getDay(-7))
+        },
+        done: function (res, curr, count) {
+          //如果是异步请求数据方式，res即为你接口返回的信息。
+          //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+          // console.log(res);
+          // //得到当前页码
+          // console.log(curr);
+          // //得到数据总量
+          // console.log(count);
+        }
+      });
+      // 重载公共方法
+      var _reload = function () {
+        var ipAddress = $('#form_sreach').find('[name=ipAddress]');
+        var ipAddress = $('#form_sreach').find('[name=ipAddress]');
+        table.reload('articleList', {
+          url: urlPrefix + 'silver-web-shop/smsLogs/getInfo',
+          page: {
+            curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+          },
+          where: {
+            ipAddress: ipAddress.val()
+          }
+        });
+      }
+      /*
+       *数据表格中form表单元素是动态插入,所以需要更新渲染下
+       * http://www.layui.com/doc/modules/form.html#render
+       * */
+      // $(function () {
+      // 	form.render();
+      // });
+      var active = {
+        reload: function () {
+          var ipAddress = $('#form_sreach').find('[name=ipAddress]');
+          var operatorId = $('#form_sreach').find('[name=operatorId]');
+          var operatorName = $('#form_sreach').find('[name=operatorName]');
+          var role = $('#form_sreach').find('[name=role]');
+          var modules = $('#form_sreach').find('[name=module]');
+          var action = $('#form_sreach').find('[name=action]');
+          var startDate = $('#form_sreach').find('[name=startDate]');
+          var entDate = $('#form_sreach').find('[name=entDate]');
+          startDate = appendStartDate(startDate.val());
+          //执行重载
+          table.reload('articleList', {
+            url: urlPrefix + 'silver-web-shop/smsLogs/getInfo',
+            page: {
+              curr: 1 //重新从第 1 页开始
+            },
+            where: {
+              ipAddress: ipAddress.val(),
+              operatorId: operatorId.val(),
+              operatorNameBlurry: operatorName.val(),
+              role: role.val(),
+              module: modules.val(),
+              action: action.val(),
+              startDate: startDate,
+              entDate: entDate.val()
+            }
+          });
+        }
+      };
+      // 监听查询按钮
+      $('#form_sreach .layui-btn').on('click', function () {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+    });
+  </script>
+</body>
+
+</html>

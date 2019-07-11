@@ -36,10 +36,11 @@
 		<div class="layui-tab">
 			<ul class="layui-tab-title">
 				<li class="layui-this">操作日志</li>
-				<li>短信日志</li>
+				<li id="smsLogs_btn">短信日志</li>
 				<li>实名日志</li>
 			</ul>
 			<div class="layui-tab-content">
+				<!--系统操作日志-->
 				<div class="layui-tab-item layui-show">
 					<form id="form_sreach" class="layui-form">
 						<div class="layui-form-item">
@@ -72,19 +73,6 @@
 									</select>
 								</div>
 							</div>
-
-
-							<div class="layui-inline">
-								<label class="layui-form-label">动作</label>
-								<div class="layui-input-inline">
-									<select name="action" lay-verify="required" lay-search="">
-										<option value="">全部</option>
-										<option value="login">登录</option>
-										<option value="update">更新</option>
-										<option value="pushLogi">推送物流</option>
-									</select>
-								</div>
-							</div>
 							<div class="layui-inline">
 								<label class="layui-form-label">模块</label>
 								<div class="layui-input-inline">
@@ -97,6 +85,17 @@
 										<option value="manager">管理员</option>
 										<option value="merDivRate">商户分润费率</option>
 										<option value="member">会员</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">动作</label>
+								<div class="layui-input-inline">
+									<select name="action" lay-verify="required" lay-search="">
+										<option value="">全部</option>
+										<option value="login">登录</option>
+										<option value="update">更新</option>
+										<option value="pushLogi">推送物流</option>
 									</select>
 								</div>
 							</div>
@@ -124,7 +123,13 @@
 					<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 					<script src="../../static/js/common.js" charset="utf-8"></script>
 				</div>
-				<div class="layui-tab-item">内容2</div>
+				<!----系统操作日志---end--------------------------------->
+				<!----系统短信日志------------start----------------------->
+				<div class="layui-tab-item" id="smslogs">
+					<iframe width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"
+						scrolling="no" allowtransparency="yes"></iframe>
+				</div>
+				<!----系统短信日志------------end----------------------->
 				<div class="layui-tab-item">内容3</div>
 			</div>
 		</div>
@@ -161,14 +166,14 @@
 							{
 								field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
 							}, {
-								field: 'createDate', title: '日期', fixed: 'left', templet: function (item) {
+								field: 'createDate', width: 160, title: '日期', fixed: 'left', templet: function (item) {
 									return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 								}
 							}, {
-								field: 'ipAddress', title: 'IP'
+								field: 'ipAddress', width: 135, title: 'IP'
 							},
 							{
-								field: 'operatorId', title: '操作人编号'
+								field: 'operatorId', title: '操作人编号', width: 174
 							}, {
 								field: 'operatorName', width: 120, title: '操作人名称'
 							}, {
@@ -194,7 +199,7 @@
 									} else if (item.module == 'manager') {
 										return '管理员';
 									} else if (item.module == 'merDivRate') {
-										return '商户分润费率';
+										return '分润费率';
 									} else if (item.module == 'member') {
 										return '会员';
 									}
@@ -209,10 +214,12 @@
 										return '重置登录密码';
 									} else if (item.action == 'pushLogi') {
 										return '推送物流';
+									} else if (item.action == 'insert') {
+										return '添加';
 									}
 								}
 							}, {
-								field: 'content', width: 250, title: '内容'
+								field: 'content', title: '内容'
 							}
 							// {
 							// 	field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
@@ -283,24 +290,22 @@
 						var entDate = $('#form_sreach').find('[name=entDate]');
 						startDate = appendStartDate(startDate.val());
 						//执行重载
-						setTimeout(function () {
-							table.reload('articleList', {
-								url: urlPrefix + 'silver-web-shop/opeLogs/getInfo',
-								page: {
-									curr: 1 //重新从第 1 页开始
-								},
-								where: {
-									ipAddress: ipAddress.val(),
-									operatorId: operatorId.val(),
-									operatorNameBlurry: operatorName.val(),
-									role: role.val(),
-									module: modules.val(),
-									action: action.val(),
-									startDate: startDate,
-									entDate: entDate.val()
-								}
-							});
-						}, 800)
+						table.reload('articleList', {
+							url: urlPrefix + 'silver-web-shop/opeLogs/getInfo',
+							page: {
+								curr: 1 //重新从第 1 页开始
+							},
+							where: {
+								ipAddress: ipAddress.val(),
+								operatorId: operatorId.val(),
+								operatorNameBlurry: operatorName.val(),
+								role: role.val(),
+								module: modules.val(),
+								action: action.val(),
+								startDate: startDate,
+								entDate: entDate.val()
+							}
+						});
 					}
 				};
 				// 监听查询按钮
@@ -308,170 +313,11 @@
 					var type = $(this).data('type');
 					active[type] ? active[type].call(this) : '';
 				});
-				//监听工具条
-				table.on('tool(articleList)', function (obj) {
-					var data = obj.data;
-					if (obj.event === 'detail') {// 查看详情
-						layer.open({
-							type: 2,
-							title: '详情',
-							area: ['750px', '350px'],
-							fixed: false, //不固定
-							maxmin: true,
-							content: './manager_detail.html',
-							btnAlign: 'c',
-							btn: ['关闭'],
-							success: function (layero, index) {
-								// console.log(obj)
-								// 获取子页面的iframe
-								var iframe = window['layui-layer-iframe' + index];
-								// 向子页面的全局函数child传参
-								iframe.getParent_data(obj);
-							},
-							btn1: function (index) {
-								layer.close(index);
-							}
-						});
-					} else if (obj.event === 'reset') {// 重置密码
-						layer.alert("确定重置密码？", {
-							time: 0, //不自动关闭
-							btn: ["保存", "关闭"],
-							yes: function (index) {
-								$.ajax({
-									url: urlPrefix + "silver-web-shop/manager/resetManagerPassword",
-									type: "POST",
-									xhrFields: {
-										withCredentials: true
-									},
-									data: { managerId: data.managerId },
-									success: function (response) {
-										if (response.status == 1) {
-											layer.msg("重置成功！");
-											_reload();
-										} else {
-											layer.alert(response.msg);
-										}
-									}
-								});
-							}
-						});
-
-					} else if (obj.event === 'edit') {// 分配权限
-						$('#maangerAllot').html('');
-						layer.load(1);
-						var _this = this;
-						$.ajax({
-							url: urlPrefix + "silver-web-shop/authority/getUserAuthorityInfo",
-							type: "POST",
-							xhrFields: {
-								withCredentials: true
-							},
-							data: { userId: data.managerId, groupName: "manager" },
-							success: function (response) {
-
-								if (response.status == 1) {
-
-									var jsonArr = [];
-									var ii = 0;
-									$.each(response.datas, function (i, val1) {
-										jsonArr.push({ title: i, children: [] });
-										var jj = 0;
-										$.each(val1, function (j, val2) {
-											jsonArr[ii].children.push({ title: j, children: [] });
-											$.each(val2, function (k, val3) {
-												var checked = false;
-												if (k.split("#")[1] == 'true') {
-													jsonArr[ii].checked = true;
-													jsonArr[ii].children[jj].checked = true;
-													checked = true;
-												}
-												jsonArr[ii].children[jj].children.push({
-													title: val3,
-													checked: checked,
-													id: k.split("#")[0]
-												});
-											});
-											jj++;
-										});
-										ii++;
-									});
-
-									//基本演示
-									tree.render({
-										elem: '#maangerAllot'
-										, data: jsonArr
-										, check: "checkbox" //勾选风格
-										, showCheckbox: true  //是否显示复选框
-										, id: 'demoId1'
-										, checkboxName: "allot" //复选框的name属性值
-										, checkboxStyle: "" //设置复选框的样式，必须为字符串，css样式怎么写就怎么写
-										// , isJump: true //是否允许点击节点时弹出新窗口跳转
-										, click: function (obj) {
-											// var data = obj.data;  //获取当前点击的节点数据
-											// layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
-										}
-									});
-									layer.closeAll('loading');
-								} else {
-								}
-							}
-						});
-
-						//页面层
-						layer.open({
-							type: 1,
-							title: '分配权限',
-							skin: "layui-layer-rim", //加上边框
-							area: ["690px", "450px"], //宽高
-							content: $("#maangerAllot"),
-							btn: ["保存", "关闭"],
-							btnAlign: "c",
-							yes: function (index) {
-								var arr = [];
-								$.each($("#maangerAllot").find('.layui-tree-main [type=checkbox]'), function (i, item) {
-									// console.log($(item))
-									if (item.checked && item.value != "undefined") {
-
-										arr.push(item.value);
-									}
-								})
-								var allot_data = { type: 'manager', userId: data.managerId, authorityPack: JSON.stringify(arr) };
-								$.ajax({
-									url: urlPrefix + "silver-web-shop/authority/setAuthorityInfo",
-									type: "POST",
-									xhrFields: {
-										withCredentials: true
-									},
-									data: allot_data,
-									success: function (response) {
-										layer.closeAll("loading");
-										if (response.status == 1) {
-											layer.closeAll();
-											// $("#maangerAllot").html('').hide();
-											layer.msg('分配权限成功！');
-											_reload();
-										} else {
-											layer.msg(response.msg);
-										}
-									}
-								});
-							}
-							, btn2: function () {
-								// layer.closeAll();
-								// $("#maangerAllot").html('').hide();
-							}, cancel: function () {
-								// layer.closeAll();
-								// $("#maangerAllot").html('').hide();
-							}
-
-						});
-						// layer.alert('编辑行：<br>' + JSON.stringify(data))
-					}
-				});
-
+				//跳转至短信日志
+				$('#smsLogs_btn').on('click', function () {
+					$("#smslogs").find('iframe').attr('src', "sms_list.html");
+				})
 			});
-
-
 		</script>
 </body>
 
