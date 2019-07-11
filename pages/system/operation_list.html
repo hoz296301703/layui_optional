@@ -20,14 +20,17 @@
 		.layui-form-switch {
 			width: 55px;
 		}
+
 		.layui-form-switch em {
 			width: 40px;
 		}
+
 		body {
 			overflow-y: scroll;
 		}
 	</style>
 </head>
+
 <body>
 	<div class="weadmin-body">
 		<div class="layui-tab">
@@ -249,20 +252,17 @@
 				});
 				// 重载公共方法
 				var _reload = function () {
-					console.info('ssssss初始化')
 					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
 					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
-					setTimeout(function () {
-						table.reload('articleList', {
-							url: urlPrefix + 'silver-web-shop/opeLogs/getInfo',
-							page: {
-								curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
-							},
-							where: {
-								ipAddress: ipAddress.val()
-							}
-						});
-					}, 800)
+					table.reload('articleList', {
+						url: urlPrefix + 'silver-web-shop/opeLogs/getInfo',
+						page: {
+							curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+						},
+						where: {
+							ipAddress: ipAddress.val()
+						}
+					});
 				}
 				/*
 				 *数据表格中form表单元素是动态插入,所以需要更新渲染下

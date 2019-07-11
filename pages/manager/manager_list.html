@@ -113,11 +113,12 @@
 				form = layui.form,
 				tree = layui.tree,
 				admin = layui.admin;
-
+			// 动态设置表格高度
+			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				cellMinWidth: 80,
-				height: 450,
+				height: tableHeight,
 				url: 'https://ym.191ec.com/silver-web-shop/manager/findAllManagerInfo',
 				method: 'post',
 				cols: [
@@ -191,17 +192,15 @@
 			// 重载公共方法
 			var _reload = function () {
 				var managerName = $('#form_sreach').find('[name=managerName]');
-				setTimeout(function () {
-					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/manager/findAllManagerInfo',
-						page: {
-							curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
-						},
-						where: {
-							managerNameblurry: managerName.val()
-						}
-					});
-				}, 800)
+				table.reload('articleList', {
+					url: urlPrefix + 'silver-web-shop/manager/findAllManagerInfo',
+					page: {
+						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+					},
+					where: {
+						managerNameblurry: managerName.val()
+					}
+				});
 			}
 			//监听性别操作
 			form.on('switch(statusDemo)', function (obj) {
@@ -323,7 +322,7 @@
 						success: function (response) {
 
 							if (response.status == 1) {
-								
+
 								var jsonArr = [];
 								var ii = 0;
 								$.each(response.datas, function (i, val1) {

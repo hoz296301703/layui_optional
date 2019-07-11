@@ -124,7 +124,7 @@
 			admin: '{/}../../static/js/admin'
 		});
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree','laydate'], function () {
+		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
@@ -138,7 +138,7 @@
 			laydate.render({
 				elem: '#form_sreach [name=endDate]'
 			});
-			
+			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			// 初始化表格
 			table.render({
@@ -279,23 +279,20 @@
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					// 执行重载
-					setTimeout(function () {
-						table.reload('articleList', {
-							url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
-							page: {
-								curr: 1 //重新从第 1 页开始
-							},
-							where: {
-								merchantNameblurry: merchantName.val(),
-								merchantId: merchantId.val(),
-								loginAccount: loginAccount.val(),
-								merchantStatus: merchantStatus.val(),
-								startDate: startDate.val(),
-								endDate: endDate.val()
-							}
-						});
-					}, 800)
-
+					table.reload('articleList', {
+						url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
+						page: {
+							curr: 1 //重新从第 1 页开始
+						},
+						where: {
+							merchantNameblurry: merchantName.val(),
+							merchantId: merchantId.val(),
+							loginAccount: loginAccount.val(),
+							merchantStatus: merchantStatus.val(),
+							startDate: startDate.val(),
+							endDate: endDate.val()
+						}
+					});
 				}
 			};
 			// 监听查询按钮
