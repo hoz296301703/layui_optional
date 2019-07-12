@@ -274,20 +274,14 @@
 					"id": 3,
 					"name": "海关信息",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/system/customs_list.html"
 				},
 				{
 					"id": 4,
 					"name": "区域信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
-				},
-				{
-					"id": 5,
-					"name": "身份证信息",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				},
+				},				
 				{
 					"id": 6,
 					"name": "物流信息",
@@ -295,22 +289,13 @@
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 7,
-					"name": "提现费率配置",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				},
-				{
 					"id": 8,
-					"name": "操作日志",
+					"name": "日志信息",
 					"icon": "",									
 					"url": "./pages/system/operation_list.html"
 				}
 			]
 		},
-
-
-
 
 		
 		{

@@ -29,7 +29,7 @@ var G_format = function (datetime, fmt) {
   return fmt;
 }
 
-var empty = function (value) {
+var isEmpty = function (value) {
   return value == null || (value + "").trim() == "null" || (value + "").trim() == "" || (value + "").trim() == "undefined"
 }
 
@@ -38,7 +38,7 @@ var empty = function (value) {
  * @param {*} value 
  */
 function appendStartDate(value) {
-  if (empty(value)) {
+  if (isEmpty(value)) {
     return '';
   } else if (value.length == 10) {//10位格式时yyyy-MM-dd
     return value + ' 00:00:00';
@@ -46,6 +46,22 @@ function appendStartDate(value) {
     return value;
   }
 }
+
+/**
+ * 拼接默认结束时间，默认为23:59:59
+ * @param {*} value 
+ */
+function appendEndDate(value) {
+  if (isEmpty(value)) {
+    return '';
+  } else if (value.length == 10) {//10位格式时yyyy-MM-dd
+    return value + ' 23:59:59';
+  } else {
+    return value;
+  }
+}
+
+
 
 function getDay(day) {
   //Date()返回当日的日期和时间。

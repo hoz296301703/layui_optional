@@ -37,7 +37,7 @@
 			<ul class="layui-tab-title">
 				<li class="layui-this">操作日志</li>
 				<li id="smsLogs_btn">短信日志</li>
-				<li>实名日志</li>
+				<li id="idCard_btn">实名日志</li>
 			</ul>
 			<div class="layui-tab-content">
 				<!--系统操作日志-->
@@ -129,7 +129,11 @@
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
 				<!----系统短信日志------------end----------------------->
-				<div class="layui-tab-item">内容3</div>
+				<!----商户实名认证日志------------start----------------------->
+				<div class="layui-tab-item" id="idCardLogs">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!----商户实名认证日志------------start----------------------->
 			</div>
 		</div>
 		<script>
@@ -317,8 +321,12 @@
 					var h = $(window).height() - 30;
 					$("#smslogs").find('iframe').attr('src', "sms_list.html").css('height', h + 'px');
 				})
+				//跳转至实名认证日志
+				$('#idCard_btn').on('click', function () {
+					var h = $(window).height() - 30;
+					$("#idCardLogs").find('iframe').attr('src', "idCard_list.html").css('height', h + 'px');
+				})
 			});
 		</script>
 </body>
-
 </html>
