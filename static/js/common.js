@@ -186,7 +186,7 @@ var splitImg = function(img) {
   return arr[0];
 };
 
-// 异步加载查询商户分润比例
+// 异步加载数据公共方法
 function g_async(data , url) {
   var obj = '';
   $.ajax({

@@ -94,11 +94,20 @@
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
 		</form>
-		<div class="weadmin-block demoTable">
+		<!-- <div class="weadmin-block demoTable">
 			<button class="layui-btn layui-btn-sm" id="add_merchant"><i class="layui-icon">&#xe61f;</i>添加</button>
 			<button class="layui-btn layui-btn-sm" data-type="getCheckData">审核</button>
-		</div>
+		</div> -->
+
 		<table class="layui-hide" id="merchantList" lay-filter="merchantList"></table>
+		<script type="text/html" id="merchantList_toolbar">
+			<div class="layui-btn-container">
+				<button class="layui-btn layui-btn-sm" id="add_merchant"><i class="layui-icon">&#xe61f;</i>添加</button>
+				<button class="layui-btn layui-btn-sm" lay-event="getCheckData">审核</button>
+				<!-- <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+				<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button> -->
+			</div>
+		</script>
 		<!-- <script type="text/html" id="statusTpl">
 			<input type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁用" {{d.status}}>
 		</script> -->
@@ -143,10 +152,9 @@
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			// 初始化表格
 			table.render({
-				
 				elem: '#merchantList',
-				id: 'merchantListId',
 				cellMinWidth: 80,
+				toolbar: '#merchantList_toolbar',
 				height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
 				method: 'post',
@@ -278,10 +286,27 @@
 			// $(function () {
 			// 	form.render();
 			// });
-			//监听表格复选框选择
-			table.on('checkbox(demo)', function (obj) {
-				console.log(obj)
+
+			//头工具栏事件
+			table.on('toolbar(merchantList)', function (obj) {
+				var checkStatus = table.checkStatus(obj.config.id);
+				switch (obj.event) {
+					case 'getCheckData':
+						var data = checkStatus.data;
+						// layer.alert(JSON.stringify(data));
+						console.log(data)
+					
+						break;
+					// case 'getCheckLength':
+					// 	var data = checkStatus.data;
+					// 	layer.msg('选中了：' + data.length + ' 个');
+					// 	break;
+					// case 'isAll':
+					// 	layer.msg(checkStatus.isAll ? '全选' : '未全选');
+					// 	break;
+				};
 			});
+
 			var active = {
 				reload: function () {	// 搜索
 					var merchantName = $('#form_sreach').find('[name=merchantName]');
@@ -305,11 +330,6 @@
 							endDate: endDate.val()
 						}
 					});
-				}, getCheckData: function () { //获取选中数据
-
-					var checkStatus = table.checkStatus('merchantListId')
-						, data = checkStatus.data;
-					layer.alert(JSON.stringify(data));
 				}
 			};
 			// 监听查询按钮
