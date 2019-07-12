@@ -180,7 +180,7 @@
 				event: true,
 				page: true,
 				where: {
-					loginAccount: $('#form_sreach').find('[name=merchantStatus]').val()
+					merchantStatus: $('#form_sreach').find('[name=merchantStatus]').val()
 				},
 				response: {
 					statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
@@ -211,6 +211,7 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
+
 				var merchantName = $('#form_sreach').find('[name=merchantName]');
 				var merchantId = $('#form_sreach').find('[name=merchantId]');
 				var loginAccount = $('#form_sreach').find('[name=loginAccount]');
@@ -221,7 +222,7 @@
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
 					page: {
-						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+						curr: $(".layui-laypage-em").next().html()
 					},
 					where: {
 						merchantNameblurry: merchantName.val(),
@@ -233,6 +234,10 @@
 					}
 				});
 			}
+			window.merchant_reload = function () {// 提交重载方法到全局，让子页面调用
+				layer.closeAll();
+				_reload();
+			};
 			//监听性别操作
 			form.on('switch(statusDemo)', function (obj) {
 				var status = '';
@@ -462,21 +467,22 @@
 			// 添加商户
 			$('#add_merchant').on('click', function () {
 				layer.open({
-					title: "添加商户",
-					type: 1,
+					title: "添加",
+					type: 2,
 					skin: "layui-layer-rim", //加上边框
-					area: ["80%", "90%"], //宽高
-					btnAlign: "c",
-					btn: ["保存", "关闭"],
-					content: $("#addMerchantBox"),
-					yes: function (index) {
-						
-					}
-					, btn2: function () {
-						
-					}, cancel: function () {
-					
-					}
+					area: ["710px", "510px"], //宽高
+					scrollbar: false,
+					// btnAlign: "c",
+					// btn: ["保存", "关闭"],
+					content: './merchant_add.html',
+					// yes: function (index) {
+
+					// }
+					// , btn2: function () {
+
+					// }, cancel: function () {
+
+					// }
 				});
 			})
 

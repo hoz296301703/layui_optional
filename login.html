@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="./static/css/font.css">
     <link rel="stylesheet" href="./static/css/weadmin.css">
+    <script src="./static/js/common.js" charset="utf-8"></script>
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
 
 </head>
@@ -44,7 +45,7 @@
             //监听提交
             form.on('submit(login)', function (data) {
                 $.ajax({
-                    url: "https://ym.191ec.com/silver-web-shop/manager/login",
+                    url: urlPrefix + "silver-web-shop/manager/login",
                     xhrFields: {
                         withCredentials: true
                     },

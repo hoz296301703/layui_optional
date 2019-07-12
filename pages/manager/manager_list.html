@@ -28,6 +28,8 @@
 		body {
 			overflow-y: scroll;
 		}
+
+	
 	</style>
 </head>
 
@@ -191,6 +193,7 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
+				console.log('***重载')
 				var managerName = $('#form_sreach').find('[name=managerName]');
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/manager/findAllManagerInfo',
@@ -202,6 +205,7 @@
 					}
 				});
 			}
+		
 			//监听性别操作
 			form.on('switch(statusDemo)', function (obj) {
 				var status = '';
@@ -267,7 +271,7 @@
 					layer.open({
 						type: 2,
 						title: '详情',
-						area: ['750px', '350px'],
+						area: ['622px', '287px'],
 						fixed: false, //不固定
 						maxmin: true,
 						content: './manager_detail.html',

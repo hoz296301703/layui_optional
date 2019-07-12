@@ -15,6 +15,12 @@
       <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
       <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
 </head>
 
 <body>
@@ -54,9 +60,9 @@
           <div class="layui-input-inline">
             <select name="managerMarks" lay-filter="aihao" class="layui-disabled" disabled>
               <option value=""></option>
-              <option value="1">超级管理员</option>
-              <option value="2">运营管理员</option>
-              <option value="3">财务</option>
+              <option value="1">启用</option>
+              <option value="2">禁用</option>
+              <option value="3">审核</option>
             </select>
           </div>
         </div>
@@ -70,7 +76,6 @@
             </select>
           </div>
         </div>
-
       </div>
 
       <!-- <div class="layui-form-item">
