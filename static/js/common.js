@@ -176,3 +176,9 @@ function accSub(arg1, arg2) {
   n = r1 >= r2 ? r1 : r2;
   return ((arg1 * m - arg2 * m) / m).toFixed(n);
 }
+
+// 图片去;分号
+var splitImg = function(img) {
+  var arr = img.split(";");
+  return arr[0];
+};
