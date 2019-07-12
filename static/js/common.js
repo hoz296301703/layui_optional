@@ -182,3 +182,26 @@ var splitImg = function(img) {
   var arr = img.split(";");
   return arr[0];
 };
+
+// 异步加载查询商户分润比例
+function g_async(data , url) {
+  var obj = '';
+  $.ajax({
+    url: url,
+    type: "POST",
+    async: false,
+    xhrFields: {
+      withCredentials: true
+    },
+    data: data,
+    success: function(response) {
+      if (response.status == 1) {
+        obj = response.datas;
+      }
+    },
+    error: function() {
+
+    }
+  });
+  return obj;
+}
