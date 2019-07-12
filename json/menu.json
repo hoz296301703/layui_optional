@@ -170,9 +170,9 @@
 			"children": [
 				{
 					"id": 9,
-					"name": "订单信息",
+					"name": "推广商信息",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/distribution/exp_mer_list.html"
 				},
 				{
 					"id": 9,

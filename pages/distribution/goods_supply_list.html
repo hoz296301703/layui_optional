@@ -64,8 +64,8 @@
 						<input type="text" name="goodsMerId" placeholder="请输入供货商编号" class="layui-input">
 					</div>
 				</div>
-				
-				<!-- <div class="layui-inline">
+
+				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
@@ -76,7 +76,7 @@
 						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
 							placeholder="年-月-日">
 					</div>
-				</div> -->
+				</div>
 			</div>
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
@@ -101,12 +101,23 @@
 			admin: '{/}../../static/js/admin'
 		});
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree'], function () {
+		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin;
+				admin = layui.admin,
+				laydate = layui.laydate;
+			//日期时间选择器
+			laydate.render({
+				elem: '#startDate'
+				, value: getDay(-7)
+				, isInitValue: true
+			});
+			laydate.render({
+				elem: '#endDate'
+
+			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
@@ -124,7 +135,9 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'goodsImage', title: '图片',
+							field: 'goodsImage', title: '图片', height: 180, templet: function (item) {
+								return '<div><img  src="' + splitImg(item.goodsImage) + '"></div>';
+							}
 						}, {
 							field: 'goodsName', title: '商品名称',
 						}, {
@@ -134,7 +147,7 @@
 						}, {
 							field: 'goodsMerId', title: '供货商编号',
 						}, {
-							field: 'price', title: '商品价格', width: 110
+							field: 'price', title: '价格', width: 80
 						}, {
 							field: 'divRate', title: '佣金比例(%)', width: 110, templet: function (item) {
 								return accMul(item.divRate, 100);
@@ -158,6 +171,9 @@
 					pageName: 'page', //页码的参数名称，默认：page
 					limitName: 'size' //每页数据量的参数名，默认：limit
 				},
+				where : {
+					startDate: appendStartDate(getDay(-7))
+				},
 				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
 					return {
 						"code": res.status, //解析接口状态
@@ -178,74 +194,71 @@
 					// console.log(count);
 				}
 			});
-			// 重载公共方法
-			var _reload = function () {
+		// 重载公共方法
+		var _reload = function () {
+			var goodsName = $('#form_sreach').find('[name=goodsName]');
+			var goodsId = $('#form_sreach').find('[name=goodsId]');
+			var goodsMerName = $('#form_sreach').find('[name=goodsMerName]');
+			var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
+			var startDate = $('#form_sreach').find('[name=startDate]');
+			var endDate = $('#form_sreach').find('[name=endDate]');
+			startDate = appendStartDate(startDate.val());
+			endDate = appendEndDate(endDate.val());
+			table.reload('articleList', {
+				url: urlPrefix + 'silver-web-shop/goodsSupply/findInfo',
+				page: {
+					curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+				},
+				where: {
+					goodsNameblurry: goodsName.val(),
+					goodsId: goodsId.val(),
+					goodsMerId: goodsMerId.val(),
+					goodsMerNameblurry: goodsMerName.val(),
+					startDate: startDate,
+					endDate: endDate
+				}
+			});
+		}
+		/*
+		 *数据表格中form表单元素是动态插入,所以需要更新渲染下
+		 * http://www.layui.com/doc/modules/form.html#render
+		 * */
+		// $(function () {
+		// 	form.render();
+		// });
+		var active = {
+			reload: function () {
 				var goodsName = $('#form_sreach').find('[name=goodsName]');
 				var goodsId = $('#form_sreach').find('[name=goodsId]');
-				var phone = $('#form_sreach').find('[name=phone]');
-				var supMerchantId = $('#form_sreach').find('[name=supMerchantId]');
-				var supMerchantName = $('#form_sreach').find('[name=supMerchantName]');
-				var level = $('#form_sreach').find('[name=level]');
+				var goodsMerName = $('#form_sreach').find('[name=goodsMerName]');
+				var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
+				//拼接时间
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
+				//执行重载
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/goodsSupply/findInfo',
 					page: {
-						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+						curr: 1 //重新从第 1 页开始
 					},
 					where: {
-						expadndMerchantNameblurry: expadndMerchantName.val(),
-						expadndMerchantCode: expadndMerchantCode.val(),
-						phone: phone.val(),
-						supMerchantId: supMerchantId.val(),
-						supMerchantNameblurry: supMerchantName.val(),
-						level: level.val(),
+						goodsNameblurry: goodsName.val(),
+						goodsId: goodsId.val(),
+						goodsMerId: goodsMerId.val(),
+						goodsMerNameblurry: goodsMerName.val(),
+						startDate: startDate,
+						endDate: endDate
 					}
 				});
 			}
-			/*
-			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
-			 * http://www.layui.com/doc/modules/form.html#render
-			 * */
-			// $(function () {
-			// 	form.render();
-			// });
-			var active = {
-				reload: function () {
-					var expadndMerchantName = $('#form_sreach').find('[name=expadndMerchantName]');
-					var expadndMerchantCode = $('#form_sreach').find('[name=expadndMerchantCode]');
-					var phone = $('#form_sreach').find('[name=phone]');
-					var supMerchantId = $('#form_sreach').find('[name=supMerchantId]');
-					var supMerchantName = $('#form_sreach').find('[name=supMerchantName]');
-					var level = $('#form_sreach').find('[name=level]');
-					var startDate = $('#form_sreach').find('[name=startDate]');
-					var endDate = $('#form_sreach').find('[name=endDate]');
-					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());
-					//执行重载
-					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/goodsSupply/findInfo',
-						page: {
-							curr: 1 //重新从第 1 页开始
-						},
-						where: {
-							expadndMerchantNameblurry: expadndMerchantName.val(),
-							expadndMerchantCode: expadndMerchantCode.val(),
-							phone: phone.val(),
-							supMerchantId: supMerchantId.val(),
-							supMerchantNameblurry: supMerchantName.val(),
-							level: level.val(),
-						}
-					});
-				}
-			};
-			// 监听查询按钮
-			$('#form_sreach .layui-btn').on('click', function () {
-				var type = $(this).data('type');
-				active[type] ? active[type].call(this) : '';
-			});
+		};
+		// 监听查询按钮
+		$('#form_sreach .layui-btn').on('click', function () {
+			var type = $(this).data('type');
+			active[type] ? active[type].call(this) : '';
+		});
 		});
 	</script>
 </body>

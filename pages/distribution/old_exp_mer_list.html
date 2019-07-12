@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+<!-- 已注销的推广商信息-->
 <head>
 	<meta charset="UTF-8">
 	<title>银盟跨境电商服务平台运营系统</title>
@@ -96,17 +96,8 @@
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
+			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 	</div>
-	<!-- <div class="weadmin-block demoTable">
-		<button class="layui-btn" onclick="WeAdminShow('添加用户','./customs_add.html',600,400)">
-			<em class="layui-icon">&#xe61f;</em>添加</button>
-	</div> -->
-	<!-- <script type="text/html" id="operateTpl">
-			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
-			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">删除</a>
-		</script> -->
-
-	<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 
@@ -252,7 +243,7 @@
 							phone: phone.val(),
 							supMerchantId: supMerchantId.val(),
 							supMerchantNameblurry: supMerchantName.val(),
-							level: level.val(),							
+							level: level.val(),
 						}
 					});
 				}

@@ -179,6 +179,9 @@ function accSub(arg1, arg2) {
 
 // 图片去;分号
 var splitImg = function(img) {
+  if(isEmpty(img)){
+    return '';
+  }
   var arr = img.split(";");
   return arr[0];
 };

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<!-- 推广商户信息，包含白金商户-->
+
+<head>
+	<meta charset="UTF-8">
+	<title>银盟跨境电商服务平台运营系统</title>
+	<meta name="Description" content="基于layUI数据表格操作" />
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../../static/css/font.css">
+	<link rel="stylesheet" href="../../static/css/weadmin.css">
+	<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+	<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	<style type="text/css">
+		.layui-form-switch {
+			width: 55px;
+		}
+
+		.layui-form-switch em {
+			width: 40px;
+		}
+
+		body {
+			overflow-y: scroll;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="weadmin-body">
+		<div class="layui-tab">
+			<ul class="layui-tab-title">
+				<li class="layui-this">白金商户</li>
+				<li id="exp_btn">推广商户</li>
+			</ul>
+			<div class="layui-tab-content">
+				<!--系统操作日志-->
+				<div class="layui-tab-item layui-show">
+					<form id="form_sreach" class="layui-form">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">名称</label>
+								<div class="layui-input-inline">
+									<input type="text" name="ipAddress" placeholder="请输入白金商户名称" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">账号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="operatorId" placeholder="请输入白金商户账号" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">编号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="operatorName" placeholder="请输入白金商户编码" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">状态</label>
+								<div class="layui-input-inline">
+									<select name="merchantStatus" lay-verify="required" lay-search="">
+										<option value="">全部</option>
+										<option value="1">正常</option>
+										<option value="2">禁用</option>
+										<option value="3">审核</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">日期</label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="startDate" name="startDate"
+										autocomplete="off" placeholder="年-月-日">
+								</div>
+								    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="endDate" name="endDate"
+										autocomplete="off" placeholder="年-月-日">
+								</div>
+							</div>
+						</div>
+						<div style="text-align: center;">
+							<button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+								data-type="reload">搜索</button>
+						</div>
+					</form>
+					<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+					<!-- 权限树盒子 -->
+					<ul id="maangerAllot" style="display: none;"></ul>
+					<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+					<script src="../../static/js/common.js" charset="utf-8"></script>
+				</div>
+				<!----系统操作日志---end--------------------------------->
+				<!----系统短信日志------------start----------------------->
+				<div class="layui-tab-item" id="smslogs">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!----系统短信日志------------end----------------------->
+				<!----商户实名认证日志------------start----------------------->
+				<div class="layui-tab-item" id="idCardLogs">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!----商户实名认证日志------------start----------------------->
+			</div>
+		</div>
+		<script>
+			layui.extend({
+				admin: '{/}../../static/js/admin'
+			});
+			layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+				var table = layui.table,
+					$ = layui.jquery,
+					form = layui.form,
+					tree = layui.tree,
+					admin = layui.admin,
+					laydate = layui.laydate;
+				//日期时间选择器
+				laydate.render({
+					elem: '#startDate'
+					, value: getDay(-7)
+					, isInitValue: true
+				});
+				laydate.render({
+					elem: '#endDate'
+					, type: 'datetime'
+				});
+				var tableHeight = $(window).height() - $('.layui-tab-title').height() - 50 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+				table.render({
+					elem: '#articleList',
+					cellMinWidth: 80,
+					height: tableHeight,
+					url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
+					method: 'post',
+					cols: [
+						[
+							{
+								field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
+							}, {
+								field: 'createDate', width: 160, title: '日期', fixed: 'left', templet: function (item) {
+									return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
+								}
+							}, {
+								field: 'merchantName', title: '名称'
+							},
+							{
+								field: 'loginAccount', title: '账号'
+							}, {
+								field: 'merchantId', title: '编号'
+							}, {
+								field: 'merchantStatus', width: 80, title: '状态', templet: function (item) {
+									if (item.merchantStatus == '1') {
+										return '正常';
+									} else if (item.role == '2') {
+										return '禁用';
+									} else if (item.role == '3') {
+										return '审核';
+									}
+								},
+							}, {
+								field: 'module', width: 150, title: '分润比例(%)', templet: function (item) {
+									//触发JS获取返回值
+									return '';
+								}
+							}, {
+								field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							}
+						]
+					],
+					// skin: 'row', //行边框风格
+					event: true,
+					page: true,
+					response: {
+						statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+					},
+					request: {
+						pageName: 'page', //页码的参数名称，默认：page
+						limitName: 'size' //每页数据量的参数名，默认：limit
+					},
+					parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+						return {
+							"code": res.status, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.totalCount, //解析数据长度
+							"data": res.datas //解析数据列表
+						};
+					},
+					where: {
+						startDate: appendStartDate(getDay(-7)),
+						merchantLevel: 100
+
+					},
+					done: function (res, curr, count) {
+						//如果是异步请求数据方式，res即为你接口返回的信息。
+						//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+						// console.log(res);
+						// //得到当前页码
+						// console.log(curr);
+						// //得到数据总量
+						// console.log(count);
+					}
+				});
+				// 重载公共方法
+				var _reload = function () {
+					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
+					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
+					table.reload('articleList', {
+						url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
+						page: {
+							curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+						},
+						where: {
+							ipAddress: ipAddress.val()
+						}
+					});
+				}
+				/*
+				 *数据表格中form表单元素是动态插入,所以需要更新渲染下
+				 * http://www.layui.com/doc/modules/form.html#render
+				 * */
+				// $(function () {
+				// 	form.render();
+				// });
+				var active = {
+					reload: function () {
+						var ipAddress = $('#form_sreach').find('[name=ipAddress]');
+						var operatorId = $('#form_sreach').find('[name=operatorId]');
+						var operatorName = $('#form_sreach').find('[name=operatorName]');
+						var role = $('#form_sreach').find('[name=role]');
+						var modules = $('#form_sreach').find('[name=module]');
+						var action = $('#form_sreach').find('[name=action]');
+						var startDate = $('#form_sreach').find('[name=startDate]');
+						var entDate = $('#form_sreach').find('[name=entDate]');
+						startDate = appendStartDate(startDate.val());
+						//执行重载
+						table.reload('articleList', {
+							url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
+							page: {
+								curr: 1 //重新从第 1 页开始
+							},
+							where: {
+								ipAddress: ipAddress.val(),
+								operatorId: operatorId.val(),
+								operatorNameBlurry: operatorName.val(),
+								role: role.val(),
+								module: modules.val(),
+								action: action.val(),
+								startDate: startDate,
+								entDate: entDate.val()
+							}
+						});
+					}
+				};
+				// 监听查询按钮
+				$('#form_sreach .layui-btn').on('click', function () {
+					var type = $(this).data('type');
+					active[type] ? active[type].call(this) : '';
+				});
+				//跳转至短信日志
+				$('#smsLogs_btn').on('click', function () {
+					var h = $(window).height() - 30;
+					$("#smslogs").find('iframe').attr('src', "sms_list.html").css('height', h + 'px');
+				})
+				//跳转至实名认证日志
+				$('#idCard_btn').on('click', function () {
+					var h = $(window).height() - 30;
+					$("#idCardLogs").find('iframe').attr('src', "idCard_list.html").css('height', h + 'px');
+				})
+			});
+		</script>
+</body>
+
+</html>
