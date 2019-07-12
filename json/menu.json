@@ -176,9 +176,9 @@
 				},
 				{
 					"id": 9,
-					"name": "支付单信息",
+					"name": "商品库",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/distribution/goods_supply_list.html"
 				},
 				{
 					"id": 9,
@@ -191,13 +191,19 @@
 					"name": "已移除订单",
 					"icon": "",
 					"url": "./pages/article/list.html"
+				},
+				{
+					"id": 9,
+					"name": "注销信息",
+					"icon": "",
+					"url": "./pages/distribution/old_exp_mer_list.html"					
 				}
 			]
 		},
 		{
 			"id": 7,
 			"name": "用户管理",
-			"icon": "&#xe723;",
+			"icon": "&#xe6b8;",
 			"url": "",
 			"children": [
 				{
@@ -255,7 +261,7 @@
 		{
 			"id": 10,
 			"name": "系统管理",
-			"icon": "&#xe723;",
+			"icon": "&#xe6ce;",
 			"url": "",
 			"children": [
 				{
