@@ -32,61 +32,50 @@
 </head>
 
 <body>
-	<!-- <div class="weadmin-nav">
-		<span class="layui-breadcrumb">
-			<a href="">首页</a>
-			<a href="">用户管理</a>
-			<a>
-				<cite>运营管理</cite></a>
-		</span>
-		<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
-			href="javascript:location.replace(location.href);" title="刷新">
-			<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
-	</div> -->
 	<div class="weadmin-body">
-		<!-- <div class="layui-row">
-			<form id="form_sreach" class="layui-form layui-col-md12 we-search">
-				<div class="layui-input-inline">
-					<select name="cateid">
-						<option>请选择分类</option>
-						<option>文章</option>
-						<option>会员</option>
-						<option>权限</option>
-					</select>
+		<form id="form_sreach" class="layui-form">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">海关名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="customsName" placeholder="请输入海关名称" class="layui-input">
+					</div>
 				</div>
 				<div class="layui-inline">
-					<input class="layui-input" placeholder="开始日" name="start" id="start">
+					<label class="layui-form-label">海关编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="customsCode" placeholder="请输入商户编号" class="layui-input">
+					</div>
 				</div>
 				<div class="layui-inline">
-					<input class="layui-input" placeholder="截止日" name="end" id="end">
+					<label class="layui-form-label">国检名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="ciqOrgName" placeholder="请输入国检机构名称" class="layui-input">
+					</div>
 				</div>
-				管理员名称：
 				<div class="layui-inline">
-					<input type="text" name="managerName" placeholder="请输入管理员名称" autocomplete="off" class="layui-input">
+					<label class="layui-form-label">国检编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="ciqOrgCode" placeholder="请输入国检机构编号" class="layui-input">
+					</div>
 				</div>
-				<button class="layui-btn" data-type="reload" lay-filter="sreach"><i
-						class="layui-icon">&#xe615;</i></button>
-			</form>
-		</div> -->
-		<div id="form_sreach" class="layui-row">
-			管理员名称：
-			<div class="layui-inline">
-				<input type="text" name="managerName" placeholder="请输入管理员名称" autocomplete="off" class="layui-input">
 			</div>
-			<button class="layui-btn" data-type="reload">搜索</button>
-		</div>
-		<div class="weadmin-block demoTable">
-			<button class="layui-btn" onclick="WeAdminShow('添加用户','./customs_add.html',600,400)">
-				<em class="layui-icon">&#xe61f;</em>添加</button>
-		</div>
-		<script type="text/html" id="operateTpl">
+			<div style="text-align: center;">
+				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
+			</div>
+	</div>
+	<div class="weadmin-block demoTable">
+		<button class="layui-btn" onclick="WeAdminShow('添加用户','./customs_add.html',600,400)">
+			<em class="layui-icon">&#xe61f;</em>添加</button>
+	</div>
+	<script type="text/html" id="operateTpl">
 			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
 			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">删除</a>
 		</script>
 
-		<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-		<script src="../../static/js/common.js" charset="utf-8"></script>
+	<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+	<script src="../../static/js/common.js" charset="utf-8"></script>
 
 	</div>
 	<script>
@@ -117,19 +106,19 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'province', title: '省份'
+							field: 'province', title: '省份', width: 80
 						}, {
-							field: 'city', title: '城市'
+							field: 'city', title: '城市', width: 80
 						}, {
 							field: 'customsPortName', title: '口岸', width: 120
 						}, {
-							field: 'customsName', title: '主管海关'
+							field: 'customsName', title: '海关名称'
 						}, {
 							field: 'customsCode', title: '海关编号', width: 100
 						}, {
-							field: 'ciqOrgName', title: '检验检疫机构名称'
+							field: 'ciqOrgName', title: '国检机构名称'
 						}, {
-							field: 'ciqOrgCode', title: '检验检疫机构编号'
+							field: 'ciqOrgCode', title: '国检机构编号', width: 120
 						}, {
 							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}
@@ -167,45 +156,23 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var managerName = $('#form_sreach').find('[name=managerName]');
+				var customsName = $('#form_sreach').find('[name=customsName]');
+				var customsCode = $('#form_sreach').find('[name=customsCode]');
+				var ciqOrgName = $('#form_sreach').find('[name=ciqOrgName]');
+				var ciqOrgCode = $('#form_sreach').find('[name=ciqOrgCode]');
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/customsPort/getInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						managerNameblurry: managerName.val()
+						customsNameblurry: customsName.val(),
+						customsCode: customsName.val(),
+						ciqOrgNameblurry: customsName.val(),
+						ciqOrgCode: customsName.val()
 					}
 				});
 			}
-			//监听性别操作
-			form.on('switch(statusDemo)', function (obj) {
-				var status = '';
-				if (obj.value == "enable") {
-					status = 'disable';
-				} else {
-					status = 'enable';
-				}
-				$.ajax({
-					url: urlPrefix + "silver-web-shop/manager/updateStatus",
-					type: "POST",
-					xhrFields: {
-						withCredentials: true
-					},
-					data: {
-						managerId: $(obj.elem).attr('data-managerid'),
-						status: status
-					},
-					success: function (response) {
-						if (response.status == 1) {
-							layer.msg('修改成功！');
-							_reload();//执行重载
-						} else {
-							layer.alert(response.msg);
-						}
-					}
-				});
-			});
 			/*
 			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
 			 * http://www.layui.com/doc/modules/form.html#render
@@ -215,19 +182,24 @@
 			// });
 			var active = {
 				reload: function () {
-					var managerName = $('#form_sreach').find('[name=managerName]');
+					var customsName = $('#form_sreach').find('[name=customsName]');
+					var customsCode = $('#form_sreach').find('[name=customsCode]');
+					var ciqOrgName = $('#form_sreach').find('[name=ciqOrgName]');
+					var ciqOrgCode = $('#form_sreach').find('[name=ciqOrgCode]');
+					console.info('-------'+customsCode.val());
 					//执行重载
-					setTimeout(function () {
-						table.reload('articleList', {
-							url: urlPrefix + 'silver-web-shop/manager/findAllManagerInfo',
-							page: {
-								curr: 1 //重新从第 1 页开始
-							},
-							where: {
-								managerNameblurry: managerName.val()
-							}
-						});
-					}, 800)
+					table.reload('articleList', {
+						url: urlPrefix + 'silver-web-shop/customsPort/getInfo',
+						page: {
+							curr: 1 //重新从第 1 页开始
+						},
+						where: {
+							customsNameblurry: customsName.val(),
+							customsCode: customsCode.val(),
+							ciqOrgNameblurry: ciqOrgName.val(),
+							ciqOrgCode: ciqOrgCode.val()
+						}
+					});
 				}
 			};
 			// 监听查询按钮
@@ -235,168 +207,6 @@
 				var type = $(this).data('type');
 				active[type] ? active[type].call(this) : '';
 			});
-
-			//监听工具条
-			table.on('tool(articleList)', function (obj) {
-				var data = obj.data;
-				if (obj.event === 'detail') {// 查看详情
-					layer.open({
-						type: 2,
-						title: '详情',
-						area: ['750px', '350px'],
-						fixed: false, //不固定
-						maxmin: true,
-						content: './manager_detail.html',
-						btnAlign: 'c',
-						btn: ['关闭'],
-						success: function (layero, index) {
-							// console.log(obj)
-							// 获取子页面的iframe
-							var iframe = window['layui-layer-iframe' + index];
-							// 向子页面的全局函数child传参
-							iframe.getParent_data(obj);
-						},
-						btn1: function (index) {
-							layer.close(index);
-						}
-					});
-				} else if (obj.event === 'reset') {// 重置密码
-					layer.alert("确定重置密码？", {
-						time: 0, //不自动关闭
-						btn: ["保存", "关闭"],
-						yes: function (index) {
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/manager/resetManagerPassword",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: { managerId: data.managerId },
-								success: function (response) {
-									if (response.status == 1) {
-										layer.msg("重置成功！");
-										_reload();
-									} else {
-										layer.alert(response.msg);
-									}
-								}
-							});
-						}
-					});
-
-				} else if (obj.event === 'edit') {// 分配权限
-					$('#maangerAllot').html('');
-					layer.load(1);
-					var _this = this;
-					$.ajax({
-						url: urlPrefix + "silver-web-shop/authority/getUserAuthorityInfo",
-						type: "POST",
-						xhrFields: {
-							withCredentials: true
-						},
-						data: { userId: data.managerId, groupName: "manager" },
-						success: function (response) {
-
-							if (response.status == 1) {
-
-								var jsonArr = [];
-								var ii = 0;
-								$.each(response.datas, function (i, val1) {
-									jsonArr.push({ title: i, children: [] });
-									var jj = 0;
-									$.each(val1, function (j, val2) {
-										jsonArr[ii].children.push({ title: j, children: [] });
-										$.each(val2, function (k, val3) {
-											var checked = false;
-											if (k.split("#")[1] == 'true') {
-												jsonArr[ii].checked = true;
-												jsonArr[ii].children[jj].checked = true;
-												checked = true;
-											}
-											jsonArr[ii].children[jj].children.push({
-												title: val3,
-												checked: checked,
-												id: k.split("#")[0]
-											});
-										});
-										jj++;
-									});
-									ii++;
-								});
-
-								//基本演示
-								tree.render({
-									elem: '#maangerAllot'
-									, data: jsonArr
-									, check: "checkbox" //勾选风格
-									, showCheckbox: true  //是否显示复选框
-									, id: 'demoId1'
-									, checkboxName: "allot" //复选框的name属性值
-									, checkboxStyle: "" //设置复选框的样式，必须为字符串，css样式怎么写就怎么写
-									// , isJump: true //是否允许点击节点时弹出新窗口跳转
-									, click: function (obj) {
-										// var data = obj.data;  //获取当前点击的节点数据
-										// layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
-									}
-								});
-								layer.closeAll('loading');
-							} else {
-							}
-						}
-					});
-
-					//页面层
-					layer.open({
-						type: 1,
-						title: '分配权限',
-						skin: "layui-layer-rim", //加上边框
-						area: ["690px", "450px"], //宽高
-						content: $("#maangerAllot"),
-						btn: ["保存", "关闭"],
-						btnAlign: "c",
-						yes: function (index) {
-							var arr = [];
-							$.each($("#maangerAllot").find('.layui-tree-main [type=checkbox]'), function (i, item) {
-								// console.log($(item))
-								if (item.checked && item.value != "undefined") {
-
-									arr.push(item.value);
-								}
-							})
-							var allot_data = { type: 'manager', userId: data.managerId, authorityPack: JSON.stringify(arr) };
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/authority/setAuthorityInfo",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: allot_data,
-								success: function (response) {
-									layer.closeAll("loading");
-									if (response.status == 1) {
-										layer.closeAll();
-										// $("#maangerAllot").html('').hide();
-										layer.msg('分配权限成功！');
-										_reload();
-									} else {
-										layer.msg(response.msg);
-									}
-								}
-							});
-						}
-						, btn2: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
-						}, cancel: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
-						}
-
-					});
-					// layer.alert('编辑行：<br>' + JSON.stringify(data))
-				}
-			});
-
 		});
 	</script>
 </body>
