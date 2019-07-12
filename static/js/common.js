@@ -1,5 +1,5 @@
-var urlPrefix = 'http:///192.168.1.116:8080/';
-// var urlPrefix = "https://ym.191ec.com/";
+// var urlPrefix = 'http:///192.168.1.116:8080/';
+var urlPrefix = "https://ym.191ec.com/";
 // var urlPrefix = 'http://120.132.118.211:8080/';
 
 // 日期格式化
@@ -176,3 +176,9 @@ function accSub(arg1, arg2) {
   n = r1 >= r2 ? r1 : r2;
   return ((arg1 * m - arg2 * m) / m).toFixed(n);
 }
+
+// 图片去;分号
+var splitImg = function(img) {
+  var arr = img.split(";");
+  return arr[0];
+};
