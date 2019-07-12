@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>银盟跨境电商服务平台运营系统</title>
+	<meta name="Description" content="基于layUI数据表格操作" />
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../../static/css/font.css">
+	<link rel="stylesheet" href="../../static/css/weadmin.css">
+	<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+	<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	<style type="text/css">
+		.layui-form-switch {
+			width: 55px;
+		}
+
+		.layui-form-switch em {
+			width: 40px;
+		}
+
+		body {
+			overflow-y: scroll;
+		}
+
+		/* 私有样式 */
+		.layui-form-label {
+			width: 90px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="weadmin-body">
+		<form id="form_sreach" class="layui-form">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="expadndMerchantName" placeholder="请输入推广商名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="expadndMerchantCode" placeholder="请输入推广商户编号" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">手机号码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="phone" placeholder="请输入手机号码" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">上级商户名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="supMerchantName" placeholder="请输入上级商户名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">上级商户编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="supMerchantId" placeholder="请输入上级商户编号" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">等级</label>
+					<div class="layui-input-inline">
+						<select name="level" lay-verify="required" lay-search="">
+							<option value="">全部</option>
+							<option value="one">一级</option>
+							<option value="two">二级</option>
+						</select>
+					</div>
+				</div>
+				<!-- <div class="layui-inline">
+					<label class="layui-form-label">日期</label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+							placeholder="年-月-日">
+					</div>
+					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
+							placeholder="年-月-日">
+					</div>
+				</div> -->
+			</div>
+			<div style="text-align: center;">
+				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
+			</div>
+	</div>
+	<!-- <div class="weadmin-block demoTable">
+		<button class="layui-btn" onclick="WeAdminShow('添加用户','./customs_add.html',600,400)">
+			<em class="layui-icon">&#xe61f;</em>添加</button>
+	</div> -->
+	<!-- <script type="text/html" id="operateTpl">
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">删除</a>
+		</script> -->
+
+	<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+	<script src="../../static/js/common.js" charset="utf-8"></script>
+
+	</div>
+	<script>
+		layui.extend({
+			admin: '{/}../../static/js/admin'
+		});
+
+		layui.use(['table', 'jquery', 'form', 'admin', 'tree'], function () {
+			var table = layui.table,
+				$ = layui.jquery,
+				form = layui.form,
+				tree = layui.tree,
+				admin = layui.admin;
+			// 动态设置表格高度
+			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			table.render({
+				elem: '#articleList',
+				cellMinWidth: 80,
+				height: tableHeight,
+				url: urlPrefix + 'silver-web-shop/oldExpMer/findInfo',
+				method: 'post',
+				cols: [
+					[
+						{
+							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
+						}, {
+							field: 'deleteDate', width: 160, title: '注销日期', fixed: 'left', templet: function (item) {
+								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
+							}
+						}, {
+							field: 'expadndMerchantName', title: '名称',
+						}, {
+							field: 'expadndMerchantCode', title: '编号',
+						}, {
+							field: 'phone', title: '手机号码',
+						}, {
+							field: 'supMerchantName', title: '上级商户名称',
+						}, {
+							field: 'supMerchantId', title: '上级商户编号'
+						}, {
+							field: 'level', title: '等级', width: 100, templet: function (item) {
+								if (item.level == 'one') {
+									return '一级';
+								} else if (item.level == 'two') {
+									return '二级';
+								}
+							}
+						}, {
+							field: 'note', title: '说明'
+						}
+						// , {
+						// 	field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
+						// }
+					]
+				],
+				// skin: 'row', //行边框风格
+				event: true,
+				page: true,
+				response: {
+					statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+				},
+				request: {
+					pageName: 'page', //页码的参数名称，默认：page
+					limitName: 'size' //每页数据量的参数名，默认：limit
+				},
+				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+					return {
+						"code": res.status, //解析接口状态
+						"msg": res.msg, //解析提示文本
+						"count": res.totalCount, //解析数据长度
+						"data": res.datas //解析数据列表
+					};
+				},
+				done: function (res, curr, count) {
+					//如果是异步请求数据方式，res即为你接口返回的信息。
+					//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+					// console.log(res);
+
+					// //得到当前页码
+					// console.log(curr);
+
+					// //得到数据总量
+					// console.log(count);
+				}
+			});
+			// 重载公共方法
+			var _reload = function () {
+				var expadndMerchantName = $('#form_sreach').find('[name=expadndMerchantName]');
+				var expadndMerchantCode = $('#form_sreach').find('[name=expadndMerchantCode]');
+				var phone = $('#form_sreach').find('[name=phone]');
+				var supMerchantId = $('#form_sreach').find('[name=supMerchantId]');
+				var supMerchantName = $('#form_sreach').find('[name=supMerchantName]');
+				var level = $('#form_sreach').find('[name=level]');
+				var startDate = $('#form_sreach').find('[name=startDate]');
+				var endDate = $('#form_sreach').find('[name=endDate]');
+				startDate = appendStartDate(startDate.val());
+				endDate = appendEndDate(endDate.val());
+				table.reload('articleList', {
+					url: urlPrefix + 'silver-web-shop/oldExpMer/findInfo',
+					page: {
+						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+					},
+					where: {
+						expadndMerchantNameblurry: expadndMerchantName.val(),
+						expadndMerchantCode: expadndMerchantCode.val(),
+						phone: phone.val(),
+						supMerchantId: supMerchantId.val(),
+						supMerchantNameblurry: supMerchantName.val(),
+						level: level.val(),
+					}
+				});
+			}
+			/*
+			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
+			 * http://www.layui.com/doc/modules/form.html#render
+			 * */
+			// $(function () {
+			// 	form.render();
+			// });
+			var active = {
+				reload: function () {
+					var expadndMerchantName = $('#form_sreach').find('[name=expadndMerchantName]');
+					var expadndMerchantCode = $('#form_sreach').find('[name=expadndMerchantCode]');
+					var phone = $('#form_sreach').find('[name=phone]');
+					var supMerchantId = $('#form_sreach').find('[name=supMerchantId]');
+					var supMerchantName = $('#form_sreach').find('[name=supMerchantName]');
+					var level = $('#form_sreach').find('[name=level]');
+					var startDate = $('#form_sreach').find('[name=startDate]');
+					var endDate = $('#form_sreach').find('[name=endDate]');
+					startDate = appendStartDate(startDate.val());
+					endDate = appendEndDate(endDate.val());
+					//执行重载
+					table.reload('articleList', {
+						url: urlPrefix + 'silver-web-shop/oldExpMer/findInfo',
+						page: {
+							curr: 1 //重新从第 1 页开始
+						},
+						where: {
+							expadndMerchantNameblurry: expadndMerchantName.val(),
+							expadndMerchantCode: expadndMerchantCode.val(),
+							phone: phone.val(),
+							supMerchantId: supMerchantId.val(),
+							supMerchantNameblurry: supMerchantName.val(),
+							level: level.val(),							
+						}
+					});
+				}
+			};
+			// 监听查询按钮
+			$('#form_sreach .layui-btn').on('click', function () {
+				var type = $(this).data('type');
+				active[type] ? active[type].call(this) : '';
+			});
+		});
+	</script>
+</body>
+
+</html>
