@@ -51,9 +51,9 @@
 								</div>
 							</div>
 							<div class="layui-inline">
-								<label class="layui-form-label">账号</label>
+								<label class="layui-form-label">登录账号</label>
 								<div class="layui-input-inline">
-									<input type="text" name="operatorId" placeholder="请输入白金商户账号" class="layui-input">
+									<input type="text" name="operatorId" placeholder="请输入登录账号" class="layui-input">
 								</div>
 							</div>
 							<div class="layui-inline">
@@ -92,10 +92,15 @@
 						</div>
 					</form>
 					<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-					<!-- 权限树盒子 -->
-					<ul id="maangerAllot" style="display: none;"></ul>
+					<script type="text/html" id="operateTpl">
+						<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">专店管理</a>			
+						<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">一级代理商</a>
+						<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>			
+						<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置密码</a>
+					</script>
 					<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 					<script src="../../static/js/common.js" charset="utf-8"></script>
+
 				</div>
 				<!----系统操作日志---end--------------------------------->
 				<!----系统短信日志------------start----------------------->
@@ -147,29 +152,31 @@
 									return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 								}
 							}, {
-								field: 'merchantName', title: '名称'
+								field: 'merchantName', title: '名称',width:130
 							},
 							{
-								field: 'loginAccount', title: '账号'
+								field: 'loginAccount', title: '登录账号', width: 130
 							}, {
-								field: 'merchantId', title: '编号'
+								field: 'merchantId', title: '编号',width:180
 							}, {
 								field: 'merchantStatus', width: 80, title: '状态', templet: function (item) {
 									if (item.merchantStatus == '1') {
 										return '正常';
-									} else if (item.role == '2') {
+									} else if (item.merchantStatus == '2') {
 										return '禁用';
-									} else if (item.role == '3') {
+									} else if (item.merchantStatus == '3') {
 										return '审核';
 									}
 								},
 							}, {
-								field: 'module', width: 150, title: '分润比例(%)', templet: function (item) {
+								field: 'module', width: 110, title: '分润比例(%)', templet: function (item) {
+									var data = { merchantId: item.merchantId, page: 1, size: 1 };
+									var url = urlPrefix + 'silver-web-shop/merDivRate/getInfo';
 									//触发JS获取返回值
-									return '';
+									return accMul(g_async(data, url).rate, 100);
 								}
 							}, {
-								field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+								field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
 							}
 						]
 					],
@@ -272,6 +279,28 @@
 					var h = $(window).height() - 30;
 					$("#idCardLogs").find('iframe').attr('src', "idCard_list.html").css('height', h + 'px');
 				})
+				// 异步加载查询
+				function g_async(data, url) {
+					var obj = '';
+					$.ajax({
+						url: url,
+						type: "POST",
+						async: false,
+						xhrFields: {
+							withCredentials: true
+						},
+						data: data,
+						success: function (response) {
+							if (response.status == 1) {
+								obj = response.datas;
+							}
+						},
+						error: function () {
+
+						}
+					});
+					return obj;
+				}
 			});
 		</script>
 </body>
