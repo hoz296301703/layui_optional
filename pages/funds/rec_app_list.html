@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<!-- 线下充值申请信息html-->
 
 <head>
 	<meta charset="UTF-8">
@@ -19,6 +20,11 @@
 	<style type="text/css">
 		.layui-form-switch {
 			width: 55px;
+		}
+
+		/* 私有样式 */
+		.layui-form-label {
+			width: 70px;
 		}
 
 		.layui-form-switch em {
@@ -44,123 +50,153 @@
 			<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
 	</div> -->
 	<div class="weadmin-body">
-		<div class="layui-tab-item layui-show">
-			<form id="form_sreach" class="layui-form">
-				<div id="form_sreach" class="layui-row">
-					<div class="layui-inline">
-						<label class="layui-form-label">名称</label>
-						<div class="layui-input-inline">
-							<input type="text" name="managerName" placeholder="请输入管理员名称" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-inline">
-						<label class="layui-form-label">姓名</label>
-						<div class="layui-input-inline">
-							<input type="text" name="realName" placeholder="请输入真实姓名" class="layui-input">
-						</div>
-					</div>
-					<div class="layui-inline">
-						<label class="layui-form-label">角色</label>
-						<div class="layui-input-inline">
-							<select name="managerMarks" lay-verify="required" lay-search="">
-								<option value="">全部</option>
-								<option value="1">超级管理员</option>
-								<option value="2">运营</option>
-								<option value="3">财务</option>
-							</select>
-						</div>
-					</div>
-					<div class="layui-inline">
-						<label class="layui-form-label">状态</label>
-						<div class="layui-input-inline">
-							<select name="status" lay-verify="required" lay-search="">
-								<option value="">全部</option>
-								<option value="enable">正常</option>
-								<option value="disable">禁用</option>
-							</select>
-						</div>
+		<form id="form_sreach" class="layui-form">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="applicant" placeholder="请输入商户/会员名称" class="layui-input">
 					</div>
 				</div>
-				<div style="text-align: center;">
-					<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
+				<div class="layui-inline">
+					<label class="layui-form-label">编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="applicantId" placeholder="请输入商户/会员编号" class="layui-input">
+					</div>
 				</div>
-			</form>
-		</div>
-		<div class="weadmin-block demoTable">
-			<button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html',600,400)"><i
-					class="layui-icon">&#xe61f;</i>添加管理员</button>
-		</div>
-		<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-		<!-- <script type="text/html" id="statusTpl">
-			<input type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁用" {{d.status}}>
-		</script> -->
-		<script type="text/html" id="statusTpl">
-			<!-- 这里的 checked 的状态只是演示 -->
-		<input type="checkbox" data-managerId="{{d.managerId}}" name="status" value="{{d.status}}" lay-skin="switch"
-			lay-text="启用|禁用" lay-filter="statusDemo" {{ d.status == 'enable' ? 'checked' : '' }}>
-		</script>
-		<script type="text/html" id="operateTpl">
-				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-				<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" onclick="WeAdminEdit2('查看','./manager_detail.html','{{d.toString()}}')">查看</a> -->
-				<a class="layui-btn layui-btn-xs" lay-event="edit">分配权限</a>
-				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置密码</a>
-		</script>
-		<!-- 权限树盒子 -->
-		<ul id="maangerAllot" style="display: none;"></ul>
-		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-		<script src="../../static/js/common.js" charset="utf-8"></script>
-		<!-- <script src="manager_list.js" type="text/javascript" charset="utf-8"></script> -->
+				<!-- <div class="layui-inline">
+					<label class="layui-form-label">交易流水号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="tradeNo" placeholder="请输入交易流水号" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">订单编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="orderId" placeholder="请输入订单编号" class="layui-input">
+					</div>
+				</div> -->
+				<!-- <div class="layui-inline">
+					<label class="layui-form-label">收款方编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="sellerId" placeholder="请输入收款方编号" class="layui-input">
+					</div>
+				</div> -->
+				<div class="layui-inline">
+					<label class="layui-form-label">类型</label>
+					<div class="layui-input-inline">
+						<select name="type" lay-verify="required" lay-search="">
+							<option value="">全部</option>
+							<option value="recResAmo">会员货款充值</option>
+							<option value="recMerBal">推单服务费</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">节点</label>
+					<div class="layui-input-inline">
+						<select name="reviewerType" lay-verify="required" lay-search="">
+							<option value="">全部</option>
+							<option value="firstTrial">运营初审</option>
+							<option value="financialAudit">财务审核</option>
+							<option value="termination">终止</option>
+							<option value="complete">完成</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">日期</label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+							placeholder="年-月-日">
+					</div>
+					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
+							placeholder="年-月-日">
+					</div>
+				</div>
+			</div>
+			<div style="text-align: center;">
+				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
+			</div>
+			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+
+			<script type="text/html" id="operateTpl">
+				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
+			</script>
+
+			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+			<script src="../../static/js/common.js" charset="utf-8"></script>
+
 	</div>
 	<script>
 		layui.extend({
 			admin: '{/}../../static/js/admin'
 		});
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree'], function () {
+		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin;
+				admin = layui.admin,
+				laydate = layui.laydate;
+			//日期时间选择器
+			laydate.render({
+				elem: '#startDate'
+				, value: getDay(-7)
+				, isInitValue: true
+			});
+			laydate.render({
+				elem: '#endDate'
+				, type: 'datetime'
+			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				cellMinWidth: 80,
 				height: tableHeight,
-				url: 'https://ym.191ec.com/silver-web-shop/manager/findAllManagerInfo',
+				url: urlPrefix + 'silver-web-shop/offlineRecharge/managerGetApplication',
 				method: 'post',
 				cols: [
 					[
-						// {
-						// 	field: 'managerId', title: '管理员编号', sort: true, fixed: 'left'
-						// },
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', width: 160, fixed: 'left', title: '日期', templet: function (item) {
+							field: 'createDate', title: '日期', fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'managerId', title: '管理员编号'
+							field: 'applicant', title: '商户/会员名称', width: 180
 						}, {
-							field: 'managerName', title: '管理员名称'
+							field: 'applicantId', title: '商户/会员编号', width: 180
 						}, {
-							field: 'realName', title: '姓名', width: 120
+							field: 'remittanceAmount', title: '金额（元）'
 						}, {
-							field: 'managerMarks', width: 120, title: '角色', templet: function (item) {
-								if (item.managerMarks == '1') {
-									return '超级管理员';
-								} else if (item.managerMarks == '2') {
-									return '运营管理员';
-								} else if (item.managerMarks == '3') {
-									return '财务';
+							field: 'type', title: '类型', templet: function (item) {
+								if (item.type == 'recResAmo') {
+									return '会员货款充值';
+								} else if (item.type == 'recMerBal') {
+									return '推单服务费';
 								}
 							}
 						}, {
-							field: 'status', width: 100, title: '状态', templet: '#statusTpl',
+							field: 'reviewerType', title: '充值状态', templet: function (item) {
+								// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
+								if (item.reviewerType == 'firstTrial') {
+									return '运营初审';
+								} else if (item.reviewerType == 'financialAudit') {
+									return '财务审核';
+								} else if (item.reviewerType == 'termination') {
+									return '终止';
+								} else if (item.reviewerType == 'complete') {
+									return '完成';
+								}
+							}
 						}, {
-							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
 				// skin: 'row', //行边框风格
@@ -181,6 +217,9 @@
 						"data": res.datas //解析数据列表
 					};
 				},
+				where: {
+					startDate: appendStartDate(getDay(-7))
+				},
 				done: function (res, curr, count) {
 					//如果是异步请求数据方式，res即为你接口返回的信息。
 					//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
@@ -195,52 +234,29 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-
-				var managerName = $('#form_sreach').find('[name=managerName]');
-				var realName = $('#form_sreach').find('[name=realName]');
-				var managerMarks = $('#form_sreach').find('[name=managerMarks]');
-				var status = $('#form_sreach').find('[name=status]');
+				var applicant = $('#form_sreach').find('[name=applicant]');
+				var applicantId = $('#form_sreach').find('[name=applicantId]');
+				var reviewerType = $('#form_sreach').find('[name=reviewerType]');
+				var type = $('#form_sreach').find('[name=type]');
+				var startDate = $('#form_sreach').find('[name=startDate]');
+				var endDate = $('#form_sreach').find('[name=endDate]');
+				startDate = appendStartDate(startDate.val());
+				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/manager/findAllManagerInfo',
+					url: urlPrefix + 'silver-web-shop/offlineRecharge/managerGetApplication',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						managerNameblurry: managerName.val(),
-						realNameblurry: realName.val(),
-						managerMarks: managerMarks.val(),
-						status: status.val()
+						applicantblurry: applicant.val(),
+						applicantId: applicantId.val(),
+						reviewerType: reviewerType.val(),
+						type: type.val(),
+						startDate: startDate,
+						endDate: endDate
 					}
 				});
 			}
-			//监听性别操作
-			form.on('switch(statusDemo)', function (obj) {
-				var status = '';
-				if (obj.value == "enable") {
-					status = 'disable';
-				} else {
-					status = 'enable';
-				}
-				$.ajax({
-					url: urlPrefix + "silver-web-shop/manager/updateStatus",
-					type: "POST",
-					xhrFields: {
-						withCredentials: true
-					},
-					data: {
-						managerId: $(obj.elem).attr('data-managerid'),
-						status: status
-					},
-					success: function (response) {
-						if (response.status == 1) {
-							layer.msg('修改成功！');
-							_reload();//执行重载
-						} else {
-							layer.alert(response.msg);
-						}
-					}
-				});
-			});
 			/*
 			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
 			 * http://www.layui.com/doc/modules/form.html#render
@@ -250,22 +266,27 @@
 			// });
 			var active = {
 				reload: function () {
-					var managerName = $('#form_sreach').find('[name=managerName]');
-					var realName = $('#form_sreach').find('[name=realName]');
-					var managerMarks = $('#form_sreach').find('[name=managerMarks]');
-					var status = $('#form_sreach').find('[name=status]');
-					//执行重载
-
+					var applicant = $('#form_sreach').find('[name=applicant]');
+					var applicantId = $('#form_sreach').find('[name=applicantId]');
+					var reviewerType = $('#form_sreach').find('[name=reviewerType]');
+					var type = $('#form_sreach').find('[name=type]');
+					var startDate = $('#form_sreach').find('[name=startDate]');
+					var endDate = $('#form_sreach').find('[name=endDate]');
+					startDate = appendStartDate(startDate.val());
+					endDate = appendEndDate(endDate.val());
+					//执行重载					
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/manager/findAllManagerInfo',
+						url: urlPrefix + 'silver-web-shop/offlineRecharge/managerGetApplication',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
-							managerNameblurry: managerName.val(),
-							realNameblurry: realName.val(),
-							managerMarks: managerMarks.val(),
-							status: status.val()
+							applicantblurry: applicant.val(),
+							applicantId: applicantId.val(),
+							reviewerType: reviewerType.val(),
+							type: type.val(),
+							startDate: startDate,
+							endDate: endDate
 						}
 					});
 				}
@@ -283,7 +304,7 @@
 					layer.open({
 						type: 2,
 						title: '详情',
-						area: ['622px', '287px'],
+						area: ['750px', '350px'],
 						fixed: false, //不固定
 						maxmin: true,
 						content: './manager_detail.html',

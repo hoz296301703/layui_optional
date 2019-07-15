@@ -9,25 +9,25 @@
 			"url": "",
 			"children": [
 				{
-					"id": 9,
+					"id": 201,
 					"name": "订单信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 9,
+					"id": 202,
 					"name": "支付单信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 9,
+					"id": 203,
 					"name": "申报信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 9,
+					"id": 203,
 					"name": "已移除订单",
 					"icon": "",
 					"url": "./pages/article/list.html"
@@ -41,25 +41,25 @@
 			"url": "",
 			"children": [
 				{
-					"id": 9,
+					"id": 204,
 					"name": "订单信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 9,
+					"id": 205,
 					"name": "支付单信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 9,
+					"id": 206,
 					"name": "申报信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 9,
+					"id": 207,
 					"name": "已移除订单",
 					"icon": "",
 					"url": "./pages/article/list.html"
@@ -73,25 +73,25 @@
 			"url": "",
 			"children": [
 				{
-					"id": 9,
+					"id": 208,
 					"name": "订单信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 9,
+					"id": 209,
 					"name": "支付单信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 9,
+					"id": 210,
 					"name": "申报信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 9,
+					"id": 211,
 					"name": "已移除订单",
 					"icon": "",
 					"url": "./pages/article/list.html"
@@ -105,28 +105,22 @@
 			"url": "",
 			"children": [
 				{
-					"id": 9,
+					"id": 212,
 					"name": "商户资金",
 					"icon": "",					
 					"url": "./pages/funds/merchant_list.html"
 				},
 				{
-					"id": 9,
+					"id": 213,
 					"name": "会员资金",
 					"icon": "",
 					"url": "./pages/funds/member_list.html"
 				},
 				{
-					"id": 9,
-					"name": "交易日志",
+					"id": 214,
+					"name": "充值申请",
 					"icon": "",
-					"url": "./pages/funds/trade_logs_list.html"
-				},
-				{
-					"id": 9,
-					"name": "已移除订单",
-					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/funds/rec_app_list.html"
 				}
 			]
 		},
