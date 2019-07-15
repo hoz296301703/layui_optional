@@ -102,7 +102,7 @@
 		<table class="layui-hide" id="merchantList" lay-filter="merchantList"></table>
 		<script type="text/html" id="merchantList_toolbar">
 			<div class="layui-btn-container">
-				<button class="layui-btn layui-btn-sm" id="add_merchant"><i class="layui-icon">&#xe61f;</i>添加</button>
+				<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>添加</button>
 				<button class="layui-btn layui-btn-sm" lay-event="getCheckData">审核</button>
 				<!-- <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
 				<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button> -->
@@ -295,7 +295,28 @@
 						var data = checkStatus.data;
 						// layer.alert(JSON.stringify(data));
 						console.log(data)
-					
+
+						break;
+					case 'add':
+						layer.open({
+							title: "添加",
+							type: 2,
+							skin: "layui-layer-rim", //加上边框
+							area: ["710px", "510px"], //宽高
+							scrollbar: false,
+							// btnAlign: "c",
+							// btn: ["保存", "关闭"],
+							content: './merchant_add.html',
+							// yes: function (index) {
+
+							// }
+							// , btn2: function () {
+
+							// }, cancel: function () {
+
+							// }
+						});
+
 						break;
 					// case 'getCheckLength':
 					// 	var data = checkStatus.data;
@@ -498,28 +519,6 @@
 					// layer.alert('编辑行：<br>' + JSON.stringify(data))
 				}
 			});
-			// 添加商户
-			$('#add_merchant').on('click', function () {
-				layer.open({
-					title: "添加",
-					type: 2,
-					skin: "layui-layer-rim", //加上边框
-					area: ["710px", "510px"], //宽高
-					scrollbar: false,
-					// btnAlign: "c",
-					// btn: ["保存", "关闭"],
-					content: './merchant_add.html',
-					// yes: function (index) {
-
-					// }
-					// , btn2: function () {
-
-					// }, cancel: function () {
-
-					// }
-				});
-			})
-
 		});
 	</script>
 </body>
