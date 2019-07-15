@@ -295,7 +295,40 @@
 						var data = checkStatus.data;
 						// layer.alert(JSON.stringify(data));
 						console.log(data)
-
+						if (data.length == 0) {
+							layer.alert("请选择要审核的商户！");
+							return;
+						} else {
+							//页面层
+							layer.open({
+								type: 1,
+								skin: "layui-layer-rim", //加上边框
+								area: ["420px", "180px"], //宽高
+								content: $("#managerEditGoodsRecordStatusBox"),
+								btn: ["保存", "取消"],
+								yes: function (index, layero) {
+									for (var i = 0; i < len; i++) {
+										if (list[i].checked) {
+											arr2.push({
+												merchantId: $(list[i]).attr("name"),
+												status: $("#managerEditGoodsRecordStatus").val()
+											});
+										}
+									}
+									_editGoodsRecordStatus({ merchantPack: JSON.stringify(arr2) });
+									layer.close(index);
+									$("#managerEditGoodsRecordStatusBox").hide();
+								},
+								btn2: function (index, layero) {
+									layer.close(index);
+									$("#managerEditGoodsRecordStatusBox").hide();
+								},
+								cancel: function (index) {
+									layer.close(index);
+									$("#managerEditGoodsRecordStatusBox").hide();
+								}
+							});
+						}
 						break;
 					case 'add':
 						layer.open({
