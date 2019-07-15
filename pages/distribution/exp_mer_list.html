@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- 推广商户信息，包含白金商户-->
+<!-- 已注销的推广商信息-->
 
 <head>
 	<meta charset="UTF-8">
@@ -29,280 +29,254 @@
 		body {
 			overflow-y: scroll;
 		}
+
+		/* 私有样式 */
+		.layui-form-label {
+			width: 90px;
+		}
 	</style>
 </head>
 
 <body>
 	<div class="weadmin-body">
-		<div class="layui-tab">
-			<ul class="layui-tab-title">
-				<li class="layui-this">白金商户</li>
-				<li id="exp_btn">推广商户</li>
-			</ul>
-			<div class="layui-tab-content">
-				<!--系统操作日志-->
-				<div class="layui-tab-item layui-show">
-					<form id="form_sreach" class="layui-form">
-						<div class="layui-form-item">
-							<div class="layui-inline">
-								<label class="layui-form-label">名称</label>
-								<div class="layui-input-inline">
-									<input type="text" name="ipAddress" placeholder="请输入白金商户名称" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">登录账号</label>
-								<div class="layui-input-inline">
-									<input type="text" name="operatorId" placeholder="请输入登录账号" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">编号</label>
-								<div class="layui-input-inline">
-									<input type="text" name="operatorName" placeholder="请输入白金商户编码" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">状态</label>
-								<div class="layui-input-inline">
-									<select name="merchantStatus" lay-verify="required" lay-search="">
-										<option value="">全部</option>
-										<option value="1">正常</option>
-										<option value="2">禁用</option>
-										<option value="3">审核</option>
-									</select>
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">日期</label>
-								<div class="layui-input-inline">
-									<input type="text" class="layui-input" id="startDate" name="startDate"
-										autocomplete="off" placeholder="年-月-日">
-								</div>
-								    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
-								<div class="layui-input-inline">
-									<input type="text" class="layui-input" id="endDate" name="endDate"
-										autocomplete="off" placeholder="年-月-日">
-								</div>
-							</div>
-						</div>
-						<div style="text-align: center;">
-							<button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
-								data-type="reload">搜索</button>
-						</div>
-					</form>
-					<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-					<script type="text/html" id="operateTpl">
-						<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">专店管理</a>			
-						<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">一级代理商</a>
-						<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>			
-						<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置密码</a>
-					</script>
-					<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-					<script src="../../static/js/common.js" charset="utf-8"></script>
-
+		<form id="form_sreach" class="layui-form">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="expadndMerchantName" placeholder="请输入推广商名称" class="layui-input">
+					</div>
 				</div>
-				<!----系统操作日志---end--------------------------------->
-				<!----系统短信日志------------start----------------------->
-				<div class="layui-tab-item" id="smslogs">
-					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				<div class="layui-inline">
+					<label class="layui-form-label">编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="expadndMerchantCode" placeholder="请输入推广商户编号" class="layui-input">
+					</div>
 				</div>
-				<!----系统短信日志------------end----------------------->
-				<!----商户实名认证日志------------start----------------------->
-				<div class="layui-tab-item" id="idCardLogs">
-					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				<div class="layui-inline">
+					<label class="layui-form-label">手机号码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="phone" placeholder="请输入手机号码" class="layui-input">
+					</div>
 				</div>
-				<!----商户实名认证日志------------start----------------------->
+				<div class="layui-inline">
+					<label class="layui-form-label">上级商户名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="supMerchantName" placeholder="请输入上级商户名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">上级商户编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="supMerchantId" placeholder="请输入上级商户编号" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">等级</label>
+					<div class="layui-input-inline">
+						<select name="level" lay-verify="required" lay-search="">
+							<option value="">全部</option>
+							<option value="one">一级</option>
+							<option value="two">二级</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">日期</label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+							placeholder="年-月-日">
+					</div>
+					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
+							placeholder="年-月-日">
+					</div>
+				</div>
 			</div>
-		</div>
-		<script>
-			layui.extend({
-				admin: '{/}../../static/js/admin'
+			<div style="text-align: center;">
+				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
+			</div>
+			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+			<script type="text/html" id="operateTpl">
+				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>			
+				<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">删除</a> -->
+			</script>
+	</div>
+	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+	<script src="../../static/js/common.js" charset="utf-8"></script>
+
+	</div>
+	<script>
+		layui.extend({
+			admin: '{/}../../static/js/admin'
+		});
+
+		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+			var table = layui.table,
+				$ = layui.jquery,
+				form = layui.form,
+				tree = layui.tree,
+				admin = layui.admin,
+				laydate = layui.laydate;
+			//日期时间选择器
+			laydate.render({
+				elem: '#startDate'
+				, value: getDay(-7)
+				, isInitValue: true
 			});
-			layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
-				var table = layui.table,
-					$ = layui.jquery,
-					form = layui.form,
-					tree = layui.tree,
-					admin = layui.admin,
-					laydate = layui.laydate;
-				//日期时间选择器
-				laydate.render({
-					elem: '#startDate'
-					, value: getDay(-7)
-					, isInitValue: true
-				});
-				laydate.render({
-					elem: '#endDate'
-					, type: 'datetime'
-				});
-				var tableHeight = $(window).height() - $('.layui-tab-title').height() - 50 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
-				table.render({
-					elem: '#articleList',
-					cellMinWidth: 80,
-					height: tableHeight,
-					url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
-					method: 'post',
-					cols: [
-						[
-							{
-								field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
-							}, {
-								field: 'createDate', width: 160, title: '日期', fixed: 'left', templet: function (item) {
-									return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
-								}
-							}, {
-								field: 'merchantName', title: '名称',width:130
-							},
-							{
-								field: 'loginAccount', title: '登录账号', width: 130
-							}, {
-								field: 'merchantId', title: '编号',width:180
-							}, {
-								field: 'merchantStatus', width: 80, title: '状态', templet: function (item) {
-									if (item.merchantStatus == '1') {
-										return '正常';
-									} else if (item.merchantStatus == '2') {
-										return '禁用';
-									} else if (item.merchantStatus == '3') {
-										return '审核';
-									}
-								},
-							}, {
-								field: 'module', width: 110, title: '分润比例(%)', templet: function (item) {
-									var data = { merchantId: item.merchantId, page: 1, size: 1 };
-									var url = urlPrefix + 'silver-web-shop/merDivRate/getInfo';
-									//触发JS获取返回值
-									return accMul(g_async(data, url).rate, 100);
-								}
-							}, {
-								field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
+			laydate.render({
+				elem: '#endDate'
+				, type: 'datetime'
+			});
+			// 动态设置表格高度
+			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			table.render({
+				elem: '#articleList',
+				cellMinWidth: 80,
+				height: tableHeight,
+				url: urlPrefix + 'silver-web-shop/expadndMerchant/findInfo',
+				method: 'post',
+				cols: [
+					[
+						{
+							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
+						}, {
+							field: 'createDate', width: 160, title: '日期', fixed: 'left', templet: function (item) {
+								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
-						]
-					],
-					// skin: 'row', //行边框风格
-					event: true,
-					page: true,
-					response: {
-						statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
-					},
-					request: {
-						pageName: 'page', //页码的参数名称，默认：page
-						limitName: 'size' //每页数据量的参数名，默认：limit
-					},
-					parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-						return {
-							"code": res.status, //解析接口状态
-							"msg": res.msg, //解析提示文本
-							"count": res.totalCount, //解析数据长度
-							"data": res.datas //解析数据列表
-						};
+						}, {
+							field: 'expadndMerchantName', title: '名称',
+						}, {
+							field: 'expadndMerchantCode', title: '编号',
+						}, {
+							field: 'loginName', title: '登录账号',
+						}, {
+							field: 'phone', title: '手机号码',
+						}, {
+							field: 'supMerchantName', title: '上级商户名称',
+						}, {
+							field: 'supMerchantId', title: '上级商户编号'
+						}, {
+							field: 'level', title: '等级', width: 80, templet: function (item) {
+								if (item.level == 'one') {
+									return '一级';
+								} else if (item.level == 'two') {
+									return '二级';
+								}
+							}
+						}, {
+							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
+						}
+					]
+				],
+				// skin: 'row', //行边框风格
+				event: true,
+				page: true,
+				response: {
+					statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+				},
+				request: {
+					pageName: 'page', //页码的参数名称，默认：page
+					limitName: 'size' //每页数据量的参数名，默认：limit
+				},
+				where: {
+					startDate: appendStartDate(getDay(-7))
+				},
+				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+					return {
+						"code": res.status, //解析接口状态
+						"msg": res.msg, //解析提示文本
+						"count": res.totalCount, //解析数据长度
+						"data": res.datas //解析数据列表
+					};
+				},
+				done: function (res, curr, count) {
+					//如果是异步请求数据方式，res即为你接口返回的信息。
+					//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+					// console.log(res);
+
+					// //得到当前页码
+					// console.log(curr);
+
+					// //得到数据总量
+					// console.log(count);
+				}
+			});
+			// 重载公共方法
+			var _reload = function () {
+				var expadndMerchantName = $('#form_sreach').find('[name=expadndMerchantName]');
+				var expadndMerchantCode = $('#form_sreach').find('[name=expadndMerchantCode]');
+				var phone = $('#form_sreach').find('[name=phone]');
+				var supMerchantId = $('#form_sreach').find('[name=supMerchantId]');
+				var supMerchantName = $('#form_sreach').find('[name=supMerchantName]');
+				var level = $('#form_sreach').find('[name=level]');
+				var startDate = $('#form_sreach').find('[name=startDate]');
+				var endDate = $('#form_sreach').find('[name=endDate]');
+				startDate = appendStartDate(startDate.val());
+				endDate = appendEndDate(endDate.val());
+				table.reload('articleList', {
+					url: urlPrefix + 'silver-web-shop/expadndMerchant/findInfo',
+					page: {
+						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						startDate: appendStartDate(getDay(-7)),
-						merchantLevel: 100
-
-					},
-					done: function (res, curr, count) {
-						//如果是异步请求数据方式，res即为你接口返回的信息。
-						//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-						// console.log(res);
-						// //得到当前页码
-						// console.log(curr);
-						// //得到数据总量
-						// console.log(count);
+						expadndMerchantNameblurry: expadndMerchantName.val(),
+						expadndMerchantCode: expadndMerchantCode.val(),
+						phone: phone.val(),
+						supMerchantId: supMerchantId.val(),
+						supMerchantNameblurry: supMerchantName.val(),
+						startDate: startDate,
+						endDate: endDate,
+						level: level.val()
 					}
 				});
-				// 重载公共方法
-				var _reload = function () {
-					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
-					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
+			}
+			/*
+			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
+			 * http://www.layui.com/doc/modules/form.html#render
+			 * */
+			// $(function () {
+			// 	form.render();
+			// });
+			var active = {
+				reload: function () {
+					var expadndMerchantName = $('#form_sreach').find('[name=expadndMerchantName]');
+					var expadndMerchantCode = $('#form_sreach').find('[name=expadndMerchantCode]');
+					var phone = $('#form_sreach').find('[name=phone]');
+					var supMerchantId = $('#form_sreach').find('[name=supMerchantId]');
+					var supMerchantName = $('#form_sreach').find('[name=supMerchantName]');
+					var level = $('#form_sreach').find('[name=level]');
+					var startDate = $('#form_sreach').find('[name=startDate]');
+					var endDate = $('#form_sreach').find('[name=endDate]');
+					startDate = appendStartDate(startDate.val());
+					endDate = appendEndDate(endDate.val());
+					//执行重载
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
+						url: urlPrefix + 'silver-web-shop/expadndMerchant/findInfo',
 						page: {
-							curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+							curr: 1 //重新从第 1 页开始
 						},
 						where: {
-							ipAddress: ipAddress.val()
+							expadndMerchantNameblurry: expadndMerchantName.val(),
+							expadndMerchantCode: expadndMerchantCode.val(),
+							phone: phone.val(),
+							supMerchantId: supMerchantId.val(),
+							supMerchantNameblurry: supMerchantName.val(),
+							level: level.val(),
+							startDate: startDate,
+							endDate: endDate
 						}
 					});
 				}
-				/*
-				 *数据表格中form表单元素是动态插入,所以需要更新渲染下
-				 * http://www.layui.com/doc/modules/form.html#render
-				 * */
-				// $(function () {
-				// 	form.render();
-				// });
-				var active = {
-					reload: function () {
-						var ipAddress = $('#form_sreach').find('[name=ipAddress]');
-						var operatorId = $('#form_sreach').find('[name=operatorId]');
-						var operatorName = $('#form_sreach').find('[name=operatorName]');
-						var role = $('#form_sreach').find('[name=role]');
-						var modules = $('#form_sreach').find('[name=module]');
-						var action = $('#form_sreach').find('[name=action]');
-						var startDate = $('#form_sreach').find('[name=startDate]');
-						var entDate = $('#form_sreach').find('[name=entDate]');
-						startDate = appendStartDate(startDate.val());
-						//执行重载
-						table.reload('articleList', {
-							url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
-							page: {
-								curr: 1 //重新从第 1 页开始
-							},
-							where: {
-								ipAddress: ipAddress.val(),
-								operatorId: operatorId.val(),
-								operatorNameBlurry: operatorName.val(),
-								role: role.val(),
-								module: modules.val(),
-								action: action.val(),
-								startDate: startDate,
-								entDate: entDate.val()
-							}
-						});
-					}
-				};
-				// 监听查询按钮
-				$('#form_sreach .layui-btn').on('click', function () {
-					var type = $(this).data('type');
-					active[type] ? active[type].call(this) : '';
-				});
-				//跳转至短信日志
-				$('#smsLogs_btn').on('click', function () {
-					var h = $(window).height() - 30;
-					$("#smslogs").find('iframe').attr('src', "sms_list.html").css('height', h + 'px');
-				})
-				//跳转至实名认证日志
-				$('#idCard_btn').on('click', function () {
-					var h = $(window).height() - 30;
-					$("#idCardLogs").find('iframe').attr('src', "idCard_list.html").css('height', h + 'px');
-				})
-				// 异步加载查询
-				function g_async(data, url) {
-					var obj = '';
-					$.ajax({
-						url: url,
-						type: "POST",
-						async: false,
-						xhrFields: {
-							withCredentials: true
-						},
-						data: data,
-						success: function (response) {
-							if (response.status == 1) {
-								obj = response.datas;
-							}
-						},
-						error: function () {
-
-						}
-					});
-					return obj;
-				}
+			};
+			// 监听查询按钮
+			$('#form_sreach .layui-btn').on('click', function () {
+				var type = $(this).data('type');
+				active[type] ? active[type].call(this) : '';
 			});
-		</script>
+		});
+	</script>
 </body>
 
 </html>

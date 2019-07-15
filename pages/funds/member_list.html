@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-<!-- 会员信息html-->
+<!--会员钱包列表html-->
+
 <head>
 	<meta charset="UTF-8">
 	<title>银盟跨境电商服务平台运营系统</title>
@@ -37,70 +38,22 @@
 </head>
 
 <body>
-	<!-- <div class="weadmin-nav">
-		<span class="layui-breadcrumb">
-			<a href="">首页</a>
-			<a href="">用户管理</a>
-			<a>
-				<cite>运营管理</cite></a>
-		</span>
-		<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
-			href="javascript:location.replace(location.href);" title="刷新">
-			<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
-	</div> -->
+
 	<div class="weadmin-body">
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
 				<div class="layui-inline">
 					<label class="layui-form-label">名称</label>
 					<div class="layui-input-inline">
-						<input type="text" name="memberName" placeholder="请输入会员名称" class="layui-input">
-					</div>
+						<input type="text" name="memberName" placeholder="请输入会员名称" class="layui-input">					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">登录账号</label>
+					<label class="layui-form-label">编号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="loginName" placeholder="请输入会员帐号" class="layui-input">
+						<input type="text" name="memberId" placeholder="请输入会员编号" class="layui-input">
 					</div>
 				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">姓名</label>
-					<div class="layui-input-inline">
-						<input type="text" name="memberIdCardName" placeholder="请输入姓名" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">身份证号码</label>
-					<div class="layui-input-inline">
-						<input type="text" name="memberIdCard" placeholder="请输入身份证号码" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">手机号码</label>
-					<div class="layui-input-inline">
-						<input type="text" name="memberTel" placeholder="请输入手机号码" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">实名状态</label>
-					<div class="layui-input-inline">
-						<select name="realNameFlag" lay-verify="required" lay-search="">
-							<option value="">全部</option>
-							<option value="1">未实名</option>
-							<option value="2">已实名</option>
-						</select>
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">来源</label>
-					<div class="layui-input-inline">
-						<select name="memberFlag" lay-verify="required" lay-search="">
-							<option value="">全部</option>
-							<option value="1">商城</option>
-							<option value="2">其它</option>
-						</select>
-					</div>
-				</div>
+
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
@@ -120,11 +73,11 @@
 			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 
 			<script type="text/html" id="operateTpl">
-				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
+				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>					
 			</script>
-
 			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 			<script src="../../static/js/common.js" charset="utf-8"></script>
+		</form>
 
 	</div>
 	<script>
@@ -155,44 +108,33 @@
 				elem: '#articleList',
 				cellMinWidth: 80,
 				height: tableHeight,
-				url: urlPrefix + 'silver-web-shop/manager/findAllmemberInfo',
+				url: urlPrefix + 'silver-web-shop/memberWallet/findInfo',
 				method: 'post',
 				cols: [
 					[
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '注册时间',fixed: 'left', templet: function (item) {
+							field: 'createDate', title: '日期', fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'memberName', title: '名称', 
-						}, {
-							field: 'loginName', title: '登录账号'
+							field: 'memberName', title: '名称',
 						}, {
 							field: 'memberId', title: '编号'
 						}, {
-							field: 'memberIdCardName', width: 80, title: '姓名'
+							field: 'balance', title: '可用余额', width: 120
 						}, {
-							field: 'memberIdCard', title: '身份号码'
-						}, {
-							field: 'memberTel', title: '手机号码'
-						}, {
-							field: 'realNameFlag', title: '实名状态', width: 90, templet: function (item) {
-								if (item.realNameFlag == '2') {
-									return '已实名';
-								} else {
-									return '未实名';
-								}
-							}
-						}, {
-							field: 'memberFlag', title: '来源', width: 60, templet: function (item) {
-								if (item.memberFlag == '1') {
-									return '商城';
-								} else {
-									return '其它';
-								}
-							}
+							field: 'reserveAmount', title: '可结算货款', width: 120
+						},
+						//  {
+						// 	field: '', title: '总货款', width: 120, templet: function (item) {
+						// 		//商户真实订单货款+代付货款
+						// 		return accAdd(item.cash, item.reserveAmount);
+						// 	}
+						// }, 
+						{
+							field: 'freezingFunds', title: '冻结资金', width: 90
 						}, {
 							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
@@ -234,28 +176,18 @@
 			var _reload = function () {
 				var memberName = $('#form_sreach').find('[name=memberName]');
 				var memberId = $('#form_sreach').find('[name=memberId]');
-				var memberIdCardName = $('#form_sreach').find('[name=memberIdCardName]');
-				var memberIdCard = $('#form_sreach').find('[name=memberIdCard]');
-				var memberTel = $('#form_sreach').find('[name=memberTel]');
-				var realNameFlag = $('#form_sreach').find('[name=realNameFlag]');
-				var memberFlag = $('#form_sreach').find('[name=memberFlag]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/manager/findAllmemberInfo',
+					url: urlPrefix + 'silver-web-shop/memberWallet/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
 						memberNameblurry: memberName.val(),
 						memberId: memberId.val(),
-						memberIdCardName: memberIdCardName.val(),
-						memberIdCard: memberIdCard.val(),
-						memberTel: memberTel.val(),
-						realNameFlag: realNameFlag.val(),
-						memberFlag: memberFlag.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -272,33 +204,19 @@
 				reload: function () {
 					var memberName = $('#form_sreach').find('[name=memberName]');
 					var memberId = $('#form_sreach').find('[name=memberId]');
-					var memberIdCardName = $('#form_sreach').find('[name=memberIdCardName]');
-					var memberIdCard = $('#form_sreach').find('[name=memberIdCard]');
-					var memberTel = $('#form_sreach').find('[name=memberTel]');
-					var realNameFlag = $('#form_sreach').find('[name=realNameFlag]');
-					var memberFlag = $('#form_sreach').find('[name=memberFlag]');
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
-					var loginName = $('#form_sreach').find('[name=loginName]');
-
-
 					startDate = appendStartDate(startDate.val());
 					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/manager/findAllmemberInfo',
+						url: urlPrefix + 'silver-web-shop/memberWallet/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
 							memberNameblurry: memberName.val(),
 							memberId: memberId.val(),
-							memberIdCardName: memberIdCardName.val(),
-							memberIdCard: memberIdCard.val(),
-							memberTel: memberTel.val(),
-							realNameFlag: realNameFlag.val(),
-							memberFlag: memberFlag.val(),
-							loginName: loginName.val(),
 							startDate: startDate,
 							endDate: endDate
 						}
@@ -341,7 +259,7 @@
 						btn: ["保存", "关闭"],
 						yes: function (index) {
 							$.ajax({
-								url: urlPrefix + "silver-web-shop/manager/resetManagerPassword",
+								url: urlPrefix + 'silver-web-shop/managerWallet/getMerchantWalletInfo',
 								type: "POST",
 								xhrFields: {
 									withCredentials: true

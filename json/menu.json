@@ -106,21 +106,21 @@
 			"children": [
 				{
 					"id": 9,
-					"name": "订单信息",
-					"icon": "",
-					"url": "./pages/article/list.html"
+					"name": "商户资金",
+					"icon": "",					
+					"url": "./pages/funds/merchant_list.html"
 				},
 				{
 					"id": 9,
-					"name": "支付单信息",
+					"name": "会员资金",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/funds/member_list.html"
 				},
 				{
 					"id": 9,
-					"name": "申报信息",
+					"name": "交易日志",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/funds/trade_logs_list.html"
 				},
 				{
 					"id": 9,
@@ -172,7 +172,7 @@
 					"id": 9,
 					"name": "推广商信息",
 					"icon": "",
-					"url": "./pages/distribution/exp_mer_list.html"
+					"url": "./pages/distribution/pla_mer_list.html"
 				},
 				{
 					"id": 9,
@@ -191,13 +191,7 @@
 					"name": "已移除订单",
 					"icon": "",
 					"url": "./pages/article/list.html"
-				},
-				{
-					"id": 9,
-					"name": "注销信息",
-					"icon": "",
-					"url": "./pages/distribution/old_exp_mer_list.html"					
-				}
+				}			
 			]
 		},
 		{

@@ -4,6 +4,9 @@ var urlPrefix = "https://ym.191ec.com/";
 
 // 日期格式化
 var G_format = function (datetime, fmt) {
+  if(isEmpty(datetime)){
+    return '';
+  }
   if (parseInt(datetime) == datetime) {
     if (datetime.length == 10) {
       datetime = parseInt(datetime) * 1000;
