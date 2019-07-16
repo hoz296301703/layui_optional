@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- 订单信息html-->
+<!-- 订单申报信息html-->
 
 <head>
 	<meta charset="UTF-8">
@@ -154,64 +154,41 @@
 				elem: '#articleList',
 				cellMinWidth: 80,
 				height: tableHeight,
-				url: urlPrefix + 'silver-web-shop/order/findDatas',
+				url: urlPrefix + 'silver-web-shop/order/getManualOrderInfo',
 				method: 'post',
 				cols: [
 					[
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '订单日期', fixed: 'left', templet: function (item) {
-								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
+							field: '', title: '平台接收日期', fixed: 'left', templet: function (item) {
+								return G_format(item.head.create_date.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'entOrderNo', title: '订单号',
+							field: 'order_id', title: '订单号',
 						}, {
-							field: 'status', title: '状态', width: 130, templet: function (item) {
+							field: 'order_record_status', title: '状态', width: 130, templet: function (item) {
 								//	订单状态：1-待付款、2-已付款,待商家处理、10-待发货、 3-待清关、4-快件运输中、5-快件已签收、200-交易成功、400-交易关闭
 								if (item.status == '1') {
-									return '待付款';
-								} else if (item.status == '2') {
-									return '已付款,待处理';
-								} else if (item.status == '10') {
-									return '待发货';
-								} else if (item.status == '3') {
-									return '待清关';
-								} else if (item.status == '4') {
-									return '快件运输中';
-								} else if (item.status == '5') {
-									return '快件已签收';
-								} else if (item.status == '200') {
-									return '交易成功';
-								} else if (item.status == '400') {
-									return '交易关闭';
-								}
-							}
-						}, {
-							field: 'orderSourceType', width: 80, title: '来源', templet: function (item) {
-								// 订单录入系统类型：online-线上订单接入、offline-线下导入、expand-推广商城下单(线上)、mall-商城下单、excelImport-表单导入
-								if (item.orderSourceType == 'online') {
-									return '线上';
-								} else if (item.orderSourceType == 'offline') {
-									return '线下';
-								} else if (item.orderSourceType == 'expand') {
-									return '推广';
-								} else if (item.orderSourceType == 'mall') {
-									return '商城';
-								} else if (item.orderSourceType == 'excelImport') {
-									return '导入';
-								} else {
-									return '';
+									return '未申报';
+								} else if (item.order_record_status == '2') {
+									return '申报中';
+								} else if (item.order_record_status == '3') {
+									return '申报成功';
+								} else if (item.order_record_status == '4') {
+									return '申报失败';
 								}
 							}
 						}, {
 							field: 'orderTotalPrice', title: '订单金额', width: 100
 						},
-						// {
-						// 	field: 'tax', title: '税款', width: 60
-						// }, {
-						// 	field: 'freight', title: '运费', width: 60
-						// }, 
+						{
+							field: 'tax', title: '税款', width: 60
+						}, {
+							field: 'freight', title: '运费', width: 60
+						}, {
+							field: 'freight', title: '实际支付金额', width: 60
+						},
 						{
 							field: 'waybillNo', title: '运单号', width: 80
 						}, {
@@ -241,7 +218,7 @@
 					};
 				},
 				where: {
-					startDate: appendStartDate(getDay(-7))
+					startTime: appendStartDate(getDay(-7))
 				},
 				done: function (res, curr, count) {
 					//如果是异步请求数据方式，res即为你接口返回的信息。
@@ -267,7 +244,7 @@
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/order/findDatas',
+					url: urlPrefix + 'silver-web-shop/order/getManualOrderInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
@@ -277,8 +254,8 @@
 						orderSourceType: orderSourceType.val(),
 						merchantId: merchantId.val(),
 						merchantNameblurry: merchantName.val(),
-						startDate: startDate,
-						endDate: endDate
+						startTime: startDate,
+						endTime: endDate
 					}
 				});
 			}
@@ -302,7 +279,7 @@
 					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/order/findDatas',
+						url: urlPrefix + 'silver-web-shop/order/getManualOrderInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
@@ -312,8 +289,8 @@
 							orderSourceType: orderSourceType.val(),
 							merchantId: merchantId.val(),
 							merchantNameblurry: merchantName.val(),
-							startDate: startDate,
-							endDate: endDate
+							startTime: startDate,
+							endTime: endDate
 						}
 					});
 				}

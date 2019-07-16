@@ -60,11 +60,19 @@
 					</div>
 				</div>
 				<div class="layui-inline">
+					<label class="layui-form-label">登录账号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="loginName" placeholder="请输入登录账号" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
 					<label class="layui-form-label">上级商户名称</label>
 					<div class="layui-input-inline">
 						<input type="text" name="supMerchantName" placeholder="请输入上级商户名称" class="layui-input">
 					</div>
 				</div>
+
+
 				<div class="layui-inline">
 					<label class="layui-form-label">上级商户编号</label>
 					<div class="layui-input-inline">
@@ -207,7 +215,8 @@
 			var _reload = function () {
 				var expadndMerchantName = $('#form_sreach').find('[name=expadndMerchantName]');
 				var expadndMerchantCode = $('#form_sreach').find('[name=expadndMerchantCode]');
-				var phone = $('#form_sreach').find('[name=phone]');
+				var loginName = $('#form_sreach').find('[name=loginName]');
+				var phone = $('#form_sreach').find('[name=phone]');				
 				var supMerchantId = $('#form_sreach').find('[name=supMerchantId]');
 				var supMerchantName = $('#form_sreach').find('[name=supMerchantName]');
 				var level = $('#form_sreach').find('[name=level]');
@@ -224,6 +233,7 @@
 						expadndMerchantNameblurry: expadndMerchantName.val(),
 						expadndMerchantCode: expadndMerchantCode.val(),
 						phone: phone.val(),
+						loginName:loginName.val(),
 						supMerchantId: supMerchantId.val(),
 						supMerchantNameblurry: supMerchantName.val(),
 						startDate: startDate,
@@ -244,6 +254,7 @@
 					var expadndMerchantName = $('#form_sreach').find('[name=expadndMerchantName]');
 					var expadndMerchantCode = $('#form_sreach').find('[name=expadndMerchantCode]');
 					var phone = $('#form_sreach').find('[name=phone]');
+					var loginName = $('#form_sreach').find('[name=loginName]');
 					var supMerchantId = $('#form_sreach').find('[name=supMerchantId]');
 					var supMerchantName = $('#form_sreach').find('[name=supMerchantName]');
 					var level = $('#form_sreach').find('[name=level]');
@@ -261,6 +272,7 @@
 							expadndMerchantNameblurry: expadndMerchantName.val(),
 							expadndMerchantCode: expadndMerchantCode.val(),
 							phone: phone.val(),
+							loginName:loginName.val(),
 							supMerchantId: supMerchantId.val(),
 							supMerchantNameblurry: supMerchantName.val(),
 							level: level.val(),

@@ -28,79 +28,254 @@
 		body {
 			overflow-y: scroll;
 		}
+
+		/* 私有样式 */
+		.layui-form-label {
+			width: 115px;
+		}
 	</style>
 </head>
 
 <body>
-	<div class="weadmin-body">
-		<form class="layui-form" id="manager_detail_form" lay-filter="example">
-			<div class="layui-form-item">
-				<label class="layui-form-label">省</label>
-				<div class="layui-input-inline">
-					<select name="quiz1">
-						<option value="">请选择省</option>
-						<option value="浙江" selected="">浙江省</option>
-						<option value="你的工号">江西省</option>
-						<option value="你最喜欢的老师">福建省</option>
-					</select>
-				</div>
-				<div class="layui-input-inline">
-					<label class="layui-form-label">市</label>
-					<select name="quiz2">
-						<option value="">请选择市</option>
-						<option value="杭州">杭州</option>
-						<option value="宁波" disabled="">宁波</option>
-						<option value="温州">温州</option>
-						<option value="温州">台州</option>
-						<option value="温州">绍兴</option>
+	<form id="form_sreach" class="layui-form">
+		<!-- <div class="layui-form-item layui-row">
+			<div class="layui-col-md4">
+				<label class="layui-form-label">请选择省:</label>
+				<div class="layui-input-block">
+					<select name="province" lay-filter="province" id="province">
 					</select>
 				</div>
 			</div>
-			<div class="layui-form-item">
-				<div class="layui-inline">
-					<label class="layui-form-label">姓名</label>
-					<div class="layui-input-inline">
-						<input type="text" name="realName" autocomplete="off" class="layui-input layui-disabled"
-							disabled>
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">日期</label>
-					<div class="layui-input-inline">
-						<input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled"
-							disabled>
-					</div>
+			<div class="layui-col-md4">
+				<label class="layui-form-label">请选择市:</label>
+				<div class="layui-input-block">
+					<select name="city" id="city" lay-filter="city">
+					</select>
 				</div>
 			</div>
-			<div class="layui-form-item">
-				<div class="layui-inline">
-					<label class="layui-form-label">角色</label>
-					<div class="layui-input-inline">
-						<select name="managerMarks" lay-filter="aihao" class="layui-disabled" disabled>
-							<option value=""></option>
-							<option value="1">超级管理员</option>
-							<option value="2">运营管理员</option>
-							<option value="3">财务</option>
-						</select>
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">状态</label>
-					<div class="layui-input-inline">
-						<select name="status" lay-filter="aihao" class="layui-disabled" disabled>
-							<option value=""></option>
-							<option value="enable">启用</option>
-							<option value="disabled">禁用</option>
-						</select>
-					</div>
-				</div>
+		</div> -->
+		<label class="layui-form-label">省/市</label>
+		<div class="layui-input-inline">
+			<select lay-verify="required" name="provinceCode" lay-filter="province" id="province"></select>
+		</div>
+		<div class="layui-input-inline">
+			<select lay-verify="required" name="cityCode" id="city" lay-filter="city"></select>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">
+				<span class="we-red">*</span>口岸
+			</label>
+			<div class="layui-input-inline">
+				<select name="customsPort" lay-verify="required" lay-filter="aihao">
+					<option value="">请选择口岸</option>
+					<option value="1">电子口岸</option>
+					<option value="2">南沙智检</option>
+				</select>
 			</div>
-		</form>
-	</div>
+		</div>
+		<div class="layui-inline">
+			<label for="L_username" class="layui-form-label">
+				<span class="we-red">*</span>海关编码
+			</label>
+			<div class="layui-input-inline">
+				<input type="text" id="customsCode" placeholder="请输入海关编码" name="customsCode" lay-verify="required"
+					autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">
+				<span class="we-red">*</span>国检机构代码
+			</label>
+			<div class="layui-input-inline">
+				<input type="text" name="ciqOrgCode" placeholder="请输入国检机构代码" lay-verify="ciqOrgCode" autocomplete="off"
+					class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+			<button type="button" class="layui-btn" lay-filter="add" lay-submit="">保存</button>
+		</div>
+	</form>
+
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script type="text/javascript">
 
+		layui.extend({
+			admin: '{/}../../static/js/admin'
+		});
+		layui.use(['form', 'jquery', 'util', 'admin', 'layer', 'element', 'table'], function () {
+			var form = layui.form,
+				$ = layui.jquery,
+				util = layui.util,
+				admin = layui.admin,
+				layer = layui.layer;
+			//失去焦点时判断值为空不验证，一旦填写必须验证
+			// $('input[name="email"]').blur(function () {
+			//   //这里是失去焦点时的事件
+			//   if ($('input[name="email"]').val()) {
+			//     $('input[name="email"]').attr('lay-verify', 'email');
+			//   } else {
+			//     $('input[name="email"]').removeAttr('lay-verify');
+			//   }
+			// });		
+			// 一级联动事件触发
+			form.on('select(province)', function (data) {
+				var value = data.value;
+				areaState.province.fn(value);
+			});
+			// 二级联动事件触发
+			// form.on('select(city)', function (data) {
+			// 	var value = data.value;
+			// 	areaState.city.fn(value);
+			// });
+			var areaState = {
+				province: {
+					state: false,
+					data: [],
+					fn: function (value) { // value 表示的是区域代码，及传到后台的数据
+						this.state = true; // 可能以后会用到
+						var provinceCode = $('#form_sreach').find('[name=province]');
+						if (value !== '') {
+							//渲染城市select
+							addCity('city', getCity(provinceCode.val()), true);
+						} else {
+							$('#quiz2').html('');
+							$('#quiz3').html('');
+							form.render("select");
+						}
+					}
+				}
+				// ,
+				// city: {
+				// 	state: false,
+				// 	data: [],
+				// 	fn: function (value) {
+				// 		this.state = true;
+				// 		areaState.place.state = false;
+
+				// 		areaState.place.data = selDate.place;
+				// 		if (value !== '') {
+				// 			addSelect('quiz3', areaState.place.data, true, 'regionCode', 'regionName');
+				// 		} else {
+				// 			$('#quiz3').html('');
+				// 			form.render("select");
+				// 		}
+				// 	}
+				// },
+				// place: {
+				// 	state: false,
+				// 	data: [],
+				// 	fn: function () {
+				// 		this.state = true;
+				// 	}
+				// }
+			};
+			//select添加选项
+			function addSelect(id, data, bool) {//bool是否添加“请选择”选项				
+				var html = '';
+				var $id = $('#' + id);
+				$id.html('');
+				if (bool) { html += '<option value="">请选择</option>'; }
+				for (var key in data) {
+					var arr = Object.keys(data[key]);
+					html += '<option value="' + data[key].provinceCode + '">' + data[key].provinceName + '</option>';
+				}
+				$id.html(html);
+				form.render("select");
+			}
+			//城市
+			function addCity(id, data, bool) {//bool是否添加“请选择”选项				
+				var html = '';
+				var $id = $('#' + id);
+				$id.html('');
+				if (bool) { html += '<option value="">请选择</option>'; }
+				for (var key in data) {
+					html += '<option value="' + data[key].cityCode + '">' + data[key].cityName + '</option>';
+				}
+				$id.html(html);
+				form.render("select");
+			}
+			//获取省
+			function getProvince() {
+				var datas = null;
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/provinceCityArea/findProvince",
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					async: false,
+					data: { page: 0, size: 0 },
+					success: function (response) {
+						if (response.status == 1) {
+							datas = response.datas;
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+				//倒叙排序
+				return datas.reverse();
+			}
+			//获取城市
+			function getCity(code) {
+				var datas = null;
+				var data = { provinceCode: code, page: 0, size: 0 };
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/provinceCityArea/findCity",
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					async: false,
+					data: data,
+					success: function (response) {
+						if (response.status == 1) {
+							datas = response.datas;
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+				//倒叙排序
+				return datas.reverse();
+			}
+			addSelect('province', getProvince(), true);
+			//新增
+			form.on('submit(add)', function (data) {
+				// layer.load(2);
+				var d = data.field;
+				if (data.field.customsPort == '1') {// 电子口岸
+					//新增名称属性
+					d["customsPortName"] = "电子口岸";
+				} else {
+					d["customsPortName"] = "智检";
+				}
+				console.info(d);
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/customsPort/insert",
+					// type: "POST",
+					method: 'post',
+					dataType: 'JSON',
+					xhrFields: {
+						withCredentials: true
+					},
+					data: d,
+					success: function (response) {
+						layer.closeAll("loading");
+						if (response.status == 1) {
+							layer.msg('添加成功！');
+							setTimeout(function () {
+								console.info('===========');
+								parent.customs_reload();// 添加成功调用父页面的重载方法
+							}, 1000);
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+			});
+		});
 	</script>
 </body>
 

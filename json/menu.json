@@ -18,13 +18,13 @@
 					"id": 202,
 					"name": "支付单信息",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/order/pay_list.html"
 				},
 				{
 					"id": 203,
 					"name": "申报信息",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/order/order_dec_list.html"
 				},
 				{
 					"id": 203,

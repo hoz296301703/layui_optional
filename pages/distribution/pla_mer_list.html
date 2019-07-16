@@ -50,21 +50,20 @@
 								<div class="layui-input-inline">
 									<input type="text" name="merchantName" id="merchantName" placeholder="请输入白金商户名称"
 										class="layui-input">
-
 									<i style="font-size: 18px;position: absolute;top: 9px; right: 6px;cursor: pointer;"
 										class="layui-icon layui-icon-close"></i>
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">登录账号</label>
-								<div class="layui-input-inline">
-									<input type="text" name="operatorId" placeholder="请输入登录账号" class="layui-input">
 								</div>
 							</div>
 							<div class="layui-inline">
 								<label class="layui-form-label">编号</label>
 								<div class="layui-input-inline">
 									<input type="text" name="operatorName" placeholder="请输入白金商户编码" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">登录账号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="loginAccount" placeholder="请输入登录账号" class="layui-input">
 								</div>
 							</div>
 							<div class="layui-inline">
@@ -159,11 +158,10 @@
 								}
 							}, {
 								field: 'merchantName', title: '名称', width: 130
-							},
-							{
-								field: 'loginAccount', title: '登录账号', width: 130
 							}, {
 								field: 'merchantId', title: '编号', width: 180
+							}, {
+								field: 'loginAccount', title: '登录账号', width: 130
 							}, {
 								field: 'merchantStatus', width: 80, title: '状态', templet: function (item) {
 									if (item.merchantStatus == '1') {
@@ -222,15 +220,26 @@
 				});
 				// 重载公共方法
 				var _reload = function () {
-					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
-					var ipAddress = $('#form_sreach').find('[name=ipAddress]');
+					var merchantName = $('#form_sreach').find('[name=merchantName]');
+					var loginAccount = $('#form_sreach').find('[name=loginAccount]');
+					var merchantId = $('#form_sreach').find('[name=merchantId]');
+					var merchantStatus = $('#form_sreach').find('[name=merchantStatus]');
+					var startDate = $('#form_sreach').find('[name=startDate]');
+					var entDate = $('#form_sreach').find('[name=entDate]');
+					startDate = appendStartDate(startDate.val());
+					entDate = appendEndDate(entDate.val());
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
 						page: {
 							curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 						},
 						where: {
-							ipAddress: ipAddress.val()
+							merchantNameblurry: merchantName.val(),
+							loginAccount: loginAccount.val(),
+							merchantId: merchantId.val(),
+							merchantStatus: merchantStatus.val(),
+							startDate: startDate,
+							entDate: entDate
 						}
 					});
 				}
@@ -243,15 +252,14 @@
 				// });
 				var active = {
 					reload: function () {
-						var ipAddress = $('#form_sreach').find('[name=ipAddress]');
-						var operatorId = $('#form_sreach').find('[name=operatorId]');
-						var operatorName = $('#form_sreach').find('[name=operatorName]');
-						var role = $('#form_sreach').find('[name=role]');
-						var modules = $('#form_sreach').find('[name=module]');
-						var action = $('#form_sreach').find('[name=action]');
+						var merchantName = $('#form_sreach').find('[name=merchantName]');
+						var loginAccount = $('#form_sreach').find('[name=loginAccount]');
+						var merchantId = $('#form_sreach').find('[name=merchantId]');
+						var merchantStatus = $('#form_sreach').find('[name=merchantStatus]');
 						var startDate = $('#form_sreach').find('[name=startDate]');
 						var entDate = $('#form_sreach').find('[name=entDate]');
 						startDate = appendStartDate(startDate.val());
+						entDate = appendEndDate(entDate.val());
 						//执行重载
 						table.reload('articleList', {
 							url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
@@ -259,14 +267,12 @@
 								curr: 1 //重新从第 1 页开始
 							},
 							where: {
-								ipAddress: ipAddress.val(),
-								operatorId: operatorId.val(),
-								operatorNameBlurry: operatorName.val(),
-								role: role.val(),
-								module: modules.val(),
-								action: action.val(),
+								merchantNameblurry: merchantName.val(),
+								loginAccount: loginAccount.val(),
+								merchantId: merchantId.val(),
+								merchantStatus: merchantStatus.val(),
 								startDate: startDate,
-								entDate: entDate.val()
+								entDate: entDate
 							}
 						});
 					}
