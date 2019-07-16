@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<!--系统公告信息html-->
 
 <head>
 	<meta charset="UTF-8">
@@ -36,44 +37,43 @@
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
 				<div class="layui-inline">
-					<label class="layui-form-label">海关名称</label>
+					<label class="layui-form-label">流水号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="customsName" placeholder="请输入海关名称" class="layui-input">
+						<input type="text" name="serialNo" placeholder="请输入流水号" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">海关编号</label>
+					<label class="layui-form-label">标题</label>
 					<div class="layui-input-inline">
-						<input type="text" name="customsCode" placeholder="请输入商户编号" class="layui-input">
+						<input type="text" name="title" placeholder="请输入标题" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">国检名称</label>
+					<label class="layui-form-label">角色</label>
 					<div class="layui-input-inline">
-						<input type="text" name="ciqOrgName" placeholder="请输入国检机构名称" class="layui-input">
+						<select name="role" lay-verify="required" lay-search="">
+							<option value="">全部</option>
+							<option value="member">会员</option>
+							<option value="merchant">商户</option>
+						</select>
 					</div>
 				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">国检编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="ciqOrgCode" placeholder="请输入国检机构编号" class="layui-input">
-					</div>
+				<div style="text-align: center;">
+					<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 				</div>
-			</div>
-			<div style="text-align: center;">
-				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
-			</div>
 		</form>
 		<script type="text/html" id="customsList_toolbar">
 				<div class="layui-btn-container">
-					<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>添加</button>
+					<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>发布</button>
 				</div>
 			</script>
 		<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 	</div>
 	<script type="text/html" id="operateTpl">
 		<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			 -->
-		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="top">置顶</a>
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">查看/修改</a>
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
 	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
@@ -97,7 +97,7 @@
 				cellMinWidth: 80,
 				height: tableHeight,
 				toolbar: '#customsList_toolbar',
-				url: urlPrefix + 'silver-web-shop/customsPort/getInfo',
+				url: urlPrefix + 'silver-web-shop/news/findInfo',
 				method: 'post',
 				cols: [
 					[
@@ -106,21 +106,29 @@
 						}, {
 							field: 'createDate', width: 160, title: '日期', fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
-						}
+							}
 						}, {
-							field: 'province', title: '省份', width: 80
+							field: 'serialNo', title: '流水号', width: 200
 						}, {
-							field: 'city', title: '城市', width: 80
+							field: 'title', title: '标题'
 						}, {
-							field: 'customsPortName', title: '口岸', width: 120
+							field: 'role', title: '角色', width: 90, templet: function (item) {
+								if (item.role == 'merchant') {
+									return '商户';
+								} else if (item.role == 'member') {
+									return '会员';
+								} else if (item.role == 'all') {
+									return '全部';
+								}
+							}
 						}, {
-							field: 'customsName', title: '海关名称'
-						}, {
-							field: 'customsCode', title: '海关编号', width: 100
-						}, {
-							field: 'ciqOrgName', title: '国检机构名称'
-						}, {
-							field: 'ciqOrgCode', title: '国检机构编号', width: 120
+							field: 'top', title: '是否置顶', width: 90, templet: function (item) {
+								if (item.top > 0) {
+									return '是';
+								} else {
+									return '否';
+								}
+							}
 						}, {
 							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}
@@ -159,20 +167,18 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var customsName = $('#form_sreach').find('[name=customsName]');
-				var customsCode = $('#form_sreach').find('[name=customsCode]');
-				var ciqOrgName = $('#form_sreach').find('[name=ciqOrgName]');
-				var ciqOrgCode = $('#form_sreach').find('[name=ciqOrgCode]');
+				var serialNo = $('#form_sreach').find('[name=serialNo]');
+				var title = $('#form_sreach').find('[name=title]');
+				var role = $('#form_sreach').find('[name=role]');
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/customsPort/getInfo',
+					url: urlPrefix + 'silver-web-shop/news/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						customsNameblurry: customsName.val(),
-						customsCode: customsName.val(),
-						ciqOrgNameblurry: customsName.val(),
-						ciqOrgCode: customsName.val()
+						serialNo: serialNo.val(),
+						role: role.val(),
+						titleblurry: title.val()
 					}
 				});
 			}
@@ -189,21 +195,19 @@
 			// });
 			var active = {
 				reload: function () {
-					var customsName = $('#form_sreach').find('[name=customsName]');
-					var customsCode = $('#form_sreach').find('[name=customsCode]');
-					var ciqOrgName = $('#form_sreach').find('[name=ciqOrgName]');
-					var ciqOrgCode = $('#form_sreach').find('[name=ciqOrgCode]');
+					var serialNo = $('#form_sreach').find('[name=serialNo]');
+					var title = $('#form_sreach').find('[name=title]');
+					var role = $('#form_sreach').find('[name=role]');
 					//执行重载
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/customsPort/getInfo',
+						url: urlPrefix + 'silver-web-shop/news/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
-							customsNameblurry: customsName.val(),
-							customsCode: customsCode.val(),
-							ciqOrgNameblurry: ciqOrgName.val(),
-							ciqOrgCode: ciqOrgCode.val()
+							serialNo: serialNo.val(),
+							role: role.val(),
+							titleblurry: title.val()
 						}
 					});
 				}
@@ -217,7 +221,7 @@
 			//头工具栏事件
 			table.on('toolbar(articleList)', function (obj) {
 				var checkStatus = table.checkStatus(obj.config.id);
-				switch (obj.event) {					
+				switch (obj.event) {
 					case 'add':
 						layer.open({
 							title: "添加",

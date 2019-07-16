@@ -121,6 +121,12 @@
 					"name": "充值申请",
 					"icon": "",
 					"url": "./pages/funds/rec_app_list.html"
+				},
+				{
+					"id": 215,
+					"name": "结算信息",
+					"icon": "",
+					"url": "./pages/funds/settlement_list.html"
 				}
 			]
 		},
@@ -262,7 +268,7 @@
 					"id": 2,
 					"name": "系统公告",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/system/news_list.html"
 				},
 				{
 					"id": 3,
@@ -280,7 +286,7 @@
 					"id": 6,
 					"name": "物流信息",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/system/logistics_list.html"
 				},
 				{
 					"id": 8,
@@ -317,19 +323,19 @@
 					"url": "",
 					"children": [
 						{
-							"id": 5,
+							"id": 401,
 							"name": "输入框操作",
 							"icon": "",
 							"url": "./pages/member/addInput.html"
 						},
 						{
-							"id": 6,
+							"id": 405,
 							"name": "三级菜单演示",
 							"icon": "",
 							"url": "./pages/404.html"
 						},
 						{
-							"id": 7,
+							"id": 406,
 							"name": "导航菜单演示",
 							"icon": "&#xe70b;",
 							"url": "./pages/404.html"

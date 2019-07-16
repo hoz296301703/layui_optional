@@ -57,7 +57,7 @@
 							<div class="layui-inline">
 								<label class="layui-form-label">编号</label>
 								<div class="layui-input-inline">
-									<input type="text" name="operatorName" placeholder="请输入白金商户编码" class="layui-input">
+									<input type="text" name="merchantId" placeholder="请输入白金商户编码" class="layui-input">
 								</div>
 							</div>
 							<div class="layui-inline">
@@ -238,6 +238,7 @@
 							loginAccount: loginAccount.val(),
 							merchantId: merchantId.val(),
 							merchantStatus: merchantStatus.val(),
+							merchantLevel: 100,
 							startDate: startDate,
 							entDate: entDate
 						}
@@ -271,6 +272,7 @@
 								loginAccount: loginAccount.val(),
 								merchantId: merchantId.val(),
 								merchantStatus: merchantStatus.val(),
+								merchantLevel: 100,
 								startDate: startDate,
 								entDate: entDate
 							}
