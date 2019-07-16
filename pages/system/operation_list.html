@@ -33,12 +33,13 @@
 
 <body>
 	<div class="weadmin-body">
-		<div class="layui-tab">
+		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 			<ul class="layui-tab-title">
 				<li class="layui-this">操作日志</li>
 				<li id="smsLogs_btn">短信日志</li>
 				<li id="idCard_btn">实名日志</li>
 				<li id="trade_logs_btn">交易日志</li>
+				<li id="sys_acc_btn">钱包对账日志</li>
 			</ul>
 			<div class="layui-tab-content">
 				<!--系统操作日志-->
@@ -135,13 +136,17 @@
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
 				<!----商户实名认证日志------------start------------------>
-
 				<!----系统交易日志------------start----------------->
 				<div class="layui-tab-item" id="tradeLogs">
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
 				<!----系统交易日志------------start------------------>
-				
+				<!----系统钱包对账日志------------start----------------->
+				<div class="layui-tab-item" id="sysAcc">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!----系统钱包对账日志------------start------------------>
+
 
 			</div>
 		</div>
@@ -336,10 +341,16 @@
 					$("#idCardLogs").find('iframe').attr('src', "idCard_list.html").css('height', h + 'px');
 				})
 				//跳转至交易日志
-				$('#trade_logs_btn').on('click',function(){
+				$('#trade_logs_btn').on('click', function () {
 					var h = $(window).height() - 30;
 					$("#tradeLogs").find('iframe').attr('src', "trade_logs_list.html").css('height', h + 'px');
 				})
+				//跳转至系统钱包对账日志
+				$('#sys_acc_btn').on('click', function () {
+					var h = $(window).height() - 30;
+					$("#sysAcc").find('iframe').attr('src', "trade_logs_list.html").css('height', h + 'px');
+				})
+
 			});
 		</script>
 </body>

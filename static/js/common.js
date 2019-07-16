@@ -4,7 +4,7 @@ var urlPrefix = "https://ym.191ec.com/";
 
 // 日期格式化
 var G_format = function (datetime, fmt) {
-  if(isEmpty(datetime)){
+  if (isEmpty(datetime)) {
     return '';
   }
   if (parseInt(datetime) == datetime) {
@@ -181,8 +181,8 @@ function accSub(arg1, arg2) {
 }
 
 // 图片去;分号
-var splitImg = function(img) {
-  if(isEmpty(img)){
+var splitImg = function (img) {
+  if (isEmpty(img)) {
     return '';
   }
   var arr = img.split(";");
@@ -211,3 +211,14 @@ var splitImg = function(img) {
 //   });
 //   return obj;
 // }
+/**
+ * 将yyyyMMdd格式化成yyyy-MM-dd
+ * @param {*} time 
+ */
+function formatTime(time) {
+  if (isEmpty(time)) {
+    return '';
+  } else {
+    return  time.slice(0, 4) + "-" + time.slice(4, 6) + "-" + time.slice(6, 8);
+  }
+}
