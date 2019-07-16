@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 115px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <!-- 详情 -->
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+      <ul class="layui-tab-title">
+        <li class="layui-this">基本资料</li>
+        <li>备案信息</li>
+        <li>业务资料</li>
+        <li>业务信息</li>
+        <li>物流信息</li>
+        <li>计费信息</li>
+        <li>银行卡信息</li>
+      </ul>
+      <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+          <form class="layui-form" lay-filter="example">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label for="L_username" class="layui-form-label">
+                  <span class="we-red">*</span>商户名称
+                </label>
+                <div class="layui-input-inline">
+                  <input type="text" id="L_username" placeholder="请输入商户名称" name="merchantName" lay-verify="required"
+                    autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>登录账号
+                </label>
+                <div class="layui-input-inline">
+                  <input type="text" name="loginAccount" placeholder="请输入登录账号" lay-verify="required" autocomplete="off"
+                    class="layui-input">
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>商户简称
+                </label>
+                <div class="layui-input-inline">
+                  <input type="text" name="companyName" placeholder="请输入商户简称" lay-verify="required" autocomplete="off"
+                    class="layui-input">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>法人姓名
+                </label>
+                <div class="layui-input-inline">
+                  <input type="text" name="merchantIdCardName" placeholder="请输入法人姓名" lay-verify="required"
+                    autocomplete="off" class="layui-input">
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>法人身份证号
+                </label>
+                <div class="layui-input-inline">
+                  <input type="text" name="merchantIdCard" placeholder="请输入法人身份证号" lay-verify="required"
+                    autocomplete="off" class="layui-input">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>业务联系人电话
+                </label>
+                <div class="layui-input-inline">
+                  <input type="text" id="L_phone" placeholder="请输入业务联系人电话" name="merchantPhone"
+                    lay-verify="required|phone" autocomplete="" class="layui-input">
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>地址
+                </label>
+                <div class="layui-input-inline">
+                  <input type="text" name="merchantAddress" placeholder="请输入地址" lay-verify="required" autocomplete="off"
+                    class="layui-input">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>商户状态
+                </label>
+                <div class="layui-input-inline">
+                  <select name="merchantStatus" lay-verify="required" lay-filter="aihao">
+                    <option value=""></option>
+                    <option value="1">启用</option>
+                    <option value="2">禁用</option>
+                    <option value="3">审核</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">物流企业</label>
+                <div class="layui-input-inline">
+                  <select name="logisticsCompanyCode" lay-filter="aihao">
+                    <option value=""></option>
+                    <option value="QB">启邦</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">QQ</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="merchantQQ" placeholder="请输入QQ" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+            </div>
+            <!-- <div class="layui-form-item">
+              <label class="layui-form-label">是否第三方</label>
+              <div class="layui-input-block">
+                <input type="checkbox" name="thirdPartyFlag" lay-skin="switch" lay-text="是|否">
+              </div>
+            </div> -->
+            <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+              <button type="button" class="layui-btn" lay-filter="add" lay-submit="">保存</button>
+            </div>
+          </form>
+        </div>
+        <div class="layui-tab-item">内容2</div>
+        <div class="layui-tab-item">内容3</div>
+        <div class="layui-tab-item">内容4</div>
+        <div class="layui-tab-item">内容5</div>
+        <div class="layui-tab-item">内容6</div>
+        <div class="layui-tab-item">内容7</div>
+      </div>
+    </div>
+
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form', 'jquery', 'util', 'admin', 'layer'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        util = layui.util,
+        admin = layui.admin,
+        layer = layui.layer;
+
+      //自定义验证规则
+      form.verify({
+        // nikename: function (value) {
+        //   if (value.length < 5) {
+        //     return '昵称至少得5个字符啊';
+        //   }
+        // },
+        pass: [/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/, '密码由6-20字母和数字组成'],
+        repass: function (value) {
+          if ($('#L_pass').val() != $('#L_repass').val()) {
+            return '两次密码不一致';
+          }
+        }
+      });
+      //失去焦点时判断值为空不验证，一旦填写必须验证
+      // $('input[name="email"]').blur(function () {
+      //   //这里是失去焦点时的事件
+      //   if ($('input[name="email"]').val()) {
+      //     $('input[name="email"]').attr('lay-verify', 'email');
+      //   } else {
+      //     $('input[name="email"]').removeAttr('lay-verify');
+      //   }
+      // });
+      //新增商户
+      form.on('submit(add)', function (data) {
+        layer.load(2);
+        if (data.field.thirdPartyFlag == 'on') {// 是否第三方      
+          data.field.thirdPartyFlag = 2;//第三方
+        } else {
+          data.field.thirdPartyFlag = 1;//银盟
+        }
+        data.field['img[0]'] = 1;
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merchant/insert",
+          // type: "POST",
+          method: 'post',
+          dataType: 'JSON',
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            layer.closeAll("loading");
+            if (response.status == 1) {
+              layer.msg('添加成功！');
+              setTimeout(function () {
+                parent.merchant_reload();// 添加成功调用父页面的重载方法
+              }, 1000);
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
+
+
+      // 管理员查看商户基本信息
+      var _findMerchantDetail = function (data) {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/manager/getMerchantInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data,
+          success: function (response) {
+            if (response.status == 1) {
+              var datas = response.datas[0];
+              //表单初始赋值
+              form.val('example', {
+                "managerId": datas.merchantName
+                , "managerName": g_data.managerName
+                , "realName": g_data.realName
+                , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
+                , "managerMarks": g_data.managerMarks
+                , "status": g_data.status
+              })
+
+
+
+              showMerchantInfo(response.datas[0]);
+
+              var datas = response.datas[0];
+              // 修改详情
+              $('#editMerchantRecordDetailForm [name="merchantId"]').val(
+                datas.merchantId
+              );
+              var items = $("#editMerhcnatInfo").find("[name]");
+              var oldItems = $("#editMerhcnatInfo").find(".old");
+              $(oldItems[0]).val(datas.merchantName);
+              $(oldItems[1]).val(datas.merchantPhone);
+              $(oldItems[2]).val(datas.merchantQQ);
+              $(oldItems[3]).val(datas.merchantEmail);
+              $(oldItems[4]).val(datas.merchantIdCard);
+              $(oldItems[5]).val(datas.merchantIdCardName);
+              $(oldItems[6]).val(datas.merchantAddress);
+              $(oldItems[7]).val(datas.merchantStatus);
+
+              $(items[0]).val(datas.merchantId);
+              $(items[1]).val(datas.merchantName);
+              $(items[2]).val(datas.merchantPhone);
+              $(items[3]).val(datas.merchantQQ);
+              $(items[4]).val(datas.merchantEmail);
+              $(items[5]).val(datas.merchantIdCard);
+              $(items[6]).val(datas.merchantIdCardName);
+              $(items[7]).val(datas.merchantAddress);
+              $(items[8]).val(datas.merchantStatus);
+              $(items[9]).val(items.length - 1);
+            } else {
+              alert(response.msg);
+            }
+          }
+        });
+      };
+
+    });
+
+  </script>
+</body>
+
+</html>
