@@ -348,7 +348,7 @@
                   <option value="orderDeclare">订单申报</option>
                   <option value="paymentDeclare">支付单申报</option>
                   <option value="certification">实名认证</option>
-                  <option value="paymentServiceCharge">支付手续费</option>
+                  <option value="paymentServiceCharge">支付服务费</option>
                 </select>
               </div>
             </div>
@@ -402,7 +402,7 @@
             <div class="layui-form-item" style="text-align: center;">
               <button type="button" class="layui-btn layui-btn-sm" lay-filter="add_merchantCost"
                 lay-submit="">保存</button>
-              <button id="close_add" type="button" class="layui-btn layui-btn-sm layui-btn-primary">关闭</button>
+              <button type="button" class="layui-btn layui-btn-sm layui-btn-primary close_add">关闭</button>
 
             </div>
 
@@ -410,6 +410,7 @@
           <!-- 修改商户计费信息 -->
           <form class="layui-form" lay-filter="merchantCost_update" id="merchantCost_update"
             style="display: none;margin-top: 20px;width: 90%;">
+            <input type="hidden" name="serialNo">
             <div class="layui-form-item">
               <label class="layui-form-label">费用类型</label>
               <div class="layui-input-block">
@@ -419,7 +420,7 @@
                   <option value="orderDeclare">订单申报</option>
                   <option value="paymentDeclare">支付单申报</option>
                   <option value="certification">实名认证</option>
-                  <option value="paymentServiceCharge">支付手续费</option>
+                  <option value="paymentServiceCharge">支付服务费</option>
                 </select>
               </div>
             </div>
@@ -427,14 +428,15 @@
             <div class="layui-form-item">
               <label class="layui-form-label">收费类型</label>
               <div class="layui-input-block">
-                <select id="tollType_update" name="tollType" lay-filter='tollType' lay-verify="required"></select>
+                <select id="tollType_update" name="tollType" lay-filter='tollType_update'
+                  lay-verify="required"></select>
               </div>
             </div>
             <!-- 服务费 -->
             <div class="layui-form-item" style="display: none;" id="serviceCharge_pen_update">
               <label class="layui-form-label">服务费</label>
               <div class="layui-input-block" style="display: flex;align-items: center;">
-                <input id="serviceCharge_penVal" lay-verify='number' type="number" autocomplete="off"
+                <input id="serviceCharge_penVal_update" type="number" autocomplete="off"
                   placeholder="请输入服务费" class="layui-input" style="width: 85%;margin-right:1%">元/笔
               </div>
             </div>
@@ -442,7 +444,7 @@
             <div class="layui-form-item" style="display: none;" id="serviceCharge_rate_update">
               <label class="layui-form-label">费率</label>
               <div class="layui-input-block" style="display: flex;align-items: center;">
-                <input id="serviceCharge_rateVal" lay-verify='number' type="number" autocomplete="off"
+                <input id="serviceCharge_rateVal_update" type="number" autocomplete="off"
                   placeholder="请输入费率" class="layui-input" style="width: 85%;margin-right:1%">%
               </div>
             </div>
@@ -450,8 +452,7 @@
             <div class="layui-form-item" id="backCoverFlag_li_update">
               <label class="layui-form-label">是否封底</label>
               <div class="layui-input-block">
-                <select lay-filter='backCoverFlag_val' lay-verify="required" name="backCoverFlag"
-                  id='backCoverFee_li_update'>
+                <select lay-filter='backCoverFlag_val_update' lay-verify="required" name="backCoverFlag">
                   <option value="">请选择</option>
                   <option value="false">否</option>
                   <option value="true">是</option>
@@ -459,12 +460,18 @@
               </div>
             </div>
 
-            <div class="layui-form-item" style="display: none;" id="backCoverFee_li">
+            <div class="layui-form-item" style="display: none;" id="backCoverFee_li_update">
               <label class="layui-form-label">封底服务费</label>
               <div class="layui-input-block" style="display: flex;align-items: center;">
                 <input lay-verify='number' type="number" id="backCoverFlag_val_update" name="backCoverFee"
                   autocomplete="off" placeholder="请输入封底服务费" class="layui-input" style="width: 85%;margin-right:1%">元
               </div>
+            </div>
+            <div class="layui-form-item" style="text-align: center;">
+              <button type="button" class="layui-btn layui-btn-sm" lay-filter="update_merchantCost"
+                lay-submit="">保存</button>
+              <button type="button" class="layui-btn layui-btn-sm layui-btn-primary close_add">关闭</button>
+
             </div>
           </form>
         </div>
@@ -1119,7 +1126,7 @@
               } else if (item.costType == 'certification') {
                 return '实名认证';
               } else if (item.costType == 'paymentServiceCharge') {
-                return '支付手续费';
+                return '支付服务费';
               }
             }
           }, {
@@ -1244,8 +1251,9 @@
           }
         });
       });
+
       // 关闭新增弹窗
-      $('#close_add').click(function () {
+      $('.close_add').click(function () {
         layer.close(addIndex);
       })
       // 新增-选择收费类型
@@ -1268,18 +1276,25 @@
         }
       });
 
+
+
       // 修改-选择收费类型
-      $("#tollType_update").change(function () {
-        if ($(this).val() == "pen") {
+      form.on('select(tollType_update)', function (data) {
+        if (data.value == "pen") {
           $("#serviceCharge_rate_update").hide();
+          $("#serviceCharge_rate_update").find('input').removeAttr('lay-verify').removeAttr('name');
           $("#serviceCharge_penVal_update").val("");
           $("#serviceCharge_pen_update").show();
-        } else if ($(this).val() == "rate") {
+          $("#serviceCharge_pen_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');
+
+        } else if (data.value == "rate") {
           $("#serviceCharge_pen_update").hide();
+          $("#serviceCharge_pen_update").find('input').removeAttr('lay-verify').removeAttr('name');
           $("#serviceCharge_rateVal_update").val("");
           $("#serviceCharge_rate_update").show();
+          $("#serviceCharge_rate_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');
         } else {
-          $("#serviceCharge_pen_update,#serviceCharge_rate_update").hide();
+          $("#serviceCharge_pen_update,#serviceCharge_rate_update").removeAttr('lay-verify').removeAttr('name').hide();
         }
       });
       // 新增-选择是否封底
@@ -1297,14 +1312,17 @@
         }
       });
       // 修改-选择是否封底
-      $("#backCoverFlag_val_update").change(function () {
-        if ($(this).val() == "true") {
+      form.on('select(backCoverFlag_val_update)', function (data) {
+        if (data.value == "true") {
           $("#merchantCost_update [name=backCoverFee]").val("");
           $("#backCoverFee_li_update").show();
-        } else if ($(this).val() == "false") {
+          $("#backCoverFee_li_update").find('input').attr('lay-verify', 'required').attr('name', 'backCoverFee');
+        } else if (data.value == "false") {
           $("#backCoverFee_li_update").hide();
+          $("#backCoverFee_li_update").find('input').removeAttr('lay-verify').removeAttr('name');
         } else {
           $("#backCoverFee_li_update").hide();
+          $("#backCoverFee_li_update").find('input').removeAttr('lay-verify').removeAttr('name');
         }
       });
       // 新增-选择费用类型
@@ -1330,26 +1348,25 @@
       });
       //监听工具条
       table.on('tool(merchantCost)', function (obj) {
+      
 
         if (obj.event === 'edit') {// 修改
           var data = obj.data;
           console.log(data)
           if (data.backCoverFlag == '') {
-            data.backCoverFlag = false;
+            data.backCoverFlag = 'false';
           }
-
-
           if (data.costType == "paymentServiceCharge") {// 等于支付手续费时   
             $("#tollType_update").html('<option value="">请选择</option><option value="rate">按费率收费</option>');
             $(
               "#backCoverFlag_li_update,#backCoverFee_li_update,#serviceCharge_pen_update"
             ).hide();// 按费率收费隐藏
             $("#serviceCharge_rate_update").show();// 支付手续费类型只有按费率收费
-            $("#serviceCharge_rate_update").attr('name','serviceCharge');// 为按费率收费添加name属性等于serviceCharge
+            $("#serviceCharge_rate_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');// 为按费率收费添加name属性等于serviceCharge
             data.serviceCharge = accMul(data.serviceCharge, 100);
-            // $("#serviceCharge_rateVal_update").val(data.serviceCharge * 100);
+
           } else {// 不等于支付手续费时
-            
+
             $("#tollType_update").html(
               '<option value="">请选择</option><option value="pen">按每笔收费</option><option value="rate">按费率收费</option>'
             );
@@ -1357,44 +1374,69 @@
             // 是否封底
             if (data.backCoverFlag == "true") {
               $("#backCoverFee_li_update").show();
+              $("#backCoverFee_li_update").find('input').attr('lay-verify', 'required').attr('name', 'backCoverFee');
             } else {
               $("#backCoverFee_li_update").hide();
+              $("#backCoverFee_li_update").find('input').removeAttr('name').removeAttr('lay-verify');
             }
             // 收费类型
             if (data.tollType == "pen") {
               $("#serviceCharge_rate_update").hide();
+              $("#serviceCharge_rate_update").find('input').removeAttr('name').removeAttr('lay-verify');
               $("#serviceCharge_pen_update").show();
+              $("#serviceCharge_pen_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');// 为按费率
             } else {
               $("#serviceCharge_pen_update").hide();
+              $("#serviceCharge_pen_update").find('input').removeAttr('name').removeAttr('lay-verify');
               $("#serviceCharge_rate_update").show();
+              $("#serviceCharge_rate_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');// 为按费率收费添加name属性等于serviceCharge
               data.serviceCharge = accMul(data.serviceCharge, 100)
             }
           }
-
           //表单初始赋值
           form.val('merchantCost_update', {
             "costType": data.costType
             , "tollType": data.tollType
+            , "serialNo": data.serialNo
             , "backCoverFlag": data.backCoverFlag
             , "backCoverFee": data.backCoverFee
             , "serviceCharge": data.serviceCharge
           })
           form.render('select');
 
-          layer.open({
+          addIndex = layer.open({
             type: 1,
             title: '修改商户计费信息',
             area: ["460px", "351px"], //宽高
             fixed: false, //不固定
             maxmin: true,
-            content: $('#merchantCost_update'),
-            btnAlign: 'c',
-            btn: ['保存', '关闭'],
-            btn1: function (index) {
-              layer.close(index);
-            }
+            content: $('#merchantCost_update')
           });
         }
+      });
+      // 修改计费信息
+      form.on('submit(update_merchantCost)', function (data) {
+        if (data.field.tollType == "rate") {
+          data.field.serviceCharge = accDiv(parseFloat(data.field.serviceCharge), 100);
+        }
+        data.field.merchantId = g_data.merchantId;
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merchantCost/updateInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            if (response.status == 1) {
+              layer.close(addIndex);
+              layer.msg("修改成功");
+              _reload();
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
       });
     });
 
