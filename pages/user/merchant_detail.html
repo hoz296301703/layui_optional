@@ -20,6 +20,20 @@
     .layui-form-label {
       width: 115px;
     }
+
+    #ywxx .layui-form-label {
+      width: 120px;
+    }
+
+    #merchantCost_update .layui-form-label,
+    #merchantCost_add .layui-form-label {
+      width: 90px;
+    }
+
+    /* 基本数据 */
+    #info .layui-form-item .layui-input-inline {
+      width: 283px;
+    }
   </style>
 </head>
 
@@ -30,23 +44,26 @@
       <ul class="layui-tab-title">
         <li class="layui-this">基本资料</li>
         <li>备案信息</li>
-        <li>业务资料</li>
+        <li>企业资质</li>
         <li>业务信息</li>
         <li>物流信息</li>
         <li>计费信息</li>
         <li>银行卡信息</li>
       </ul>
       <div class="layui-tab-content" style="height: 100px;">
+        <!-- 基本信息 -->
         <div class="layui-tab-item layui-show">
-          <form class="layui-form" lay-filter="example">
+          <form class="layui-form" lay-filter="info" id="info">
+            <input type="hidden" name="merchantId">
+            <input type="hidden" name="merchantProfit">
             <div class="layui-form-item">
               <div class="layui-inline">
-                <label for="L_username" class="layui-form-label">
+                <label class="layui-form-label">
                   <span class="we-red">*</span>商户名称
                 </label>
                 <div class="layui-input-inline">
-                  <input type="text" id="L_username" placeholder="请输入商户名称" name="merchantName" lay-verify="required"
-                    autocomplete="off" class="layui-input">
+                  <input type="text" placeholder="请输入商户名称" name="merchantName" lay-verify="required " autocomplete="off"
+                    disabled class="layui-input layui-disabled">
                 </div>
               </div>
               <div class="layui-inline">
@@ -127,12 +144,9 @@
 
             <div class="layui-form-item">
               <div class="layui-inline">
-                <label class="layui-form-label">物流企业</label>
+                <label class="layui-form-label">电子邮箱</label>
                 <div class="layui-input-inline">
-                  <select name="logisticsCompanyCode" lay-filter="aihao">
-                    <option value=""></option>
-                    <option value="QB">启邦</option>
-                  </select>
+                  <input type="text" name="merchantEmail" placeholder="请输入电子邮箱" autocomplete="off" class="layui-input">
                 </div>
               </div>
               <div class="layui-inline">
@@ -149,16 +163,316 @@
               </div>
             </div> -->
             <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
-              <button type="button" class="layui-btn" lay-filter="add" lay-submit="">保存</button>
+              <button type="button" class="layui-btn" lay-filter="editMerhcnatInfo" lay-submit="">保存</button>
             </div>
           </form>
         </div>
-        <div class="layui-tab-item">内容2</div>
-        <div class="layui-tab-item">内容3</div>
-        <div class="layui-tab-item">内容4</div>
-        <div class="layui-tab-item">内容5</div>
-        <div class="layui-tab-item">内容6</div>
+        <!-- 备案信息 -->
+        <div class="layui-tab-item">
+          <div class="layui-form" id="record">
+            <button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="add" onclick="addTable();"><i
+                class="layui-icon">&#xe61f;</i>添加</button>
+            <table class="layui-table" id="findMerchantRecordDetail_table">
+              <colgroup>
+                <col width="140">
+                <col width="210">
+                <col width="210">
+                <col width="210">
+                <col width="210">
+                <col>
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>口岸<span class="we-red">(必填)</span></th>
+                  <th>电商平台企业名称<span class="we-red">(必填)</span></th>
+                  <th>电商平台企业编号<span class="we-red">(必填)</span></th>
+                  <th>电商企业名称<span class="we-red">(必填)</span></th>
+                  <th>电商企业编号<span class="we-red">(必填)</span></th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+            <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+              <button type="button" class="layui-btn" lay-filter="editMerchantRecordDetail" lay-submit="">保存</button>
+            </div>
+          </div>
+        </div>
+        <!-- 业务资料(图片) -->
+        <div class="layui-tab-item" id="getMerchantBusinessInfo">
+          <div class="layui-upload">
+            <div class="layui-upload-list">
+              <label class="layui-form-label" style="width: 150px;">企业营业执照：</label>
+              <img width="100px" height="100px" style="border: 1px solid #ddd;" class="layui-upload-img"
+                id="merchantBusinessLicenseLink">
+              <p id="merchantBusinessLicenseLinkText" style="display: inline-block;"></p>
+            </div>
+          </div>
+          <div class="layui-upload">
+            <div class="layui-upload-list">
+              <label class="layui-form-label" style="width: 150px;">特定行业经营许可证：</label>
+              <img width="100px" height="100px" style="border: 1px solid #ddd;" class="layui-upload-img"
+                id="merchantSpecificIndustryLicenseLink">
+              <p id="merchantSpecificIndustryLicenseLinkText" style="display: inline-block;"></p>
+            </div>
+          </div>
+        </div>
+        <!-- 业务信息 -->
+        <div class="layui-tab-item">
+          <form class="layui-form" lay-filter="ywxx" id="ywxx">
+            <input type="hidden" name="merchantId">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>商户名称
+                </label>
+                <div class="layui-input-inline">
+                  <input type="text" placeholder="请输入商户名称" name="merchantName" lay-verify="required " autocomplete="off"
+                    disabled class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>业务类型
+                </label>
+                <div class="layui-input-inline">
+                  <select name="businessType" lay-verify="required" lay-filter="aihao">
+                    <option value=""></option>
+                    <option value="online">线上支付</option>
+                    <option value="offline">线下支付</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>推送类型
+                </label>
+                <div class="layui-input-inline">
+                  <select name="pushType" lay-verify="required" lay-filter="aihao">
+                    <option value=""></option>
+                    <option value="all">全部</option>
+                    <option value="orderRecord">订单推送</option>
+                    <option value="paymentRecord">支付单推送</option>
+                    <option value="goodsRecord">商品备案推送</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>实名认证状态
+                </label>
+                <div class="layui-input-inline">
+                  <select name="idCardVerifySwitch" lay-verify="required" lay-filter="aihao">
+                    <option value=""></option>
+                    <option value="on">开</option>
+                    <option value="off">关</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>第三方返回类型
+                </label>
+                <div class="layui-input-inline">
+                  <select name="thirdPartyReType" lay-verify="required" lay-filter="aihao">
+                    <option value="">请选择</option>
+                    <option value="all">全部</option>
+                    <option value="order">订单</option>
+                    <option value="payment">支付单</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>会员代付状态
+                </label>
+                <div class="layui-input-inline">
+                  <select name="memberPay" lay-verify="required" lay-filter="aihao">
+                    <option value="">请选择</option>
+                    <option value="on">开</option>
+                    <option value="off">关</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>订单支付业务类型
+                </label>
+                <div class="layui-input-inline">
+                  <select name="orderPayType" lay-verify="required" lay-filter="aihao">
+                    <option value="">请选择</option>
+                    <option value="online">在线充值</option>
+                    <option value="offline">线下转账</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+              <button type="button" class="layui-btn" lay-filter="merchantBusiness" lay-submit="">保存</button>
+            </div>
+          </form>
+        </div>
+        <!-- 物流信息 -->
+        <div class="layui-tab-item">
+          <ul id="merchantAllot"></ul>
+          <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+            <button type="button" class="layui-btn" lay-filter="merchantLogisticsSave" lay-submit="">保存</button>
+          </div>
+        </div>
+        <!-- 计费信息 -->
+        <div class="layui-tab-item">
+          <button class="layui-btn layui-btn-normal layui-btn-sm" id="merchantCost_addBtn"><i
+              class="layui-icon">&#xe61f;</i>添加</button>
+          <table class="layui-hide" id="merchantCost" lay-filter="merchantCost"></table>
+          <!-- 新增商户计费信息 -->
+          <form class="layui-form" lay-filter="example" id="merchantCost_add"
+            style="display: none;margin-top: 20px;width: 90%;">
+            <div class="layui-form-item">
+              <label class="layui-form-label">费用类型</label>
+              <div class="layui-input-block">
+                <select name="costType" lay-filter='costType' lay-verify="required">
+                  <option value="">请选择</option>
+                  <option value="goodsRecord">商品备案</option>
+                  <option value="orderDeclare">订单申报</option>
+                  <option value="paymentDeclare">支付单申报</option>
+                  <option value="certification">实名认证</option>
+                  <option value="paymentServiceCharge">支付手续费</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">收费类型</label>
+              <div class="layui-input-block">
+                <select id="tollType" name="tollType" lay-filter='tollType' lay-verify="required">
+                  <option value="">请选择</option>
+                  <option value="pen">按每笔收费</option>
+                  <option value="rate">按费率收费</option>
+                </select>
+              </div>
+            </div>
+            <!-- 服务费 -->
+            <div class="layui-form-item" style="display: none;" id="serviceCharge_pen">
+              <label class="layui-form-label">服务费</label>
+              <div class="layui-input-block" style="display: flex;align-items: center;">
+                <input id="serviceCharge_penVal" lay-verify='number' type="number" autocomplete="off"
+                  placeholder="请输入服务费" class="layui-input" style="width: 85%;margin-right:1%">元/笔
+              </div>
+            </div>
+            <!-- 费率 -->
+            <div class="layui-form-item" style="display: none;" id="serviceCharge_rate">
+              <label class="layui-form-label">费率</label>
+              <div class="layui-input-block" style="display: flex;align-items: center;">
+                <input id="serviceCharge_rateVal" lay-verify='number' type="number" autocomplete="off"
+                  placeholder="请输入费率" class="layui-input" style="width: 85%;margin-right:1%">%
+              </div>
+            </div>
+
+            <div class="layui-form-item" id="backCoverFlag_li">
+              <label class="layui-form-label">是否封底</label>
+              <div class="layui-input-block">
+                <select lay-filter='backCoverFlag_val' lay-verify="required" name="backCoverFlag">
+                  <option value="">请选择</option>
+                  <option value="false">否</option>
+                  <option value="true">是</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="layui-form-item" style="display: none;" id="backCoverFee_li">
+              <label class="layui-form-label">封底服务费</label>
+              <div class="layui-input-block" style="display: flex;align-items: center;">
+                <input lay-verify='number' type="number" id="serviceCharge_rateVal" name="backCoverFee"
+                  autocomplete="off" placeholder="请输入封底服务费" class="layui-input" style="width: 85%;margin-right:1%">元
+              </div>
+            </div>
+
+            <div class="layui-form-item" style="text-align: center;">
+              <button type="button" class="layui-btn layui-btn-sm" lay-filter="add_merchantCost"
+                lay-submit="">保存</button>
+              <button id="close_add" type="button" class="layui-btn layui-btn-sm layui-btn-primary">关闭</button>
+
+            </div>
+
+          </form>
+          <!-- 修改商户计费信息 -->
+          <form class="layui-form" lay-filter="merchantCost_update" id="merchantCost_update"
+            style="display: none;margin-top: 20px;width: 90%;">
+            <div class="layui-form-item">
+              <label class="layui-form-label">费用类型</label>
+              <div class="layui-input-block">
+                <select name="costType" lay-filter='costType' lay-verify="required" disabled class="layui-disabled">
+                  <option value="">请选择</option>
+                  <option value="goodsRecord">商品备案</option>
+                  <option value="orderDeclare">订单申报</option>
+                  <option value="paymentDeclare">支付单申报</option>
+                  <option value="certification">实名认证</option>
+                  <option value="paymentServiceCharge">支付手续费</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">收费类型</label>
+              <div class="layui-input-block">
+                <select id="tollType_update" name="tollType" lay-filter='tollType' lay-verify="required"></select>
+              </div>
+            </div>
+            <!-- 服务费 -->
+            <div class="layui-form-item" style="display: none;" id="serviceCharge_pen_update">
+              <label class="layui-form-label">服务费</label>
+              <div class="layui-input-block" style="display: flex;align-items: center;">
+                <input id="serviceCharge_penVal" lay-verify='number' type="number" autocomplete="off"
+                  placeholder="请输入服务费" class="layui-input" style="width: 85%;margin-right:1%">元/笔
+              </div>
+            </div>
+            <!-- 费率 -->
+            <div class="layui-form-item" style="display: none;" id="serviceCharge_rate_update">
+              <label class="layui-form-label">费率</label>
+              <div class="layui-input-block" style="display: flex;align-items: center;">
+                <input id="serviceCharge_rateVal" lay-verify='number' type="number" autocomplete="off"
+                  placeholder="请输入费率" class="layui-input" style="width: 85%;margin-right:1%">%
+              </div>
+            </div>
+
+            <div class="layui-form-item" id="backCoverFlag_li_update">
+              <label class="layui-form-label">是否封底</label>
+              <div class="layui-input-block">
+                <select lay-filter='backCoverFlag_val' lay-verify="required" name="backCoverFlag"
+                  id='backCoverFee_li_update'>
+                  <option value="">请选择</option>
+                  <option value="false">否</option>
+                  <option value="true">是</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="layui-form-item" style="display: none;" id="backCoverFee_li">
+              <label class="layui-form-label">封底服务费</label>
+              <div class="layui-input-block" style="display: flex;align-items: center;">
+                <input lay-verify='number' type="number" id="backCoverFlag_val_update" name="backCoverFee"
+                  autocomplete="off" placeholder="请输入封底服务费" class="layui-input" style="width: 85%;margin-right:1%">元
+              </div>
+            </div>
+          </form>
+        </div>
         <div class="layui-tab-item">内容7</div>
+        <!-- 计费信息操作按钮 -->
+        <script type="text/html" id="merchantCostTpl">
+          <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+        </script>
       </div>
     </div>
 
@@ -169,20 +483,23 @@
     layui.extend({
       admin: '{/}../../static/js/admin'
     });
-    layui.use(['form', 'jquery', 'util', 'admin', 'layer'], function () {
+    var g_data = '';// 全局数据变量
+    function getParent_data(obj) {
+      g_data = obj.data;
+    }
+    layui.use(['tree', 'form', 'jquery', 'util', 'admin', 'layer', 'upload', 'table'], function () {
       var form = layui.form,
         $ = layui.jquery,
         util = layui.util,
         admin = layui.admin,
+        table = layui.table,
+        tree = layui.tree,
+        upload = layui.upload,
         layer = layui.layer;
+
 
       //自定义验证规则
       form.verify({
-        // nikename: function (value) {
-        //   if (value.length < 5) {
-        //     return '昵称至少得5个字符啊';
-        //   }
-        // },
         pass: [/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/, '密码由6-20字母和数字组成'],
         repass: function (value) {
           if ($('#L_pass').val() != $('#L_repass').val()) {
@@ -190,26 +507,45 @@
           }
         }
       });
-      //失去焦点时判断值为空不验证，一旦填写必须验证
-      // $('input[name="email"]').blur(function () {
-      //   //这里是失去焦点时的事件
-      //   if ($('input[name="email"]').val()) {
-      //     $('input[name="email"]').attr('lay-verify', 'email');
-      //   } else {
-      //     $('input[name="email"]').removeAttr('lay-verify');
-      //   }
-      // });
-      //新增商户
-      form.on('submit(add)', function (data) {
-        layer.load(2);
-        if (data.field.thirdPartyFlag == 'on') {// 是否第三方      
-          data.field.thirdPartyFlag = 2;//第三方
-        } else {
-          data.field.thirdPartyFlag = 1;//银盟
-        }
-        data.field['img[0]'] = 1;
+
+      /** 基本信息 **/
+      // 管理员查看商户基本信息
+      var _findMerchantDetail = function () {
         $.ajax({
-          url: urlPrefix + "silver-web-shop/merchant/insert",
+          url: urlPrefix + "silver-web-shop/manager/getMerchantInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: { merchantId: g_data.merchantId },
+          success: function (response) {
+            if (response.status == 1) {
+              var datas = response.datas[0];
+              //表单初始赋值
+              form.val('info', {
+                "merchantName": datas.merchantName
+                , "merchantId": datas.merchantId
+                , "loginAccount": datas.loginAccount
+                , "companyName": datas.companyName
+                , "merchantIdCardName": datas.merchantIdCardName
+                , "merchantIdCard": datas.merchantIdCard
+                , "merchantPhone": datas.merchantPhone
+                , "merchantAddress": datas.merchantAddress
+                , "merchantStatus": datas.merchantStatus
+                , "merchantProfit": 0// 默认为0
+                , "merchantEmail": datas.merchantEmail
+                , "merchantQQ": datas.merchantQQ
+              })
+            }
+          }
+        });
+      };
+      _findMerchantDetail()
+      //修改商户基本信息
+      form.on('submit(editMerhcnatInfo)', function (data) {
+        layer.load(2);
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/manager/editMerhcnatInfo",
           // type: "POST",
           method: 'post',
           dataType: 'JSON',
@@ -220,77 +556,846 @@
           success: function (response) {
             layer.closeAll("loading");
             if (response.status == 1) {
-              layer.msg('添加成功！');
+              layer.msg('修改成功！');
               setTimeout(function () {
-                parent.merchant_reload();// 添加成功调用父页面的重载方法
+                _findMerchantDetail();
               }, 1000);
             } else {
-              layer.alert(response.msg);
+              layer.alert(response.msg, function () {
+                _findMerchantDetail();
+              });
+
             }
           }
         });
       });
 
-
-      // 管理员查看商户基本信息
-      var _findMerchantDetail = function (data) {
+      /** 备案信息 **/
+      // 查看备案信息
+      var _findMerchantRecordDetail = function (data) {
         $.ajax({
-          url: urlPrefix + "silver-web-shop/manager/getMerchantInfo",
+          url: urlPrefix + "silver-web-shop/manager/findMerchantRecordDetail",
           type: "POST",
           xhrFields: {
             withCredentials: true
           },
-          data: data,
+          data: { merchantId: g_data.merchantId },
+          success: function (response) {
+            if (response.status == 1) {
+              // 修改详情
+              var divStr = "";// 表格字符串
+              var arr = [];
+              $.each(response.datas, function (i, item) {
+                var dz = ''
+                var zj = ''
+                if (item.customsPort == 1) {
+                  dz = 'selected';
+                } else if (item.customsPort == 2) {
+                  zj = 'selected';
+                }
+                divStr += `<tr data-id="${item.id}">
+                  <td>
+                      <div class="layui-input-inline"><select name="eport" lay-verify="required"  class="valid">
+                        <option value="">请选择</option>
+                        <option value="1" ${dz}>电子口岸</option>
+                        <option value="2" ${zj}>智检</option>
+                      </select></div>
+                  <td>
+                    <div class="layui-input-inline"><input type="text" lay-verify="required"  value="${item.ebpEntName}" name="ebpEntName" class="layui-input"></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="text" lay-verify="required"  value="${item.ebpEntNo}" name="ebpEntNo" class="layui-input"></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="text" lay-verify="required"  value="${item.ebEntName}" name="ebEntName" class="layui-input"></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="text" lay-verify="required"  value="${item.ebEntNo}" name="ebEntNo" class="layui-input"></div>
+                  </td>
+                  <td>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs delete">删除</a>
+                  </td>
+                </tr>`
+
+              });
+              $('#findMerchantRecordDetail_table tbody').html(divStr);
+              form.render('select');
+            }
+          }
+        });
+      };
+      _findMerchantRecordDetail();
+
+      // 动态添加表格
+      window.addTable = function () {
+        var len = $("#findMerchantRecordDetail_table tbody").find('tr').length;
+        var tableHtml = `<tr>
+                  <td>
+                      <div class="layui-input-inline"><select name="eport" lay-verify="required"  class="valid">
+                        <option value="">请选择</option>
+                        <option value="1">电子口岸</option>
+                        <option value="2">智检</option>
+                      </select></div>
+                  <td>
+                    <div class="layui-input-inline"><input type="text" lay-verify="required"  name="ebpEntName" class="layui-input"></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="text" lay-verify="required"  name="ebpEntNo" class="layui-input"></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="text" lay-verify="required"  name="ebEntName" class="layui-input"></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="text" lay-verify="required"  name="ebEntNo" class="layui-input"></div>
+                  </td>
+                  <td>
+                      <a class="layui-btn layui-btn-danger layui-btn-xs deleteTr">删除</a>
+                  </td>
+                </tr>`
+        $("#findMerchantRecordDetail_table tbody").append(tableHtml); //在表头之后添加空白行
+        form.render('select');
+      }
+      // 删除行
+      $("#findMerchantRecordDetail_table").on('click', '.deleteTr', function () {
+        $(this).parents('tr').remove();
+      })
+      // 删除行(调接口删除)
+      $("#findMerchantRecordDetail_table").on('click', '.delete', function () {
+        var _this = this;
+        layer.alert("确定要删除？", {
+          time: 0, //不自动关闭
+          btn: ["保存", "关闭"],
+          yes: function (index) {
+            $.ajax({
+              url: urlPrefix + "silver-web-shop/manager/managerDeleteMerchantRecordInfo",
+              type: "POST",
+              xhrFields: {
+                withCredentials: true
+              },
+              data: { id: $(_this).parents('tr').attr("data-id") },
+              success: function (response) {
+                if (response.status == 1) {
+                  layer.msg("删除成功！");
+                  _findMerchantRecordDetail();
+                } else {
+                  layer.alert(response.msg);
+                }
+              }
+            });
+          }
+        });
+      })
+      //保存修改备案信息
+      form.on('submit(editMerchantRecordDetail)', function () {
+
+        var editMerchantRecordDetailArr = [];
+        $.each(
+          $("#findMerchantRecordDetail_table tbody tr"),
+          function (i, obj) {
+            var id = "";
+            if (!isEmpty($(obj).attr("data-id"))) {
+              id = $(obj).attr("data-id");
+            }
+            editMerchantRecordDetailArr.push({
+              customsPort: $(obj).find('[name=eport]').val(),
+              ebpEntName: $(obj).find('[name=ebpEntName]').val(),
+              ebpEntNo: $(obj).find('[name=ebpEntNo]').val(),
+              ebEntName: $(obj).find('[name=ebEntName]').val(),
+              ebEntNo: $(obj).find('[name=ebEntNo]').val(),
+              id: id
+            });
+          }
+        );
+        var editMerchantRecordDetailData = {// 传参对象
+          merchantId: g_data.merchantId,
+          merchantRecordInfo: JSON.stringify(editMerchantRecordDetailArr)
+        };
+
+        layer.load(2);
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/manager/editMerchantRecordDetail",
+          type: "POST",
+          dataType: 'JSON',
+          xhrFields: {
+            withCredentials: true
+          },
+          data: editMerchantRecordDetailData,
+          success: function (response) {
+            layer.closeAll("loading");
+            if (response.status == 1) {
+              layer.msg('修改成功！');
+              setTimeout(function () {
+                _findMerchantRecordDetail();
+              }, 1000);
+            } else {
+              layer.alert(response.msg, function () {
+                _findMerchantRecordDetail();
+              });
+
+            }
+          }
+        });
+      });
+
+      /** 企业资质 **/
+      // 管理员查看商户证件图
+      var _getMerchantBusinessInfo = function () {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/manager/getMerchantBusinessInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: { merchantId: g_data.merchantId },
           success: function (response) {
             if (response.status == 1) {
               var datas = response.datas[0];
-              //表单初始赋值
-              form.val('example', {
-                "managerId": datas.merchantName
-                , "managerName": g_data.managerName
-                , "realName": g_data.realName
-                , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
-                , "managerMarks": g_data.managerMarks
-                , "status": g_data.status
-              })
-
-
-
-              showMerchantInfo(response.datas[0]);
-
-              var datas = response.datas[0];
-              // 修改详情
-              $('#editMerchantRecordDetailForm [name="merchantId"]').val(
-                datas.merchantId
-              );
-              var items = $("#editMerhcnatInfo").find("[name]");
-              var oldItems = $("#editMerhcnatInfo").find(".old");
-              $(oldItems[0]).val(datas.merchantName);
-              $(oldItems[1]).val(datas.merchantPhone);
-              $(oldItems[2]).val(datas.merchantQQ);
-              $(oldItems[3]).val(datas.merchantEmail);
-              $(oldItems[4]).val(datas.merchantIdCard);
-              $(oldItems[5]).val(datas.merchantIdCardName);
-              $(oldItems[6]).val(datas.merchantAddress);
-              $(oldItems[7]).val(datas.merchantStatus);
-
-              $(items[0]).val(datas.merchantId);
-              $(items[1]).val(datas.merchantName);
-              $(items[2]).val(datas.merchantPhone);
-              $(items[3]).val(datas.merchantQQ);
-              $(items[4]).val(datas.merchantEmail);
-              $(items[5]).val(datas.merchantIdCard);
-              $(items[6]).val(datas.merchantIdCardName);
-              $(items[7]).val(datas.merchantAddress);
-              $(items[8]).val(datas.merchantStatus);
-              $(items[9]).val(items.length - 1);
+              // 企业营业执照
+              if (!isEmpty(datas.merchantBusinessLicenseLink)) {// 判断是否有上传的图片
+                $("#merchantBusinessLicenseLink").attr("src", merchantImgPrefix + datas.merchantId + "/" + datas.merchantBusinessLicenseLink
+                ); // 渲染图片
+              } else {
+                $("#merchantBusinessLicenseLink").attr("src", "../../static/images/bgImg.jpg"); // 渲染默认图片
+              }
+              // 特定行业经营许可证
+              if (!isEmpty(datas.merchantSpecificIndustryLicenseLink)) {
+                $("#merchantSpecificIndustryLicenseLink").attr(
+                  "src", merchantImgPrefix + datas.merchantId + "/" + datas.merchantSpecificIndustryLicenseLink
+                ); // 渲染图片
+              } else {
+                $("#merchantSpecificIndustryLicenseLink").attr("src", "../../static/images/bgImg.jpg"); // 渲染默认图片
+              }
             } else {
               alert(response.msg);
             }
           }
         });
       };
+      _getMerchantBusinessInfo();
+      //企业营业执照图片上传
+      var uploadMerchantBusinessLicenseLink = upload.render({
+        elem: '#merchantBusinessLicenseLink'
+        , url: urlPrefix + 'silver-web-shop/manager/editMerhcnatBusinessInfo'
+        // ,method: ''  //可选项。HTTP类型，默认post
+        , acceptMime: 'image/*'
+        , size: 1024 * 2 //限定大小
+        , data: { merchantBusinessLicenseLink: '222' } //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+        , before: function (obj) {
+          //预读本地文件示例，不支持ie8
+          obj.preview(function (index, file, result) {
+            $('#merchantBusinessLicenseLink').attr('src', result); //图片链接（base64）
+          });
+        }
+        , done: function (res) {
+          //如果上传失败
+          if (res.code > 0) {
+            return layer.msg('上传失败');
+          }
+          //上传成功
+        }
+        , error: function () {
+          //演示失败状态，并实现重传
+          var p = $('#merchantBusinessLicenseLinkText');
+          p.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+          p.find('.demo-reload').on('click', function () {
+            uploadMerchantBusinessLicenseLink.upload();
+          });
+        }
+      });
+      //特定行业经营许可证
+      var uploadMerchantBusinessLicenseLink = upload.render({
+        elem: '#merchantSpecificIndustryLicenseLink'
+        , url: urlPrefix + 'silver-web-shop/manager/editMerhcnatBusinessInfo'
+        // ,method: ''  //可选项。HTTP类型，默认post
+        , acceptMime: 'image/*'
+        , size: 1024 * 2 //限定大小
+        , data: { merchantBusinessLicenseLink: '222' } //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+        , before: function (obj) {
+          //预读本地文件示例，不支持ie8
+          obj.preview(function (index, file, result) {
+            $('#merchantSpecificIndustryLicenseLink').attr('src', result); //图片链接（base64）
+          });
+        }
+        , done: function (res) {
+          //如果上传失败
+          if (res.code > 0) {
+            return layer.msg('上传失败');
+          }
+          //上传成功
+        }
+        , error: function () {
+          //演示失败状态，并实现重传
+          var p = $('#merchantSpecificIndustryLicenseLinkText');
+          p.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+          p.find('.demo-reload').on('click', function () {
+            uploadMerchantBusinessLicenseLink.upload();
+          });
+        }
+      });
 
+      /** 业务信息 **/
+      // 管理员查看商户业务信息
+      var _merchantBusiness = function () {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merchantBusiness/getInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: {
+            merchantId: g_data.merchantId,
+            page: 0,
+            size: 0
+          },
+          success: function (response) {
+            if (response.status == 1) {
+              var datas = response.datas[0];
+              //表单初始赋值
+              form.val('ywxx', {
+                "merchantId": datas.merchantId
+                , "merchantName": datas.merchantName
+                , "businessType": datas.businessType
+                , "pushType": datas.pushType
+                , "idCardVerifySwitch": datas.idCardVerifySwitch
+                , "thirdPartyReType": datas.thirdPartyReType
+                , "memberPay": datas.memberPay
+                , "orderPayType": datas.orderPayType
+              })
+              $("#ywxx").attr("data-id", 2); // 修改标识
+            } else {
+              // 未添加
+              $("#ywxx").attr("data-id", 1); // 新增标识
+            }
+          },
+          error: function () {
+
+          }
+        });
+      };
+      _merchantBusiness();
+
+      //保存修改业务资料
+      form.on('submit(merchantBusiness)', function (data) {
+        var url = "silver-web-shop/merchantBusiness/updateInfo"; // 修改接口
+        if ($("#ywxx").attr("data-id") == 1) {
+          url = "silver-web-shop/merchantBusiness/addInfo";
+        }
+
+        layer.load(2);
+        $.ajax({
+          url: urlPrefix + url,
+          type: "POST",
+          dataType: 'JSON',
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            layer.closeAll("loading");
+            if (response.status == 1) {
+              layer.msg('保存成功！');
+              setTimeout(function () {
+                _merchantBusiness();
+              }, 1000);
+            } else {
+              layer.alert(response.msg, function () {
+                _merchantBusiness();
+              });
+
+            }
+          }
+        });
+      });
+
+      //** 物流信息  **//
+      var _logistics = function () {
+        var groupNameData = {}; // 数据处理成map数据
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/logistics/getInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: { page: 0, size: 0 },
+          success: function (response) {
+            var datas = response.datas;
+            var len = datas.length;
+            for (var i = 0; i < len; i++) {
+              if (
+                groupNameData.hasOwnProperty(
+                  datas[i].logisticsCompanyCode +
+                  "_" +
+                  datas[i].logisticsCompanyName
+                )
+              ) {
+                groupNameData[
+                  datas[i].logisticsCompanyCode +
+                  "_" +
+                  datas[i].logisticsCompanyName
+                ].push(datas[i]);
+              } else {
+                groupNameData[
+                  datas[i].logisticsCompanyCode +
+                  "_" +
+                  datas[i].logisticsCompanyName
+                ] = [];
+                groupNameData[
+                  datas[i].logisticsCompanyCode +
+                  "_" +
+                  datas[i].logisticsCompanyName
+                ].push(datas[i]);
+              }
+            }
+
+
+            if (response.status == 1) {
+              //** 请求商户物流信息 start  **/
+              $.ajax({
+                url: urlPrefix + "silver-web-shop/merchantLogistics/getInfo",
+                type: "POST",
+                xhrFields: {
+                  withCredentials: true
+                },
+                data: {
+                  merchantId: g_data.merchantId,
+                },
+                success: function (response2) {
+                  var jsonArr = []; // 树结构数据
+                  if (response2.status == 1) {
+                    var ii = 0;
+                    $.each(groupNameData, function (key, val1) {
+                      // 遍历处理好的map数据
+
+                      // 遍历物流信息
+                      jsonArr.push({ title: key, children: [] }); // 为每个对象里面创建一个新对象
+                      var jj = 0;
+                      $.each(val1, function (j, val2) {
+                        var checked = false; // 默认状态
+                        for (
+                          var index = 0;
+                          index < response2.datas.length;
+                          index++
+                        ) {
+                          // 遍历商户已有物流
+
+                          if (
+                            key.split("_")[0] ==
+                            response2.datas[index].logisticsCompanyCode
+                          ) {
+                            // 只能当前物流相同，才能进入赋值
+                            if (
+                              val2.expressCompanyCode ==
+                              response2.datas[index].expressCompanyCode
+                            ) {
+                              // 判断当前树结构的流水号和商户的物流的流水号一致
+
+                              if (response2.datas[index].status == "enable") {
+                                // 判断商户是否有开这个物流
+                                // jsonArr[ii].checked = true;
+                                checked = true;
+                              }
+                            }
+                          }
+                        }
+                        jsonArr[ii].children.push({
+                          title:
+                            val2.expressCompanyCode +
+                            "_" +
+                            val2.expressCompanyName,
+                          id: val2.serialNo,
+                          checked: checked,
+                          checkboxValue: val2.serialNo
+                        });
+                        jj++;
+                      });
+                      ii++;
+                    });
+                  } else {
+                    var ii = 0;
+                    $.each(groupNameData, function (key, val1) {
+                      jsonArr.push({ title: key, children: [] });
+                      var jj = 0;
+                      $.each(val1, function (j, val2) {
+                        var checked = false;
+                        if (val2.serialNo == "true") {
+                          // jsonArr[j].checked = true;
+                          checked = true;
+                        }
+                        jsonArr[ii].children.push({
+                          title:
+                            val2.expressCompanyCode +
+                            "_" +
+                            val2.expressCompanyName,
+                          id: val2.serialNo,
+                          checked: checked,
+                          checkboxValue: val2.serialNo
+                        });
+                        jj++;
+                      });
+                      ii++;
+                    });
+                  }
+                  // 渲染数据
+                  tree.render({
+                    elem: '#merchantAllot'
+                    , data: jsonArr
+                    , check: "checkbox" //勾选风格
+                    , showCheckbox: true  //是否显示复选框
+                    , id: 'demoId'
+                    , checkboxName: "allot" //复选框的name属性值
+                    , checkboxStyle: "" //设置复选框的样式，必须为字符串，css样式怎么写就怎么写
+                    // , isJump: true //是否允许点击节点时弹出新窗口跳转
+                    , click: function (obj) {
+
+                    }
+                  });
+                },
+                error: function () {
+                  layer.alert(response2.msg);
+                }
+              });
+              //** 请求商户物流信息 end  **/
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      }
+      _logistics();
+      //保存修改业务资料
+      form.on('submit(merchantLogisticsSave)', function () {
+        layer.load(2);
+        var arr = [];
+        $.each($("#merchantAllot").find('.layui-form input[type="checkbox"]'), function (i, item) {
+          if (item.checked && item.value != "undefined") {
+            arr.push(item.value);
+          }
+        })
+        var data = {
+          merchantId: g_data.merchantId,
+          serialNoPack: JSON.stringify(arr)
+        };
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merchantLogistics/updateInfo",
+          type: "POST",
+          dataType: 'JSON',
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data,
+          success: function (response) {
+            layer.closeAll("loading");
+            if (response.status == 1) {
+              layer.msg('保存成功！');
+              setTimeout(function () {
+                _logistics();
+              }, 1000);
+            } else {
+              layer.alert(response.msg, function () {
+                _logistics();
+              });
+
+            }
+          }
+        });
+      });
+
+      //** 计费信息 **//
+      table.render({
+        elem: '#merchantCost',
+        cellMinWidth: 80,
+        // height: tableHeight,
+        url: urlPrefix + 'silver-web-shop/merchantCost/getInfo',
+        method: 'post',
+        cols: [
+          [{
+            field: 'costType', width: 100, title: '费用类型', templet: function (item) {
+              if (item.costType == 'goodsRecord') {
+                return '商品备案';
+              } else if (item.costType == 'orderDeclare') {
+                return '订单申报';
+              } else if (item.costType == 'paymentDeclare') {
+                return '支付单申报';
+              } else if (item.costType == 'certification') {
+                return '实名认证';
+              } else if (item.costType == 'paymentServiceCharge') {
+                return '支付手续费';
+              }
+            }
+          }, {
+            field: 'tollType', width: 100, title: '	收费类型', templet: function (item) {
+              if (item.tollType == 'pen') {
+                return '按笔计算';
+              } else if (item.tollType == 'rate') {
+                return '按比例计算';
+              }
+            }
+          }, {
+            field: 'serviceCharge', width: 100, title: '服务费', templet: function (item) {
+              if (item.tollType == 'pen') {
+                return item.serviceCharge + "元/笔";
+              } else if (item.tollType == 'rate') {
+                return accMul(item.serviceCharge, 100) + "%";
+              }
+            }
+          }, {
+            field: 'backCoverFlag', width: 100, title: '是否封底', templet: function (item) {
+              if (item.backCoverFlag == 'false') {
+                return '否';
+              } else if (item.backCoverFlag == 'true') {
+                return '是';
+              } else if (item.costType == 'paymentServiceCharge') {
+                return '-';
+              } else {
+                return '否';
+              }
+            }
+          }, {
+            field: 'backCoverFee', width: 100, title: '封底服务费', templet: function (item) {
+              if (item.backCoverFlag == 'false') {
+                return '-';
+              } else if (item.backCoverFlag == 'true') {
+                return item.backCoverFee + "元";
+              } else if (item.costType == 'paymentServiceCharge') {
+                return '-';
+              } else {
+                return '-';
+              }
+            }
+          }, {
+            field: 'operate', title: '操作', toolbar: '#merchantCostTpl', fixed: 'right'
+          }]
+        ],
+        event: true,
+        response: {
+          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+        },
+        where: {
+          page: 0,
+          size: 0,
+          merchantId: g_data.merchantId
+        },
+        request: {
+          pageName: 'page', //页码的参数名称，默认：page
+          limitName: 'size' //每页数据量的参数名，默认：limit
+        },
+        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+          return {
+            "code": res.status, //解析接口状态
+            "msg": res.msg, //解析提示文本
+            "count": res.totalCount, //解析数据长度
+            "data": res.datas //解析数据列表
+          };
+        },
+        done: function (res, curr, count) { }
+      });
+      // 重载计费信息表格
+      var _reload = function () {
+        table.reload('merchantCost', {
+          url: urlPrefix + 'silver-web-shop/merchantCost/getInfo',
+          where: {
+            page: 0,
+            size: 0,
+            merchantId: g_data.merchantId
+          },
+        });
+      }
+      // 添加计费信息
+      // 添加商户计费信息
+      var addIndex = null;
+      $("#merchantCost_addBtn").click(function () {
+        $("#merchantCost_add")
+          .find("[name]")
+          .val("");
+        $("#serviceCharge_penVal").val("");
+        $("#serviceCharge_rateVal").val("");
+        $("#backCoverFee_val").val("");
+        $("#backCoverFlag_li").show();
+        $("#serviceCharge_rate,#backCoverFee_li,#serviceCharge_pen").hide();
+        addIndex = layer.open({
+          title: "添加商户计费信息",
+          type: 1,
+          skin: "layui-layer-rim", //加上边框
+          area: ["460px", "351px"], //宽高
+          content: $("#merchantCost_add")
+        });
+      });
+      // 新增计费信息
+      form.on('submit(add_merchantCost)', function (data) {
+        if (data.field.tollType == "rate") {
+          data.field.serviceCharge = accDiv(parseFloat(data.field.serviceCharge), 100);
+        }
+        data.field.merchantId = g_data.merchantId;
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merchantCost/insertInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            if (response.status == 1) {
+              layer.close(addIndex);
+              layer.msg("添加成功");
+              _reload();
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
+      // 关闭新增弹窗
+      $('#close_add').click(function () {
+        layer.close(addIndex);
+      })
+      // 新增-选择收费类型
+      form.on('select(tollType)', function (data) {
+        if (data.value == "pen") {
+          $("#serviceCharge_rate").hide();
+          $("#serviceCharge_rate").find('input').removeAttr('lay-verify').removeAttr('name');
+          $("#serviceCharge_penVal").val("");
+          $("#serviceCharge_pen").show();
+          $("#serviceCharge_pen").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');
+
+        } else if (data.value == "rate") {
+          $("#serviceCharge_pen").hide();
+          $("#serviceCharge_pen").find('input').removeAttr('lay-verify').removeAttr('name');
+          $("#serviceCharge_rateVal").val("");
+          $("#serviceCharge_rate").show();
+          $("#serviceCharge_rate").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');
+        } else {
+          $("#serviceCharge_pen,#serviceCharge_rate").removeAttr('lay-verify').removeAttr('name').hide();
+        }
+      });
+
+      // 修改-选择收费类型
+      $("#tollType_update").change(function () {
+        if ($(this).val() == "pen") {
+          $("#serviceCharge_rate_update").hide();
+          $("#serviceCharge_penVal_update").val("");
+          $("#serviceCharge_pen_update").show();
+        } else if ($(this).val() == "rate") {
+          $("#serviceCharge_pen_update").hide();
+          $("#serviceCharge_rateVal_update").val("");
+          $("#serviceCharge_rate_update").show();
+        } else {
+          $("#serviceCharge_pen_update,#serviceCharge_rate_update").hide();
+        }
+      });
+      // 新增-选择是否封底
+      form.on('select(backCoverFlag_val)', function (data) {
+        if (data.value == "true") {
+          $("#merchantCost_add [name=backCoverFee]").val("");
+          $("#backCoverFee_li").show();
+          $("#backCoverFee_li").find('input').attr('lay-verify', 'required');
+        } else if (data.value == "false") {
+          $("#backCoverFee_li").hide();
+          $("#backCoverFee_li").find('input').removeAttr('lay-verify');
+        } else {
+          $("#backCoverFee_li").hide();
+          $("#backCoverFee_li").find('input').removeAttr('lay-verify');
+        }
+      });
+      // 修改-选择是否封底
+      $("#backCoverFlag_val_update").change(function () {
+        if ($(this).val() == "true") {
+          $("#merchantCost_update [name=backCoverFee]").val("");
+          $("#backCoverFee_li_update").show();
+        } else if ($(this).val() == "false") {
+          $("#backCoverFee_li_update").hide();
+        } else {
+          $("#backCoverFee_li_update").hide();
+        }
+      });
+      // 新增-选择费用类型
+      form.on('select(costType)', function (data) {
+        $("#serviceCharge_rate,#serviceCharge_pen").hide();
+        $("#serviceCharge_rateVal,#serviceCharge_penVal,#backCoverFlag_val").val("");
+        if (data.value == "paymentServiceCharge") {
+          $("#tollType").html(
+            '<option value="">请选择</option><option value="rate">按费率收费</option>'
+          );
+          $("#backCoverFlag_li,#backCoverFee_li").hide();// 隐藏是否封底
+          $("#backCoverFee_li").find('input').removeAttr('lay-verify').removeAttr('name');// 支付服务费没有封底手续费
+          $("#backCoverFlag_li").find('select').removeAttr('lay-verify').removeAttr('name');// 支付服务费没有封底手续费
+        } else {
+          $("#tollType").html(
+            '<option value="">请选择</option><option value="pen">按每笔收费</option><option value="rate">按费率收费</option>'
+          );
+          $("#backCoverFlag_val").find('input').attr('name', 'backCoverFlag').attr('lay-verify', 'required').val("");
+          $("#backCoverFlag_li").show();
+          $("#backCoverFlag_li").find('select').attr('name', 'backCoverFlag').attr('lay-verify', 'required');
+        }
+        form.render('select');
+      });
+      //监听工具条
+      table.on('tool(merchantCost)', function (obj) {
+
+        if (obj.event === 'edit') {// 修改
+          var data = obj.data;
+          console.log(data)
+          if (data.backCoverFlag == '') {
+            data.backCoverFlag = false;
+          }
+
+
+          if (data.costType == "paymentServiceCharge") {// 等于支付手续费时   
+            $("#tollType_update").html('<option value="">请选择</option><option value="rate">按费率收费</option>');
+            $(
+              "#backCoverFlag_li_update,#backCoverFee_li_update,#serviceCharge_pen_update"
+            ).hide();// 按费率收费隐藏
+            $("#serviceCharge_rate_update").show();// 支付手续费类型只有按费率收费
+            $("#serviceCharge_rate_update").attr('name','serviceCharge');// 为按费率收费添加name属性等于serviceCharge
+            data.serviceCharge = accMul(data.serviceCharge, 100);
+            // $("#serviceCharge_rateVal_update").val(data.serviceCharge * 100);
+          } else {// 不等于支付手续费时
+            
+            $("#tollType_update").html(
+              '<option value="">请选择</option><option value="pen">按每笔收费</option><option value="rate">按费率收费</option>'
+            );
+            $("#backCoverFlag_li_update").show();
+            // 是否封底
+            if (data.backCoverFlag == "true") {
+              $("#backCoverFee_li_update").show();
+            } else {
+              $("#backCoverFee_li_update").hide();
+            }
+            // 收费类型
+            if (data.tollType == "pen") {
+              $("#serviceCharge_rate_update").hide();
+              $("#serviceCharge_pen_update").show();
+            } else {
+              $("#serviceCharge_pen_update").hide();
+              $("#serviceCharge_rate_update").show();
+              data.serviceCharge = accMul(data.serviceCharge, 100)
+            }
+          }
+
+          //表单初始赋值
+          form.val('merchantCost_update', {
+            "costType": data.costType
+            , "tollType": data.tollType
+            , "backCoverFlag": data.backCoverFlag
+            , "backCoverFee": data.backCoverFee
+            , "serviceCharge": data.serviceCharge
+          })
+          form.render('select');
+
+          layer.open({
+            type: 1,
+            title: '修改商户计费信息',
+            area: ["460px", "351px"], //宽高
+            fixed: false, //不固定
+            maxmin: true,
+            content: $('#merchantCost_update'),
+            btnAlign: 'c',
+            btn: ['保存', '关闭'],
+            btn1: function (index) {
+              layer.close(index);
+            }
+          });
+        }
+      });
     });
 
   </script>

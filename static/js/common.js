@@ -2,6 +2,8 @@
 var urlPrefix = "https://ym.191ec.com/";
 // var urlPrefix = 'http://120.132.118.211:8080/';
 
+
+var merchantImgPrefix = "https://ym.191ec.com/img/";// 图片拼接前缀
 // 日期格式化
 var G_format = function (datetime, fmt) {
   if (isEmpty(datetime)) {

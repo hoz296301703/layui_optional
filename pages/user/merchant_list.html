@@ -440,9 +440,9 @@
 						success: function (layero, index) {
 							// console.log(obj)
 							// 获取子页面的iframe
-							// var iframe = window['layui-layer-iframe' + index];
-							// // 向子页面的全局函数child传参
-							// iframe.getParent_data(obj);
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传参
+							iframe.getParent_data(obj);
 						},
 						// btn1: function (index) {
 						// 	layer.close(index);
