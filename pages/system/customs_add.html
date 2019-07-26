@@ -134,7 +134,7 @@
 					data: [],
 					fn: function (value) { // value 表示的是区域代码，及传到后台的数据
 						this.state = true; // 可能以后会用到
-						var provinceCode = $('#form_sreach').find('[name=province]');
+						var provinceCode = $('#form_sreach').find('[name=provinceCode]');
 						if (value !== '') {
 							//渲染城市select
 							addCity('city', getCity(provinceCode.val()), true);
