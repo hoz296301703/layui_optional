@@ -54,6 +54,7 @@
         <li>物流信息</li>
         <li>计费信息</li>
         <li>银行卡信息</li>
+        <li>口岸信息</li>
       </ul>
       <div class="layui-tab-content" style="height: 100px;">
         <!-- 基本信息 -->
@@ -493,7 +494,8 @@
             <div class="layui-form-item">
               <label class="layui-form-label">预留手机号</label>
               <div class="layui-input-block">
-                <input type="tel" name="reservedTel" lay-verify="required|phone" autocomplete="off" placeholder="请输入预留手机号" class="layui-input">
+                <input type="tel" name="reservedTel" lay-verify="required|phone" autocomplete="off"
+                  placeholder="请输入预留手机号" class="layui-input">
               </div>
             </div>
 
@@ -559,6 +561,56 @@
 
             </div>
 
+          </form>
+        </div>
+        <!-- 口岸信息 -->
+        <div class="layui-tab-item">
+          <form class="layui-form" lay-filter="info" id="portRate" style="margin-top: 25px;">
+            <input type="hidden" name="merchantId">
+            <div class="layui-form-item">
+              <label class="layui-form-label">
+                <span class="we-red">*</span>海关
+              </label>
+              <div class="layui-input-inline" style="width:500px;">
+                <select name="ciqOrg" lay-verify="required" lay-filter="aihao">
+                  <option value=""></option>
+                  <option value="1">启用</option>
+                  <option value="2">禁用</option>
+                  <option value="3">审核</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>类型
+                </label>
+                <div class="layui-input-inline">
+                  <select name="type" lay-verify="required" lay-filter="aihao">
+                    <option value="">请选择</option>
+                    <option value="goodsRecord">商品备案</option>
+                    <option value="orderRecord">订单申报</option>
+                    <option value="paymentRecord">支付单备案</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>状态
+                </label>
+                <div class="layui-input-inline">
+                  <select name="status" lay-verify="required" lay-filter="aihao">
+                    <option value="1">正常</option>
+                    <option value="2">禁用</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+              <button type="button" class="layui-btn" lay-filter="portRate_updateBtn" lay-submit="">保存</button>
+            </div>
           </form>
         </div>
         <!-- 计费信息操作按钮 -->
@@ -1528,10 +1580,10 @@
         cols: [
           [
             {
-              field: 'bankAccountNo', width: 80, title: '银行卡号'
+              field: 'bankAccountNo', width: 100, title: '银行卡号'
             },
             {
-              field: 'reservedTel', width: 80, title: '预留手机'
+              field: 'reservedTel', width: 100, title: '预留手机'
             },
             {
               field: 'bankName', width: 100, title: '开户行名称'
@@ -1640,13 +1692,13 @@
           data: [],
           fn: function (value) { // value 表示的是区域代码，及传到后台的数据
             this.state = true; // 可能以后会用到
-            var provinceCode = $('#form_sreach').find('[name=provinceCode]');
+            var provinceCode = $('#merchantBank_add').find('[name=bankProvince]');
+
             if (value !== '') {
               //渲染城市select
-              addCity('city', getCity(provinceCode.val()), true);
+              addCity('city', getCity($(provinceCode).find('option:selected').attr('data-provincecode')), true);
             } else {
-              $('#quiz2').html('');
-              $('#quiz3').html('');
+
               form.render("select");
             }
           }
@@ -1948,6 +2000,48 @@
           }
         });
       });
+
+      /** 口岸信息 **/
+      var CustomsPortArr = [];// 全局海关信息
+      // 查询海关
+      var _queryCustomsPort = function (data) {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/customsPort/findAllCustomsPort",
+          type: "POST",
+          data: data,
+          success: function (response) {
+            if (response.status == 1) {
+              CustomsPortArr = response.datas;
+              var ciqOrgHtml = '';
+              $.each(CustomsPortArr, function (i, item) {
+                ciqOrgHtml +=
+                  '<option value="' +
+                  item.customsPort +
+                  "-" +
+                  item.customsCode +
+                  "-" +
+                  item.ciqOrgCode +
+                  '">' +
+                  item.customsPort +
+                  "-" +
+                  item.customsPortName +
+                  " / " +
+                  item.customsCode +
+                  "-" +
+                  item.customsName +
+                  " / " +
+                  item.ciqOrgCode +
+                  "-" +
+                  item.ciqOrgName +
+                  "</option>";
+              });
+              $('#portRate').find('[name=ciqOrg]').html(ciqOrgHtml);
+              form.render('select');
+            }
+          }
+        });
+      };
+      _queryCustomsPort();
     });
 
   </script>
