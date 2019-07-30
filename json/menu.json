@@ -144,13 +144,7 @@
 				},
 				{
 					"id": 9,
-					"name": "申报信息",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				},
-				{
-					"id": 9,
-					"name": "已移除订单",
+					"name": "分润报表",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				}
