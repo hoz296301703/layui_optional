@@ -100,27 +100,9 @@
 			"children": [
 				{
 					"id": 9,
-					"name": "订单信息",
+					"name": "综合报表",
 					"icon": "",
-					"url": "./pages/article/list.html"
-				},
-				{
-					"id": 9,
-					"name": "支付单信息",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				},
-				{
-					"id": 9,
-					"name": "申报信息",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				},
-				{
-					"id": 9,
-					"name": "已移除订单",
-					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/report/complex_report_list.html"
 				}
 			]
 		},
