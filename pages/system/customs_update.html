@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<!-- 海关信息更新html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <form class="layui-form" id="customs_form" lay-filter="example">
+      <!--唯一标识流水号-->
+      <input name="id" id="id" type="hidden" />
+      <label class="layui-form-label">省/市</label>
+      <div class="layui-input-inline">
+        <select lay-verify="required" name="provinceCode" lay-filter="province" id="province" lay-search=""></select>
+      </div>
+      <div class="layui-input-inline">
+        <select lay-verify="required" name="cityCode" id="city" lay-filter="city" lay-search="">
+        </select>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">
+          <span class="we-red">*</span>口岸
+        </label>
+        <div class="layui-input-inline">
+          <select lay-verify="required" name="customsPort" id="customsPort" lay-verify="required" lay-filter="aihao"
+            lay-search="">
+            <option value="">选择口岸</option>
+            <option value="1">电子口岸</option>
+            <option value="2">南沙智检</option>
+          </select>
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label for="L_username" class="layui-form-label">
+          <span class="we-red">*</span>海关关区
+        </label>
+        <div class="layui-input-inline">
+          <select lay-verify="required" name="customsCode" lay-filter="customs" id="customs" lay-search="">
+          </select>
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">
+          <span class="we-red">*</span>国检机构
+        </label>
+        <div class="layui-input-inline">
+          <div class="layui-input-inline">
+            <select lay-verify="required" name="ciqOrgCode" lay-filter="cciq" id="cciq" lay-search="">
+            </select>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+    <button type="button" class="layui-btn" lay-filter="update" lay-submit="">保存</button>
+  </div>
+  </form>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量
+    function getParent_data(obj) {
+      g_data = obj.data;
+    }
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+
+    layui.use(['tree', 'form', 'jquery', 'util', 'admin', 'layer', 'upload', 'table'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        util = layui.util,
+        admin = layui.admin,
+        table = layui.table,
+        tree = layui.tree,
+        upload = layui.upload,
+        layer = layui.layer;
+      //表单初始赋值
+      form.val('example', {
+        "id": g_data.id
+        , "customsPort": g_data.customsPort
+        , "customsCode": g_data.customsCode
+      })
+      //获取省
+      function getProvince() {
+        var datas = null;
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/provinceCityArea/findProvince",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          async: false,
+          data: { page: 0, size: 0 },
+          success: function (response) {
+            if (response.status == 1) {
+              datas = response.datas;
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+        //倒叙排序
+        return datas.reverse();
+      }
+
+      //获取城市
+      function getCity(code) {
+        var datas = null;
+        var data = { provinceCode: code, page: 0, size: 0 };
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/provinceCityArea/findCity",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          async: false,
+          data: data,
+          success: function (response) {
+            if (response.status == 1) {
+              datas = response.datas;
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+        //倒叙排序
+        return datas.reverse();
+      }
+      // 一级联动事件触发
+      form.on('select(province)', function (data) {
+        var value = data.value;
+        console.info('省--->>' + value);
+        areaState.province.fn(value);
+      });
+      // 二级联动事件触发
+      // form.on('select(city)', function (data) {
+      // 	var value = data.value;
+      // 	areaState.city.fn(value);
+      // });
+      var areaState = {
+        province: {
+          state: false,
+          data: [],
+          fn: function (value) { // value 表示的是区域代码，及传到后台的数据
+            this.state = true; // 可能以后会用到
+            var provinceCode = $('#customs_form').find('[name=provinceCode]');
+            if (value !== '') {
+              //渲染城市select
+              iniSelect('city', getCity(provinceCode.val()), true, 'cityCode', 'cityName');
+            } else {
+              $('#quiz2').html('');
+              $('#quiz3').html('');
+              form.render();
+            }
+          }
+        }
+        // ,
+        // city: {
+        // 	state: false,
+        // 	data: [],
+        // 	fn: function (value) {
+        // 		this.state = true;
+        // 		areaState.place.state = false;
+
+        // 		areaState.place.data = selDate.place;
+        // 		if (value !== '') {
+        // 			addSelect('quiz3', areaState.place.data, true, 'regionCode', 'regionName');
+        // 		} else {
+        // 			$('#quiz3').html('');
+        // 			form.render("select");
+        // 		}
+        // 	}
+        // },
+        // place: {
+        // 	state: false,
+        // 	data: [],
+        // 	fn: function () {
+        // 		this.state = true;
+        // 	}
+        // }
+      };
+
+      iniSelect('province', getProvince(), true, 'provinceCode', 'provinceName', g_data.provinceCode);
+
+      //select添加选项
+      function iniSelect(id, data, bool, code, name, defValue) {//bool是否添加“请选择”选项				
+        var html = '';
+        var $id = $('#' + id);
+        $id.html('');
+        if (bool) { html += '<option value="">请选择或输入名称搜索</option>'; }
+        for (var key in data) {
+          html += '<option value="' + data[key][code] + '">' + data[key][name] + '</option>';
+        }
+        $id.html(html);
+        $("#" + id).find("option[value='" + defValue + "']").prop("selected", true);
+        form.render();
+      }
+
+      iniSelect('city', getCity(g_data.provinceCode), true, 'cityCode', 'cityName', g_data.cityCode);
+      //获取城市
+      function getCCIQ() {
+        var datas = null;
+        // var data = { provinceCode: code, page: 0, size: 0 };
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/cciq/getCCIQInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          async: false,
+          // data: data,
+          success: function (response) {
+            if (response.status == 1) {
+              datas = response.datas;
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+        //倒叙排序
+        return datas.reverse();
+      }
+      //查询所有国检
+      function getCciq() {
+        var obj = null;
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/cciq/getCCIQInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          async: false,
+          success: function (response) {
+            if (response.status == 1) {
+              obj = response.datas;
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+        return obj;
+      }
+      iniSelect('cciq', getCciq(), true, 'code', 'CCIQName', g_data.ciqOrgCode);
+      //查询所有海关
+      function getGac() {
+        var obj = null;
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/gac/getGACInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          async: false,
+          success: function (response) {
+            if (response.status == 1) {
+              obj = response.datas;
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+        return obj;
+      }
+     
+      iniSelect('customs', getGac(), true, 'code', 'GACName', g_data.customsCode);
+
+      //修改
+      form.on('submit(update)', function (data) {
+        console.info(data);
+        var params = {};
+        var id = $('#customs_form').find('[name=id]');
+        var provinceCode = $('#customs_form').find('[name=provinceCode]');
+        var cityCode = $('#customs_form').find('[name=cityCode]');
+        var customsPort = $('#customs_form').find('[name=customsPort]');
+        if (customsPort.val() == '1') {// 电子口岸
+          //新增名称属性
+          params.customsPortName = "电子口岸";
+        } else {
+          params.customsPortName = "智检";
+        }
+        var customsCode = $('#customs_form').find('[name=customsCode]');
+        var ciqOrgCode = $('#customs_form').find('[name=ciqOrgCode]');
+        params.id = id.val();
+        params.provinceCode = provinceCode.val();
+        params.cityCode = cityCode.val();
+        params.customsPort = customsPort.val();
+        params.customsCode = customsCode.val();
+        params.ciqOrgCode = ciqOrgCode.val();
+        console.info(params);
+        layer.load(2);
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/customsPort/update",
+          // type: "POST",
+          method: 'post',
+          dataType: 'JSON',
+          xhrFields: {
+            withCredentials: true
+          },
+          data: params,
+          success: function (response) {
+            layer.closeAll("loading");
+            if (response.status == 1) {
+              layer.msg('修改成功！');
+              setTimeout(function () {
+                parent.customs_reload();// 添加成功调用父页面的重载方法
+              }, 1000);
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
+
+
+    });
+  </script>
+</body>
+
+</html>

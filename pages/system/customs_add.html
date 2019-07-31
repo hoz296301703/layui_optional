@@ -56,17 +56,19 @@
 		</div> -->
 		<label class="layui-form-label">省/市</label>
 		<div class="layui-input-inline">
-			<select lay-verify="required" name="provinceCode" lay-filter="province" id="province"></select>
+			<select lay-verify="required" name="provinceCode" lay-filter="province" id="province"
+				lay-search=""></select>
 		</div>
 		<div class="layui-input-inline">
-			<select lay-verify="required" name="cityCode" id="city" lay-filter="city"></select>
+			<select lay-verify="required" name="cityCode" id="city" lay-filter="city" lay-search="">
+			</select>
 		</div>
 		<div class="layui-inline">
 			<label class="layui-form-label">
 				<span class="we-red">*</span>口岸
 			</label>
 			<div class="layui-input-inline">
-				<select name="customsPort" lay-verify="required" lay-filter="aihao">
+				<select name="customsPort" lay-verify="required" lay-filter="aihao" lay-search="">
 					<option value="">请选择口岸</option>
 					<option value="1">电子口岸</option>
 					<option value="2">南沙智检</option>
@@ -75,20 +77,22 @@
 		</div>
 		<div class="layui-inline">
 			<label for="L_username" class="layui-form-label">
-				<span class="we-red">*</span>海关编码
+				<span class="we-red">*</span>海关关区
 			</label>
 			<div class="layui-input-inline">
-				<input type="text" id="customsCode" placeholder="请输入海关编码" name="customsCode" lay-verify="required"
-					autocomplete="off" class="layui-input">
+				<select lay-verify="required" name="customsCode" lay-filter="customs" id="customs" lay-search="">
+				</select>
 			</div>
 		</div>
 		<div class="layui-inline">
 			<label class="layui-form-label">
-				<span class="we-red">*</span>国检机构代码
+				<span class="we-red">*</span>国检机构
 			</label>
 			<div class="layui-input-inline">
-				<input type="text" name="ciqOrgCode" placeholder="请输入国检机构代码" lay-verify="ciqOrgCode" autocomplete="off"
-					class="layui-input">
+				<div class="layui-input-inline">
+					<select lay-verify="required" name="ciqOrgCode" lay-filter="cciq" id="cciq" lay-search="">
+					</select>
+				</div>
 			</div>
 		</div>
 		<div class="layui-form-item" style="text-align: center;margin-top: 30px;">
@@ -137,7 +141,7 @@
 						var provinceCode = $('#form_sreach').find('[name=provinceCode]');
 						if (value !== '') {
 							//渲染城市select
-							addCity('city', getCity(provinceCode.val()), true);
+							iniSelect('city', getCity(provinceCode.val()), true, 'cityCode', 'cityName');
 						} else {
 							$('#quiz2').html('');
 							$('#quiz3').html('');
@@ -171,29 +175,16 @@
 				// }
 			};
 			//select添加选项
-			function addSelect(id, data, bool) {//bool是否添加“请选择”选项				
+			function iniSelect(id, data, bool, code, name) {//bool是否添加“请选择”选项				
 				var html = '';
 				var $id = $('#' + id);
 				$id.html('');
-				if (bool) { html += '<option value="">请选择</option>'; }
+				if (bool) { html += '<option value="">请选择或输入名称搜索</option>'; }
 				for (var key in data) {
-					var arr = Object.keys(data[key]);
-					html += '<option value="' + data[key].provinceCode + '">' + data[key].provinceName + '</option>';
+					html += '<option value="' + data[key][code] + '">' + data[key][name] + '</option>';
 				}
 				$id.html(html);
-				form.render("select");
-			}
-			//城市
-			function addCity(id, data, bool) {//bool是否添加“请选择”选项				
-				var html = '';
-				var $id = $('#' + id);
-				$id.html('');
-				if (bool) { html += '<option value="">请选择</option>'; }
-				for (var key in data) {
-					html += '<option value="' + data[key].cityCode + '">' + data[key].cityName + '</option>';
-				}
-				$id.html(html);
-				form.render("select");
+				form.render();
 			}
 			//获取省
 			function getProvince() {
@@ -240,18 +231,18 @@
 				//倒叙排序
 				return datas.reverse();
 			}
-			addSelect('province', getProvince(), true);
+			iniSelect('province', getProvince(), true, 'provinceCode', 'provinceName');
 			//新增
 			form.on('submit(add)', function (data) {
-				// layer.load(2);
-				var d = data.field;
+				layer.load(2);
+				var params = data.field;
 				if (data.field.customsPort == '1') {// 电子口岸
 					//新增名称属性
-					d["customsPortName"] = "电子口岸";
+					params["customsPortName"] = "电子口岸";
 				} else {
-					d["customsPortName"] = "智检";
+					params["customsPortName"] = "智检";
 				}
-				console.info(d);
+				// console.info(params);
 				$.ajax({
 					url: urlPrefix + "silver-web-shop/customsPort/insert",
 					// type: "POST",
@@ -260,13 +251,12 @@
 					xhrFields: {
 						withCredentials: true
 					},
-					data: d,
+					data: params,
 					success: function (response) {
 						layer.closeAll("loading");
 						if (response.status == 1) {
 							layer.msg('添加成功！');
 							setTimeout(function () {
-								console.info('===========');
 								parent.customs_reload();// 添加成功调用父页面的重载方法
 							}, 1000);
 						} else {
@@ -275,6 +265,49 @@
 					}
 				});
 			});
+
+			//查询所有国检
+			function getCciq() {
+				var obj = null;
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/cciq/getCCIQInfo",
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					async: false,
+					success: function (response) {
+						if (response.status == 1) {
+							obj = response.datas;
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+				return obj;
+			}
+			iniSelect('cciq', getCciq(), true, 'code', 'CCIQName');
+			//查询所有海关
+			function getGac() {
+				var obj = null;
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/gac/getGACInfo",
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					async: false,
+					success: function (response) {
+						if (response.status == 1) {
+							obj = response.datas;
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+				return obj;
+			}
+			iniSelect('customs', getGac(), true, 'code', 'GACName');
 		});
 	</script>
 </body>

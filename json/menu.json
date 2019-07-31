@@ -159,38 +159,6 @@
 			]
 		},
 		{
-			"id": 8,
-			"name": "对账管理",
-			"icon": "&#xe723;",
-			"url": "",
-			"children": [
-				{
-					"id": 9,
-					"name": "订单信息",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				},
-				{
-					"id": 9,
-					"name": "支付单信息",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				},
-				{
-					"id": 9,
-					"name": "申报信息",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				},
-				{
-					"id": 9,
-					"name": "已移除订单",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				}
-			]
-		},
-		{
 			"id": 10,
 			"name": "系统管理",
 			"icon": "&#xe6ce;",

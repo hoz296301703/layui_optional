@@ -86,10 +86,11 @@
 				</div>
 			</form>
 		</div>
-		<div class="weadmin-block demoTable">
-			<button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html',600,400)"><i
+		<script type="text/html" id="manager_list_toolbar">
+				<button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html',600,400)"><i
 					class="layui-icon">&#xe61f;</i>添加管理员</button>
-		</div>
+			</div>
+		</script>
 		<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 		<!-- <script type="text/html" id="statusTpl">
 			<input type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁用" {{d.status}}>
@@ -126,7 +127,9 @@
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
+				toolbar: '#manager_list_toolbar',
 				cellMinWidth: 80,
+
 				height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/manager/findAllManagerInfo',
 				method: 'post',
