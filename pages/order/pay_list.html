@@ -151,21 +151,21 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'create_date', title: '创建时间', fixed: 'left', templet: function (item) {
+							field: 'create_date', title: '创建时间', width: 180, fixed: 'left', templet: function (item) {
 								return G_format(item.create_date.time, "yyyy-MM-dd hh:mm:ss");
 							}
-						}, {
-							field: 'morder_id', title: '订单号',
 						}, {
 							field: 'pay_time', title: '交易时间', width: 130, templet: function (item) {
 								return G_format(item.pay_time.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'trade_no', title: '交易流水号'
+							field: 'morder_id', title: '订单号', width: 200
+						}, {
+							field: 'trade_no', title: '交易流水号', width: 180
 						}, {
 							field: 'pay_amount', title: '交易金额', width: 100
 						}, {
-							field: 'create_by', title: '商户名称'
+							field: 'create_by', title: '商户名称', width: 200
 						},
 						// {
 						// 	field: 'freight', title: '运费', width: 60
@@ -174,12 +174,12 @@
 						// 	field: 'waybillNo', title: '运单号', width: 80
 						// }, 
 						{
-							field: 'merchant_no', title: '商户编号'
+							field: 'merchant_no', title: '商户编号', width: 150
 						}, {
-							field: 'pay_record_status', title: '申报状态', templet: function (item) {
+							field: 'pay_record_status', title: '申报状态', fixed: 'right', width: 100, templet: function (item) {
 								if (item.pay_record_status == '1') {
 									return '未申报';
-								} else if (item.pay_record_status == '2') {
+								} else if (item.pay_record_status == '2' || item.pay_record_status == '10') {
 									return '申报中';
 								} else if (item.pay_record_status == '3') {
 									return '申报成功';

@@ -86,6 +86,7 @@
 							<option value="expand">推广</option>
 							<option value="mall">商城</option>
 							<option value="excelImport">导入</option>
+							<option value="seckill">秒杀</option>
 						</select>
 					</div>
 				</div>
@@ -200,6 +201,8 @@
 									return '商城';
 								} else if (item.orderSourceType == 'excelImport') {
 									return '导入';
+								} else if (item.orderSourceType == 'seckill') {
+									return '秒杀';
 								} else {
 									return '';
 								}
