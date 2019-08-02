@@ -208,7 +208,7 @@
 				event: true,
 				page: true,
 				where: {
-					// merchantStatus: $('#form_sreach').find('[name=merchantStatus]').val()
+					merchantStatus: $('#form_sreach').find('[name=merchantStatus]').val()
 				},
 				response: {
 					statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
@@ -474,7 +474,26 @@
 					});
 
 				} else if (obj.event === 'df') {// 代付会员
-					
+					layer.open({
+						type: 2,
+						title: '代付会员',
+						area: ['90%', '90%'],
+						fixed: false, //不固定
+						maxmin: true,
+						content: './df.html',
+						btnAlign: 'c',
+						// btn: ['关闭'],
+						success: function (layero, index) {
+							// console.log(obj)
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传参
+							iframe.getParent_data(obj);
+						},
+						// btn1: function (index) {
+						// 	layer.close(index);
+						// }
+					});
 				}
 			});
 		});

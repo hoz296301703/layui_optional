@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<!-- 会员信息html-->
+
+<head>
+	<meta charset="UTF-8">
+	<title>银盟跨境电商服务平台运营系统</title>
+	<meta name="Description" content="基于layUI数据表格操作" />
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../../static/css/font.css">
+	<link rel="stylesheet" href="../../static/css/weadmin.css">
+	<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+	<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	<style type="text/css">
+		.layui-form-switch {
+			width: 55px;
+		}
+
+		/* 私有样式 */
+		.layui-form-label {
+			width: 70px;
+		}
+
+		.layui-form-switch em {
+			width: 40px;
+		}
+
+		body {
+			overflow-y: scroll;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="weadmin-body">
+		<form id="form_sreach" class="layui-form">
+			<table class="layui-hide" id="df" lay-filter="df"></table>
+			<script type="text/html" id="operateTpl_df">
+				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="down">充值明细</a>					
+			</script>
+		</form>
+		<form id="down_date" class="layui-form" style="display: none;margin-top: 20px;text-align: center;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">日期</label>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" name="startDate" autocomplete="off" placeholder="年-月-日">
+					</div>
+					<div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+					<div class="layui-input-inline">
+						<input type="text" class="layui-input" name="endDate" autocomplete="off" placeholder="年-月-日">
+					</div>
+				</div>
+			</div>
+		</form>
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<script src="../../static/js/common.js" charset="utf-8"></script>
+	</div>
+	<script>
+		layui.extend({
+			admin: '{/}../../static/js/admin'
+		});
+		var g_data = '';// 全局数据变量
+		function getParent_data(obj) {
+			g_data = obj.data;
+		}
+		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+			var table = layui.table,
+				$ = layui.jquery,
+				form = layui.form,
+				tree = layui.tree,
+				admin = layui.admin,
+				laydate = layui.laydate;
+			// 初始化日期
+			laydate.render({
+				elem: '#down_date [name=startDate]'
+			});
+			laydate.render({
+				elem: '#down_date [name=endDate]'
+			});
+			// 动态设置表格高度
+			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			table.render({
+				elem: '#df',
+				cellMinWidth: 80,
+				height: tableHeight,
+				url: urlPrefix + 'silver-web-shop/merRelMem/getMerRelMem',
+				method: 'post',
+				cols: [
+					[
+						{
+							field: 'zizeng', width: 50, title: '序号', fixed: 'left', type: 'numbers'
+						}, {
+							field: 'memberName', title: '会员名称', width: 150
+						}, {
+							field: 'memberId', title: '会员编号', width: 150
+						}, {
+							field: 'memberIdCardName', title: '姓名', width: 100
+						}, {
+							field: 'memberIdCard', width: 150, title: '身份证号'
+						}, {
+							field: 'reserveAmount', title: '储备资金（元）', width: 150
+						}, {
+							field: 'operate', title: '操作', toolbar: '#operateTpl_df', fixed: 'right'
+						}]
+				],
+				event: true,
+				page: true,
+				response: {
+					statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+				},
+				request: {
+					pageName: 'page', //页码的参数名称，默认：page
+					limitName: 'size', //每页数据量的参数名，默认：limit
+
+				},
+				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+					return {
+						"code": res.status, //解析接口状态
+						"msg": res.msg, //解析提示文本
+						"count": res.totalCount, //解析数据长度
+						"data": res.datas //解析数据列表
+					};
+				},
+				where: {
+					merchantId: g_data.merchantId
+				}
+			});
+
+
+			//监听工具条
+			table.on('tool(df)', function (obj) {
+				var data = obj.data;
+				console.log(data.memberId)
+				if (obj.event === 'down') {// 下载充值明细
+					var down_open = layer.open({
+						type: 1,
+						closeBtn: 0,
+						title: "下载充值明细",
+						btnAlign: "c",
+						skin: "layui-layer-rim", //加上边框
+						area: ["542px", "400px"], //宽高
+						content: $("#down_date"),
+						btn: ["下载", "关闭"],
+						yes: function (index) {
+							var startDate = "";
+							var endDate = "";
+							startDate = $("#down_date")
+								.find("[name=startDate]")
+								.val();
+							endDate = $("#down_date")
+								.find("[name=endDate]")
+								.val();
+							if (isEmpty(startDate) || isEmpty(endDate)) {
+								layer.alert("请选择开始时间与结束时间");
+								return false;
+							} else if (startDate > endDate) {
+								layer.alert("开始时间不能大于结束时间不能为空");
+								return false;
+							}
+							startDate = startDate + " 00:00:00";
+							endDate = endDate + " 23:59:59";
+							window.location.href =
+								urlPrefix +
+								"silver-web-shop/tradeReviewLog/mangerDownLogs?type=customized&startDate=" +
+								startDate +
+								"&endDate=" +
+								endDate +
+								"&memberId=" +
+								data.memberId +
+								"&merchantId=" + g_data.merchantId;
+
+
+							layer.close(down_open);
+							layer.alert(
+								'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+								{
+									time: 0, //不自动关闭
+									btn: ["关闭"],
+									btnAlign: "c",
+									yes: function (index) {
+										layer.close(index);
+									}
+								}
+							);
+						}
+					});
+				}
+
+			});
+
+		});
+	</script>
+</body>
+
+</html>
