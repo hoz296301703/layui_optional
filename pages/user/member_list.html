@@ -64,6 +64,12 @@
 					</div>
 				</div>
 				<div class="layui-inline">
+					<label class="layui-form-label">编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="memberId" placeholder="请输入会员编号" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
 					<label class="layui-form-label">姓名</label>
 					<div class="layui-input-inline">
 						<input type="text" name="memberIdCardName" placeholder="请输入姓名" class="layui-input">
@@ -162,21 +168,21 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '注册时间',fixed: 'left', templet: function (item) {
+							field: 'createDate',width:180 , title: '注册时间',fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'memberName', title: '名称', 
+							field: 'memberName', title: '名称',width:150 
 						}, {
-							field: 'loginName', title: '登录账号'
+							field: 'loginName', title: '登录账号',width:150
 						}, {
-							field: 'memberId', title: '编号'
+							field: 'memberId', title: '编号',width:150
 						}, {
 							field: 'memberIdCardName', width: 80, title: '姓名'
 						}, {
-							field: 'memberIdCard', title: '身份号码'
+							field: 'memberIdCard', title: '身份号码',width:150
 						}, {
-							field: 'memberTel', title: '手机号码'
+							field: 'memberTel', title: '手机号码',width:150
 						}, {
 							field: 'realNameFlag', title: '实名状态', width: 90, templet: function (item) {
 								if (item.realNameFlag == '2') {
@@ -241,6 +247,7 @@
 				var memberFlag = $('#form_sreach').find('[name=memberFlag]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
+				var memberId = $('#form_sreach').find('[name=memberId]');
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
@@ -256,6 +263,7 @@
 						memberTel: memberTel.val(),
 						realNameFlag: realNameFlag.val(),
 						memberFlag: memberFlag.val(),
+						memberId:memberId.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -280,6 +288,9 @@
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					var loginName = $('#form_sreach').find('[name=loginName]');
+					var memberId = $('#form_sreach').find('[name=memberId]');
+
+					
 
 
 					startDate = appendStartDate(startDate.val());
@@ -299,8 +310,10 @@
 							realNameFlag: realNameFlag.val(),
 							memberFlag: memberFlag.val(),
 							loginName: loginName.val(),
+							memberId:memberId.val(),
 							startDate: startDate,
 							endDate: endDate
+							
 						}
 					});
 				}

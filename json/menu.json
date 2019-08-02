@@ -99,7 +99,7 @@
 			"url": "",
 			"children": [
 				{
-					"id": 9,
+					"id": 216,
 					"name": "综合报表",
 					"icon": "",
 					"url": "./pages/report/complex_report_list.html"
@@ -113,22 +113,28 @@
 			"url": "",
 			"children": [
 				{
-					"id": 9,
+					"id": 217,
 					"name": "推广商信息",
 					"icon": "",
 					"url": "./pages/distribution/pla_mer_list.html"
 				},
 				{
-					"id": 9,
+					"id": 218,
 					"name": "商品库",
 					"icon": "",
 					"url": "./pages/distribution/goods_supply_list.html"
 				},
 				{
-					"id": 9,
+					"id": 219,
 					"name": "分润报表",
 					"icon": "",
 					"url": "./pages/article/list.html"
+				},
+				{
+					"id": 220,
+					"name": "专柜信息",
+					"icon": "",
+					"url": "./pages/distribution/counter_list.html"
 				}
 			]
 		},
@@ -139,19 +145,19 @@
 			"url": "",
 			"children": [
 				{
-					"id": 71,
+					"id": 221,
 					"name": "商户管理",
 					"icon": "",
 					"url": "./pages/user/merchant_list.html"
 				},
 				{
-					"id": 72,
+					"id": 222,
 					"name": "会员管理",
 					"icon": "",
 					"url": "./pages/user/member_list.html"
 				},
 				{
-					"id": 73,
+					"id": 223,
 					"name": "运营管理",
 					"icon": "",
 					"url": "./pages/user/manager_list.html"

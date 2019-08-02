@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<!-- 商户专柜信息-->
 
 <head>
 	<meta charset="UTF-8">
@@ -124,7 +125,7 @@
 				elem: '#articleList',
 				cellMinWidth: 80,
 				height: tableHeight,
-				url: urlPrefix + 'silver-web-shop/goodsSupply/findInfo',
+				url: urlPrefix + 'silver-web-shop/merchantCounter/findInfo',
 				method: 'post',
 				cols: [
 					[
@@ -135,28 +136,28 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'goodsImage', title: '图片', height: 180, templet: function (item) {
-								return '<div class="layer-photos-demo"  style="cursor:pointer;"><img layer-pid=""   alt="' + item.goodsName + '"  src="' + splitImg(item.goodsImage) + '" ></div>';
+							field: 'counterURL', title: '网址', height: 180, templet: function (item) {
+								return '<div><a target="_blank" style="color:#3eafe0;" href="' + item.counterURL + '"></div>';
 							}
 						}, {
-							field: 'goodsName', title: '商品名称',
+							field: 'merchantName', title: '商户名称', width: 150
 						}, {
-							field: 'goodsId', title: '商品自编号',
+							field: 'merchantId', title: '商户编号', width: 150
 						}, {
-							field: 'goodsMerName', title: '供货商',
+							field: 'headContent', title: '专店名称', width: 150
 						}, {
-							field: 'goodsMerId', title: '供货商编号',
+							field: 'description', title: '专店描述', width: 250
 						}, {
-							field: 'price', title: '价格', width: 80
-						}, {
-							field: 'divRate', title: '佣金比例(%)', width: 110, templet: function (item) {
-								return accMul(item.divRate, 100);
-							}
-						}, {
-							field: '', title: '佣金', width: 100, templet: function (item) {
-								return accMul(item.divRate, item.price);
-							}
-						}, {
+							// 	field: 'price', title: '价格', width: 80
+							// }, {
+							// 	field: 'divRate', title: '佣金比例(%)', width: 110, templet: function (item) {
+							// 		return accMul(item.divRate, 100);
+							// 	}
+							// }, {
+							// 	field: '', title: '佣金', width: 100, templet: function (item) {
+							// 		return accMul(item.divRate, item.price);
+							// 	}
+							// }, {
 							field: 'operate', title: '操作', width: 100, toolbar: '#operateTpl', fixed: 'right'
 						}
 					]
@@ -205,7 +206,7 @@
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/goodsSupply/findInfo',
+					url: urlPrefix + 'silver-web-shop/merchantCounter/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
@@ -239,7 +240,7 @@
 					endDate = appendEndDate(endDate.val());
 					//执行重载
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/goodsSupply/findInfo',
+						url: urlPrefix + 'silver-web-shop/merchantCounter/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
@@ -259,14 +260,6 @@
 				var type = $(this).data('type');
 				active[type] ? active[type].call(this) : '';
 			});
-			//图片浏览
-			$('#articleList').siblings('[lay-id="articleList"]').on('click', '.layer-photos-demo', function () {
-				layer.photos({
-					photos: '.layer-photos-demo'
-				});
-			});
-
-
 		});
 	</script>
 </body>
