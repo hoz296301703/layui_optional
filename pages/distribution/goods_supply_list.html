@@ -33,6 +33,11 @@
 		.layui-form-label {
 			width: 90px;
 		}
+
+		.layui-table-cell {
+			height: auto;
+			line-height: 80px;
+		}
 	</style>
 </head>
 
@@ -135,8 +140,8 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'goodsImage', title: '图片', height: 180, templet: function (item) {
-								return '<div class="layer-photos-demo"  style="cursor:pointer;"><img layer-pid=""   alt="' + item.goodsName + '"  src="' + splitImg(item.goodsImage) + '" ></div>';
+							field: 'goodsImage', width: 110, title: '图片', templet: function (item) {
+								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + item.goodsName + '"  src="' + splitImg(item.goodsImage) + '" width="80px" height="80px"></div>';
 							}
 						}, {
 							field: 'goodsName', title: '商品名称',
@@ -259,10 +264,11 @@
 				var type = $(this).data('type');
 				active[type] ? active[type].call(this) : '';
 			});
+
 			//图片浏览
-			$('#articleList').siblings('[lay-id="articleList"]').on('click', '.layer-photos-demo', function () {
+			$('#form_sreach').on('click', '[lay-id="articleList"] .checkImg img', function (e) {
 				layer.photos({
-					photos: '.layer-photos-demo'
+					photos:  { "data": [{"src": e.target.src}] }
 				});
 			});
 
