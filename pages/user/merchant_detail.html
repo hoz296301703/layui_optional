@@ -30,6 +30,7 @@
       width: 90px;
     }
 
+    #merchantBank_update .layui-form-label,
     #merchantBank_add .layui-form-label {
       width: 100px;
 
@@ -475,6 +476,10 @@
             </div>
           </form>
         </div>
+        <!-- 计费信息操作按钮 -->
+        <script type="text/html" id="merchantCostTpl">
+          <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+        </script>
         <!-- 银行卡信息 -->
         <div class="layui-tab-item">
           <button class="layui-btn layui-btn-normal layui-btn-sm" id="merchantBank_addBtn"><i
@@ -562,7 +567,95 @@
             </div>
 
           </form>
+          <!-- 修改商户银行卡信息 -->
+          <form class="layui-form" lay-filter="merchantBank_update" id="merchantBank_update"
+            style="display: none;width: 90%; margin: 20px auto;">
+            <input type="hidden" name="merchantId">
+            <div class="layui-form-item">
+              <label class="layui-form-label">银行卡号</label>
+              <div class="layui-input-block">
+                <input type="text" name="bankAccountNo" autocomplete="off" placeholder="请输入银行卡号" class="layui-input"
+                  lay-verify="required">
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">预留手机号</label>
+              <div class="layui-input-block">
+                <input type="tel" name="reservedTel" lay-verify="required|phone" autocomplete="off"
+                  placeholder="请输入预留手机号" class="layui-input">
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">开户行名称</label>
+              <div class="layui-input-block">
+                <input type="text" name="bankName" autocomplete="off" placeholder="如：工商银行" class="layui-input"
+                  lay-verify="required">
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">银行卡账户名称</label>
+              <div class="layui-input-block">
+                <input type="text" name="bankAccountName" autocomplete="off" placeholder="银行卡主" class="layui-input"
+                  lay-verify="required">
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">省/市</label>
+              <div class="layui-input-inline">
+                <select lay-verify="required" name="bankProvince" lay-filter="province_update"
+                  id="province_update"></select>
+              </div>
+              <div class="layui-input-inline">
+                <select lay-verify="required" name="bankCity" id="city_update" lay-filter="city_update"></select>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">银行卡账户类型</label>
+              <div class="layui-input-block">
+                <select name="bankAccountType" lay-filter='tollType' lay-verify="required">
+                  <option value="">请选择</option>
+                  <option value="personal">对私</option>
+                  <option value="corporate">对公</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">银行卡类别</label>
+              <div class="layui-input-block">
+                <select name="bankCardType" lay-filter='tollType' lay-verify="required">
+                  <option value="">请选择</option>
+                  <option value="debit">借记卡</option>
+                  <option value="credit">信用卡</option>
+                  <option value="unit">单位结算卡</option>
+                </select>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">默认使用</label>
+              <div class="layui-input-block">
+                <input type="checkbox" name="defaultFlag" lay-skin="switch" lay-text="是|否">
+              </div>
+            </div>
+
+            <div class="layui-form-item" style="text-align: center;">
+              <button type="button" class="layui-btn layui-btn-sm" lay-filter="update_merchantBankBtn"
+                lay-submit="">保存</button>
+              <button type="button" class="layui-btn layui-btn-sm layui-btn-primary close_add">关闭</button>
+
+            </div>
+
+          </form>
         </div>
+        <!-- 银行卡信息操作按钮 -->
+        <script type="text/html" id="merchantBankTpl">
+          <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+        </script>
         <!-- 口岸信息 -->
         <div class="layui-tab-item">
           <form class="layui-form" lay-filter="info" id="portRate" style="margin-top: 25px;">
@@ -613,10 +706,7 @@
             </div>
           </form>
         </div>
-        <!-- 计费信息操作按钮 -->
-        <script type="text/html" id="merchantCostTpl">
-          <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-        </script>
+
       </div>
     </div>
 
@@ -1580,6 +1670,18 @@
         cols: [
           [
             {
+              field: 'defaultFlag', width: 80, title: '默认使用', templet: function (item) {
+                if (item.defaultFlag == '1') {
+                  return '是';
+                } else if (item.defaultFlag == '2') {
+                  return '否';
+                }
+              }
+            },
+            {
+              field: 'bankName', width: 100, title: '开户行名称'
+            },
+            {
               field: 'bankAccountNo', width: 100, title: '银行卡号'
             },
             {
@@ -1591,17 +1693,15 @@
             {
               field: 'bankAccountName', width: 120, title: '银行卡账户名称'
             },
-            {
-              field: 'bankName', width: 100, title: '开户行名称'
-            },
+
             {
               field: 'bankProvince', width: 60, title: '省份'
             },
             {
-              field: 'bankCity', width: 40, title: '市'
+              field: 'bankCity', width: 60, title: '市'
             },
             {
-              field: 'bankAccountType', width: 120, title: '	银行卡账户类型', templet: function (item) {
+              field: 'bankAccountType', width: 130, title: '银行卡账户类型', templet: function (item) {
                 if (item.bankAccountType == 'personal') {
                   return '对私';
                 } else if (item.bankAccountType == 'corporate') {
@@ -1610,40 +1710,16 @@
               }
             }, {
               field: 'bankCardType', width: 100, title: '银行卡类别', templet: function (item) {
-                if (item.bankAccountType == 'debit') {
+                if (item.bankCardType == 'debit') {
                   return '借记卡';
-                } else if (item.bankAccountType == 'credit') {
+                } else if (item.bankCardType == 'credit') {
                   return '信用卡';
-                } else if (item.bankAccountType == 'unit') {
+                } else if (item.bankCardType == 'unit') {
                   return '单位结算卡';
                 }
               }
             }, {
-              field: 'backCoverFlag', width: 100, title: '是否封底', templet: function (item) {
-                if (item.backCoverFlag == 'false') {
-                  return '否';
-                } else if (item.backCoverFlag == 'true') {
-                  return '是';
-                } else if (item.costType == 'paymentServiceCharge') {
-                  return '-';
-                } else {
-                  return '否';
-                }
-              }
-            }, {
-              field: 'backCoverFee', width: 100, title: '封底服务费', templet: function (item) {
-                if (item.backCoverFlag == 'false') {
-                  return '-';
-                } else if (item.backCoverFlag == 'true') {
-                  return item.backCoverFee + "元";
-                } else if (item.costType == 'paymentServiceCharge') {
-                  return '-';
-                } else {
-                  return '-';
-                }
-              }
-            }, {
-              field: 'operate', title: '操作', toolbar: '#merchantCostTpl', fixed: 'right'
+              field: 'operate', title: '操作', toolbar: '#merchantBankTpl', fixed: 'right'
             }]
         ],
         event: true,
@@ -1684,19 +1760,24 @@
       // 一级联动事件触发
       form.on('select(province)', function (data) {
         var value = data.value;
-        areaState.province.fn(value);
+        areaState.province.fn(value, 'province', 'city');
+      });
+      form.on('select(province_update)', function (data) {
+        var value = data.value;
+        areaState.province.fn(value, 'province_update', 'city_update');
       });
       var areaState = {
         province: {
           state: false,
           data: [],
-          fn: function (value) { // value 表示的是区域代码，及传到后台的数据
+          fn: function (value, pId, Cid) { // value 表示的是区域代码，及传到后台的数据
             this.state = true; // 可能以后会用到
-            var provinceCode = $('#merchantBank_add').find('[name=bankProvince]');
+            var provinceCode = $('#' + id).find('[name=bankProvince]');
 
             if (value !== '') {
               //渲染城市select
-              addCity('city', getCity($(provinceCode).find('option:selected').attr('data-provincecode')), true);
+              addSelect(Cid, getCity($('#' + pId).find('option:selected').attr('data-provincecode')), true, 'cityCode', 'cityName');
+              // addCity('city', getCity($(provinceCode).find('option:selected').attr('data-provincecode')), true);
             } else {
 
               form.render("select");
@@ -1705,28 +1786,16 @@
         }
       };
       //select添加选项
-      function addSelect(id, data, bool) {//bool是否添加“请选择”选项				
+      function addSelect(id, data, bool, code, name, defValue) {//bool是否添加“请选择”选项				
         var html = '';
         var $id = $('#' + id);
         $id.html('');
         if (bool) { html += '<option value="">请选择</option>'; }
         for (var key in data) {
-          var arr = Object.keys(data[key]);
-          html += '<option data-provinceCode="' + data[key].provinceCode + '" value="' + data[key].provinceName + '">' + data[key].provinceName + '</option>';
+          html += '<option data-provinceCode="' + data[key][code] + '" value="' + data[key][name] + '">' + data[key][name] + '</option>';
         }
         $id.html(html);
-        form.render("select");
-      }
-      //城市
-      function addCity(id, data, bool) {//bool是否添加“请选择”选项				
-        var html = '';
-        var $id = $('#' + id);
-        $id.html('');
-        if (bool) { html += '<option value="">请选择</option>'; }
-        for (var key in data) {
-          html += '<option value="' + data[key].cityName + '">' + data[key].cityName + '</option>';
-        }
-        $id.html(html);
+        $("#" + id).find("option[value='" + defValue + "']").prop("selected", true);
         form.render("select");
       }
       //获取省
@@ -1777,7 +1846,7 @@
       // 添加商户银行卡信息
       var addIndexBank = null;
       $("#merchantBank_addBtn").click(function () {
-        addSelect('province', getProvince(), true);// 添加银行卡时渲染省份  
+        addSelect('province', getProvince(), true, 'provinceCode', 'provinceName');// 添加银行卡时渲染省份  
         $("#merchantBank_add").find("[name]").val("");// 初始化内容    
         form.render('select');
         addIndexBank = layer.open({
@@ -1790,14 +1859,12 @@
       });
       // 新增商户银行卡信息
       form.on('submit(add_merchantBankBtn)', function (data) {
-
         data.field.merchantId = g_data.merchantId;
         if (data.field.defaultFlag == '') {
           data.field.defaultFlag = 1;
         } else {
           data.field.defaultFlag = 2;
         }
-        console.log(data.field)
         $.ajax({
           url: urlPrefix + "silver-web-shop/merchantBank/managerInsert",
           type: "POST",
@@ -1820,164 +1887,38 @@
       $('#merchantBank_add .close_add').click(function () {
         layer.close(addIndexBank);
       })
-      // 新增-选择收费类型
-      form.on('select(tollType)', function (data) {
-        if (data.value == "pen") {
-          $("#serviceCharge_rate").hide();
-          $("#serviceCharge_rate").find('input').removeAttr('lay-verify').removeAttr('name');
-          $("#serviceCharge_penVal").val("");
-          $("#serviceCharge_pen").show();
-          $("#serviceCharge_pen").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');
-
-        } else if (data.value == "rate") {
-          $("#serviceCharge_pen").hide();
-          $("#serviceCharge_pen").find('input').removeAttr('lay-verify').removeAttr('name');
-          $("#serviceCharge_rateVal").val("");
-          $("#serviceCharge_rate").show();
-          $("#serviceCharge_rate").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');
-        } else {
-          $("#serviceCharge_pen,#serviceCharge_rate").removeAttr('lay-verify').removeAttr('name').hide();
-        }
-      });
-
-      // 修改-选择收费类型
-      form.on('select(tollType_update)', function (data) {
-        if (data.value == "pen") {
-          $("#serviceCharge_rate_update").hide();
-          $("#serviceCharge_rate_update").find('input').removeAttr('lay-verify').removeAttr('name');
-          $("#serviceCharge_penVal_update").val("");
-          $("#serviceCharge_pen_update").show();
-          $("#serviceCharge_pen_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');
-
-        } else if (data.value == "rate") {
-          $("#serviceCharge_pen_update").hide();
-          $("#serviceCharge_pen_update").find('input').removeAttr('lay-verify').removeAttr('name');
-          $("#serviceCharge_rateVal_update").val("");
-          $("#serviceCharge_rate_update").show();
-          $("#serviceCharge_rate_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');
-        } else {
-          $("#serviceCharge_pen_update,#serviceCharge_rate_update").removeAttr('lay-verify').removeAttr('name').hide();
-        }
-      });
-      // 新增-选择是否封底
-      form.on('select(backCoverFlag_val)', function (data) {
-        if (data.value == "true") {
-          $("#merchantCost_add [name=backCoverFee]").val("");
-          $("#backCoverFee_li").show();
-          $("#backCoverFee_li").find('input').attr('lay-verify', 'required');
-        } else if (data.value == "false") {
-          $("#backCoverFee_li").hide();
-          $("#backCoverFee_li").find('input').removeAttr('lay-verify');
-        } else {
-          $("#backCoverFee_li").hide();
-          $("#backCoverFee_li").find('input').removeAttr('lay-verify');
-        }
-      });
-      // 修改-选择是否封底
-      form.on('select(backCoverFlag_val_update)', function (data) {
-        if (data.value == "true") {
-          $("#merchantCost_update [name=backCoverFee]").val("");
-          $("#backCoverFee_li_update").show();
-          $("#backCoverFee_li_update").find('input').attr('lay-verify', 'required').attr('name', 'backCoverFee');
-        } else if (data.value == "false") {
-          $("#backCoverFee_li_update").hide();
-          $("#backCoverFee_li_update").find('input').removeAttr('lay-verify').removeAttr('name');
-        } else {
-          $("#backCoverFee_li_update").hide();
-          $("#backCoverFee_li_update").find('input').removeAttr('lay-verify').removeAttr('name');
-        }
-      });
-      // 新增-选择费用类型
-      form.on('select(costType)', function (data) {
-        $("#serviceCharge_rate,#serviceCharge_pen").hide();
-        $("#serviceCharge_rateVal,#serviceCharge_penVal,#backCoverFlag_val").val("");
-        if (data.value == "paymentServiceCharge") {
-          $("#tollType").html(
-            '<option value="">请选择</option><option value="rate">按费率收费</option>'
-          );
-          $("#backCoverFlag_li,#backCoverFee_li").hide();// 隐藏是否封底
-          $("#backCoverFee_li").find('input').removeAttr('lay-verify').removeAttr('name');// 支付服务费没有封底手续费
-          $("#backCoverFlag_li").find('select').removeAttr('lay-verify').removeAttr('name');// 支付服务费没有封底手续费
-        } else {
-          $("#tollType").html(
-            '<option value="">请选择</option><option value="pen">按每笔收费</option><option value="rate">按费率收费</option>'
-          );
-          $("#backCoverFlag_val").find('input').attr('name', 'backCoverFlag').attr('lay-verify', 'required').val("");
-          $("#backCoverFlag_li").show();
-          $("#backCoverFlag_li").find('select').attr('name', 'backCoverFlag').attr('lay-verify', 'required');
-        }
-        form.render('select');
-      });
       //监听工具条
-      table.on('tool(merchantCost)', function (obj) {
-
-
+      table.on('tool(merchantBank)', function (obj) {
         if (obj.event === 'edit') {// 修改
           var data = obj.data;
-          console.log(data)
-          if (data.backCoverFlag == '') {
-            data.backCoverFlag = 'false';
-          }
-          if (data.costType == "paymentServiceCharge") {// 等于支付手续费时   
-            $("#tollType_update").html('<option value="">请选择</option><option value="rate">按费率收费</option>');
-            $(
-              "#backCoverFlag_li_update,#backCoverFee_li_update,#serviceCharge_pen_update"
-            ).hide();// 按费率收费隐藏
-            $("#serviceCharge_rate_update").show();// 支付手续费类型只有按费率收费
-            $("#serviceCharge_rate_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');// 为按费率收费添加name属性等于serviceCharge
-            data.serviceCharge = accMul(data.serviceCharge, 100);
-
-          } else {// 不等于支付手续费时
-
-            $("#tollType_update").html(
-              '<option value="">请选择</option><option value="pen">按每笔收费</option><option value="rate">按费率收费</option>'
-            );
-            $("#backCoverFlag_li_update").show();
-            // 是否封底
-            if (data.backCoverFlag == "true") {
-              $("#backCoverFee_li_update").show();
-              $("#backCoverFee_li_update").find('input').attr('lay-verify', 'required').attr('name', 'backCoverFee');
-            } else {
-              $("#backCoverFee_li_update").hide();
-              $("#backCoverFee_li_update").find('input').removeAttr('name').removeAttr('lay-verify');
-            }
-            // 收费类型
-            if (data.tollType == "pen") {
-              $("#serviceCharge_rate_update").hide();
-              $("#serviceCharge_rate_update").find('input').removeAttr('name').removeAttr('lay-verify');
-              $("#serviceCharge_pen_update").show();
-              $("#serviceCharge_pen_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');// 为按费率
-            } else {
-              $("#serviceCharge_pen_update").hide();
-              $("#serviceCharge_pen_update").find('input').removeAttr('name').removeAttr('lay-verify');
-              $("#serviceCharge_rate_update").show();
-              $("#serviceCharge_rate_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceCharge');// 为按费率收费添加name属性等于serviceCharge
-              data.serviceCharge = accMul(data.serviceCharge, 100)
-            }
-          }
+          addSelect('province_update', getProvince(), true, 'provinceCode', 'provinceName', data.bankProvince);// 修改银行卡时渲染省份  
+          addSelect('city_update', getCity($('#province_update').find('option:selected').attr('data-provincecode')), true, 'cityCode', 'cityName', data.bankCity);
           //表单初始赋值
-          form.val('merchantCost_update', {
-            "costType": data.costType
-            , "tollType": data.tollType
-            , "serialNo": data.serialNo
-            , "backCoverFlag": data.backCoverFlag
-            , "backCoverFee": data.backCoverFee
-            , "serviceCharge": data.serviceCharge
+          form.val('merchantBank_update', {
+            "bankAccountName": data.bankAccountName
+            , "defaultFlag": data.defaultFlag
+            , "bankAccountNo": data.bankAccountNo
+            , "bankAccountType": data.bankAccountType
+            , "bankCardType": data.bankCardType
+            , "bankName": data.bankName
+            , "bankShortName": data.bankShortName
+            , "merchantId": data.merchantId
+            , "reservedTel": data.reservedTel
           })
           form.render('select');
 
           addIndex = layer.open({
             type: 1,
-            title: '修改商户计费信息',
-            area: ["460px", "351px"], //宽高
+            title: '修改银行卡信息',
+            area: ["694px", "500px"], //宽高
             fixed: false, //不固定
             maxmin: true,
-            content: $('#merchantCost_update')
+            content: $('#merchantBank_update')
           });
         }
       });
-      // 修改计费信息
-      form.on('submit(update_merchantCost)', function (data) {
+      // 修改银行卡信息信息
+      form.on('submit(merchantBank_update)', function (data) {
         if (data.field.tollType == "rate") {
           data.field.serviceCharge = accDiv(parseFloat(data.field.serviceCharge), 100);
         }
