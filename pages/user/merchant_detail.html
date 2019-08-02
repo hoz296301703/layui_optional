@@ -30,8 +30,8 @@
       width: 90px;
     }
 
-    #merchantBank_update .layui-form-label,
-    #merchantBank_add .layui-form-label {
+    #portRate_add .layui-form-label,
+    #portRate_add .layui-form-label {
       width: 100px;
 
     }
@@ -47,15 +47,21 @@
   <div class="weadmin-body">
     <!-- 详情 -->
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+      <div class="weadmin-nav">
+        <span class="layui-breadcrumb">
+          <a>
+              商户：<cite id="g-merchantName"></cite></a>
+        </span>
+      </div>
       <ul class="layui-tab-title">
-        <li class="layui-this">基本资料</li>
-        <li>备案信息</li>
-        <li>企业资质</li>
-        <li>业务信息</li>
-        <li>物流信息</li>
-        <li>计费信息</li>
-        <li>银行卡信息</li>
-        <li>口岸信息</li>
+        <li class="layui-this" id="info_tab">基本资料</li>
+        <li id="findMerchantRecordDetail_tab">备案信息</li>
+        <li id="getMerchantBusinessInfo_tab">企业资质</li>
+        <li id="ywxx_tab">业务信息</li>
+        <li id="merchantAllot_tab">物流信息</li>
+        <li id="merchantCost_tab">计费信息</li>
+        <li id="merchantBank_tab">银行卡信息</li>
+        <li id="portRate_tab">口岸信息</li>
       </ul>
       <div class="layui-tab-content" style="height: 100px;">
         <!-- 基本信息 -->
@@ -571,6 +577,7 @@
           <form class="layui-form" lay-filter="merchantBank_update" id="merchantBank_update"
             style="display: none;width: 90%; margin: 20px auto;">
             <input type="hidden" name="merchantId">
+            <input type="hidden" name="serialNo">
             <div class="layui-form-item">
               <label class="layui-form-label">银行卡号</label>
               <div class="layui-input-block">
@@ -658,18 +665,20 @@
         </script>
         <!-- 口岸信息 -->
         <div class="layui-tab-item">
-          <form class="layui-form" lay-filter="info" id="portRate" style="margin-top: 25px;">
-            <input type="hidden" name="merchantId">
+          <button class="layui-btn layui-btn-normal layui-btn-sm" id="portRate_addBtn"><i
+              class="layui-icon">&#xe61f;</i>添加</button>
+          <table class="layui-hide" id="portRate" lay-filter="portRate"></table>
+          <!-- 新增口岸信息 -->
+          <form class="layui-form" lay-filter="portRate_add" id="portRate_add"
+            style="display: none;width: 90%; margin: 20px auto;">
+
             <div class="layui-form-item">
               <label class="layui-form-label">
                 <span class="we-red">*</span>海关
               </label>
               <div class="layui-input-inline" style="width:500px;">
                 <select name="ciqOrg" lay-verify="required" lay-filter="aihao">
-                  <option value=""></option>
-                  <option value="1">启用</option>
-                  <option value="2">禁用</option>
-                  <option value="3">审核</option>
+
                 </select>
               </div>
             </div>
@@ -694,6 +703,7 @@
                 </label>
                 <div class="layui-input-inline">
                   <select name="status" lay-verify="required" lay-filter="aihao">
+                    <option value="">请选择</option>
                     <option value="1">正常</option>
                     <option value="2">禁用</option>
                   </select>
@@ -704,9 +714,62 @@
             <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
               <button type="button" class="layui-btn" lay-filter="portRate_updateBtn" lay-submit="">保存</button>
             </div>
+
+          </form>
+          <!-- 修改口岸信息 -->
+          <form class="layui-form" lay-filter="portRate_update" id="portRate_update"
+            style="display: none;width: 90%; margin: 20px auto;">
+            <input type="hidden" name="merchantId">
+            <input type="hidden" name="merchantFeeId">
+            <input type="hidden" name="tollType">
+            <input type="hidden" name="penFees">
+            <div class="layui-form-item">
+              <label class="layui-form-label">
+                <span class="we-red">*</span>海关
+              </label>
+              <div class="layui-input-inline" style="width:500px;">
+                <select name="ciqOrg" lay-verify="required" lay-filter="aihao">
+
+                </select>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>类型
+                </label>
+                <div class="layui-input-inline">
+                  <select name="type" lay-verify="required" lay-filter="aihao">
+                    <option value="">请选择</option>
+                    <option value="goodsRecord">商品备案</option>
+                    <option value="orderRecord">订单申报</option>
+                    <option value="paymentRecord">支付单备案</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>状态
+                </label>
+                <div class="layui-input-inline">
+                  <select name="status" lay-verify="required" lay-filter="aihao">
+                    <option value="">请选择</option>
+                    <option value="1">正常</option>
+                    <option value="2">禁用</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item" style="text-align: center;">
+              <button type="button" class="layui-btn layui-btn-sm" lay-filter="update_portRateBtn"
+                lay-submit="">保存</button>
+              <!-- <button type="button" class="layui-btn layui-btn-sm layui-btn-primary close_add">关闭</button> -->
+
+            </div>
+
           </form>
         </div>
-
       </div>
     </div>
 
@@ -720,6 +783,7 @@
     var g_data = '';// 全局数据变量
     function getParent_data(obj) {
       g_data = obj.data;
+ 
     }
     layui.use(['tree', 'form', 'jquery', 'util', 'admin', 'layer', 'upload', 'table'], function () {
       var form = layui.form,
@@ -741,7 +805,7 @@
           }
         }
       });
-
+      $('#g-merchantName').html(g_data.merchantName)
       /** 基本信息 **/
       // 管理员查看商户基本信息
       var _findMerchantDetail = function () {
@@ -775,6 +839,9 @@
         });
       };
       _findMerchantDetail()
+      $('#info_tab').click(function () {
+        _findMerchantDetail()
+      })
       //修改商户基本信息
       form.on('submit(editMerhcnatInfo)', function (data) {
         layer.load(2);
@@ -855,8 +922,9 @@
           }
         });
       };
-      _findMerchantRecordDetail();
-
+      $('#findMerchantRecordDetail_tab').click(function () {
+        _findMerchantRecordDetail();
+      })
       // 动态添加表格
       window.addTable = function () {
         var len = $("#findMerchantRecordDetail_table tbody").find('tr').length;
@@ -1002,7 +1070,10 @@
           }
         });
       };
-      _getMerchantBusinessInfo();
+      $('#getMerchantBusinessInfo_tab').click(function () {
+        _getMerchantBusinessInfo();
+      })
+
       //企业营业执照图片上传
       var uploadMerchantBusinessLicenseLink = upload.render({
         elem: '#merchantBusinessLicenseLink'
@@ -1103,8 +1174,9 @@
           }
         });
       };
-      _merchantBusiness();
-
+      $('#ywxx_tab').click(function () {
+        _merchantBusiness();
+      })
       //保存修改业务资料
       form.on('submit(merchantBusiness)', function (data) {
         var url = "silver-web-shop/merchantBusiness/updateInfo"; // 修改接口
@@ -1292,7 +1364,9 @@
           }
         });
       }
-      _logistics();
+      $('#merchantAllot_tab').click(function () {
+        _logistics();
+      })
       //保存修改业务资料
       form.on('submit(merchantLogisticsSave)', function () {
         layer.load(2);
@@ -1332,94 +1406,96 @@
       });
 
       //** 计费信息 **//
-      table.render({
-        elem: '#merchantCost',
-        cellMinWidth: 80,
-        // height: tableHeight,
-        url: urlPrefix + 'silver-web-shop/merchantCost/getInfo',
-        method: 'post',
-        cols: [
-          [{
-            field: 'costType', width: 100, title: '费用类型', templet: function (item) {
-              if (item.costType == 'goodsRecord') {
-                return '商品备案';
-              } else if (item.costType == 'orderDeclare') {
-                return '订单申报';
-              } else if (item.costType == 'paymentDeclare') {
-                return '支付单申报';
-              } else if (item.costType == 'certification') {
-                return '实名认证';
-              } else if (item.costType == 'paymentServiceCharge') {
-                return '支付服务费';
+      $('#merchantCost_tab').click(function () {
+        table.render({
+          elem: '#merchantCost',
+          cellMinWidth: 80,
+          // height: tableHeight,
+          url: urlPrefix + 'silver-web-shop/merchantCost/getInfo',
+          method: 'post',
+          cols: [
+            [{
+              field: 'costType', width: 100, title: '费用类型', templet: function (item) {
+                if (item.costType == 'goodsRecord') {
+                  return '商品备案';
+                } else if (item.costType == 'orderDeclare') {
+                  return '订单申报';
+                } else if (item.costType == 'paymentDeclare') {
+                  return '支付单申报';
+                } else if (item.costType == 'certification') {
+                  return '实名认证';
+                } else if (item.costType == 'paymentServiceCharge') {
+                  return '支付服务费';
+                }
               }
-            }
-          }, {
-            field: 'tollType', width: 100, title: '	收费类型', templet: function (item) {
-              if (item.tollType == 'pen') {
-                return '按笔计算';
-              } else if (item.tollType == 'rate') {
-                return '按比例计算';
+            }, {
+              field: 'tollType', width: 100, title: '	收费类型', templet: function (item) {
+                if (item.tollType == 'pen') {
+                  return '按笔计算';
+                } else if (item.tollType == 'rate') {
+                  return '按比例计算';
+                }
               }
-            }
-          }, {
-            field: 'serviceCharge', width: 100, title: '服务费', templet: function (item) {
-              if (item.tollType == 'pen') {
-                return item.serviceCharge + "元/笔";
-              } else if (item.tollType == 'rate') {
-                return accMul(item.serviceCharge, 100) + "%";
+            }, {
+              field: 'serviceCharge', width: 100, title: '服务费', templet: function (item) {
+                if (item.tollType == 'pen') {
+                  return item.serviceCharge + "元/笔";
+                } else if (item.tollType == 'rate') {
+                  return accMul(item.serviceCharge, 100) + "%";
+                }
               }
-            }
-          }, {
-            field: 'backCoverFlag', width: 100, title: '是否封底', templet: function (item) {
-              if (item.backCoverFlag == 'false') {
-                return '否';
-              } else if (item.backCoverFlag == 'true') {
-                return '是';
-              } else if (item.costType == 'paymentServiceCharge') {
-                return '-';
-              } else {
-                return '否';
+            }, {
+              field: 'backCoverFlag', width: 100, title: '是否封底', templet: function (item) {
+                if (item.backCoverFlag == 'false') {
+                  return '否';
+                } else if (item.backCoverFlag == 'true') {
+                  return '是';
+                } else if (item.costType == 'paymentServiceCharge') {
+                  return '-';
+                } else {
+                  return '否';
+                }
               }
-            }
-          }, {
-            field: 'backCoverFee', width: 100, title: '封底服务费', templet: function (item) {
-              if (item.backCoverFlag == 'false') {
-                return '-';
-              } else if (item.backCoverFlag == 'true') {
-                return item.backCoverFee + "元";
-              } else if (item.costType == 'paymentServiceCharge') {
-                return '-';
-              } else {
-                return '-';
+            }, {
+              field: 'backCoverFee', width: 100, title: '封底服务费', templet: function (item) {
+                if (item.backCoverFlag == 'false') {
+                  return '-';
+                } else if (item.backCoverFlag == 'true') {
+                  return item.backCoverFee + "元";
+                } else if (item.costType == 'paymentServiceCharge') {
+                  return '-';
+                } else {
+                  return '-';
+                }
               }
-            }
-          }, {
-            field: 'operate', title: '操作', toolbar: '#merchantCostTpl', fixed: 'right'
-          }]
-        ],
-        event: true,
-        response: {
-          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
-        },
-        where: {
-          page: 0,
-          size: 0,
-          merchantId: g_data.merchantId
-        },
-        request: {
-          pageName: 'page', //页码的参数名称，默认：page
-          limitName: 'size' //每页数据量的参数名，默认：limit
-        },
-        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-          return {
-            "code": res.status, //解析接口状态
-            "msg": res.msg, //解析提示文本
-            "count": res.totalCount, //解析数据长度
-            "data": res.datas //解析数据列表
-          };
-        },
-        done: function (res, curr, count) { }
-      });
+            }, {
+              field: 'operate', title: '操作', toolbar: '#merchantCostTpl', fixed: 'right'
+            }]
+          ],
+          event: true,
+          response: {
+            statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+          },
+          where: {
+            page: 0,
+            size: 0,
+            merchantId: g_data.merchantId
+          },
+          request: {
+            pageName: 'page', //页码的参数名称，默认：page
+            limitName: 'size' //每页数据量的参数名，默认：limit
+          },
+          parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+            return {
+              "code": res.status, //解析接口状态
+              "msg": res.msg, //解析提示文本
+              "count": res.totalCount, //解析数据长度
+              "data": res.datas //解析数据列表
+            };
+          },
+          done: function (res, curr, count) { }
+        });
+      })
       // 重载计费信息表格
       var _reload = function () {
         table.reload('merchantCost', {
@@ -1569,11 +1645,8 @@
       });
       //监听工具条
       table.on('tool(merchantCost)', function (obj) {
-
-
         if (obj.event === 'edit') {// 修改
           var data = obj.data;
-          console.log(data)
           if (data.backCoverFlag == '') {
             data.backCoverFlag = 'false';
           }
@@ -1661,90 +1734,93 @@
       });
 
       //** 银行卡信息 **//
-      table.render({
-        elem: '#merchantBank',
-        cellMinWidth: 80,
-        // height: tableHeight,
-        url: urlPrefix + 'silver-web-shop/merchantBank/getInfo',
-        method: 'post',
-        cols: [
-          [
-            {
-              field: 'defaultFlag', width: 80, title: '默认使用', templet: function (item) {
-                if (item.defaultFlag == '1') {
-                  return '是';
-                } else if (item.defaultFlag == '2') {
-                  return '否';
+      $('#merchantBank_tab').click(function () {
+        table.render({
+          elem: '#merchantBank',
+          cellMinWidth: 80,
+          // height: tableHeight,
+          url: urlPrefix + 'silver-web-shop/merchantBank/getInfo',
+          method: 'post',
+          cols: [
+            [
+              {
+                field: 'defaultFlag', width: 80, title: '默认使用', templet: function (item) {
+                  if (item.defaultFlag == '1') {
+                    return '是';
+                  } else if (item.defaultFlag == '2') {
+                    return '否';
+                  }
                 }
-              }
-            },
-            {
-              field: 'bankName', width: 100, title: '开户行名称'
-            },
-            {
-              field: 'bankAccountNo', width: 100, title: '银行卡号'
-            },
-            {
-              field: 'reservedTel', width: 100, title: '预留手机'
-            },
-            {
-              field: 'bankName', width: 100, title: '开户行名称'
-            },
-            {
-              field: 'bankAccountName', width: 120, title: '银行卡账户名称'
-            },
+              },
+              {
+                field: 'bankName', width: 100, title: '开户行名称'
+              },
+              {
+                field: 'bankAccountNo', width: 100, title: '银行卡号'
+              },
+              {
+                field: 'reservedTel', width: 100, title: '预留手机'
+              },
+              {
+                field: 'bankName', width: 100, title: '开户行名称'
+              },
+              {
+                field: 'bankAccountName', width: 120, title: '银行卡账户名称'
+              },
 
-            {
-              field: 'bankProvince', width: 60, title: '省份'
-            },
-            {
-              field: 'bankCity', width: 60, title: '市'
-            },
-            {
-              field: 'bankAccountType', width: 130, title: '银行卡账户类型', templet: function (item) {
-                if (item.bankAccountType == 'personal') {
-                  return '对私';
-                } else if (item.bankAccountType == 'corporate') {
-                  return '对公';
+              {
+                field: 'bankProvince', width: 60, title: '省份'
+              },
+              {
+                field: 'bankCity', width: 60, title: '市'
+              },
+              {
+                field: 'bankAccountType', width: 130, title: '银行卡账户类型', templet: function (item) {
+                  if (item.bankAccountType == 'personal') {
+                    return '对私';
+                  } else if (item.bankAccountType == 'corporate') {
+                    return '对公';
+                  }
                 }
-              }
-            }, {
-              field: 'bankCardType', width: 100, title: '银行卡类别', templet: function (item) {
-                if (item.bankCardType == 'debit') {
-                  return '借记卡';
-                } else if (item.bankCardType == 'credit') {
-                  return '信用卡';
-                } else if (item.bankCardType == 'unit') {
-                  return '单位结算卡';
+              }, {
+                field: 'bankCardType', width: 100, title: '银行卡类别', templet: function (item) {
+                  if (item.bankCardType == 'debit') {
+                    return '借记卡';
+                  } else if (item.bankCardType == 'credit') {
+                    return '信用卡';
+                  } else if (item.bankCardType == 'unit') {
+                    return '单位结算卡';
+                  }
                 }
-              }
-            }, {
-              field: 'operate', title: '操作', toolbar: '#merchantBankTpl', fixed: 'right'
-            }]
-        ],
-        event: true,
-        response: {
-          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
-        },
-        where: {
-          page: 0,
-          size: 0,
-          merchantId: g_data.merchantId
-        },
-        request: {
-          pageName: 'page', //页码的参数名称，默认：page
-          limitName: 'size' //每页数据量的参数名，默认：limit
-        },
-        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-          return {
-            "code": res.status, //解析接口状态
-            "msg": res.msg, //解析提示文本
-            "count": res.totalCount, //解析数据长度
-            "data": res.datas //解析数据列表
-          };
-        },
-        done: function (res, curr, count) { }
-      });
+              }, {
+                field: 'operate', title: '操作', toolbar: '#merchantBankTpl', fixed: 'right'
+              }]
+          ],
+          event: true,
+          response: {
+            statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+          },
+          where: {
+            page: 0,
+            size: 0,
+            merchantId: g_data.merchantId
+          },
+          request: {
+            pageName: 'page', //页码的参数名称，默认：page
+            limitName: 'size' //每页数据量的参数名，默认：limit
+          },
+          parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+            return {
+              "code": res.status, //解析接口状态
+              "msg": res.msg, //解析提示文本
+              "count": res.totalCount, //解析数据长度
+              "data": res.datas //解析数据列表
+            };
+          },
+          done: function (res, curr, count) { }
+        });
+
+      })
       // 重载银行卡信息表格
       var _reloadBank = function () {
         table.reload('merchantBank', {
@@ -1756,7 +1832,6 @@
           },
         });
       }
-
       // 一级联动事件触发
       form.on('select(province)', function (data) {
         var value = data.value;
@@ -1857,6 +1932,7 @@
           content: $("#merchantBank_add")
         });
       });
+
       // 新增商户银行卡信息
       form.on('submit(add_merchantBankBtn)', function (data) {
         data.field.merchantId = g_data.merchantId;
@@ -1904,10 +1980,11 @@
             , "bankShortName": data.bankShortName
             , "merchantId": data.merchantId
             , "reservedTel": data.reservedTel
+            , "serialNo": data.serialNo
           })
           form.render('select');
 
-          addIndex = layer.open({
+          addIndexBank = layer.open({
             type: 1,
             title: '修改银行卡信息',
             area: ["694px", "500px"], //宽高
@@ -1918,13 +1995,17 @@
         }
       });
       // 修改银行卡信息信息
-      form.on('submit(merchantBank_update)', function (data) {
+      form.on('submit(update_merchantBankBtn)', function (data) {
         if (data.field.tollType == "rate") {
           data.field.serviceCharge = accDiv(parseFloat(data.field.serviceCharge), 100);
         }
-        data.field.merchantId = g_data.merchantId;
+        if (data.field.defaultFlag == 'on') {
+          data.field.defaultFlag = 1;
+        } else {
+          data.field.defaultFlag = 2;
+        }
         $.ajax({
-          url: urlPrefix + "silver-web-shop/merchantCost/updateInfo",
+          url: urlPrefix + "silver-web-shop/merchantBank/managerUpdate",
           type: "POST",
           xhrFields: {
             withCredentials: true
@@ -1932,9 +2013,9 @@
           data: data.field,
           success: function (response) {
             if (response.status == 1) {
-              layer.close(addIndex);
+              layer.close(addIndexBank);
               layer.msg("修改成功");
-              _reload();
+              _reloadBank();
             } else {
               layer.alert(response.msg);
             }
@@ -1944,24 +2025,30 @@
 
       /** 口岸信息 **/
       var CustomsPortArr = [];// 全局海关信息
-      // 查询海关
-      var _queryCustomsPort = function (data) {
+      // 查询海关信息
+      var _queryCustomsPort = function (id) {
         $.ajax({
           url: urlPrefix + "silver-web-shop/customsPort/findAllCustomsPort",
           type: "POST",
-          data: data,
+          async: false,
           success: function (response) {
             if (response.status == 1) {
               CustomsPortArr = response.datas;
-              var ciqOrgHtml = '';
+              var ciqOrgHtml = '<option value="">请选择</option>';
               $.each(CustomsPortArr, function (i, item) {
                 ciqOrgHtml +=
                   '<option value="' +
-                  item.customsPort +
+                  item.customsPort + '' +
                   "-" +
-                  item.customsCode +
+                  item.customsPortName +
                   "-" +
-                  item.ciqOrgCode +
+                  item.customsCode + '' +
+                  "-" +
+                  item.customsName +
+                  "-" +
+                  item.ciqOrgCode + '' +
+                  "-" +
+                  item.ciqOrgName +
                   '">' +
                   item.customsPort +
                   "-" +
@@ -1976,13 +2063,196 @@
                   item.ciqOrgName +
                   "</option>";
               });
-              $('#portRate').find('[name=ciqOrg]').html(ciqOrgHtml);
+              $('#' + id).find('[name=ciqOrg]').html(ciqOrgHtml);
               form.render('select');
             }
           }
         });
       };
-      _queryCustomsPort();
+      // 查询口岸信息
+      $('#portRate_tab').click(function () {
+        table.render({
+          elem: '#portRate',
+          cellMinWidth: 80,
+          // height: tableHeight,
+          url: urlPrefix + 'silver-web-shop/merchantFee/getServiceFee',
+          method: 'post',
+          cols: [
+            [
+              {
+                field: 'customsPortName', width: 100, title: '口岸', templet: function (item) {
+                  return item.customsPort + '-' + item.customsPortName;
+                }
+              },
+              {
+                field: 'customsName', width: 140, title: '主管海关', templet: function (item) {
+                  return item.customsCode + '-' + item.customsName;
+                }
+              },
+              {
+                field: 'ciqOrgName', width: 160, title: '检验检疫机构', templet: function (item) {
+                  return item.ciqOrgCode + '-' + item.ciqOrgName;
+                }
+              },
+              {
+                field: 'type', width: 130, title: '类型', templet: function (item) {
+                  if (item.type == 'goodsRecord') {
+                    return '商品备案';
+                  } else if (item.type == 'orderRecord') {
+                    return '订单备案';
+                  } else if (item.type == 'paymentRecord') {
+                    return '支付单备案';
+                  }
+                }
+              },
+              {
+                field: 'status', width: 80, title: '状态', templet: function (item) {
+                  if (item.status == '1') {
+                    return '正常';
+                  } else if (item.status == '2') {
+                    return '禁用';
+                  }
+                }
+              },
+              {
+                field: 'operate', title: '操作', toolbar: '#merchantBankTpl', fixed: 'right'
+              }]
+          ],
+          event: true,
+          response: {
+            statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+          },
+          where: {
+            page: 0,
+            size: 0,
+            merchantId: g_data.merchantId
+          },
+          request: {
+            pageName: 'page', //页码的参数名称，默认：page
+            limitName: 'size' //每页数据量的参数名，默认：limit
+          },
+          parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+            return {
+              "code": res.status, //解析接口状态
+              "msg": res.msg, //解析提示文本
+              "count": res.totalCount, //解析数据长度
+              "data": res.datas //解析数据列表
+            };
+          },
+          done: function (res, curr, count) { }
+        });
+
+      })
+      // 重载口岸信息
+      var _reload_portRate = function () {
+        table.reload('portRate', {
+          url: urlPrefix + 'silver-web-shop/merchantFee/getServiceFee',
+          where: {
+            page: 0,
+            size: 0,
+            merchantId: g_data.merchantId
+          },
+        });
+      }
+      // 添加口岸信息
+      var addIndex_portRate = null;
+      $("#portRate_addBtn").click(function () {
+        _queryCustomsPort('portRate_add');
+        $("#portRate_add").find("[name]").val("");// 初始化内容    
+        form.render('select');
+        addIndex_portRate = layer.open({
+          title: "添加商户口岸信息",
+          type: 1,
+          skin: "layui-layer-rim", //加上边框
+          area: ["715px", "299px"], //宽高
+          content: $("#portRate_add")
+        });
+      });
+      // 新增口岸信息
+      form.on('submit(portRate_updateBtn)', function (data) {
+        data.field.merchantId = g_data.merchantId;
+        data.field.tollType = 'pen';
+        data.field.penFees = 0;
+        data.field.customsPort = data.field.ciqOrg.split('-')[0];
+        data.field.customsPortName = data.field.ciqOrg.split('-')[1];
+        data.field.customsCode = data.field.ciqOrg.split('-')[2];
+        data.field.customsName = data.field.ciqOrg.split('-')[3];
+        data.field.ciqOrgCode = data.field.ciqOrg.split('-')[4];
+        data.field.ciqOrgName = data.field.ciqOrg.split('-')[5];
+        // console.log(data.field)
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merchantFee/addServiceFee",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            if (response.status == 1) {
+              layer.close(addIndex_portRate);
+              layer.msg("添加成功");
+              _reload_portRate();
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
+      //监听工具条
+      table.on('tool(portRate)', function (obj) {
+        if (obj.event === 'edit') {// 修改
+          _queryCustomsPort('portRate_update');
+          var data = obj.data;
+          //表单初始赋值
+          form.val('portRate_update', {
+            "type": data.type
+            , "status": data.status
+            , "merchantId": data.merchantId
+            , "merchantFeeId": data.merchantFeeId
+            , "tollType": 'pen'
+            , "penFees": 0
+            , "ciqOrg": data.customsPort + '-' + data.customsPortName + '-' + data.customsCode + '-' + data.customsName + '-' + data.ciqOrgCode + '-' + data.ciqOrgName
+
+          })
+          form.render('select');
+
+          addIndex_portRate = layer.open({
+            type: 1,
+            title: '修改商户口岸信息',
+            area: ["730px", "299px"], //宽高
+            fixed: false, //不固定
+            maxmin: true,
+            content: $('#portRate_update')
+          });
+        }
+      });
+      // 修改商户口岸信息
+      form.on('submit(update_portRateBtn)', function (data) {
+        data.field.customsPort = data.field.ciqOrg.split('-')[0];
+        data.field.customsPortName = data.field.ciqOrg.split('-')[1];
+        data.field.customsCode = data.field.ciqOrg.split('-')[2];
+        data.field.customsName = data.field.ciqOrg.split('-')[3];
+        data.field.ciqOrgCode = data.field.ciqOrg.split('-')[4];
+        data.field.ciqOrgName = data.field.ciqOrg.split('-')[5];
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merchantFee/updateServiceFee",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            if (response.status == 1) {
+              layer.close(addIndex_portRate);
+              layer.msg("修改成功");
+              _reload_portRate();
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
+
     });
 
   </script>

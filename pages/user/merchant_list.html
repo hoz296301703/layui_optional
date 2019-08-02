@@ -114,8 +114,9 @@
 		<script type="text/html" id="operateTpl">
 
 			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-			<!-- <a class="layui-btn layui-btn-xs" lay-event="edit">分配权限</a> -->
 			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置密码</a>
+			<a class="layui-btn layui-btn-xs" lay-event="df">代付会员</a>
+
 		
 		</script>
 		<div style="display: none;" id="managerAuditMerchantInfo">
@@ -188,7 +189,7 @@
 						}, {
 							field: 'loginAccount', title: '商户帐号'
 						}, {
-							field: 'merchantStatus', width: 120, title: '商户状态', templet: function (item) {
+							field: 'merchantStatus', width: 100, title: '商户状态', templet: function (item) {
 								if (item.merchantStatus == '1') {
 									return '启用';
 								} else if (item.merchantStatus == '2') {
@@ -200,7 +201,7 @@
 						},
 
 						{
-							field: 'operate', width: 200, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', width: 220, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
 				// skin: 'row', //行边框风格
