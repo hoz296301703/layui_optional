@@ -268,7 +268,15 @@
 			//图片浏览
 			$('#form_sreach').on('click', '[lay-id="articleList"] .checkImg img', function (e) {
 				layer.photos({
-					photos:  { "data": [{"src": e.target.src}] }
+					photos: {
+						"data": [   //相册包含的图片，数组格式
+							{
+								"alt": e.target.alt,
+								"src": e.target.src, //原图地址
+								"thumb": e.target.src //缩略图地址
+							}
+						]
+					}
 				});
 			});
 
