@@ -42,29 +42,24 @@
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
 				<div class="layui-inline">
-					<label class="layui-form-label">名称</label>
+					<label class="layui-form-label">商户名称</label>
 					<div class="layui-input-inline">
-						<input type="text" name="goodsName" placeholder="请输入商品名称" class="layui-input">
+						<input type="text" name="merchantName" placeholder="请输入商户名称" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">商品自编号</label>
+					<label class="layui-form-label">商户编号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="goodsId" placeholder="请输入商品自编号" class="layui-input">
+						<input type="text" name="merchantId" placeholder="请输入商户编号" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">供货商</label>
+					<label class="layui-form-label">专店名称</label>
 					<div class="layui-input-inline">
-						<input type="text" name="goodsMerName" placeholder="请输入供货商名称" class="layui-input">
+						<input type="text" name="headContent" placeholder="请输入专店名称" class="layui-input">
 					</div>
 				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">供货商编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="goodsMerId" placeholder="请输入供货商编号" class="layui-input">
-					</div>
-				</div>
+
 
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
@@ -136,13 +131,13 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'counterURL', title: '网址', height: 180, templet: function (item) {
+							field: 'counterURL', title: '网址', width: 400, templet: function (item) {
 								return '<div><a target="_blank" style="color:#3eafe0;" href="' + item.counterURL + '">' + item.counterURL + '</a></div>';
 							}
 						}, {
-							field: 'merchantName', title: '商户名称', width: 150
+							field: 'merchantName', title: '商户名称', width: 200
 						}, {
-							field: 'merchantId', title: '商户编号', width: 150
+							field: 'merchantId', title: '商户编号', width: 180
 						}, {
 							field: 'headContent', title: '专店名称', width: 150
 						}, {
@@ -197,10 +192,10 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var goodsName = $('#form_sreach').find('[name=goodsName]');
-				var goodsId = $('#form_sreach').find('[name=goodsId]');
-				var goodsMerName = $('#form_sreach').find('[name=goodsMerName]');
-				var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
+				var merchantName = $('#form_sreach').find('[name=merchantName]');
+				var merchantId = $('#form_sreach').find('[name=merchantId]');
+				var headContent = $('#form_sreach').find('[name=headContent]');
+				// var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
@@ -211,10 +206,9 @@
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						goodsNameblurry: goodsName.val(),
-						goodsId: goodsId.val(),
-						goodsMerId: goodsMerId.val(),
-						goodsMerNameblurry: goodsMerName.val(),
+						merchantNameblurry: merchantName.val(),
+						merchantId: merchantId.val(),
+						headContentblurry: headContent.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -229,10 +223,10 @@
 			// });
 			var active = {
 				reload: function () {
-					var goodsName = $('#form_sreach').find('[name=goodsName]');
-					var goodsId = $('#form_sreach').find('[name=goodsId]');
-					var goodsMerName = $('#form_sreach').find('[name=goodsMerName]');
-					var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
+					var merchantName = $('#form_sreach').find('[name=merchantName]');
+					var merchantId = $('#form_sreach').find('[name=merchantId]');
+					var headContent = $('#form_sreach').find('[name=headContent]');
+					// var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					//拼接时间
@@ -245,10 +239,9 @@
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
-							goodsNameblurry: goodsName.val(),
-							goodsId: goodsId.val(),
-							goodsMerId: goodsMerId.val(),
-							goodsMerNameblurry: goodsMerName.val(),
+							merchantNameblurry: merchantName.val(),
+							merchantId: merchantId.val(),
+							headContentblurry: headContent.val(),
 							startDate: startDate,
 							endDate: endDate
 						}

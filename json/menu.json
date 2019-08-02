@@ -132,7 +132,7 @@
 				},
 				{
 					"id": 220,
-					"name": "专柜信息",
+					"name": "专店信息",
 					"icon": "",
 					"url": "./pages/distribution/counter_list.html"
 				}
