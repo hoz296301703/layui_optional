@@ -56,7 +56,7 @@
 					"id": 206,
 					"name": "库存管理",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/goods/stock_list.html"
 				}
 			]
 		},	

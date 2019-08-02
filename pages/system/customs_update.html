@@ -289,7 +289,7 @@
 
       //修改
       form.on('submit(update)', function (data) {
-        console.info(data);
+        // console.info(data);
         var params = {};
         var id = $('#customs_form').find('[name=id]');
         var provinceCode = $('#customs_form').find('[name=provinceCode]');
@@ -309,7 +309,7 @@
         params.customsPort = customsPort.val();
         params.customsCode = customsCode.val();
         params.ciqOrgCode = ciqOrgCode.val();
-        console.info(params);
+        // console.info(params);
         layer.load(2);
         $.ajax({
           url: urlPrefix + "silver-web-shop/customsPort/update",
