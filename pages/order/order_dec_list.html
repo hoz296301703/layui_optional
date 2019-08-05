@@ -50,83 +50,112 @@
 			<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
 	</div> -->
 	<div class="weadmin-body">
-		<form id="form_sreach" class="layui-form">
-			<div class="layui-form-item">
-				<div class="layui-inline">
-					<label class="layui-form-label">订单号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="entOrderNo" placeholder="请输入订单编号" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
-					<div class="layui-inline">
-						<label class="layui-form-label">状态</label>
-						<div class="layui-input-inline">
-							<select name="status" lay-verify="required" lay-search="">
-								<option value="">全部</option>
-								<option value="1">待付款</option>
-								<option value="2">已付款,待处理</option>
-								<option value="10">待发货</option>
-								<option value="3">待清关</option>
-								<option value="4">快件运输中</option>
-								<option value="5">快件已签收</option>
-								<option value="200">交易成功</option>
-								<option value="400">交易关闭</option>
-							</select>
+		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+			<ul class="layui-tab-title">
+				<li class="layui-this">申报信息</li>
+				<li id="del_info_btn">删除信息</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<form id="form_sreach" class="layui-form">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">商户名称</label>
+								<div class="layui-input-inline">
+									<input type="text" name="create_by" placeholder="请输入商户名称" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">商户编号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="merchant_no" placeholder="请输入商户编号" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">订单编号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="order_id" placeholder="请输入订单编号" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">交易流水号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="trade_no" placeholder="请输入交易流水号" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">收货人姓名</label>
+								<div class="layui-input-inline">
+									<input type="text" name="recipientName" placeholder="请输入收货人姓名" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">收货人手机</label>
+								<div class="layui-input-inline">
+									<input type="text" name="recipientTel" placeholder="请输入收货人手机号码" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">下单人姓名</label>
+								<div class="layui-input-inline">
+									<input type="text" name="orderDocName" placeholder="请输入下单人姓名" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">下单人身份证</label>
+								<div class="layui-input-inline">
+									<input type="text" name="orderDocId" placeholder="请输入下单人身份证号码" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<div class="layui-inline">
+									<label class="layui-form-label">申报状态</label>
+									<div class="layui-input-inline">
+										<select name="order_record_status" lay-verify="required" lay-search="">
+											<option value="">全部</option>
+											<option value="1">未申报</option>
+											<option value="2">申报中</option>
+											<option value="3">申报成功</option>
+											<option value="4">申报失败</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">接收日期</label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="startDate" name="startDate"
+										autocomplete="off" placeholder="年-月-日">
+								</div>
+								    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="endDate" name="endDate"
+										autocomplete="off" placeholder="年-月-日">
+								</div>
+							</div>
 						</div>
-					</div>
+						<div style="text-align: center;">
+							<button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+								data-type="reload">搜索</button>
+						</div>
+
+						<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+						<script type="text/html" id="operateTpl">
+										<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
+										</script>
+						<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+						<script src="../../static/js/common.js" charset="utf-8"></script>
+					</form>
 				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">来源</label>
-					<div class="layui-input-inline">
-						<select name="orderSourceType" lay-verify="required" lay-search="">
-							<option value="">全部</option>
-							<option value="online">线上</option>
-							<option value="offline">线下</option>
-							<option value="expand">推广</option>
-							<option value="mall">商城</option>
-							<option value="excelImport">导入</option>
-						</select>
-					</div>
+				<!----已删除申报订单信息------------start-------------------->
+				<div class="layui-tab-item" id="delInfo">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">商户名称</label>
-					<div class="layui-input-inline">
-						<input type="text" name="merchantId" placeholder="请输入商户名称" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">商户编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="merchantName" placeholder="请输入商户编号" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">日期</label>
-					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
-							placeholder="年-月-日">
-					</div>
-					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
-					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
-							placeholder="年-月-日">
-					</div>
-				</div>
+				<!----已删除申报订单信息------------end---------------------->
 			</div>
-			<div style="text-align: center;">
-				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
-			</div>
-			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-
-			<script type="text/html" id="operateTpl">
-				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
-			</script>
-
-			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-			<script src="../../static/js/common.js" charset="utf-8"></script>
-
+		</div>
 	</div>
+
 	<script>
 		layui.extend({
 			admin: '{/}../../static/js/admin'
@@ -154,50 +183,57 @@
 				elem: '#articleList',
 				cellMinWidth: 80,
 				height: tableHeight,
-				url: urlPrefix + 'silver-web-shop/order/getManualOrderInfo',
+				url: urlPrefix + 'silver-web-shop/manualOrder/findInfo',
 				method: 'post',
 				cols: [
-					[
-						{
-							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
-						}, {
-							field: '', title: '平台接收日期', fixed: 'left', templet: function (item) {
-								return G_format(item.head.create_date.time, "yyyy-MM-dd hh:mm:ss");
+					[{
+						field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
+					}, {
+						field: 'create_date', title: '平台接收日期', fixed: 'left', width: 170, templet: function (item) {
+							return G_format(item.create_date.time, "yyyy-MM-dd hh:mm:ss");
+						}
+					}, {
+						field: 'create_by', title: '商户名称', width: 200
+					}, {
+						field: 'merchant_no', title: '商户编号', width: 180
+					}, {
+						field: 'order_id', title: '订单编号', width: 200
+					}, {
+						field: 'FCY', title: '商品金额', width: 100
+					}, {
+						field: 'tax', title: '税费', width: 60
+					}, {
+						field: 'actualAmountPaid', title: '实际支付金额', width: 120
+					}, {
+						field: 'recipientName', title: '收货人姓名', width: 120
+					}, {
+						field: 'recipientTel', title: '收货人手机', width: 130
+					}, {
+						field: 'orderDocName', title: '下单人姓名', width: 100
+					}, {
+						field: 'orderDocId', title: '下单人身份证', width: 180
+					}, {
+						field: 'trade_no', title: '交易流水号', width: 175
+					}, {
+						field: 'orderDate', title: '订单日期', width: 170, templet: function (item) {
+							return toStringTime(item.orderDate);
+						}
+					}, {
+						field: 'order_record_status', title: '申报状态', width: 90, fixed: 'right', templet: function (item) {
+							//申报状态：1-未申报,2-申报中(待海关回执),3-申报成功、4-申报失败、10-申报中(待系统生成支付单)、11-订单待申报(待系统扫描申报)
+							if (item.order_record_status == '1') {
+								return '未申报';
+							} else if (item.order_record_status == '2' || item.order_record_status == '11' || item.order_record_status == '10') {
+								return '申报中';
+							} else if (item.order_record_status == '3') {
+								return '申报成功';
+							} else if (item.order_record_status == '4') {
+								return '申报失败';
 							}
-						}, {
-							field: 'order_id', title: '订单号',
-						}, {
-							field: 'order_record_status', title: '状态', width: 130, templet: function (item) {
-								//	订单状态：1-待付款、2-已付款,待商家处理、10-待发货、 3-待清关、4-快件运输中、5-快件已签收、200-交易成功、400-交易关闭
-								if (item.status == '1') {
-									return '未申报';
-								} else if (item.order_record_status == '2') {
-									return '申报中';
-								} else if (item.order_record_status == '3') {
-									return '申报成功';
-								} else if (item.order_record_status == '4') {
-									return '申报失败';
-								}
-							}
-						}, {
-							field: 'orderTotalPrice', title: '订单金额', width: 100
-						},
-						{
-							field: 'tax', title: '税款', width: 60
-						}, {
-							field: 'freight', title: '运费', width: 60
-						}, {
-							field: 'freight', title: '实际支付金额', width: 60
-						},
-						{
-							field: 'waybillNo', title: '运单号', width: 80
-						}, {
-							field: 'merchantName', title: '商户名称'
-						}, {
-							field: 'merchantId', title: '商户编号'
-						}, {
-							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
-						}]
+						}
+					}, {
+						field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+					}]
 				],
 				// skin: 'row', //行边框风格
 				event: true,
@@ -234,26 +270,35 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var entOrderNo = $('#form_sreach').find('[name=entOrderNo]');
-				var status = $('#form_sreach').find('[name=status]');
-				var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
-				var merchantId = $('#form_sreach').find('[name=merchantId]');
-				var merchantName = $('#form_sreach').find('[name=merchantName]');
+				var create_by = $('#form_sreach').find('[name=create_by]');
+				var merchant_no = $('#form_sreach').find('[name=merchant_no]');
+				var order_id = $('#form_sreach').find('[name=order_id]');
+				var recipientName = $('#form_sreach').find('[name=recipientName]');
+				var recipientTel = $('#form_sreach').find('[name=recipientTel]');
+				var OrderDocName = $('#form_sreach').find('[name=orderDocName]');
+				var OrderDocId = $('#form_sreach').find('[name=orderDocId]');
+				var order_record_status = $('#form_sreach').find('[name=order_record_status]');
+				var trade_no = $('#form_sreach').find('[name=trade_no]');
+
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/order/getManualOrderInfo',
+					url: urlPrefix + 'silver-web-shop/manualOrder/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						entOrderNo: entOrderNo.val(),
-						status: status.val(),
-						orderSourceType: orderSourceType.val(),
-						merchantId: merchantId.val(),
-						merchantNameblurry: merchantName.val(),
+						create_byblurry: create_by.val(),
+						merchant_no: merchant_no.val(),
+						order_id: order_id.val(),
+						recipientName: recipientName.val(),
+						recipientTel: recipientTel.val(),
+						OrderDocName: orderDocName.val(),
+						OrderDocId: orderDocId.val(),
+						trade_no: trade_no.val(),
+						order_record_status: order_record_status.val(),
 						startTime: startDate,
 						endTime: endDate
 					}
@@ -268,27 +313,35 @@
 			// });
 			var active = {
 				reload: function () {
-					var entOrderNo = $('#form_sreach').find('[name=entOrderNo]');
-					var status = $('#form_sreach').find('[name=status]');
-					var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
-					var merchantId = $('#form_sreach').find('[name=merchantId]');
-					var merchantName = $('#form_sreach').find('[name=merchantName]');
+					var create_by = $('#form_sreach').find('[name=create_by]');
+					var merchant_no = $('#form_sreach').find('[name=merchant_no]');
+					var order_id = $('#form_sreach').find('[name=order_id]');
+					var recipientName = $('#form_sreach').find('[name=recipientName]');
+					var recipientTel = $('#form_sreach').find('[name=recipientTel]');
+					var orderDocName = $('#form_sreach').find('[name=orderDocName]');
+					var orderDocId = $('#form_sreach').find('[name=orderDocId]');
+					var order_record_status = $('#form_sreach').find('[name=order_record_status]');
+					var trade_no = $('#form_sreach').find('[name=trade_no]');
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					startDate = appendStartDate(startDate.val());
 					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/order/getManualOrderInfo',
+						url: urlPrefix + 'silver-web-shop/manualOrder/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
-							entOrderNo: entOrderNo.val(),
-							status: status.val(),
-							orderSourceType: orderSourceType.val(),
-							merchantId: merchantId.val(),
-							merchantNameblurry: merchantName.val(),
+							create_byblurry: create_by.val(),
+							merchant_no: merchant_no.val(),
+							order_id: order_id.val(),
+							RecipientName: recipientName.val(),
+							RecipientTel: recipientTel.val(),
+							OrderDocName: orderDocName.val(),
+							OrderDocId: orderDocId.val(),
+							trade_no: trade_no.val(),
+							order_record_status: order_record_status.val(),
 							startTime: startDate,
 							endTime: endDate
 						}
@@ -461,7 +514,11 @@
 					// layer.alert('编辑行：<br>' + JSON.stringify(data))
 				}
 			});
-
+			//跳转至已删除的订单信息
+			$('#del_info_btn').on('click', function () {
+				var h = $(window).height() - 30;
+				$("#delInfo").find('iframe').attr('src', "del_order_dec_list.html").css('height', h + 'px');
+			})
 		});
 	</script>
 </body>
