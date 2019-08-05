@@ -34,6 +34,27 @@
 		body {
 			overflow-y: scroll;
 		}
+
+		.dateClass {
+			float: left;
+			margin-right: 6px;
+		}
+
+		.dateClass li {
+			float: left;
+			background: #ddd;
+			height: 28px;
+			line-height: 28px;
+			width: 52px;
+			text-align: center;
+			margin-top: 3px;
+			cursor: pointer;
+		}
+
+		.dateClass li.active {
+			background: #5bc0de;
+			color: #fff;
+		}
 	</style>
 </head>
 
@@ -55,26 +76,47 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">商户名称</label>
 					<div class="layui-input-inline">
-						<input type="text" name="merchantId" placeholder="请输入商户名称" class="layui-input">
+						<input type="text" name="merchantName" placeholder="请输入商户名称" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
 					<label class="layui-form-label">商户编号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="merchantName" placeholder="请输入商户编号" class="layui-input">
+						<input type="text" name="merchantId" placeholder="请输入商户编号" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">日期</label>
-					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
-							placeholder="年-月-日">
+					<label class="layui-form-label">报表类型</label>
+					<ul class="clearfix dateClass" id="dateClass">
+						<li name="startDate_D" data-type="day" class="active">日报表</li>
+						<li name='startDate_M' data-type="month">月报表</li>
+						<li name='' data-type="customized">自定义</li>
+					</ul>
+
+					<!-- 日报表 -->
+					<div class="layui-input-inline" id="startDate_D">
+						<input type="text" class="layui-input" id="startDate_D_input" name="startDate_D"
+							autocomplete="off" placeholder="年-月-日">
 					</div>
-					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
-					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
-							placeholder="年-月-日">
+
+					<!-- 月报表 -->
+					<div class="layui-input-inline" id="startDate_M" style="display: none;">
+						<input type="text" class="layui-input" id="startDate_M_input" name="startDate_M"
+							autocomplete="off" placeholder="年-月">
 					</div>
+					<!-- 自定义 -->
+					<div id="userDefined" style="display: none;float: left;">
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" id="userDefined_startDate" name="userDefined_startDate" autocomplete="off"
+								placeholder="请选择开始时间">
+						</div>
+						    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" id="userDefined_endDate" name="endDate"
+								autocomplete="off" placeholder="请选择结束时间">
+						</div>
+					</div>
+
 				</div>
 			</div>
 			<div style="text-align: center;">
@@ -101,60 +143,79 @@
 				tree = layui.tree,
 				admin = layui.admin,
 				laydate = layui.laydate;
-			//日期时间选择器
+
+			// 日报表
 			laydate.render({
-				elem: '#startDate'
-				, value: getDay(-7)
+				elem: '#startDate_D_input'
+				, value: get_newDate_D()
 				, isInitValue: true
 			});
+			// 月报表
 			laydate.render({
-				elem: '#endDate'
-				, type: 'datetime'
+				elem: '#startDate_M_input'
+				, type: 'month'
+				// , value: get_newDate_M()
+				// , isInitValue: true
+			});
+			// 自定义报表
+			laydate.render({
+				elem: '#userDefined_startDate'
+			});
+			laydate.render({
+				elem: '#userDefined_endDate'
 			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+
+
 			table.render({
 				elem: '#articleList',
-				defaultToolbar:['filter'],
+				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
 				height: tableHeight,
 				toolbar: '#articleList_toolbar',
 				url: urlPrefix + 'silver-web-shop/repLogs/getInfo',
 				method: 'post',
+				totalRow: true,
 				cols: [
 					[
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'dateSign', width: 100, fixed: 'left', title: '日期', templet: function (item) {
-								return item.dateSign.slice(0, 4) + '-' + item.dateSign.slice(4, 6);
+							field: 'dateSign', width: 120, fixed: 'left', title: '日期', totalRowText: '合计', templet: function (item) {
+								if (item.type == 'day') {
+									return item.dateSign.slice(0, 4) + '-' + item.dateSign.slice(4, 6) + '-' + item.dateSign.slice(6, 8);
+								} else if (item.type == 'month') {
+									return item.dateSign.slice(0, 4) + '-' + item.dateSign.slice(4, 6);
+								}
+
 							}
 						}, {
 							field: 'merchantId', width: 130, title: '商户编号',
 						}, {
 							field: 'merchantName', title: '商户名称', width: 130
 						}, {
-							field: 'orderDecTotalCount', title: '订单数量', width: 100
+							field: 'orderDecTotalCount', title: '订单数量', width: 100, totalRow: true
 						},
 						{
-							field: 'orderDecTotalAmount', title: '订单总金额(元)', width: 150
+							field: 'orderDecTotalAmount', title: '订单总金额(元)', width: 150, totalRow: true
 						}, {
-							field: 'orderDecFee', title: '订单申报服务费(元)', width: 150
+							field: 'orderDecFee', title: '订单申报服务费(元)', width: 150, totalRow: true
 						}, {
-							field: 'payDecTotalCount', title: '支付单数量', width: 100
+							field: 'payDecTotalCount', title: '支付单数量', width: 100, totalRow: true
 						},
 						{
-							field: 'payDecTotalAmount', title: '支付单总金额(元)', width: 150
+							field: 'payDecTotalAmount', title: '支付单总金额(元)', width: 150, totalRow: true
 						}, {
-							field: 'payDecFee', title: '支付单申报服务费(元)', width: 150
+							field: 'payDecFee', title: '支付单申报服务费(元)', width: 150, totalRow: true
 						}, {
-							field: 'payFee', title: '支付服务费(元)', width: 100
+							field: 'payFee', title: '支付服务费(元)', width: 100, totalRow: true
 						}, {
-							field: 'payRate', title: '支付服务费率(%)', width: 100
+							field: 'payRate', title: '支付服务费率(%)', width: 100, totalRow: true
 						}, {
-							field: 'realNameTotalCount', title: '实名认证次数', width: 100
+							field: 'realNameTotalCount', title: '实名认证次数', width: 100, totalRow: true
 						}, {
-							field: 'realNameFee', title: '实名认证服务费(元)', width: 150
+							field: 'realNameFee', title: '实名认证服务费(元)', width: 150, totalRow: true
 						}, {
 							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
@@ -178,42 +239,32 @@
 					};
 				},
 				where: {
-					startDate: "20190730",
-					type: "day"
-				},
-				done: function (res, curr, count) {
-					//如果是异步请求数据方式，res即为你接口返回的信息。
-					//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-					// console.log(res);
-
-					// //得到当前页码
-					// console.log(curr);
-
-					// //得到数据总量
-					// console.log(count);
+					startDate: get_newDate_D().replace("-", "").replace("-", ""),
+					type: $('#dateClass').find('.active').attr('data-type')
 				}
+
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var merchantId = $('#form_sreach').find('[name=merchantId]');
-				var merchantName = $('#form_sreach').find('[name=merchantName]');
-				var startDate = $('#form_sreach').find('[name=startDate]');
-				var endDate = $('#form_sreach').find('[name=endDate]');
-				startDate = appendStartDate(startDate.val());
-				endDate = appendEndDate(endDate.val());
-				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/repLogs/getInfo',
-					page: {
-						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
-					},
-					where: {
-						merchantId: merchantId.val(),
-						merchantName: merchantName.val(),
-		
-						startTime: startDate,
-						endTime: endDate
-					}
-				});
+				// var merchantId = $('#form_sreach').find('[name=merchantId]');
+				// var merchantName = $('#form_sreach').find('[name=merchantName]');
+				// var startDate = $('#form_sreach').find('[name=startDate]');
+				// var endDate = $('#form_sreach').find('[name=endDate]');
+				// startDate = appendStartDate(startDate.val());
+				// endDate = appendEndDate(endDate.val());
+				// table.reload('articleList', {
+				// 	url: urlPrefix + 'silver-web-shop/repLogs/getInfo',
+				// 	page: {
+				// 		curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+				// 	},
+				// 	where: {
+				// 		merchantId: merchantId.val(),
+				// 		merchantName: merchantName.val(),
+
+				// 		startDate: startDate,
+				// 		endDate: endDate
+				// 	}
+				// });
 			}
 			/*
 			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
@@ -224,30 +275,60 @@
 			// });
 			var active = {
 				reload: function () {
-					var entOrderNo = $('#form_sreach').find('[name=entOrderNo]');
-					var status = $('#form_sreach').find('[name=status]');
-					var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
-					var merchantId = $('#form_sreach').find('[name=merchantId]');
-					var merchantName = $('#form_sreach').find('[name=merchantName]');
-					var startDate = $('#form_sreach').find('[name=startDate]');
-					var endDate = $('#form_sreach').find('[name=endDate]');
-					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());
+					var startDate = '';
+					var endDate = '';
+					if ($('#dateClass').find('.active').attr('data-type') == 'day') {// 天
+						startDate = $('#startDate_D_input').val();
+						if (isEmpty(startDate)) {
+							layer.alert('请选择查询时间');
+							return false;
+						}
+					} else if ($('#dateClass').find('.active').attr('data-type') == 'customized') {// 自定义
+						startDate = $('#userDefined_startDate').val();
+						endDate = $('#userDefined_endDate').val();
+						if (isEmpty(startDate) || isEmpty(endDate)) {
+							layer.alert('请选择查询时间');
+							return false;
+						}
+					} else if ($('#dateClass').find('.active').attr('data-type') == 'month') {// 月
+						startDate = $('#startDate_M_input').val();
+						if (isEmpty(startDate)) {
+							layer.alert('请选择查询时间');
+							return false;
+						}
+					}
+
+
+					var merchantId = $('#form_sreach').find('[name=merchantId]').val();
+					var merchantName = $('#form_sreach').find('[name=merchantName]').val();
+					var startDate = startDate;
+					var endDate = endDate;
+					if (!isEmpty(startDate)) {
+
+						startDate = startDate.replace("-", "").replace("-", "");
+					}
+					if (!isEmpty(endDate)) {
+						endDate = endDate.replace("-", "").replace("-", "");
+					}
+					var data = {
+						merchantId: $.trim(merchantId),
+						merchantNameblurry: $.trim(merchantName),
+						type: $('#dateClass').find('.active').attr('data-type'),
+						startDate: startDate,
+						endDate: endDate
+					}
+					for (var key in data) {
+						if (isEmpty(data[key])) {
+							delete data[key];
+						}
+					}
 					//执行重载					
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/repLogs/getInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
-						where: {
-							entOrderNo: entOrderNo.val(),
-							status: status.val(),
-							orderSourceType: orderSourceType.val(),
-							merchantId: merchantId.val(),
-							merchantNameblurry: merchantName.val(),
-							startTime: startDate,
-							endTime: endDate
-						}
+						where: data
 					});
 				}
 			};
@@ -257,6 +338,23 @@
 				active[type] ? active[type].call(this) : '';
 			});
 
+			// 时间类型选择
+			$('#dateClass').on('click', 'li', function () {
+				$(this).addClass('active').siblings().removeClass('active');
+				if ($(this).attr('name') == 'startDate_M') {
+					$('#startDate_D').hide();
+					$('#userDefined').hide();
+					$('#startDate_M').show();
+				} else if ($(this).attr('name') == 'startDate_D') {
+					$('#startDate_M').hide();
+					$('#userDefined').hide();
+					$('#startDate_D').show();
+				} else if ($(this).attr('name') == '') {
+					$('#startDate_M').hide();
+					$('#startDate_D').hide();
+					$('#userDefined').show();
+				}
+			})
 
 
 		});
