@@ -34,6 +34,12 @@
 		body {
 			overflow-y: scroll;
 		}
+
+		.layui-table tbody tr:hover,
+		.layui-table-hover {
+			background-color: #F1F5F9;
+			/*修改成你自己的颜色*/
+		}
 	</style>
 </head>
 
@@ -118,7 +124,7 @@
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
-			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+			<table class="layui-hide" lay-even lay-skin="nob" id="articleList" lay-filter="articleList"></table>
 
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
@@ -157,6 +163,7 @@
 				height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/order/findDatas',
 				method: 'post',
+				// even:true,
 				cols: [
 					[
 						{
@@ -333,11 +340,11 @@
 				if (obj.event === 'detail') {// 查看详情
 					layer.open({
 						type: 2,
-						title: '详情',
-						area: ['750px', '350px'],
+						title: '订单详情',
+						area: ['90%', '90%'],
 						fixed: false, //不固定
 						maxmin: true,
-						content: './manager_detail.html',
+						content: './order_detail.html',
 						btnAlign: 'c',
 						btn: ['关闭'],
 						success: function (layero, index) {

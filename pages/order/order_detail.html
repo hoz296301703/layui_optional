@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<!--订单信息详情html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-collapse" lay-filter="test">
+    <div class="layui-colla-item">
+      <h2 class="layui-colla-title">订单详情</h2>
+      <div class="layui-colla-content layui-show">
+        <div class="weadmin-body">
+          <form class="layui-form" id="manager_detail_form" lay-filter="example">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">订单编号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="entOrderNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">商品总额</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="orderTotalPrice" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">税费</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="tax" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">运费</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="freight" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">抵付说明</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="otherPayNotes" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">实际支付金额</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="actualAmountPaid" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">收货人姓名</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recipientName" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">收货人身份证号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recipientCardId" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">收货人电话</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recipientTel" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">收货人省份</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recProvincesName" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">城市</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recCityName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">区县</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recAreaName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">详细地址</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recipientAddr" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">下单人姓名</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="ordererName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">下单人身份证号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="ordererIdCardNumber" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">下单人账号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="managerId" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">下单人电话</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="ordererTel" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">订单日期</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">交易流水号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="tradeNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="layui-colla-item">
+      <h2 class="layui-colla-title">为什么前端工程师多不愿意用 Bootstrap 框架？</h2>
+      <div class="layui-colla-content">
+        <p>
+          因为不适合。如果希望开发长期的项目或者制作产品类网站，那么就需要实现特定的设计，为了在维护项目中可以方便地按设计师要求快速修改样式，肯定会逐步编写出各种业务组件、工具类，相当于为项目自行开发一套框架。——来自知乎@Kayo
+        </p>
+      </div>
+    </div>
+    <div class="layui-colla-item">
+      <h2 class="layui-colla-title">layui 更适合哪些开发者？</h2>
+      <div class="layui-colla-content">
+        <p>在前端技术快速变革的今天，layui 仍然坚持语义化的组织模式，甚至于模块理念都是采用类AMD组织形式，并非是有意与时代背道而驰。layui
+          认为以jQuery为核心的开发方式还没有到完全消亡的时候，而早期市面上基于jQuery的UI都普通做得差强人意，所以需要有一个新的UI去重新为这一领域注入活力，并采用一些更科学的架构方式。
+          <br><br>
+          因此准确地说，layui 更多是面向那些追求开发简单的前端工程师们，以及所有层次的服务端程序员。</p>
+      </div>
+    </div>
+    <div class="layui-colla-item">
+      <h2 class="layui-colla-title">贤心是男是女？</h2>
+      <div class="layui-colla-content">
+        <p>man！ 所以这个问题不要再出现了。。。</p>
+      </div>
+    </div>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量
+
+
+    function getParent_data(obj) {
+      g_data = obj.data;
+    }
+
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form', 'element', 'jquery', 'layer', 'admin'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        element = layui.element,
+        admin = layui.admin,
+        layer = layui.layer;
+      //监听折叠
+      element.on('collapse(test)', function (data) {
+        layer.msg('展开状态：' + data.show);
+      });
+      //查询订单详情
+      function getDetail(orderId) {
+        var datas = null;
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/order/findDetail",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          async: false,
+          data: { entOrderNo: orderId },
+          success: function (response) {
+            if (response.status == 1) {
+              datas = response.datas;
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+        return datas;
+      }
+      g_data = getDetail(g_data.entOrderNo);
+      //表单初始赋值
+      form.val('example', {
+        "managerId": g_data.order.entOrderNo
+        , "managerName": g_data.managerName
+        , "realName": g_data.realName
+        , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
+        , "managerMarks": g_data.managerMarks
+        , "status": g_data.status
+        , "managerId": g_data.order.entOrderNo
+        , "managerName": g_data.managerName
+        , "realName": g_data.realName
+        , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
+        , "managerMarks": g_data.managerMarks
+        , "status": g_data.status
+        , "managerId": g_data.order.entOrderNo
+        , "managerName": g_data.managerName
+        , "realName": g_data.realName
+        , "createDate": G_format(g_data.order.createDate.time, "yyyy-MM-dd hh:mm:ss")
+        , "managerMarks": g_data.managerMarks
+        , "status": g_data.status
+      })
+    });
+  </script>
+</body>
+
+</html>

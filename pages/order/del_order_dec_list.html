@@ -156,7 +156,7 @@
 				toolbar: '#articleList_toolbar',
 				cellMinWidth: 80,
 				height: tableHeight,
-				url: urlPrefix + 'silver-web-shop/order/getAlreadyDelOrderInfo',
+				url: urlPrefix + 'silver-web-shop/oldManOrder/findInfo',
 				method: 'post',
 				cols: [
 					[{
@@ -242,7 +242,7 @@
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/order/getAlreadyDelOrderInfo',
+					url: urlPrefix + 'silver-web-shop/oldManOrder/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
@@ -279,7 +279,7 @@
 					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/order/getAlreadyDelOrderInfo',
+						url: urlPrefix + 'silver-web-shop/oldManOrder/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
