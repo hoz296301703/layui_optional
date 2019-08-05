@@ -115,6 +115,7 @@
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
+				defaultToolbar:['filter'],
 				cellMinWidth: 80,
 				height: tableHeight,
 				toolbar: '#articleList_toolbar',
@@ -125,9 +126,11 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'dateSign', title: '日期', fixed: 'left'
+							field: 'dateSign', width: 100, fixed: 'left', title: '日期', templet: function (item) {
+								return item.dateSign.slice(0, 4) + '-' + item.dateSign.slice(4, 6);
+							}
 						}, {
-							field: 'merchantId', title: '商户编号',
+							field: 'merchantId', width: 130, title: '商户编号',
 						}, {
 							field: 'merchantName', title: '商户名称', width: 130
 						}, {
@@ -192,9 +195,6 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var entOrderNo = $('#form_sreach').find('[name=entOrderNo]');
-				var status = $('#form_sreach').find('[name=status]');
-				var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
 				var merchantId = $('#form_sreach').find('[name=merchantId]');
 				var merchantName = $('#form_sreach').find('[name=merchantName]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
@@ -207,11 +207,9 @@
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						entOrderNo: entOrderNo.val(),
-						status: status.val(),
-						orderSourceType: orderSourceType.val(),
 						merchantId: merchantId.val(),
-						merchantNameblurry: merchantName.val(),
+						merchantName: merchantName.val(),
+		
 						startTime: startDate,
 						endTime: endDate
 					}
