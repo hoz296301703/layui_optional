@@ -100,7 +100,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 		if($('.left-nav').css('left') == '0px') {
 			//此处左侧菜单是显示状态，点击隐藏
 			$('.left-nav').animate({
-				left: '-221px'
+				left: '-171px'
 			}, 100);
 			$('.page-content').animate({
 				left: '0px'
@@ -112,7 +112,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 				left: '0px'
 			}, 100);
 			$('.page-content').animate({
-				left: '221px'
+				left: '171px'
 			}, 100);
 			//点击显示后，判断屏幕宽度较小时显示遮罩背景
 			if($(window).width() < 768) {
@@ -123,7 +123,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function(exports) {
 	//点击遮罩背景，左侧菜单隐藏
 	$('.page-content-bg').click(function(event) {
 		$('.left-nav').animate({
-			left: '-221px'
+			left: '-171px'
 		}, 100);
 		$('.page-content').animate({
 			left: '0px'

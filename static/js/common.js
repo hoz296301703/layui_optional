@@ -191,28 +191,6 @@ var splitImg = function (img) {
   return arr[0];
 };
 
-// 异步加载查询
-// function g_async(data , url) {
-//   var obj = '';
-//   $.ajax({
-//     url: url,
-//     type: "POST",
-//     async: false,
-//     xhrFields: {
-//       withCredentials: true
-//     },
-//     data: data,
-//     success: function(response) {
-//       if (response.status == 1) {
-//         obj = response.datas;
-//       }
-//     },
-//     error: function() {
-
-//     }
-//   });
-//   return obj;
-// }
 /**
  * 将yyyyMMdd格式化成yyyy-MM-dd
  * @param {*} time 
@@ -236,5 +214,28 @@ function toStringTime(time) {
   return time.replace(pattern, "$1-$2-$3 $4:$5:$6");
 }
 
+
+// 获取当天日期
+function get_newDate_D(){// 年月日
+  var lw = new Date();
+  var lastY = lw.getFullYear();
+  var lastM = lw.getMonth() + 1;
+  var lastD = lw.getDate();
+  // var lasthour = '00';
+  // var lastminute = '00';
+  // var lastsecond = '00';
+  var startDate = lastY + "-" + (lastM < 10 ? "0" + lastM : lastM) + "-" + (lastD < 10 ? "0" + lastD : lastD);
+  return startDate;
+}
+
+// 获取当月
+function get_newDate_M(){// 年月日
+  var lw = new Date();
+  var lastY = lw.getFullYear();
+  var lastM = lw.getMonth() + 1;
+
+  var startDate = lastY + "-" + (lastM < 10 ? "0" + lastM : lastM);
+  return startDate;
+}
 
 
