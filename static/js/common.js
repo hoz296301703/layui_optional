@@ -221,6 +221,20 @@ function formatTime(time) {
   if (isEmpty(time)) {
     return '';
   } else {
-    return  time.slice(0, 4) + "-" + time.slice(4, 6) + "-" + time.slice(6, 8);
+    return time.slice(0, 4) + "-" + time.slice(4, 6) + "-" + time.slice(6, 8);
   }
 }
+/**
+ * yyyyMMddHHmmss转换成yyyy-MM-dd HH:mm:ss
+ * @param {*} time 
+ */
+function toStringTime(time) {
+  if (isEmpty(time)) {
+    return '';
+  }
+  var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+  return time.replace(pattern, "$1-$2-$3 $4:$5:$6");
+}
+
+
+

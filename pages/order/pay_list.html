@@ -38,17 +38,7 @@
 </head>
 
 <body>
-	<!-- <div class="weadmin-nav">
-		<span class="layui-breadcrumb">
-			<a href="">首页</a>
-			<a href="">用户管理</a>
-			<a>
-				<cite>运营管理</cite></a>
-		</span>
-		<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
-			href="javascript:location.replace(location.href);" title="刷新">
-			<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
-	</div> -->
+
 	<div class="weadmin-body">
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
@@ -151,11 +141,11 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'create_date', title: '创建时间', width: 180, fixed: 'left', templet: function (item) {
+							field: 'create_date', title: '创建时间', width: 170, fixed: 'left', templet: function (item) {
 								return G_format(item.create_date.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'pay_time', title: '交易时间', width: 130, templet: function (item) {
+							field: 'pay_time', title: '交易时间', width: 170, templet: function (item) {
 								return G_format(item.pay_time.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
