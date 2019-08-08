@@ -107,8 +107,8 @@
 					<!-- 自定义 -->
 					<div id="userDefined" style="display: none;float: left;">
 						<div class="layui-input-inline">
-							<input type="text" class="layui-input" id="userDefined_startDate" name="userDefined_startDate" autocomplete="off"
-								placeholder="请选择开始时间">
+							<input type="text" class="layui-input" id="userDefined_startDate"
+								name="userDefined_startDate" autocomplete="off" placeholder="请选择开始时间">
 						</div>
 						    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
 						<div class="layui-input-inline">
@@ -126,6 +126,12 @@
 
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
+			</script>
+			<script type="text/html" id="report_toolbar">
+				<div class="layui-btn-container">
+					<button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrderAll">汇总下载</button>
+					<button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrder">明细下载</button>
+				</div>
 			</script>
 
 			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -173,7 +179,7 @@
 				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
 				height: tableHeight,
-				toolbar: '#articleList_toolbar',
+				toolbar: '#report_toolbar',
 				url: urlPrefix + 'silver-web-shop/repLogs/getInfo',
 				method: 'post',
 				totalRow: true,
@@ -244,35 +250,7 @@
 				}
 
 			});
-			// 重载公共方法
-			var _reload = function () {
-				// var merchantId = $('#form_sreach').find('[name=merchantId]');
-				// var merchantName = $('#form_sreach').find('[name=merchantName]');
-				// var startDate = $('#form_sreach').find('[name=startDate]');
-				// var endDate = $('#form_sreach').find('[name=endDate]');
-				// startDate = appendStartDate(startDate.val());
-				// endDate = appendEndDate(endDate.val());
-				// table.reload('articleList', {
-				// 	url: urlPrefix + 'silver-web-shop/repLogs/getInfo',
-				// 	page: {
-				// 		curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
-				// 	},
-				// 	where: {
-				// 		merchantId: merchantId.val(),
-				// 		merchantName: merchantName.val(),
 
-				// 		startDate: startDate,
-				// 		endDate: endDate
-				// 	}
-				// });
-			}
-			/*
-			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
-			 * http://www.layui.com/doc/modules/form.html#render
-			 * */
-			// $(function () {
-			// 	form.render();
-			// });
 			var active = {
 				reload: function () {
 					var startDate = '';
@@ -355,6 +333,79 @@
 					$('#userDefined').show();
 				}
 			})
+			//头工具栏事件
+			table.on('toolbar(articleList)', function (obj) {
+				var checkStatus = table.checkStatus(obj.config.id);
+				switch (obj.event) {
+					case 'downManualOrderAll':
+						console.log(obj.event)
+
+						layer.alert("下载查询结果", {
+							time: 0, //不自动关闭
+							btnAlign: "c",
+							btn: ["下载", "取消"],
+							yes: function (index) {
+								var url = "silver-web-shop/repLogs/downLogs?displayType=collect";
+
+								if (isNull($('#search_condition').find('[name=merchantId]').val())) {// 商户id
+									url += '&merchantId=' + $('#search_condition').find('[name=merchantId]').val();
+								}
+
+								if (isNull($('#search_condition').find('[name=merchantName]').val())) {// 商户名称
+									url += '&merchantNameblurry=' + $('#search_condition').find('[name=merchantName]').val();
+								}
+
+								var startDate = '';
+								var endDate = '';
+								if ($('#dateClass').find('.active').attr('data-type') == 'day') {// 天
+									startDate = $('#startDate_D').find('[name=startDate_D]').val();
+									if (!isNull(startDate)) {
+										layer.alert('请选择查询时间');
+										return false;
+									}
+									startDate = startDate.replace("-", "").replace("-", "");
+									url += '&type=day' + '&startDate=' + startDate;
+								} else if ($('#dateClass').find('.active').attr('data-type') == 'customized') {// 自定义
+									startDate = $('#userDefined').find('[name=startDate]').val();
+									endDate = $('#userDefined').find('[name=endDate]').val();
+									if (!isNull(startDate) || !isNull(endDate)) {
+										layer.alert('请选择查询时间');
+										return false;
+									}
+
+									startDate = startDate.replace("-", "").replace("-", "");
+									endDate = endDate.replace("-", "").replace("-", "");
+									url += '&type=customized' + '&startDate=' + startDate + '&endDate=' + endDate;
+								} else if ($('#dateClass').find('.active').attr('data-type') == 'month') {// 月
+									startDate = $('#startDate_M').find('[name=startDate_M]').val();
+									if (!isNull(startDate)) {
+										layer.alert('请选择查询时间');
+										return false;
+									}
+									startDate = startDate.replace("-", "").replace("-", "");
+									url += '&type=month' + '&startDate=' + startDate;
+								}
+								window.location.href = urlPrefix + url;
+								layer.closeAll();
+								layer.alert(
+									'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+									{
+										time: 0, //不自动关闭
+										btn: ["关闭"],
+										btnAlign: "c",
+										yes: function (index) {
+											layer.close(index);
+										}
+									}
+								);
+
+							}
+						});
+
+						break;
+
+				};
+			});
 
 
 		});

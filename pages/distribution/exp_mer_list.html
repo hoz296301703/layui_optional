@@ -108,7 +108,7 @@
 			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>			
-				<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">删除</a> -->
+				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">注销</a>
 			</script>
 	</div>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -216,7 +216,7 @@
 				var expadndMerchantName = $('#form_sreach').find('[name=expadndMerchantName]');
 				var expadndMerchantCode = $('#form_sreach').find('[name=expadndMerchantCode]');
 				var loginName = $('#form_sreach').find('[name=loginName]');
-				var phone = $('#form_sreach').find('[name=phone]');				
+				var phone = $('#form_sreach').find('[name=phone]');
 				var supMerchantId = $('#form_sreach').find('[name=supMerchantId]');
 				var supMerchantName = $('#form_sreach').find('[name=supMerchantName]');
 				var level = $('#form_sreach').find('[name=level]');
@@ -227,13 +227,13 @@
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/expadndMerchant/findInfo',
 					page: {
-						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+						curr: $(".layui-laypage-em").next().html()
 					},
 					where: {
 						expadndMerchantNameblurry: expadndMerchantName.val(),
 						expadndMerchantCode: expadndMerchantCode.val(),
 						phone: phone.val(),
-						loginName:loginName.val(),
+						loginName: loginName.val(),
 						supMerchantId: supMerchantId.val(),
 						supMerchantNameblurry: supMerchantName.val(),
 						startDate: startDate,
@@ -272,7 +272,7 @@
 							expadndMerchantNameblurry: expadndMerchantName.val(),
 							expadndMerchantCode: expadndMerchantCode.val(),
 							phone: phone.val(),
-							loginName:loginName.val(),
+							loginName: loginName.val(),
 							supMerchantId: supMerchantId.val(),
 							supMerchantNameblurry: supMerchantName.val(),
 							level: level.val(),
@@ -286,6 +286,60 @@
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');
 				active[type] ? active[type].call(this) : '';
+			});
+			//监听工具条
+			table.on('tool(articleList)', function (obj) {
+				var data = obj.data;
+				if (obj.event === 'delete') {// 注销
+					layer.prompt({
+						value: "",
+						formType: 2,
+						title: "注销批注",
+						yes: function (index, layero) {
+							if (
+								$.trim(
+									$(layero)
+										.find("textarea")
+										.val()
+								) == ""
+							) {
+								layer.alert("请填写注销批注！");
+							} else {
+								var datas = {
+									expMerCode: data.expadndMerchantCode,
+									note: $.trim(
+										$(layero)
+											.find("textarea")
+											.val()
+									) // 批注
+								};
+								$.ajax({
+									url: urlPrefix + "silver-web-shop/expadndMerchant/remove",
+									type: "POST",
+									xhrFields: {
+										withCredentials: true
+									},
+									data: datas,
+									success: function (response) {
+										if (response.status == 1) {
+											layer.closeAll();
+											layer.msg("注销成功！", function () {
+												//关闭后的操作
+												_reload();
+											});
+										} else {
+											layer.alert(response.msg);
+										}
+									},
+									error: function () {
+										layer.alert(response.msg);
+									}
+								});
+							}
+						}
+					});
+
+				}
 			});
 		});
 	</script>
