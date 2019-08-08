@@ -146,19 +146,19 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '日期', fixed: 'left', templet: function (item) {
+							field: 'createDate', title: '日期', width:180,fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'merchantName', title: '商户名称',
+							field: 'merchantName', title: '商户名称',width:120
 						}, {
-							field: 'merchantId', title: '商户编号'
+							field: 'merchantId', title: '商户编号',width:180
 						}, {
-							field: 'serialNo', title: '流水号'
+							field: 'serialNo', title: '流水号',width:190
 						}, {
 							field: 'amount', title: '提现金额(元)',width: 120
 						}, {
-							field: 'fee', title: '服务费', width: 80
+							field: 'fee', title: '服务费(元)', width: 100
 						}, {
 							// 审核状态：firstTrial-运营初审、financialAudit-财务审核、termination-终止、complete-完成
 							field: 'revStatus', title: '审核状态', width: 90, templet: function (item) {
@@ -173,7 +173,7 @@
 								}
 							}
 						}, {
-							field: 'status', title: '结算状态', width: 60, templet: function (item) {
+							field: 'status', title: '结算状态', width: 120, templet: function (item) {
 								// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
 								if (item.status == 'success') {
 									return '成功';
