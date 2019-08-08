@@ -174,17 +174,17 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '日期', fixed: 'left', templet: function (item) {
+							field: 'createDate', title: '日期',width:170, fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'userName', title: '商户/会员名称',
+							field: 'userName', title: '商户/会员名称',width:180
 						}, {
-							field: 'userId', title: '商户/会员编号'
+							field: 'userId', title: '商户/会员编号',width:180
 						}, {
-							field: 'tradeNo', title: '交易流水号'
+							field: 'tradeNo', title: '交易流水号',width:180
 						}, {
-							field: 'orderId', title: '订单编号'
+							field: 'orderId', title: '订单编号',width:180
 						},
 						{
 							field: 'amount', title: '金额', width: 80
@@ -193,7 +193,7 @@
 						// 	field: 'sellerId', title: '收/付款方（对方）'
 						// },
 						{
-							field: 'type', title: '交易类型', width: 90, templet: function (item) {
+							field: 'type', title: '交易类型', width: 120, templet: function (item) {
 								if (item.type == 'recharge') {
 									return '商户余额充值';
 								} else if (item.type == 'transfer') {
@@ -215,7 +215,7 @@
 								}
 							}
 						}, {
-							field: 'tradingStatus', title: '交易状态', width: 60, templet: function (item) {
+							field: 'tradingStatus', title: '交易状态', width: 90, templet: function (item) {
 								// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
 								if (item.tradingStatus == 'success') {
 									return '成功';
@@ -228,7 +228,7 @@
 								}
 							}
 						}, {
-							field: 'fenZhangStatus', title: '结算状态', width: 60, templet: function (item) {
+							field: 'fenZhangStatus', title: '结算状态', width: 90, templet: function (item) {
 								// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
 								if (item.fenZhangStatus == 'success') {
 									return '成功';

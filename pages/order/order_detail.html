@@ -51,15 +51,14 @@
                   <input type="text" name="tax" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">运费</label>
                 <div class="layui-input-inline">
                   <input type="text" name="freight" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">抵付说明</label>
                 <div class="layui-input-inline">
@@ -74,8 +73,6 @@
                     disabled>
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">收货人姓名</label>
                 <div class="layui-input-inline">
@@ -90,14 +87,16 @@
                     disabled>
                 </div>
               </div>
+
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">收货人电话</label>
                 <div class="layui-input-inline">
                   <input type="text" name="recipientTel" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
+
               <div class="layui-inline">
                 <label class="layui-form-label">收货人省份</label>
                 <div class="layui-input-inline">
@@ -118,6 +117,7 @@
                 </div>
               </div>
             </div>
+
             <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">详细地址</label>
@@ -139,28 +139,22 @@
                     disabled>
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">下单人账号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="managerId" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
+           
               <div class="layui-inline">
                 <label class="layui-form-label">下单人电话</label>
                 <div class="layui-input-inline">
                   <input type="text" name="ordererTel" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">订单日期</label>
                 <div class="layui-input-inline">
                   <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">交易流水号</label>
                 <div class="layui-input-inline">
@@ -173,15 +167,37 @@
       </div>
     </div>
     <div class="layui-colla-item">
-      <h2 class="layui-colla-title">为什么前端工程师多不愿意用 Bootstrap 框架？</h2>
+      <h2 class="layui-colla-title">商品详情</h2>
       <div class="layui-colla-content">
-        <p>
-          因为不适合。如果希望开发长期的项目或者制作产品类网站，那么就需要实现特定的设计，为了在维护项目中可以方便地按设计师要求快速修改样式，肯定会逐步编写出各种业务组件、工具类，相当于为项目自行开发一套框架。——来自知乎@Kayo
-        </p>
+        <div class="layui-form">
+          <table class="layui-table" id="findMerchantRecordDetail_table">
+            <colgroup>
+              <col width="140">
+              <col width="210">
+              <col width="210">
+              <col width="210">
+              <col width="210">
+              <col>
+            </colgroup>
+            <thead>
+              <tr>
+                <th>名称<span class="we-red">(必填)</span></th>
+                <th>编号<span class="we-red">(必填)</span></th>
+                <th>图片<span class="we-red">(必填)</span></th>
+                <th>金额<span class="we-red">(必填)</span></th>
+                <th>数量<span class="we-red">(必填)</span></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div class="layui-colla-item">
-      <h2 class="layui-colla-title">layui 更适合哪些开发者？</h2>
+      <h2 class="layui-colla-title">分润详情</h2>
       <div class="layui-colla-content">
         <p>在前端技术快速变革的今天，layui 仍然坚持语义化的组织模式，甚至于模块理念都是采用类AMD组织形式，并非是有意与时代背道而驰。layui
           认为以jQuery为核心的开发方式还没有到完全消亡的时候，而早期市面上基于jQuery的UI都普通做得差强人意，所以需要有一个新的UI去重新为这一领域注入活力，并采用一些更科学的架构方式。
@@ -190,7 +206,7 @@
       </div>
     </div>
     <div class="layui-colla-item">
-      <h2 class="layui-colla-title">贤心是男是女？</h2>
+      <h2 class="layui-colla-title">物流详情</h2>
       <div class="layui-colla-content">
         <p>man！ 所以这个问题不要再出现了。。。</p>
       </div>
@@ -243,24 +259,33 @@
       g_data = getDetail(g_data.entOrderNo);
       //表单初始赋值
       form.val('example', {
-        "managerId": g_data.order.entOrderNo
-        , "managerName": g_data.managerName
-        , "realName": g_data.realName
-        , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
-        , "managerMarks": g_data.managerMarks
-        , "status": g_data.status
-        , "managerId": g_data.order.entOrderNo
-        , "managerName": g_data.managerName
-        , "realName": g_data.realName
-        , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
-        , "managerMarks": g_data.managerMarks
-        , "status": g_data.status
-        , "managerId": g_data.order.entOrderNo
-        , "managerName": g_data.managerName
-        , "realName": g_data.realName
+        "entOrderNo": g_data.order.entOrderNo
+        , "orderTotalPrice": g_data.order.orderTotalPrice
+        , "tax": g_data.order.tax
+        , "freight": g_data.order.freight
+        , "orderTotalPrice": g_data.order.orderTotalPrice
+
+        , "otherPayNotes": g_data.order.otherPayNotes
+        , "actualAmountPaid": g_data.order.actualAmountPaid
+        , "recipientName": g_data.order.recipientName
+        , "recipientCardId": g_data.order.recipientCardId
+        , "recipientTel": g_data.order.recipientTel
+        , "recProvincesName": g_data.order.recProvincesName
+        , "recCityName": g_data.order.recCityName
+        , "recAreaName": g_data.order.recAreaName
+        , "recipientAddr": g_data.order.recipientAddr
+        , "ordererName": g_data.order.ordererName
+        , "ordererIdCardNumber": g_data.order.ordererIdCardNumber
+        , "ordererTel": g_data.order.ordererTel
+
+
         , "createDate": G_format(g_data.order.createDate.time, "yyyy-MM-dd hh:mm:ss")
-        , "managerMarks": g_data.managerMarks
-        , "status": g_data.status
+
+        , "tradeNo": g_data.order.tradeNo
+        // , "orderTotalPrice": g_data.order.orderTotalPrice
+        // , "tax": g_data.order.tax
+        // , "freight": g_data.order.freight
+
       })
     });
   </script>
