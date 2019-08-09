@@ -18,7 +18,7 @@
 					"id": 202,
 					"name": "支付单信息",
 					"icon": "",
-					"url": "./pages/order/pay_list.html"
+					"url": "./pages/order/pay_dec_list.html"
 				},
 				{
 					"id": 203,

@@ -139,7 +139,7 @@
                     disabled>
                 </div>
               </div>
-           
+
               <div class="layui-inline">
                 <label class="layui-form-label">下单人电话</label>
                 <div class="layui-input-inline">
@@ -168,9 +168,9 @@
     </div>
     <div class="layui-colla-item">
       <h2 class="layui-colla-title">商品详情</h2>
-      <div class="layui-colla-content">
+      <div class="layui-colla-content ">
         <div class="layui-form">
-          <table class="layui-table" id="findMerchantRecordDetail_table">
+          <table class="layui-table" id="order_goods_table">
             <colgroup>
               <col width="140">
               <col width="210">
@@ -181,16 +181,16 @@
             </colgroup>
             <thead>
               <tr>
-                <th>名称<span class="we-red">(必填)</span></th>
-                <th>编号<span class="we-red">(必填)</span></th>
-                <th>图片<span class="we-red">(必填)</span></th>
-                <th>金额<span class="we-red">(必填)</span></th>
-                <th>数量<span class="we-red">(必填)</span></th>
-                <th></th>
+                <th>图片<span class="we-red"></span></th>
+                <th>名称<span class="we-red"></span></th>
+                <th>编号<span class="we-red"></span></th>
+                <th>数量<span class="we-red"></span></th>
+                <th>单价<span class="we-red"></span></th>
+                <th>税费<span class="we-red"></span></th>
+                <th>合计<span class="we-red"></span></th>
               </tr>
             </thead>
             <tbody>
-
             </tbody>
           </table>
         </div>
@@ -198,11 +198,26 @@
     </div>
     <div class="layui-colla-item">
       <h2 class="layui-colla-title">分润详情</h2>
-      <div class="layui-colla-content">
-        <p>在前端技术快速变革的今天，layui 仍然坚持语义化的组织模式，甚至于模块理念都是采用类AMD组织形式，并非是有意与时代背道而驰。layui
-          认为以jQuery为核心的开发方式还没有到完全消亡的时候，而早期市面上基于jQuery的UI都普通做得差强人意，所以需要有一个新的UI去重新为这一领域注入活力，并采用一些更科学的架构方式。
-          <br><br>
-          因此准确地说，layui 更多是面向那些追求开发简单的前端工程师们，以及所有层次的服务端程序员。</p>
+      <div class="layui-colla-content ">
+        <div class="layui-form">
+          <table class="layui-table" id="order_div_table">
+            <colgroup>
+              <col width="180">
+              <col width="180">
+              <col width="180">             
+              <col>
+            </colgroup>
+            <thead>
+              <tr>
+                <th>商户名称<span class="we-red"></span></th>
+                <th>商户编号<span class="we-red"></span></th>
+                <th>分润金额(元)<span class="we-red"></span></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div class="layui-colla-item">
@@ -232,9 +247,10 @@
         admin = layui.admin,
         layer = layui.layer;
       //监听折叠
-      element.on('collapse(test)', function (data) {
-        layer.msg('展开状态：' + data.show);
-      });
+      // element.on('collapse(test)', function (data) {
+      //   //点击触发事件
+      //   layer.msg('展开状态：' + data.show);
+      // });
       //查询订单详情
       function getDetail(orderId) {
         var datas = null;
@@ -277,16 +293,161 @@
         , "ordererName": g_data.order.ordererName
         , "ordererIdCardNumber": g_data.order.ordererIdCardNumber
         , "ordererTel": g_data.order.ordererTel
-
-
         , "createDate": G_format(g_data.order.createDate.time, "yyyy-MM-dd hh:mm:ss")
-
         , "tradeNo": g_data.order.tradeNo
         // , "orderTotalPrice": g_data.order.orderTotalPrice
         // , "tax": g_data.order.tax
         // , "freight": g_data.order.freight
 
       })
+
+      //渲染订单商品信息
+      function orderGoods() {
+        var divStr;
+        var datas = g_data.orderGoods;
+        for (var key in datas) {
+          var goods = datas[key];
+          divStr += `
+                 <tr >
+                  <td>
+                    <div class="layui-input-inline"><img layer-pid="" alt="${goods.goodsImage}"  src="${goods.goodsImage}" width="80px" height="80px"> </div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 250px" lay-verify="required"  value="${goods.goodsName}" name="ebpEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 180px"  lay-verify="required"  value="${goods.entGoodsNo}" name="ebEntName" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="" lay-verify="required"  value="${goods.goodsCount}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="" lay-verify="required"  value="${goods.goodsPrice}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${goods.tax}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${goods.goodsTotalPrice}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>                 
+                </tr>`
+        }
+        $('#order_goods_table tbody').html(divStr);
+        form.render();
+      }
+      //渲染商品
+      orderGoods();
+
+
+      // 查询订单分润
+      var _orderDiv = function (data) {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/orderDividend/findInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          // : 190809122331518499
+          data: { orderId: g_data.order.entOrderNo },
+          success: function (response) {
+            if (response.status == 1) {
+              // console.info(response.datas);
+              // 修改详情
+              var divStr = "";// 表格字符串
+              var arr = [];
+              $.each(response.datas, function (i, item) {
+                // console.info(item);
+                //将4级商户缓存起来，用作循环渲染表格
+
+                //主商户
+                var masDivAmo = item.masterDividendAmount;
+                var merchantName = item.merchantName;
+                var merchantId = item.merchantId;
+                //平台分润金额
+                var plaDivAmo = item.platformDividendAmount;
+                //白金商户
+                var expMerAmo = item.expMerDivAmount;
+                var expadndMerchantName = item.expadndMerchantName;
+                var expadndMerchantCode = item.expadndMerchantCode;
+                //一级商户
+                var divAmo = item.dividendAmount;
+                var firstLevelMerchantName = item.firstLevelMerchantName;
+                var firstLevelMerchantId = item.firstLevelMerchantId;
+                //二级商户
+                var secDivAmo = item.secDividendAmount;
+                var secondaryMerchantName = item.secondaryMerchantName;
+                var secondaryMerchantId = item.secondaryMerchantId;
+                var arr = [];
+                //数组下标
+                var i = 0;
+                if (masDivAmo > 0) {
+                  var cache = {};
+                  cache.name = merchantName;
+                  cache.merId = merchantId;
+                  cache.amount = masDivAmo;
+                  arr[i] = cache;
+                  i++;
+                }
+                if (plaDivAmo > 0) {
+                  var cache = {};
+                  cache.name = "平台";
+                  cache.amount = plaDivAmo;   
+                  cache.merId = "";
+                  arr[i] = cache;
+                  i++;
+                }
+                if (expMerAmo > 0) {
+                  var cache = {};
+                  cache.name = expadndMerchantName;
+                  cache.amount = expMerAmo;
+                  cache.merId = expadndMerchantCode;
+                  arr[i] = cache;
+                  i++;
+                }
+                if (divAmo > 0) {
+                  var cache = {};
+                  cache.name = firstLevelMerchantName;
+                  cache.amount = divAmo;
+                  cache.merId = firstLevelMerchantId;
+                  arr[i] = cache;
+                  i++;
+                }
+                if (secDivAmo > 0) {
+                  var cache = {};
+                  cache.name = secondaryMerchantName;
+                  cache.amount = secDivAmo;
+                  cache.merId = secondaryMerchantId;
+                  arr[i] = cache;
+                  i++;
+                }
+                console.info(arr);
+                for (var key in arr) {
+                  var obj = arr[key];
+
+                  divStr += `<tr >
+                    <td>
+                    <div class="layui-input-inline"><input style="width: 180px"  lay-verify="required"  value="${obj.name}" name="" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                    <td>
+                    <div class="layui-input-inline"><input style="width: 180px"  lay-verify="required"  value="${obj.merId}" name="" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="" lay-verify="required"  value="${obj.amount}" name="" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  
+                </tr>`
+                }
+
+              });
+              $('#order_div_table tbody').html(divStr);
+              form.render();
+            }
+          }
+        });
+      };
+
+      _orderDiv();
     });
   </script>
 </body>

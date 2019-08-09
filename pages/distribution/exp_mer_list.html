@@ -66,20 +66,6 @@
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">上级商户名称</label>
-					<div class="layui-input-inline">
-						<input type="text" name="supMerchantName" placeholder="请输入上级商户名称" class="layui-input">
-					</div>
-				</div>
-
-
-				<div class="layui-inline">
-					<label class="layui-form-label">上级商户编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="supMerchantId" placeholder="请输入上级商户编号" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
 					<label class="layui-form-label">等级</label>
 					<div class="layui-input-inline">
 						<select name="level" lay-verify="required" lay-search="">
@@ -89,6 +75,19 @@
 						</select>
 					</div>
 				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">上级商户名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="supMerchantName" placeholder="请输入上级商户名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">上级商户编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="supMerchantId" placeholder="请输入上级商户编号" class="layui-input">
+					</div>
+				</div>
+				
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
@@ -154,27 +153,29 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'expadndMerchantName', title: '名称',
+							field: 'expadndMerchantName', title: '名称',width:120
 						}, {
-							field: 'expadndMerchantCode', title: '编号',
+							field: 'expadndMerchantCode', title: '编号',width:180
 						}, {
-							field: 'loginName', title: '登录账号',
+							field: 'loginName', title: '登录账号',width:120
 						}, {
-							field: 'phone', title: '手机号码',
-						}, {
-							field: 'supMerchantName', title: '上级商户名称',
-						}, {
-							field: 'supMerchantId', title: '上级商户编号'
+							field: 'phone', title: '手机号码',width:120
 						}, {
 							field: 'level', title: '等级', width: 80, templet: function (item) {
 								if (item.level == 'one') {
 									return '一级';
 								} else if (item.level == 'two') {
 									return '二级';
+								}else{
+									return '';
 								}
 							}
 						}, {
-							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'supMerchantName', title: '上级商户名称',width:170
+						}, {
+							field: 'supMerchantId', title: '上级商户编号',width:170
+						}, {
+							field: 'operate', title: '操作', width:120,toolbar: '#operateTpl', fixed: 'right'
 						}
 					]
 				],
