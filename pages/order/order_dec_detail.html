@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<!--订单申报信息详情html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-collapse" lay-filter="test">
+    <div class="layui-colla-item">
+      <h2 class="layui-colla-title">订单详情</h2>
+      <div class="layui-colla-content layui-show">
+        <div class="weadmin-body">
+          <form class="layui-form" id="manager_detail_form" lay-filter="example">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">订单编号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="entOrderNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">商品总额</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="orderTotalPrice" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">税费</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="tax" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">运费</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="freight" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">抵付说明</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="otherPayNotes" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">实际支付金额</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="actualAmountPaid" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">收货人姓名</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recipientName" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">收货人身份证号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recipientCardId" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">收货人电话</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recipientTel" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+
+              <div class="layui-inline">
+                <label class="layui-form-label">收货人省份</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recProvincesName" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">城市</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recCityName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">区县</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recAreaName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">详细地址</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="recipientAddr" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">下单人姓名</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="ordererName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">下单人身份证号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="ordererIdCardNumber" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+
+              <div class="layui-inline">
+                <label class="layui-form-label">下单人电话</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="ordererTel" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">订单日期</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="orderDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">交易流水号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="tradeNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">申报状态</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="order_record_status" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+
+              <div class="layui-inline">
+                <label class="layui-form-label">平台接收日期</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="layui-colla-item">
+      <h2 class="layui-colla-title">商品详情</h2>
+      <div class="layui-colla-content ">
+        <div class="layui-form">
+          <table class="layui-table" id="order_goods_table">
+            <colgroup>
+              <col width="140">
+              <col width="210">
+              <col width="210">
+              <col width="210">
+              <col width="210">
+              <col>
+            </colgroup>
+            <thead>
+              <tr>
+                <th>图片<span class="we-red"></span></th>
+                <th>名称<span class="we-red"></span></th>
+                <th>编号<span class="we-red"></span></th>
+                <th>数量<span class="we-red"></span></th>
+                <th>单价<span class="we-red"></span></th>
+                <th>税费<span class="we-red"></span></th>
+                <th>合计<span class="we-red"></span></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="layui-colla-item">
+      <h2 class="layui-colla-title">申报详情</h2>
+      <div class="layui-colla-content ">
+        <div style="padding: 20px; background-color: #F2F2F2;">
+          <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+              <div class="layui-card" id="order_dec_note">
+                <!-- <div class="layui-card-header">标题</div> -->
+                <!-- <div class="layui-card-body" id="order_dec_note">
+                  内容
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量
+
+
+    function getParent_data(obj) {
+      g_data = obj.data;
+    }
+
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form', 'element', 'jquery', 'layer', 'admin'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        element = layui.element,
+        admin = layui.admin,
+        layer = layui.layer;
+      //监听折叠
+      // element.on('collapse(test)', function (data) {
+      //   //点击触发事件
+      //   layer.msg('展开状态：' + data.show);
+      // });
+      //查询订单申报详情
+      function getDetail(orderId) {
+        var datas = null;
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/order/getManualOrderInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          async: false,
+          data: { order_id: orderId, page: 0, size: 0 },
+          success: function (response) {
+            if (response.status == 1) {
+              datas = response.datas;
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+        return datas;
+      }
+      g_data = getDetail(g_data.order_id);
+      //单独获取订单信息
+      var order = g_data[0].head;
+      console.info(order);
+      //订单信息初始赋值
+      form.val('example', {
+        "entOrderNo": order.order_id
+        , "orderTotalPrice": order.orderTotalPrice
+        , "tax": order.tax
+        , "freight": order.freight
+        , "orderTotalPrice": order.FCY
+        , "otherPayNotes": order.otherPayNotes
+        , "actualAmountPaid": order.actualAmountPaid
+        , "recipientName": order.recipientName
+        , "recipientCardId": order.recipientID
+        , "recipientTel": order.recipientTel
+        , "recProvincesName": order.recipientProvincesName
+        , "recCityName": order.recipientCityName
+        , "recAreaName": order.recipientAreaName
+        , "recipientAddr": order.recipientAddr
+        , "ordererName": order.orderDocName
+        , "ordererIdCardNumber": order.orderDocId
+        , "ordererTel": order.orderDocTel
+        , "orderDate": order.orderDate
+
+        , "createDate": G_format(order.create_date.time, "yyyy-MM-dd hh:mm:ss")
+        , "tradeNo": order.trade_no
+        // , "orderTotalPrice": g_data.order.orderTotalPrice
+        // , "tax": g_data.order.tax
+        // , "freight": g_data.order.freight
+      })
+      //渲染订单商品信息
+      function orderGoods() {
+        var divStr;
+        var datas = g_data.orderGoods;
+        for (var key in datas) {
+          var goods = datas[key];
+          divStr += `
+                 <tr >
+                  <td>
+                    <div class="layui-input-inline"><img layer-pid="" alt="${goods.goodsImage}"  src="${goods.goodsImage}" width="80px" height="80px"> </div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 250px" lay-verify="required"  value="${goods.goodsName}" name="ebpEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 180px"  lay-verify="required"  value="${goods.entGoodsNo}" name="ebEntName" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="" lay-verify="required"  value="${goods.goodsCount}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input type="" lay-verify="required"  value="${goods.goodsPrice}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${goods.tax}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${goods.goodsTotalPrice}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>                 
+                </tr>`
+        }
+        $('#order_goods_table tbody').html(divStr);
+        form.render();
+      }
+      //渲染商品
+      orderGoods();
+
+      //订单申报回执信息
+      function orderDecNote(note) {
+        if (isEmpty(note)) {
+          return "";
+        }
+        var arr = note.split("#");
+        var divStr = "";
+        for (var i = 0; i < arr.length; i++) {
+          // console.info(arr[i]);
+
+          divStr += '<div class="layui-card-body" id="order_dec_note">' + arr[i] + ' </div>';
+
+        }
+        $('#order_dec_note').html(divStr);
+      }
+      var note = order.order_re_note;
+      orderDecNote(note);
+    });
+  </script>
+</body>
+
+</html>

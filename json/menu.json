@@ -15,16 +15,16 @@
 					"url": "./pages/order/order_list.html"
 				},
 				{
-					"id": 202,
-					"name": "支付单信息",
-					"icon": "",
-					"url": "./pages/order/pay_dec_list.html"
-				},
-				{
 					"id": 203,
 					"name": "申报信息",
 					"icon": "",
 					"url": "./pages/order/order_dec_list.html"
+				},
+				{
+					"id": 202,
+					"name": "支付单信息",
+					"icon": "",
+					"url": "./pages/order/pay_dec_list.html"
 				}
 			]
 		},
@@ -36,19 +36,19 @@
 			"children": [
 				{
 					"id": 204,
-					"name": "备案管理",
+					"name": "备案信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
 					"id": 205,
-					"name": "价格库管理",
+					"name": "价格库",
 					"icon": "",
 					"url": "./pages/goods/goods_risk_list.html"
 				},
 				{
 					"id": 206,
-					"name": "库存管理",
+					"name": "库存信息",
 					"icon": "",
 					"url": "./pages/goods/stock_list.html"
 				}
