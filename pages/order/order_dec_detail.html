@@ -164,11 +164,14 @@
               <div class="layui-inline">
                 <label class="layui-form-label">申报状态</label>
                 <div class="layui-input-inline">
-                  <input type="text" name="order_record_status" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
+                  <select name="order_record_status" lay-filter="aihao" class="layui-disabled" disabled>
+                    <option value="1">未申报</option>
+                    <option value="2">申报中</option>
+                    <option value="3">申报成功</option>
+                    <option value="4">申报失败</option>
+                  </select>
                 </div>
               </div>
-
               <div class="layui-inline">
                 <label class="layui-form-label">平台接收日期</label>
                 <div class="layui-input-inline">
@@ -176,8 +179,8 @@
                 </div>
               </div>
             </div>
-          </form>
         </div>
+        </form>
       </div>
     </div>
     <div class="layui-colla-item">
@@ -188,20 +191,22 @@
             <colgroup>
               <col width="140">
               <col width="210">
+              <col width="100">
               <col width="210">
-              <col width="210">
+              <col width="170">
+              <col width="80">
               <col width="210">
               <col>
             </colgroup>
             <thead>
               <tr>
-                <th>图片<span class="we-red"></span></th>
+                <th>自编号<span class="we-red"></span></th>
                 <th>名称<span class="we-red"></span></th>
-                <th>编号<span class="we-red"></span></th>
+                <th>HS编码<span class="we-red"></span></th>
+                <th>海关备案号<span class="we-red"></span></th>
+                <th>国检备案号<span class="we-red"></span></th>
                 <th>数量<span class="we-red"></span></th>
                 <th>单价<span class="we-red"></span></th>
-                <th>税费<span class="we-red"></span></th>
-                <th>合计<span class="we-red"></span></th>
               </tr>
             </thead>
             <tbody>
@@ -217,26 +222,26 @@
           <div class="layui-row layui-col-space15">
             <div class="layui-col-md12">
               <div class="layui-card" id="order_dec_note">
-                <!-- <div class="layui-card-header">标题</div> -->
-                <!-- <div class="layui-card-body" id="order_dec_note">
-                  内容
-                </div> -->
+                //申报内容
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
   </div>
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
     var g_data = '';// 全局数据变量
-
-
+    //单独获取订单信息
+    var order = '';
+    var goods = '';
+    //获取传递数据
     function getParent_data(obj) {
-      g_data = obj.data;
+      g_data = obj.data; 
     }
 
     layui.extend({
@@ -253,6 +258,8 @@
       //   //点击触发事件
       //   layer.msg('展开状态：' + data.show);
       // });
+
+
       //查询订单申报详情
       function getDetail(orderId) {
         var datas = null;
@@ -274,10 +281,9 @@
         });
         return datas;
       }
-      g_data = getDetail(g_data.order_id);
-      //单独获取订单信息
-      var order = g_data[0].head;
-      console.info(order);
+      g_data = getDetail(g_data.order_id);  
+      order = g_data[0].head;
+      goods = g_data[0].content;
       //订单信息初始赋值
       form.val('example', {
         "entOrderNo": order.order_id
@@ -297,8 +303,8 @@
         , "ordererName": order.orderDocName
         , "ordererIdCardNumber": order.orderDocId
         , "ordererTel": order.orderDocTel
-        , "orderDate": order.orderDate
-
+        , "orderDate": toStringTime(order.orderDate)
+        , "order_record_status": order.order_record_status
         , "createDate": G_format(order.create_date.time, "yyyy-MM-dd hh:mm:ss")
         , "tradeNo": order.trade_no
         // , "orderTotalPrice": g_data.order.orderTotalPrice
@@ -306,34 +312,34 @@
         // , "freight": g_data.order.freight
       })
       //渲染订单商品信息
-      function orderGoods() {
+      function orderGoods(datas) {
         var divStr;
-        var datas = g_data.orderGoods;
+        console.info(datas);
         for (var key in datas) {
-          var goods = datas[key];
+          var obj = datas[key];
           divStr += `
                  <tr >
-                  <td>
-                    <div class="layui-input-inline"><img layer-pid="" alt="${goods.goodsImage}"  src="${goods.goodsImage}" width="80px" height="80px"> </div>
+                    <td>
+                    <div class="layui-input-inline"><input style="width: 140px" lay-verify="required"  value="${obj.entGoodsNo}" name="ebpEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input style="width: 250px" lay-verify="required"  value="${goods.goodsName}" name="ebpEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input style="width: 250px" lay-verify="required"  value="${obj.goodsName}" name="ebpEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input style="width: 180px"  lay-verify="required"  value="${goods.entGoodsNo}" name="ebEntName" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input style="width: 100px"  lay-verify="required"  value="${obj.HSCode}" name="ebEntName" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input type="" lay-verify="required"  value="${goods.goodsCount}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input type=""  style="width: 100px"  lay-verify="required"  value="${obj.cusGoodsNo}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input type="" lay-verify="required"  value="${goods.goodsPrice}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input type="" style="width: 170px"lay-verify="required"  value="${obj.CIQGoodsNo}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${goods.tax}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${obj.qty}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   
                   <td>
-                    <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${goods.goodsTotalPrice}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${obj.price}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>                 
                 </tr>`
         }
@@ -341,17 +347,17 @@
         form.render();
       }
       //渲染商品
-      orderGoods();
+      orderGoods(goods);
 
       //订单申报回执信息
       function orderDecNote(note) {
         if (isEmpty(note)) {
           return "";
         }
+        //切割#分隔符
         var arr = note.split("#");
         var divStr = "";
         for (var i = 0; i < arr.length; i++) {
-          // console.info(arr[i]);
 
           divStr += '<div class="layui-card-body" id="order_dec_note">' + arr[i] + ' </div>';
 
