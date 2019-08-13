@@ -3,25 +3,25 @@
 	"msg": "ok",
 	"data": [
 		{
-			"id": 1,
+			"id": "order",
 			"name": "订单管理",
 			"icon": "&#xe723;",
 			"url": "",
 			"children": [
 				{
-					"id": 201,
+					"id": "order_1",
 					"name": "订单信息",
 					"icon": "",
 					"url": "./pages/order/order_list.html"
 				},
 				{
-					"id": 203,
+					"id": "order_2",
 					"name": "申报信息",
 					"icon": "",
 					"url": "./pages/order/order_dec_list.html"
 				},
 				{
-					"id": 202,
+					"id": "order_3",
 					"name": "支付单信息",
 					"icon": "",
 					"url": "./pages/order/pay_dec_list.html"
@@ -29,25 +29,25 @@
 			]
 		},
 		{
-			"id": 2,
+			"id": "goods",
 			"name": "商品管理",
 			"icon": "&#xe723;",
 			"url": "",
 			"children": [
 				{
-					"id": 204,
+					"id": "goods_1",
 					"name": "备案信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 205,
+					"id": "goods_2",
 					"name": "价格库",
 					"icon": "",
 					"url": "./pages/goods/goods_risk_list.html"
 				},
 				{
-					"id": 206,
+					"id": "goods_3",
 					"name": "库存信息",
 					"icon": "",
 					"url": "./pages/goods/stock_list.html"
@@ -55,31 +55,31 @@
 			]
 		},	
 		{
-			"id": 4,
+			"id": "funds",
 			"name": "资金管理",
 			"icon": "&#xe723;",
 			"url": "",
 			"children": [
 				{
-					"id": 212,
+					"id": "funds_1",
 					"name": "商户资金",
 					"icon": "",
 					"url": "./pages/funds/merchant_list.html"
 				},
 				{
-					"id": 213,
+					"id": "funds_2",
 					"name": "会员资金",
 					"icon": "",
 					"url": "./pages/funds/member_list.html"
 				},
 				{
-					"id": 214,
+					"id": "funds_3",
 					"name": "充值申请",
 					"icon": "",
 					"url": "./pages/funds/rec_app_list.html"
 				},
 				{
-					"id": 215,
+					"id": "funds_4",
 					"name": "结算信息",
 					"icon": "",
 					"url": "./pages/funds/settlement_list.html"
@@ -87,13 +87,13 @@
 			]
 		},
 		{
-			"id": 5,
+			"id": "report",
 			"name": "报表管理",
 			"icon": "&#xe723;",
 			"url": "",
 			"children": [
 				{
-					"id": 216,
+					"id": "report_1",
 					"name": "综合报表",
 					"icon": "",
 					"url": "./pages/report/complex_report_list.html"
@@ -101,31 +101,31 @@
 			]
 		},
 		{
-			"id": 6,
+			"id": "distribution",
 			"name": "分销管理",
 			"icon": "&#xe723;",
 			"url": "",
 			"children": [
 				{
-					"id": 217,
+					"id": "distribution_1",
 					"name": "推广商信息",
 					"icon": "",
 					"url": "./pages/distribution/pla_mer_list.html"
 				},
 				{
-					"id": 218,
+					"id": "distribution_2",
 					"name": "商品库",
 					"icon": "",
 					"url": "./pages/distribution/goods_supply_list.html"
 				},
 				{
-					"id": 219,
+					"id": "distribution_3",
 					"name": "分润报表",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 220,
+					"id": "distribution_4",
 					"name": "专店信息",
 					"icon": "",
 					"url": "./pages/distribution/counter_list.html"
@@ -133,25 +133,25 @@
 			]
 		},
 		{
-			"id": 7,
+			"id": "user",
 			"name": "用户管理",
 			"icon": "&#xe6b8;",
 			"url": "",
 			"children": [
 				{
-					"id": 221,
+					"id": "user_1",
 					"name": "商户管理",
 					"icon": "",
 					"url": "./pages/user/merchant_list.html"
 				},
 				{
-					"id": 222,
+					"id": "user_2",
 					"name": "会员管理",
 					"icon": "",
 					"url": "./pages/user/member_list.html"
 				},
 				{
-					"id": 223,
+					"id": "user_3",
 					"name": "运营管理",
 					"icon": "",
 					"url": "./pages/user/manager_list.html"
@@ -159,43 +159,43 @@
 			]
 		},
 		{
-			"id": 10,
+			"id": "system",
 			"name": "系统管理",
 			"icon": "&#xe6ce;",
 			"url": "",
 			"children": [
 				{
-					"id": 1,
+					"id": "system_1",
 					"name": "系统权限",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 2,
+					"id": "system_2",
 					"name": "系统公告",
 					"icon": "",
 					"url": "./pages/system/news_list.html"
 				},
 				{
-					"id": 3,
+					"id": "system_3",
 					"name": "海关信息",
 					"icon": "",
 					"url": "./pages/system/customs_list.html"
 				},
 				{
-					"id": 4,
+					"id": "system_4",
 					"name": "区域信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": 6,
+					"id": "system_5",
 					"name": "物流信息",
 					"icon": "",
 					"url": "./pages/system/logistics_list.html"
 				},
 				{
-					"id": 8,
+					"id": "system_6",
 					"name": "日志信息",
 					"icon": "",
 					"url": "./pages/system/operation_list.html"
