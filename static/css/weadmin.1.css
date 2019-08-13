@@ -188,7 +188,7 @@ body {
   padding: 0 20px;
   position: relative;
   z-index: 99;
-  border-bottom: 1px solid #393D49;
+  border-bottom: 1px solid #e5e5e5;
   line-height: 39px;
   height: 39px;
   overflow: hidden;
@@ -314,34 +314,27 @@ body {
   left: 0;
   z-index: 2;
   padding-top: 10px;
-  background-color: #393D49;
+  background-color: #EEEEEE;
   width: 170px;
   max-width: 170px;
   overflow: auto;
   overflow-x: hidden;
-  border-right: 1px solid #393D49;
+  border-right: 1px solid #e5e5e5;
 }
 .left-nav #nav .current {
   background-color: rgba(0, 0, 0, 0.3);
 }
 .left-nav #nav li {
-  /* border-bottom: 1px solid #393D49; */
+  border-bottom: 1px solid #e5e5e5;
 }
-.left-nav #nav >li:hover > a {
-  color: #fff;
-  background: #4E5465;
-}
-
-.left-nav #nav li.layui-this a {
-  color: #fff !important;
-  background: #009688 !important;
+.left-nav #nav li:hover > a {
+  /*color: blue;*/
 }
 .left-nav #nav li a {
   font-size: 14px;
   padding: 10px 15px 10px 20px;
   display: block;
   cursor: pointer;
-  color: rgba(255,255,255,.7);
 }
 .left-nav #nav li a cite {
   font-size: 14px;
@@ -354,7 +347,6 @@ body {
 }
 .left-nav #nav li .sub-menu {
   display: none;
-  background: rgba(0, 0, 0, 0.3)
 }
 .left-nav #nav li .sub-menu li:hover {
   /*color: blue;*/
@@ -364,13 +356,12 @@ body {
   padding: 12px 15px 12px 30px;
   font-size: 14px;
   cursor: pointer;
-  color: rgba(255,255,255,.7);
 }
 .left-nav #nav li .sub-menu li a i {
   font-size: 12px;
 }
 .left-nav #nav li .sub-menu li a:hover {
-  color: #fff;
+  color: #148cf1;
 }
 .left-nav #nav li .sub-menu li .sub-menu li a {
   padding-left: 45px;
