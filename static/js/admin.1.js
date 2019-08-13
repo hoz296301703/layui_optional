@@ -136,7 +136,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 	 * 如果有子级就展开，没有就打开frame
 	 */
 	$('body').on('click', '.left-nav #nav li', function (event) {
-		console.log($(this).children('.sub-menu').length)
 		if ($(this).children('.sub-menu').length) {
 			if ($(this).hasClass('open')) {
 				$(this).removeClass('open');
@@ -156,18 +155,19 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 			$(this).addClass('layui-this');
 			var url = $(this).children('a').attr('_href');
 			var title = $(this).find('cite').html();
+
 			var index = $('.left-nav #nav li').index($(this));
 
 			for (var i = 0; i < $('.weIframe').length; i++) {
-				if ($('.weIframe').eq(i).attr('tab-id') == $(this).attr('id')) {
-					tab.tabChange($(this).attr('id'));
+				if ($('.weIframe').eq(i).attr('tab-id') == index + 1) {
+					tab.tabChange(index + 1);
 					event.stopPropagation();
 					return;
 				}
 			};
 
-			tab.tabAdd(title, url, $(this).attr('id'));
-			tab.tabChange($(this).attr('id'));
+			tab.tabAdd(title, url, index + 1);
+			tab.tabChange(index + 1);
 		}
 		event.stopPropagation(); //不触发任何前辈元素上的事件处理函数
 	});
@@ -507,29 +507,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 	 * 判断是刷新后第一次点击时，刷新frame子页面
 	 * */
 	window.reloadTab = function (which) {
-		var menuId = $(which).attr('lay-id');// 菜单id
-		// console.log($('#' + menuId).children('.sub-menu').length);
-		// console.log($('#' + menuId).parents('li'));
-		var parents_this = $('#' + menuId).parents('li');
-
-		if ($(parents_this).hasClass('open')) {
-			// $(parents_this).removeClass('open');
-			// $(parents_this).find('.nav_right').html('&#xe697;');
-			// $(parents_this).children('.sub-menu').stop().slideUp();
-			// $(parents_this).siblings().children('.sub-menu').slideUp();
-		} else {
-			$(parents_this).addClass('open');
-			$(parents_this).children('a').find('.nav_right').html('&#xe6a6;');
-			$(parents_this).children('.sub-menu').stop().slideDown();
-			$(parents_this).siblings().children('.sub-menu').stop().slideUp();
-			$(parents_this).siblings().find('.nav_right').html('&#xe697;');
-			$(parents_this).siblings().removeClass('open');
-		}
-
-
-
-		$('#nav').find('.sub-menu li').removeClass('layui-this');// 清空选择的
-		$('#' + menuId).addClass('layui-this');// 设置当前的为选中
+		console.log(which)
 		var len = $('.layui-tab-title').children('li').length;
 		var layId = $(which).attr('lay-id');
 		var i = 1;
@@ -539,7 +517,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 			$(which).attr('data-bit', i);
 			var frame = $('.weIframe[tab-id=' + layId + ']');
 			frame.attr('src', frame.attr('src'));
-			// console.log("reload:" + $(which).attr('data-bit'));
+			console.log("reload:" + $(which).attr('data-bit'));
 		}
 	}
 	/**
