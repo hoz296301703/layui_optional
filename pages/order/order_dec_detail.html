@@ -192,9 +192,10 @@
               <col width="140">
               <col width="210">
               <col width="100">
-              <col width="210">
+              <col width="100">
               <col width="170">
-              <col width="80">
+              <col width="50">
+              <col width="50">
               <col width="210">
               <col>
             </colgroup>
@@ -205,6 +206,7 @@
                 <th>HS编码<span class="we-red"></span></th>
                 <th>海关备案号<span class="we-red"></span></th>
                 <th>国检备案号<span class="we-red"></span></th>
+                <th>原产国<span class="we-red"></span></th>
                 <th>数量<span class="we-red"></span></th>
                 <th>单价<span class="we-red"></span></th>
               </tr>
@@ -236,7 +238,7 @@
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
     var g_data = '';// 全局数据变量
-    //单独获取订单信息
+    //
     var order = '';
     var goods = '';
     //获取传递数据
@@ -314,7 +316,6 @@
       //渲染订单商品信息
       function orderGoods(datas) {
         var divStr;
-        console.info(datas);
         for (var key in datas) {
           var obj = datas[key];
           divStr += `
@@ -335,7 +336,11 @@
                     <div class="layui-input-inline"><input type="" style="width: 170px"lay-verify="required"  value="${obj.CIQGoodsNo}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${obj.qty}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input type="" style="width: 50px"lay-verify="required"  value="${obj.originCountry}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>
+                  
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 50px" lay-verify="required"  value="${obj.qty}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   
                   <td>

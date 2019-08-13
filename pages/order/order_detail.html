@@ -161,6 +161,18 @@
                   <input type="text" name="tradeNo" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">专柜编号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="counterId" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">专柜名称</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="counterName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
             </div>
           </form>
         </div>
@@ -232,9 +244,9 @@
   <script type="text/javascript">
     var g_data = '';// 全局数据变量
 
-
+    
     function getParent_data(obj) {
-      g_data = obj.data;
+      g_data = obj.data;  
     }
 
     layui.extend({
@@ -273,6 +285,8 @@
         return datas;
       }
       g_data = getDetail(g_data.entOrderNo);
+     
+      
       //表单初始赋值
       form.val('example', {
         "entOrderNo": g_data.order.entOrderNo
@@ -295,8 +309,8 @@
         , "ordererTel": g_data.order.ordererTel
         , "createDate": G_format(g_data.order.createDate.time, "yyyy-MM-dd hh:mm:ss")
         , "tradeNo": g_data.order.tradeNo
-        // , "orderTotalPrice": g_data.order.orderTotalPrice
-        // , "tax": g_data.order.tax
+        , "counterId": g_data.order.counterId
+        , "counterName": g_data.order.counterName
         // , "freight": g_data.order.freight
 
       })
