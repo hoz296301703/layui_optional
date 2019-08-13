@@ -639,3 +639,10 @@ table td {
 .layui-tab{
   margin: 0;
 }
+/* 控件高度小一点 */
+.layui-input, .layui-select, .layui-textarea{
+  height: 28px;
+}
+.layui-form-label{
+  line-height: 13px;
+}
