@@ -150,17 +150,17 @@
 								return G_format(item.head.createDate.time, "yyyy-MM-dd hh:mm:ss")
 							}
 						}, {
-							field: 'merchantName', title: '商户名称', width: 170, templet: function (item) {
+							field: 'merchantName', title: '商户名称', width: 230, templet: function (item) {
 								return item.head.merchantName;
 							}
 						}, {
-							field: 'merchantId', title: '商户编号', width: 170, templet: function (item) {
+							field: 'merchantId', title: '商户编号', width: 190, templet: function (item) {
 								return item.head.merchantId
 							}
-						}, {
-							field: 'serialNo', title: '流水号', width: 130, templet: function (item) {
-								return item.head.serialNo
-							}
+						// }, {
+							// field: 'serialNo', title: '流水号', width: 130, templet: function (item) {
+							// 	return item.head.serialNo
+							// }
 						}, {
 							field: 'totalAmount', title: '金额(元)', width: 90, templet: function (item) {
 								return item.head.totalAmount
@@ -196,7 +196,7 @@
 							}
 						},
 						{
-							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate',  title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
 				// skin: 'row', //行边框风格

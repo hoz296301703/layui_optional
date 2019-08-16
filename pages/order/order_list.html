@@ -44,17 +44,7 @@
 </head>
 
 <body>
-	<!-- <div class="weadmin-nav">
-		<span class="layui-breadcrumb">
-			<a href="">首页</a>
-			<a href="">用户管理</a>
-			<a>
-				<cite>运营管理</cite></a>
-		</span>
-		<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
-			href="javascript:location.replace(location.href);" title="刷新">
-			<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
-	</div> -->
+
 	<div class="weadmin-body">
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
@@ -64,6 +54,13 @@
 						<input type="text" name="entOrderNo" placeholder="请输入订单编号" class="layui-input">
 					</div>
 				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">运单号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="waybillNo" placeholder="请输入运单号" class="layui-input">
+					</div>
+				</div>
+
 				<div class="layui-inline">
 					<label class="layui-form-label">商户名称</label>
 					<div class="layui-input-inline">
@@ -108,7 +105,7 @@
 						</select>
 					</div>
 				</div>
-			
+
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
@@ -125,14 +122,77 @@
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
-			<table class="layui-hide" lay-even lay-skin="nob" id="articleList" lay-filter="articleList"></table>
+		</form>
+		<table class="layui-hide" lay-even lay-skin="nob" id="articleList" lay-filter="articleList"></table>
 
-			<script type="text/html" id="operateTpl">
-				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
+		<!-- 录入物流信息 -->
+		<form class="layui-form" lay-filter="insert_logi" id="insert_logi"
+			style="display: none;width: 90%; margin: 20px auto;">
+			<div class="layui-form-item">
+				<label class="layui-form-label">订单编号</label>
+				<div class="layui-input-inline">
+					<input type="text" name="orderId" autocomplete="off" placeholder=""
+						class="layui-input layui-disabled" disabled>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">运单号</label>
+				<div class="layui-input-inline">
+					<input type="text" name="waybillNo" autocomplete="off" placeholder="请输入运单号" class="layui-input"
+						lay-verify="required">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">物流公司</label>
+				<div class="layui-input-inline">
+					<input type="tel" name="logiComCode" autocomplete="off" class="layui-input" lay-verify="required">
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">快递公司</label>
+				<div class="layui-input-inline">
+					<input type="text" name="expComCode" autocomplete="off" placeholder="" class="layui-input"
+						lay-verify="required">
+				</div>
+
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">状态</label>
+				<div class="layui-input-inline">
+					<select name="status" lay-verify="required" lay-search="">
+						<option value="">全部</option>
+						<option value="4">快件运输中</option>
+						<option value="200">已签收</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
+				<label class="layui-form-label">发货时间</label>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input" id="sendingDate" name="sendingDate" autocomplete="off"
+						placeholder="年-月-日">
+				</div>
+			</div>
+
+			<div class="layui-form-item" style="text-align: center;">
+				<button type="button" class="layui-btn layui-btn-sm" lay-filter="insert_logi" lay-submit="">保存</button>
+				<button type="button" class="layui-btn layui-btn-sm layui-btn-primary close_add">关闭</button>
+			</div>
+
+		</form>
+		<script type="text/html" id="operateTpl">
+				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
+				<!--订单状态：1-待付款、2-已付款,待商家处理、10-待发货、 3-待清关、4-快件运输中、5-快件已签收、200-交易成功、400-交易关闭 -->	
+				{{#  if(d.waybillNo == '' &&   d.status == 3 || d.status == 4 || d.status== 10 ){ }}
+				<a  class="layui-btn layui-btn-xs"  lay-event="insert_logi_btn">录入物流</a>		
+				{{#  } }}
+				
 			</script>
-
-			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-			<script src="../../static/js/common.js" charset="utf-8"></script>
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<script src="../../static/js/common.js" charset="utf-8"></script>
 
 	</div>
 	<script>
@@ -156,6 +216,10 @@
 				elem: '#endDate'
 				, type: 'datetime'
 			});
+			laydate.render({
+				elem: '#sendingDate'
+				, type: 'datetime'
+			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
@@ -171,21 +235,27 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '订单日期', width:170, fixed: 'left', templet: function (item) {
+							field: 'createDate', title: '订单日期', width: 170, fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'merchantName', title: '商户名称',width:170
+							field: 'merchantName', title: '商户名称', width: 170
 						}, {
-							field: 'merchantId', title: '商户编号',width:180
+							field: 'merchantId', title: '商户编号', width: 180
 						}, {
-							field: 'entOrderNo', title: '订单号',width:190
-							
+							field: 'entOrderNo', title: '订单号', width: 190
+						}, {
+							field: 'waybillNo', title: '运单号', width: 140
 						}, {
 							field: 'orderTotalPrice', title: '订单金额', width: 100
-							
-							
-						}, {
+
+						},
+						// {
+						// 	field: 'tax', title: '税款', width: 60
+						// }, {
+						// 	field: 'freight', title: '运费', width: 60
+						// }, 
+						{
 							field: 'status', title: '状态', width: 130, templet: function (item) {
 								//	订单状态：1-待付款、2-已付款,待商家处理、10-待发货、 3-待清关、4-快件运输中、5-快件已签收、200-交易成功、400-交易关闭
 								if (item.status == '1') {
@@ -206,13 +276,7 @@
 									return '交易关闭';
 								}
 							}
-						},
-						// {
-						// 	field: 'tax', title: '税款', width: 60
-						// }, {
-						// 	field: 'freight', title: '运费', width: 60
-						// }, 
-						{
+						}, {
 							field: 'orderSourceType', width: 80, title: '来源', templet: function (item) {
 								// 订单录入系统类型：online-线上订单接入、offline-线下导入、expand-推广商城下单(线上)、mall-商城下单、excelImport-表单导入
 								if (item.orderSourceType == 'online') {
@@ -231,10 +295,9 @@
 									return '';
 								}
 							}
+
 						}, {
-							field: 'waybillNo', title: '运单号', width: 80
-						}, {
-							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', width: 150, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
 				// skin: 'row', //行边框风格
@@ -273,6 +336,7 @@
 			// 重载公共方法
 			var _reload = function () {
 				var entOrderNo = $('#form_sreach').find('[name=entOrderNo]');
+				var waybillNo = $('#form_sreach').find('[name=waybillNo]');
 				var status = $('#form_sreach').find('[name=status]');
 				var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
 				var merchantId = $('#form_sreach').find('[name=merchantId]');
@@ -292,6 +356,7 @@
 						orderSourceType: orderSourceType.val(),
 						merchantId: merchantId.val(),
 						merchantNameblurry: merchantName.val(),
+						waybillNo: waybillNo.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -308,6 +373,7 @@
 				reload: function () {
 					var entOrderNo = $('#form_sreach').find('[name=entOrderNo]');
 					var status = $('#form_sreach').find('[name=status]');
+					var waybillNo = $('#form_sreach').find('[name=waybillNo]');
 					var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
 					var merchantId = $('#form_sreach').find('[name=merchantId]');
 					var merchantName = $('#form_sreach').find('[name=merchantName]');
@@ -327,6 +393,7 @@
 							orderSourceType: orderSourceType.val(),
 							merchantId: merchantId.val(),
 							merchantNameblurry: merchantName.val(),
+							waybillNo: waybillNo.val(),
 							startDate: startDate,
 							endDate: endDate
 						}
@@ -338,7 +405,8 @@
 				var type = $(this).data('type');
 				active[type] ? active[type].call(this) : '';
 			});
-
+			//添加物流信息
+			var insertLogi = null;
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
@@ -363,143 +431,52 @@
 							layer.close(index);
 						}
 					});
-				} else if (obj.event === 'reset') {// 重置密码
-					layer.alert("确定重置密码？", {
-						time: 0, //不自动关闭
-						btn: ["保存", "关闭"],
-						yes: function (index) {
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/manager/resetManagerPassword",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: { managerId: data.managerId },
-								success: function (response) {
-									if (response.status == 1) {
-										layer.msg("重置成功！");
-										_reload();
-									} else {
-										layer.alert(response.msg);
-									}
-								}
-							});
-						}
+				} else if (obj.event === 'insert_logi_btn') {// 
+					// console.info(data);
+					$("#insert_logi").find("[name]").val("");// 初始化内容    
+					//表单初始赋值
+					form.val('insert_logi', {
+						"orderId": data.orderId
 					});
-
-				} else if (obj.event === 'edit') {// 分配权限
-					$('#maangerAllot').html('');
-					layer.load(1);
-					var _this = this;
-					$.ajax({
-						url: urlPrefix + "silver-web-shop/authority/getUserAuthorityInfo",
-						type: "POST",
-						xhrFields: {
-							withCredentials: true
-						},
-						data: { userId: data.managerId, groupName: "manager" },
-						success: function (response) {
-
-							if (response.status == 1) {
-
-								var jsonArr = [];
-								var ii = 0;
-								$.each(response.datas, function (i, val1) {
-									jsonArr.push({ title: i, children: [] });
-									var jj = 0;
-									$.each(val1, function (j, val2) {
-										jsonArr[ii].children.push({ title: j, children: [] });
-										$.each(val2, function (k, val3) {
-											var checked = false;
-											if (k.split("#")[1] == 'true') {
-												jsonArr[ii].checked = true;
-												jsonArr[ii].children[jj].checked = true;
-												checked = true;
-											}
-											jsonArr[ii].children[jj].children.push({
-												title: val3,
-												checked: checked,
-												id: k.split("#")[0]
-											});
-										});
-										jj++;
-									});
-									ii++;
-								});
-
-								//基本演示
-								tree.render({
-									elem: '#maangerAllot'
-									, data: jsonArr
-									, check: "checkbox" //勾选风格
-									, showCheckbox: true  //是否显示复选框
-									, id: 'demoId1'
-									, checkboxName: "allot" //复选框的name属性值
-									, checkboxStyle: "" //设置复选框的样式，必须为字符串，css样式怎么写就怎么写
-									// , isJump: true //是否允许点击节点时弹出新窗口跳转
-									, click: function (obj) {
-										// var data = obj.data;  //获取当前点击的节点数据
-										// layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
-									}
-								});
-								layer.closeAll('loading');
-							} else {
-							}
-						}
-					});
-
-					//页面层
-					layer.open({
+					form.render('select');
+					insertLogi = layer.open({
+						title: "添加物流信息",
 						type: 1,
-						title: '分配权限',
 						skin: "layui-layer-rim", //加上边框
-						area: ["690px", "450px"], //宽高
-						content: $("#maangerAllot"),
-						btn: ["保存", "关闭"],
-						btnAlign: "c",
-						yes: function (index) {
-							var arr = [];
-							$.each($("#maangerAllot").find('.layui-tree-main [type=checkbox]'), function (i, item) {
-								// console.log($(item))
-								if (item.checked && item.value != "undefined") {
-
-									arr.push(item.value);
-								}
-							})
-							var allot_data = { type: 'manager', userId: data.managerId, authorityPack: JSON.stringify(arr) };
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/authority/setAuthorityInfo",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: allot_data,
-								success: function (response) {
-									layer.closeAll("loading");
-									if (response.status == 1) {
-										layer.closeAll();
-										// $("#maangerAllot").html('').hide();
-										layer.msg('分配权限成功！');
-										_reload();
-									} else {
-										layer.msg(response.msg);
-									}
-								}
-							});
-						}
-						, btn2: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
-						}, cancel: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
-						}
-
+						area: ["300px", "400px"], //宽高
+						content: $("#insert_logi")
 					});
-					// layer.alert('编辑行：<br>' + JSON.stringify(data))
+				} else if (obj.event === 'edit') {// 分配权限
+
 				}
 			});
-
+			// 添加物流信息
+			form.on('submit(insert_logi)', function (data) {
+				layer.load(2);
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/orderLogi/manInsert",
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					data: data.field,
+					success: function (response) {
+						layer.closeAll("loading");
+						if (response.status == 1) {
+							layer.close(insertLogi);
+							layer.msg("添加成功");
+							_reload();
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+			});
+			
+			// 关闭新增弹窗
+			$('.close_add').click(function () {
+				layer.close(insertLogi);
+			})
 		});
 	</script>
 </body>
