@@ -122,6 +122,21 @@
 								</div>
 							</div>
 							<div class="layui-inline">
+								<div class="layui-inline">
+									<label class="layui-form-label">类型</label>
+									<div class="layui-input-inline">
+										<select name="orderSourceType" lay-verify="required" lay-search="">
+											<option value="">全部</option>
+											<option value="online">线上</option>
+											<option value="offline">线下</option>
+											<option value="expand">推广</option>
+											<option value="mall">商城</option>
+											<option value="excelImport">导入</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="layui-inline">
 								<label class="layui-form-label">接收日期</label>
 								<div class="layui-input-inline">
 									<input type="text" class="layui-input" id="startDate" name="startDate"
@@ -199,10 +214,10 @@
 						field: 'merchant_no', title: '商户编号', width: 180
 					}, {
 						field: 'order_id', title: '订单编号', width: 200
-					}, {
-						field: 'FCY', title: '商品金额', width: 100
-					}, {
-						field: 'tax', title: '税费', width: 60
+					// }, {
+					// 	field: 'FCY', title: '商品金额', width: 100
+					// }, {
+					// 	field: 'tax', title: '税费', width: 60
 					}, {
 						field: 'actualAmountPaid', title: '实际支付金额', width: 120
 					}, {
@@ -220,16 +235,36 @@
 							return toStringTime(item.orderDate);
 						}
 					}, {
-						field: 'order_record_status', title: '申报状态', width: 90, fixed: 'right', templet: function (item) {
+						field: 'orderSourceType', title: '类型', width: 60, fixed: 'right', templet: function (item) {
+							//类型：online-线上订单接入、offline-线下导入、expand-推广商城下单(线上)、mall-商城下单、excelImport-表单导入
+							if (item.orderSourceType == 'online') {
+								return '线上';
+							} else if (item.orderSourceType == 'offline' ) {
+								return '线下';
+							} else if (item.orderSourceType == 'expand') {
+								return '推广';
+							} else if (item.orderSourceType == 'mall') {
+								return '商城';
+							}else if(item.orderSourceType == 'excelImport' ){
+								return '导入';
+							}else {
+								return '';
+							}
+						}
+					}, {
+						field: 'order_record_status', title: '申报状态', width: 95, fixed: 'right', templet: function (item) {
 							//申报状态：1-未申报,2-申报中(待海关回执),3-申报成功、4-申报失败、10-申报中(待系统生成支付单)、11-订单待申报(待系统扫描申报)
 							if (item.order_record_status == '1') {
 								return '未申报';
 							} else if (item.order_record_status == '2' || item.order_record_status == '11' || item.order_record_status == '10') {
-								return '申报中';
+								
+								// return '申报中';
+								return '<span style="background: #08a0ea; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报中</span>';
 							} else if (item.order_record_status == '3') {
-								return '申报成功';
+								return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报成功</span>';
 							} else if (item.order_record_status == '4') {
-								return '申报失败';
+								return '<span style="background: #e4393c; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报失败</span>';
+								// return '申报失败';
 							}
 						}
 					}, {
@@ -280,7 +315,7 @@
 				var OrderDocId = $('#form_sreach').find('[name=orderDocId]');
 				var order_record_status = $('#form_sreach').find('[name=order_record_status]');
 				var trade_no = $('#form_sreach').find('[name=trade_no]');
-
+				var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
@@ -300,6 +335,7 @@
 						OrderDocId: orderDocId.val(),
 						trade_no: trade_no.val(),
 						order_record_status: order_record_status.val(),
+						orderSourceType:orderSourceType.val(),
 						startTime: startDate,
 						endTime: endDate
 					}
@@ -323,6 +359,8 @@
 					var orderDocId = $('#form_sreach').find('[name=orderDocId]');
 					var order_record_status = $('#form_sreach').find('[name=order_record_status]');
 					var trade_no = $('#form_sreach').find('[name=trade_no]');
+					var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
+
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					startDate = appendStartDate(startDate.val());
@@ -343,6 +381,7 @@
 							OrderDocId: orderDocId.val(),
 							trade_no: trade_no.val(),
 							order_record_status: order_record_status.val(),
+							orderSourceType:orderSourceType.val(),
 							startTime: startDate,
 							endTime: endDate
 						}

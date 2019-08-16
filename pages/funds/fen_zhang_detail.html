@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<!--分账(日志)信息详情html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-collapse" lay-filter="test">
+    <div class="layui-colla-item">
+      <h2 class="layui-colla-title">总流水详情</h2>
+      <div class="layui-colla-content layui-show">
+        <div class="weadmin-body">
+          <form class="layui-form" id="manager_detail_form" lay-filter="example">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">流水号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="serialNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">商户名称</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="merchantName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">商户编号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="merchantId" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">总金额</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="totalAmount" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+
+              <div class="layui-inline">
+                <label class="layui-form-label">成功金额</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="successAmount" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">结算状态</label>
+                <div class="layui-input-inline">
+                  <select name="settlementStatus" lay-filter="aihao" class="layui-disabled" disabled>
+                    <option value="">全部</option>
+                    <option value="success">成功</option>
+                    <option value="failure">关闭</option>
+                    <option value="process">处理中</option>
+                    <option value="pending">待处理</option>
+                    <option value="abnormal">异常</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-inline">
+                  <select name="settlementMode" lay-filter="aihao" class="layui-disabled" disabled>
+                    <option value="">全部</option>
+                    <option value="order">订单</option>
+                    <option value="daifu">代付货款</option>
+                    <option value="recharge">充值</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">创建日期</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      </form>
+    </div>
+
+    <div class="layui-colla-item">
+      <h2 class="layui-colla-title">分账详情</h2>
+      <div class="layui-colla-content layui-show">
+        <div class="layui-form">
+          <table class="layui-hide" id="fen_zhang_detail" lay-filter="fen_zhang_detail"></table>
+          <script type="text/html" id="operateTpl_df">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">明细</a>					
+          </script>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    var g_data = '';// 全局数据变量
+    //
+    var head = '';
+    var content = '';
+    //获取传递数据
+    function getParent_data(obj) {
+      g_data = obj.data;
+      head = g_data.head;
+      content = g_data.content;
+    }
+
+    layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+      var table = layui.table,
+        $ = layui.jquery,
+        form = layui.form,
+        tree = layui.tree,
+        admin = layui.admin,
+        laydate = layui.laydate;
+      // 动态设置表格高度
+      table.render({
+        elem: '#fen_zhang_detail',
+        cellMinWidth: 80,
+        height: 300,
+        url: urlPrefix + 'silver-web-shop/fz/getInfo',
+        method: 'post',
+        cols: [
+          [
+            {
+              field: 'zizeng', width: 50, title: '序号', fixed: 'left', type: 'numbers'
+            }, {
+              field: 'careateDate', title: '创建日期', width: 150, templet: function (item) {
+                return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
+              }
+            }, {
+              field: 'orderId', title: '订单编号', width: 150,
+            }, {
+              field: 'originalAmount', title: '订单金额', width: 90
+            }, {
+              field: 'masterMerchantName', title: '主商户名称', width: 110
+            }, {
+              field: 'ysPartnerNo', title: '主商户收款账号', width: 130
+            }, {
+              field: 'masterReceiptAmount', title: '主商户收款金额', width: 130
+            }, {
+              field: 'divMerchantName1', title: '参与方一名称', width: 175,
+            }, {
+              field: 'divMerUserCode1', title: '参与方一账号', width: 130
+            }, {
+              field: 'divAmount1', title: '金额', width: 100,
+            }, {
+              field: 'tradingStatus', title: '状态', fixed: 'right', templet: function (item) {
+                if (item.tradingStatus == 'success') {
+                  return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">成功</span>';
+                } else if (item.tradingStatus == 'failure') {
+                  return '<span style="background: #ea2626; padding: 2px 3px;color: #fff;border-radius: 3px ;">失败</span>';
+                } else if (item.tradingStatus == 'process') {
+                  return '处理中';
+                } else if (item.tradingStatus == 'pending') {
+                  return '待处理';
+                }
+              }
+            }, {
+              field: 'operate', title: '操作', toolbar: '#operateTpl_df', fixed: 'right'
+            }]
+        ],
+        event: true,
+        page: true,
+        response: {
+          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+        },
+        request: {
+          pageName: 'page', //页码的参数名称，默认：page
+          limitName: 'size', //每页数据量的参数名，默认：limit
+        },
+        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+          return {
+            "code": res.status, //解析接口状态
+            "msg": res.msg, //解析提示文本
+            "count": res.totalCount, //解析数据长度
+            "data": res.datas //解析数据列表
+          };
+        },
+        where: {
+          setAccNo: head.serialNo
+        }
+      });
+
+
+      //监听工具条
+      table.on('tool(fen_zhang_detail)', function (obj) {
+        var data = obj.data;
+        // console.info(data);
+        if (obj.event === 'detail') {// 查看详情
+          layer.open({
+            type: 2,
+            title: '分账明细',
+            area: ['60%', '80%'],
+            maxmin: true,
+            content: './fz_details.html',
+            btnAlign: 'c',
+            btn: ['关闭'],
+            success: function (layero, index) {
+              // 获取子页面的iframe
+              var iframe = window['layui-layer-iframe' + index];
+              // 向子页面的全局函数child传参
+              iframe.getParent_data(obj);
+            },
+            btn1: function (index) {
+              layer.close(index);
+            }
+          });
+        }
+      });
+
+
+      //监听折叠
+      // element.on('collapse(test)', function (data) {
+      //   //点击触发事件
+      //   layer.msg('展开状态：' + data.show);
+      // });
+
+      //初始赋值
+      form.val('example', {
+        "serialNo": head.serialNo
+        , "merchantName": head.merchantName
+        , "merchantId": head.merchantId
+        , "totalAmount": head.totalAmount
+        , "successAmount": head.successAmount
+        , "settlementStatus": head.settlementStatus
+        , "settlementMode": head.settlementMode
+        , "createDate": G_format(head.createDate.time, "yyyy-MM-dd hh:mm:ss")
+        // , "otherPayNotes": head.settlementMode
+        // , "actualAmountPaid": head.actualAmountPaid
+        // , "recipientName": head.recipientName
+        // , "recipientCardId": head.recipientID
+        // , "recipientTel": order.recipientTel
+        // , "recProvincesName": order.recipientProvincesName
+        // , "recCityName": order.recipientCityName
+        // , "recAreaName": order.recipientAreaName
+        // , "recipientAddr": order.recipientAddr
+        // , "ordererName": order.orderDocName
+        // , "ordererIdCardNumber": order.orderDocId
+        // , "ordererTel": order.orderDocTel
+        // , "orderDate": toStringTime(order.orderDate)
+        // , "order_record_status": order.order_record_status
+        // , "tradeNo": order.trade_no
+        // , "orderTotalPrice": g_data.order.orderTotalPrice
+        // , "tax": g_data.order.tax
+        // , "freight": g_data.order.freight
+      })
+
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<!--分账(日志)信息详情html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-collapse" lay-filter="test">
+    <div class="layui-colla-item">
+      <div class="weadmin-body">
+        <form class="layui-form" id="manager_detail_form" lay-filter="example">
+
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">流水号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="serialNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">关联流水号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="setAccNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">金额</label>
+              <div class="layui-input-inline">
+                <input type="text" name="originalAmount" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">结算状态</label>
+              <div class="layui-input-inline">
+                <select name="tradingStatus" lay-filter="aihao" class="layui-disabled" disabled>
+                  <option value="">全部</option>
+                  <option value="success">成功</option>
+                  <option value="failure">失败</option>
+                  <option value="process">处理中</option>
+                  <option value="pending">待处理</option>
+                  <option value="abnormal">异常</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">主商户名称</label>
+              <div class="layui-input-inline">
+                <input type="text" name="masterMerchantName" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">主商户编号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="masterMerchantId" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">主商户收款账号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="ysPartnerNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">主商户收款金额</label>
+              <div class="layui-input-inline">
+                <input type="text" name="masterReceiptAmount" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方一名称</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerchantName1" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方一编号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerchantCode1" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方一收款账号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerUserCode1" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方一收款金额</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divAmount1" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方二名称</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerchantName2" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方二编号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerchantCode2" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方二收款账号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerUserCode2" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方二收款金额</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divAmount2" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方三名称</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerchantName3" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方三编号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerchantCode3" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方三收款账号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerUserCode3" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方三收款金额</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divAmount3" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方四名称</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerchantName4" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方四编号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerchantCode4" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方四收款账号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divMerUserCode4" autocomplete="off" class="layui-input layui-disabled"
+                  disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">参与方四收款金额</label>
+              <div class="layui-input-inline">
+                <input type="text" name="divAmount4" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">创建日期</label>
+              <div class="layui-input-inline">
+                <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="layui-col-md6">
+        <div class="layui-card">
+          <div class="layui-card-header">备注</div>
+          <div class="layui-card-body" id="note">
+       
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    var g_data = '';// 全局数据变量
+    //
+    var head = '';
+    var content = '';
+    //获取传递数据
+    function getParent_data(obj) {
+      g_data = obj.data;
+    }
+
+    layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+      var table = layui.table,
+        $ = layui.jquery,
+        form = layui.form,
+        tree = layui.tree,
+        admin = layui.admin,
+        laydate = layui.laydate;
+      // 动态设置表格高度
+      table.render({
+        elem: '#fen_zhang_detail',
+        cellMinWidth: 80,
+        height: 300,
+        url: urlPrefix + 'silver-web-shop/fz/getInfo',
+        method: 'post',
+        cols: [
+          [
+            {
+              field: 'zizeng', width: 50, title: '序号', fixed: 'left', type: 'numbers'
+            }, {
+              field: 'serialNo', title: '流水号', width: 150,
+            }, {
+              field: 'originalAmount', title: '订单金额', width: 90
+            }, {
+              field: 'masterMerchantName', title: '主商户名称', width: 110
+            }, {
+              field: 'masterReceiptAmount', title: '主商户收款金额', width: 130
+            }, {
+              field: 'ysPartnerNo', title: '主商户收款账号', width: 130
+            }, {
+              field: 'divMerchantName1', title: '参与方一名称', width: 175,
+            }, {
+              field: 'divMerUserCode1', title: '参与方一账号', width: 130
+            }, {
+              field: 'divAmount1', title: '金额', width: 100,
+            }, {
+              field: 'tradingStatus', title: '状态', fixed: 'right', templet: function (item) {
+                if (item.tradingStatus == 'success') {
+                  return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">成功</span>';
+                } else if (item.tradingStatus == 'failure') {
+                  return '<span style="background: #ea2626; padding: 2px 3px;color: #fff;border-radius: 3px ;">失败</span>';
+                } else if (item.tradingStatus == 'process') {
+                  return '处理中';
+                } else if (item.tradingStatus == 'pending') {
+                  return '待处理';
+                }
+              }
+            }, {
+              field: 'operate', title: '操作', toolbar: '#operateTpl_df', fixed: 'right'
+            }]
+        ],
+        event: true,
+        page: true,
+        response: {
+          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+        },
+        request: {
+          pageName: 'page', //页码的参数名称，默认：page
+          limitName: 'size', //每页数据量的参数名，默认：limit
+        },
+        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+          return {
+            "code": res.status, //解析接口状态
+            "msg": res.msg, //解析提示文本
+            "count": res.totalCount, //解析数据长度
+            "data": res.datas //解析数据列表
+          };
+        },
+        where: {
+          setAccNo: head.serialNo
+        }
+      });
+      //监听工具条
+      table.on('tool(fen_zhang_detail)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'detail') {// 查看详情
+          layer.open({
+            type: 2,
+            title: '分账明细',
+            area: ['50%', '50%'],
+            maxmin: true,
+            content: './fen_zhang_detail.html',
+            btnAlign: 'c',
+            btn: ['关闭'],
+            success: function (layero, index) {
+              // 获取子页面的iframe
+              var iframe = window['layui-layer-iframe' + index];
+              // 向子页面的全局函数child传参
+              iframe.getParent_data(obj);
+            },
+            btn1: function (index) {
+              layer.close(index);
+            }
+          });
+        }
+      });
+
+      //监听折叠
+      // element.on('collapse(test)', function (data) {
+      //   //点击触发事件
+      //   layer.msg('展开状态：' + data.show);
+      // });
+      console.info(g_data);
+      //初始赋值
+      form.val('example', {
+        "serialNo": g_data.serialNo
+        , "setAccNo": g_data.setAccNo
+        , "masterMerchantName": g_data.masterMerchantName
+        , "masterMerchantId": g_data.masterMerchantId
+        , "ysPartnerNo": g_data.ysPartnerNo
+        , "masterReceiptAmount": g_data.masterReceiptAmount
+
+        , "originalAmount": g_data.originalAmount
+
+        , "tradingStatus": g_data.tradingStatus
+        , "note": g_data.note
+
+        , "divMerchantName1": g_data.divMerchantName1
+        , "divMerchantCode1": g_data.divMerchantCode1
+        , "divMerUserCode1": g_data.divMerUserCode1
+        , "divAmount1": g_data.divAmount1
+
+        , "divMerchantName2": g_data.divMerchantName2
+        , "divMerchantCode2": g_data.divMerchantCode2
+        , "divMerUserCode2": g_data.divMerUserCode2
+        , "divAmount2": g_data.divAmount2
+
+        , "divMerchantName3": g_data.divMerchantName3
+        , "divMerchantCode3": g_data.divMerchantCode3
+        , "divMerUserCode3": g_data.divMerUserCode3
+        , "divAmount3": g_data.divAmount3
+
+        , "divMerchantName4": g_data.divMerchantName4
+        , "divMerchantCode4": g_data.divMerchantCode4
+        , "divMerUserCode4": g_data.divMerUserCode4
+        , "divAmount4": g_data.divAmount4
+        , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
+        // , "otherPayNotes": head.settlementMode
+        // , "actualAmountPaid": head.actualAmountPaid
+        // , "recipientName": head.recipientName
+        // , "recipientCardId": head.recipientID
+        // , "recipientTel": order.recipientTel
+        // , "recProvincesName": order.recipientProvincesName
+        // , "recCityName": order.recipientCityName
+        // , "recAreaName": order.recipientAreaName
+        // , "recipientAddr": order.recipientAddr
+        // , "ordererName": order.orderDocName
+        // , "ordererIdCardNumber": order.orderDocId
+        // , "ordererTel": order.orderDocTel
+        // , "orderDate": toStringTime(order.orderDate)
+        // , "order_record_status": order.order_record_status
+        // , "tradeNo": order.trade_no
+        // , "orderTotalPrice": g_data.order.orderTotalPrice
+        // , "tax": g_data.order.tax
+        // , "freight": g_data.order.freight
+      })
+
+      //渲染备注信息
+      function renderNote(note) {
+        if (isEmpty(note)) {
+          return "";
+        }
+        //切割#分隔符
+        var arr = note.split("#");
+        var divStr = "";
+        for (var i = 0; i < arr.length; i++) {
+
+          divStr += '<div class="layui-card-body" id="note">' + arr[i] + ' </div>';
+
+        }
+        $('#note').html(divStr);
+      }
+      var note = g_data.note;
+      renderNote(note);
+    });
+  </script>
+</body>
+
+</html>
