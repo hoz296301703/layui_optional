@@ -112,13 +112,20 @@
 			<input type="checkbox" data-managerId="{{d.managerId}}" name="status" value="{{d.status}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="statusDemo" {{ d.status == 'enable' ? 'checked' : '' }}>
 		  </script>
 		<script type="text/html" id="operateTpl">
-
 			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
 			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置密码</a>
 			<a class="layui-btn layui-btn-xs" lay-event="df">代付会员</a>
-
-		
 		</script>
+		<!-- <script type="text/html" id="operateTpl">
+			{{#  if(d.merchantStatus ==1){ }}
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+			{{# }if(d.merchantStatus ==2) { }}
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置密码</a>
+			{{# }if(d.merchantStatus ==3) { }}
+			<a class="layui-btn layui-btn-xs" lay-event="df">代付会员</a>
+			{{#  } }}
+		
+		</script> -->
 		<div style="display: none;" id="managerAuditMerchantInfo">
 			<form class="layui-form" style="display: flex; justify-content: center; margin-top: 20px;">
 				<div class="layui-form-item">
