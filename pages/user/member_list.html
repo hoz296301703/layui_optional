@@ -168,7 +168,7 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate',width:180 , title: '注册时间',fixed: 'left', templet: function (item) {
+							field: 'createDate',width:170 , title: '注册时间',fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
@@ -180,9 +180,9 @@
 						}, {
 							field: 'memberIdCardName', width: 80, title: '姓名'
 						}, {
-							field: 'memberIdCard', title: '身份号码',width:150
+							field: 'memberIdCard', title: '身份号码',width:175
 						}, {
-							field: 'memberTel', title: '手机号码',width:150
+							field: 'memberTel', title: '手机号码',width:120
 						}, {
 							field: 'realNameFlag', title: '实名状态', width: 90, templet: function (item) {
 								if (item.realNameFlag == '2') {

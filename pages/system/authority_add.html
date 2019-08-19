@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<!-- 增加新的权限信息html-->
+
+<head>
+	<meta charset="UTF-8">
+	<title>银盟跨境电商服务平台运营系统</title>
+	<meta name="Description" content="基于layUI数据表格操作" />
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../../static/css/font.css">
+	<link rel="stylesheet" href="../../static/css/weadmin.css">
+	<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+	<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	<style type="text/css">
+		.layui-form-switch {
+			width: 55px;
+		}
+
+		.layui-form-switch em {
+			width: 40px;
+		}
+
+		body {
+			overflow-y: scroll;
+		}
+
+		/* 私有样式 */
+		.layui-form-label {
+			width: 115px;
+		}
+	</style>
+</head>
+
+<body>
+	<form id="form_sreach" class="layui-form">
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">
+					<span class="we-red">*</span>分组
+				</label>
+				<div class="layui-input-inline">
+					<select name="customsPort" lay-verify="required" lay-filter="aihao" lay-search="">
+						<option value="">请选择分组</option>
+						<option value="manager">管理员</option>
+						<option value="merchant">商户</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="layui-inline">
+				<label class="layui-form-label">
+					<span class="we-red">*</span>一级名称
+				</label>
+				<div class="layui-input-inline">
+					<input type="text" name="merchantAddress" placeholder="请输入一级名称" lay-verify="required"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">
+					<span class="we-red">*</span>一级编码
+				</label>
+				<div class="layui-input-inline">
+					<input type="text" name="merchantAddress" placeholder="请输入一级编码" lay-verify="required"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">
+					<span class="we-red">*</span>二级名称
+				</label>
+				<div class="layui-input-inline">
+					<input type="text" name="merchantAddress" placeholder="请输入二级名称" lay-verify="required"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">
+					<span class="we-red">*</span>二级编码
+				</label>
+				<div class="layui-input-inline">
+					<input type="text" name="merchantAddress" placeholder="请输入二级编码" lay-verify="required"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">
+					<span class="we-red">*</span>三级名称
+				</label>
+				<div class="layui-input-inline">
+					<input type="text" name="merchantAddress" placeholder="请输入三级名称" lay-verify="required"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">
+					<span class="we-red">*</span>三级编码
+				</label>
+				<div class="layui-input-inline">
+					<input type="text" name="merchantAddress" placeholder="请输入三级编码" lay-verify="required"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+
+		</div>
+		<div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+			<button type="button" class="layui-btn" lay-filter="add" lay-submit="">保存</button>
+		</div>
+	</form>
+
+	<script src="../../static/js/common.js" charset="utf-8"></script>
+	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+	<script type="text/javascript">
+
+		layui.extend({
+			admin: '{/}../../static/js/admin'
+		});
+		layui.use(['form', 'jquery', 'util', 'admin', 'layer', 'element', 'table'], function () {
+			var form = layui.form,
+				$ = layui.jquery,
+				util = layui.util,
+				admin = layui.admin,
+				layer = layui.layer;
+			//初始赋值
+			// form.val('example', {
+			// 	"entOrderNo": order.order_id
+			// 	, "orderTotalPrice": order.orderTotalPrice
+			// 	, "tax": order.tax
+			// 	, "freight": order.freight
+			// 	, "orderTotalPrice": order.FCY
+			// 	, "otherPayNotes": order.otherPayNotes
+			// 	, "actualAmountPaid": order.actualAmountPaid
+			// 	, "recipientName": order.recipientName
+			// 	, "recipientCardId": order.recipientID
+			// 	, "recipientTel": order.recipientTel
+			// 	, "recProvincesName": order.recipientProvincesName
+			// 	, "recCityName": order.recipientCityName
+			// 	, "recAreaName": order.recipientAreaName
+			// 	, "recipientAddr": order.recipientAddr
+			// 	, "ordererName": order.orderDocName
+			// 	, "ordererIdCardNumber": order.orderDocId
+			// 	, "ordererTel": order.orderDocTel
+			// 	, "orderDate": toStringTime(order.orderDate)
+			// 	, "order_record_status": order.order_record_status
+			// 	, "createDate": G_format(order.create_date.time, "yyyy-MM-dd hh:mm:ss")
+			// 	, "tradeNo": order.trade_no
+			// 	// , "orderTotalPrice": g_data.order.orderTotalPrice
+			// 	// , "tax": g_data.order.tax
+			// 	// , "freight": g_data.order.freight
+			// })
+
+		});
+	</script>
+</body>
+
+</html>

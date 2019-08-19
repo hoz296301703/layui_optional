@@ -37,27 +37,39 @@
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
 				<div class="layui-inline">
-					<label class="layui-form-label">海关名称</label>
+					<label class="layui-form-label">一级名称</label>
 					<div class="layui-input-inline">
-						<input type="text" name="customsName" placeholder="请输入海关名称" class="layui-input">
+						<input type="text" name="firstName" placeholder="请输入一级名称" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">海关编号</label>
+					<label class="layui-form-label">一级编号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="customsCode" placeholder="请输入商户编号" class="layui-input">
+						<input type="text" name="firstCode" placeholder="请输入一级编号" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">国检名称</label>
+					<label class="layui-form-label">二级名称</label>
 					<div class="layui-input-inline">
-						<input type="text" name="ciqOrgName" placeholder="请输入国检机构名称" class="layui-input">
+						<input type="text" name="secondName" placeholder="请输入二级名称" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">国检编号</label>
+					<label class="layui-form-label">二级编号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="ciqOrgCode" placeholder="请输入国检机构编号" class="layui-input">
+						<input type="text" name="secondCode" placeholder="请输入二级编号" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">三级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="thirdName" placeholder="请输入三级名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">三级编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="thirdCode" placeholder="请输入三级编号" class="layui-input">
 					</div>
 				</div>
 			</div>
@@ -72,12 +84,77 @@
 				
 			</script>
 		<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+		<!-- 添加信息 -->
+		<form class="layui-form" lay-filter="insert" id="insert" style="display: none;width: 90%; margin: 20px auto;">
+			<div class="layui-form-item">
+				<label class="layui-form-label">分组</label>
+				<div class="layui-input-inline">
+					<select name="groupName" lay-verify="required" lay-search="">
+						<option value="">全部</option>
+						<option value="merchant">商户</option>
+						<option value="manager">管理员</option>
+					</select>
+				</div>
+			</div>
+			<input type="text" style="display:none" name="authorityId"></input>
+			<div class="layui-form-item">
+				<label class="layui-form-label">一级名称</label>
+				<div class="layui-input-inline">
+					<input type="text" name="firstName" autocomplete="off" placeholder="请输入一级名称" class="layui-input"
+						lay-verify="required">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">一级编码</label>
+				<div class="layui-input-inline">
+					<input type="tel" name="firstCode" autocomplete="off" class="layui-input" lay-verify="required">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">二级名称</label>
+				<div class="layui-input-inline">
+					<input type="text" name="secondName" autocomplete="off" placeholder="" class="layui-input"
+						lay-verify="required">
+				</div>
+
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">二级编码</label>
+				<div class="layui-input-inline">
+					<input type="tel" name="secondCode" autocomplete="off" class="layui-input" lay-verify="required">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">三级名称</label>
+				<div class="layui-input-inline">
+					<input type="text" name="thirdName" autocomplete="off" placeholder="" class="layui-input"
+						lay-verify="required">
+				</div>
+
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">三级编码</label>
+				<div class="layui-input-inline">
+					<input type="tel" name="thirdCode" autocomplete="off" class="layui-input" lay-verify="required">
+				</div>
+			</div>
+			<div class="layui-form-item" style="text-align: center;">
+				<button type="button" class="layui-btn layui-btn-sm" lay-filter="insert_btn" name="insert_btn"
+					lay-submit="">添加</button>
+				<button type="button" class="layui-btn layui-btn-sm" lay-filter="update_btn" name="update_btn"
+					lay-submit="">保存</button>
+
+				<button type="button" class="layui-btn layui-btn-sm layui-btn-primary close_add">关闭</button>
+			</div>
+			<!-- 录入物流信息 END-->
+		</form>
+
 	</div>
 	<script type="text/html" id="operateTpl">
-		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
+		<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			 -->
 	<a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
-
+	<a class="layui-btn layui-btn-xs" lay-event="insert_two">添加二级</a>
+	<a class="layui-btn layui-btn-xs" lay-event="insert_three">添加三级</a>
 	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
@@ -112,21 +189,21 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'authorityId', title: '流水号', width: 170
-						}, {
+							// field: 'authorityId', title: '流水号', width: 170
+							// }, {
 							field: 'firstName', title: '一级名称', width: 95
 						}, {
 							field: 'firstCode', title: '一级编码', width: 100
 						}, {
 							field: 'secondName', title: '二级名称', width: 95
 						}, {
-							field: 'secondCode', title: '二级编码',width:150
+							field: 'secondCode', title: '二级编码', width: 150
 						}, {
-							field: 'thirdName', title: '三级名称',width:95
+							field: 'thirdName', title: '三级名称', width: 95
 						}, {
-							field: 'thirdCode', title: '三级编码',width:150
+							field: 'thirdCode', title: '三级编码', width: 150
 						}, {
-							field: 'groupName', title: '分组',  templet: function (item) {
+							field: 'groupName', title: '分组', templet: function (item) {
 								if (item.groupName == 'merchant') {
 									return '商户';
 								} else if (item.groupName == 'manager') {
@@ -136,15 +213,15 @@
 								}
 							}
 						}, {
-						// 		field: 'status', title: '状态', templet: function (item) {
-						// 			if (item.status == '1') {
-						// 				return '正常';
-						// 			} else if (item.status == '2') {
-						// 				return '禁用';
-						// 			}
-						// 		}
-						// }, {
-							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							// 		field: 'status', title: '状态', templet: function (item) {
+							// 			if (item.status == '1') {
+							// 				return '正常';
+							// 			} else if (item.status == '2') {
+							// 				return '禁用';
+							// 			}
+							// 		}
+							// }, {
+							field: 'operate', title: '操作', width: 210, toolbar: '#operateTpl', fixed: 'right'
 						}
 					]
 				],
@@ -181,20 +258,24 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var customsName = $('#form_sreach').find('[name=customsName]');
-				var customsCode = $('#form_sreach').find('[name=customsCode]');
-				var ciqOrgName = $('#form_sreach').find('[name=ciqOrgName]');
-				var ciqOrgCode = $('#form_sreach').find('[name=ciqOrgCode]');
+				var firstName = $('#form_sreach').find('[name=firstName]');
+				var firstCode = $('#form_sreach').find('[name=firstCode]');
+				var secondName = $('#form_sreach').find('[name=secondName]');
+				var secondCode = $('#form_sreach').find('[name=secondCode]');
+				var thirdName = $('#form_sreach').find('[name=thirdName]');
+				var thirdCode = $('#form_sreach').find('[name=thirdCode]');
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/customsPort/getInfo',
+					url: urlPrefix + 'silver-web-shop/authority/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						customsNameblurry: customsName.val(),
-						customsCode: customsName.val(),
-						ciqOrgNameblurry: customsName.val(),
-						ciqOrgCode: customsName.val()
+						firstNameblurry: firstName.val(),
+						firstCode: firstCode.val(),
+						secondNameblurry: secondName.val(),
+						secondCode: secondCode.val(),
+						thirdNameblurry: thirdName.val(),
+						thirdCode: thirdCode.val()
 					}
 				});
 			}
@@ -211,10 +292,12 @@
 			// });
 			var active = {
 				reload: function () {
-					var customsName = $('#form_sreach').find('[name=customsName]');
-					var customsCode = $('#form_sreach').find('[name=customsCode]');
-					var ciqOrgName = $('#form_sreach').find('[name=ciqOrgName]');
-					var ciqOrgCode = $('#form_sreach').find('[name=ciqOrgCode]');
+					var firstName = $('#form_sreach').find('[name=firstName]');
+					var firstCode = $('#form_sreach').find('[name=firstCode]');
+					var secondName = $('#form_sreach').find('[name=secondName]');
+					var secondCode = $('#form_sreach').find('[name=secondCode]');
+					var thirdName = $('#form_sreach').find('[name=thirdName]');
+					var thirdCode = $('#form_sreach').find('[name=thirdCode]');
 					//执行重载
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/authority/findInfo',
@@ -222,10 +305,12 @@
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
-							customsNameblurry: customsName.val(),
-							customsCode: customsCode.val(),
-							ciqOrgNameblurry: ciqOrgName.val(),
-							ciqOrgCode: ciqOrgCode.val()
+							firstNameblurry: firstName.val(),
+							firstCode: firstCode.val(),
+							secondNameblurry: secondName.val(),
+							secondCode: secondCode.val(),
+							thirdNameblurry: thirdName.val(),
+							thirdCode: thirdCode.val()
 						}
 					});
 				}
@@ -272,53 +357,137 @@
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
-				if (obj.event === 'delete') {// 删除	
-					layer.alert("是否删除海关" + data.customsName + ",国检" + data.ciqOrgName + "？", {
-						time: 0, //不自动关闭
-						btn: ["确定", "关闭"],
-						yes: function (index) {
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/customsPort/delete",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: { id: data.id },
-								success: function (response) {
-									if (response.status == 1) {
-										layer.msg("删除成功！");
-										_reload();//重载表格
-									} else {
-										layer.alert(response.msg);
-									}
-								}
-							});
-						}
+				if (obj.event === 'insert_two') {// 添加二级
+					// console.info(data);
+					$("#insert").find("[name]").val("");// 初始化内容    
+					//表单初始赋值
+					form.val('insert', {
+						"groupName": data.groupName,
+						"firstCode": data.firstCode,
+						"firstName": data.firstName
+					});
+					$("#insert").find("[name]").attr("disabled", false).removeClass("layui-disabled");
+					//屏蔽
+					$("#insert").find("[name=groupName]").attr("disabled", true);
+					$("#insert").find("[name=firstName]").attr("disabled", true).addClass("layui-disabled");
+					$("#insert").find("[name=firstCode]").attr("disabled", true).addClass("layui-disabled");
+
+
+					form.render('select');
+					insertLogi = layer.open({
+						title: "添加二级权限信息",
+						type: 1,
+						skin: "layui-layer-rim", //加上边框
+						area: ["300px", "350px"], //宽高
+						content: $("#insert")
+					});
+				} else if (obj.event === "insert_three") {//添加三级
+					$("#insert").find("[name]").val("");// 初始化内容    
+					//表单初始赋值
+					form.val('insert', {
+						"groupName": data.groupName,
+						"firstCode": data.firstCode,
+						"firstName": data.firstName,
+						"secondCode": data.secondCode,
+						"secondName": data.secondName
+					});
+					//屏蔽
+					$("#insert").find("[name=groupName]").attr("disabled", true);
+					$("#insert").find("[name=firstName]").attr("disabled", true).addClass("layui-disabled");
+					$("#insert").find("[name=firstCode]").attr("disabled", true).addClass("layui-disabled");
+					$("#insert").find("[name=secondName]").attr("disabled", true).addClass("layui-disabled");
+					$("#insert").find("[name=secondCode]").attr("disabled", true).addClass("layui-disabled");
+
+					form.render('select');
+					insertLogi = layer.open({
+						title: "添加三级权限信息",
+						type: 1,
+						skin: "layui-layer-rim", //加上边框
+						area: ["300px", "350px"], //宽高
+						content: $("#insert")
 					});
 				} else if (obj.event === "edit") {
-					layer.open({
-						type: 2,
-						title: '修改信息',
+					$("#insert").find("[name]").val("");// 初始化内容    
+					//表单初始赋值
+					form.val('insert', {
+						"groupName": data.groupName,
+						"firstCode": data.firstCode,
+						"firstName": data.firstName,
+						"secondCode": data.secondCode,
+						"secondName": data.secondName,
+						"thirdCode": data.thirdCode,
+						"thirdName": data.thirdName,
+						"authorityId": data.authorityId
+
+					});
+					//屏蔽
+					$("#insert").find("[name=groupName]").attr("disabled", true);
+					$("#insert").find("[name=insert_btn]").attr("style", "display:none;");
+					form.render('select');
+					insertLogi = layer.open({
+						title: "修改权限信息",
+						type: 1,
 						skin: "layui-layer-rim", //加上边框
-						area: ["600px", "510px"], //宽高
-						fixed: false, //不固定
-						maxmin: true,
-						content: './customs_update.html',
-						btnAlign: 'c',
-						// btn: ['关闭'],
-						success: function (layero, index) {
-							// console.log(obj)
-							// 获取子页面的iframe
-							var iframe = window['layui-layer-iframe' + index];
-							// 向子页面的全局函数child传参
-							iframe.getParent_data(obj);
-						},
-						btn1: function (index) {
-							layer.close(index);
-						}
+						area: ["300px", "350px"], //宽高
+						content: $("#insert")
 					});
 				}
 			});
+
+			// 添加权限信息
+			form.on('submit(insert_btn)', function (data) {
+				layer.load(2);
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/authority/insert",
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					data: data.field,
+					success: function (response) {
+						layer.closeAll("loading");
+						if (response.status == 1) {
+							layer.close(insertLogi);
+							layer.msg("添加成功");
+							setTimeout(function () {
+								_reload();//重载表格
+							}, 1000);
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+			});
+
+			// 添加权限信息
+			form.on('submit(update_btn)', function (data) {
+				layer.load(2);
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/authority/update",
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					data: data.field,
+					success: function (response) {
+						layer.closeAll("loading");
+						if (response.status == 1) {
+							layer.close(insertLogi);
+							layer.msg("更新成功");
+							setTimeout(function () {
+								_reload();//重载表格
+							}, 1000);
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+			});
+
+			// 关闭新增弹窗
+			$('.close_add').click(function () {
+				layer.close(insertLogi);
+			})
 		});
 	</script>
 </body>
