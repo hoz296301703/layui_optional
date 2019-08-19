@@ -24,7 +24,7 @@
 
 		/* 私有样式 */
 		.layui-form-label {
-			width: 70px;
+			width: 85px;
 		}
 
 		.layui-form-switch em {
@@ -142,7 +142,7 @@
 									<input type="text" class="layui-input" id="startDate" name="startDate"
 										autocomplete="off" placeholder="年-月-日">
 								</div>
-								    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+								    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
 								<div class="layui-input-inline">
 									<input type="text" class="layui-input" id="endDate" name="endDate"
 										autocomplete="off" placeholder="年-月-日">
@@ -398,7 +398,7 @@
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
 				if (obj.event === 'detail') {// 查看详情
-					layer.open({
+					var detail_full = layer.open({
 						type: 2,
 						title: '订单信息',
 						area: ['95%', '90%'],
@@ -418,6 +418,7 @@
 							layer.close(index);
 						}
 					});
+					layer.full(detail_full);// 全屏显示
 				} else if (obj.event === 'reset') {// 重置密码
 					layer.alert("确定重置密码？", {
 						time: 0, //不自动关闭
