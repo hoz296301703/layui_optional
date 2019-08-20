@@ -49,17 +49,18 @@
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">商户编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="merchantId" placeholder="请输入商户编号" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
 					<label class="layui-form-label">商户名称</label>
 					<div class="layui-input-inline">
 						<input type="text" name="merchantName" placeholder="请输入商户名称" class="layui-input">
 					</div>
 				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">商户编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="merchantId" placeholder="请输入商户编号" class="layui-input">
+					</div>
+				</div>
+
 				<div class="layui-inline">
 					<label class="layui-form-label">商品编号</label>
 					<div class="layui-input-inline">
@@ -133,11 +134,11 @@
 
 		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
 			var table = layui.table,
-					$ = layui.jquery,
-					form = layui.form,
-					tree = layui.tree,
-					admin = layui.admin,
-					laydate = layui.laydate;
+				$ = layui.jquery,
+				form = layui.form,
+				tree = layui.tree,
+				admin = layui.admin,
+				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
@@ -146,7 +147,7 @@
 			});
 			laydate.render({
 				elem: '#endDate'
-				
+
 			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
@@ -162,15 +163,15 @@
 						{
 							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '入库日期', fixed: 'left', width: 180, templet: function (item) {
+							field: 'createDate', title: '入库日期', fixed: 'left', width: 170, templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
 							field: 'warehouseName', title: '仓库名称', width: 100
 						}, {
-							field: 'merchantId', title: '商户编号'
+							field: 'merchantName', title: '商户名称', width: 170
 						}, {
-							field: 'merchantName', title: '商户名称', width: 200
+							field: 'merchantId', title: '商户编号', width: 170
 						}, {
 							field: 'reMark', title: '主图', height: 180, templet: function (item) {
 								return '<div><img  src="' + splitImg(item.reMark) + '"></div>';
@@ -188,7 +189,7 @@
 								}
 							}
 						}, {
-							field: 'reviewerStatus', title: '审核状态', templet: function (item) {
+							field: 'reviewerStatus', title: '审核状态', width: 90, templet: function (item) {
 								if (item.reviewerStatus == 'success') {
 									return "通过";
 								} else if (item.reviewerStatus == 'failure') {
@@ -204,11 +205,11 @@
 						}, {
 							field: 'regPrice', title: '单价'
 						}, {
-							field: 'totalStock', title: '库存数量'
+							field: 'totalStock', title: '库存数量', width: 90
 						}, {
-							field: 'sellCount', title: '上架数量'
+							field: 'sellCount', title: '上架数量', width: 90
 						}, {
-							field: 'doneCount', title: '完成数量'
+							field: 'doneCount', title: '完成数量', width: 90
 						}, {
 							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}
@@ -224,8 +225,8 @@
 					pageName: 'page', //页码的参数名称，默认：page
 					limitName: 'size' //每页数据量的参数名，默认：limit
 				},
-				where : {
-					startDate : appendStartDate(getDay(-7))
+				where: {
+					startDate: appendStartDate(getDay(-7))
 				},
 				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
 					return {

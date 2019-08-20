@@ -31,6 +31,7 @@
       <div class="layui-colla-content layui-show">
         <div class="weadmin-body">
           <form class="layui-form" id="manager_detail_form" lay-filter="example">
+
             <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">订单编号</label>
@@ -51,14 +52,15 @@
                   <input type="text" name="tax" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+            </div>
+
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">运费</label>
                 <div class="layui-input-inline">
                   <input type="text" name="freight" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">抵付说明</label>
                 <div class="layui-input-inline">
@@ -73,6 +75,8 @@
                     disabled>
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">收货人姓名</label>
                 <div class="layui-input-inline">
@@ -87,9 +91,6 @@
                     disabled>
                 </div>
               </div>
-
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">收货人电话</label>
                 <div class="layui-input-inline">
@@ -97,6 +98,9 @@
                 </div>
               </div>
 
+            </div>
+
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">收货人省份</label>
                 <div class="layui-input-inline">
@@ -116,8 +120,8 @@
                   <input type="text" name="recAreaName" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-            </div>
 
+            </div>
             <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">详细地址</label>
@@ -146,9 +150,6 @@
                   <input type="text" name="ordererTel" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">订单日期</label>
                 <div class="layui-input-inline">
@@ -187,7 +188,7 @@
       <h2 class="layui-colla-title">商品详情</h2>
       <div class="layui-colla-content ">
         <div class="layui-form">
-          <table class="layui-table" id="order_goods_table">
+          <table class="layui-table" id="order_goods_table" lay-size="sm">
             <colgroup>
               <col width="140">
               <col width="210">
@@ -224,7 +225,7 @@
           <div class="layui-row layui-col-space15">
             <div class="layui-col-md12">
               <div class="layui-card" id="order_dec_note">
-                //申报内容
+                <!--申报内容-->
               </div>
             </div>
           </div>
@@ -243,7 +244,7 @@
     var goods = '';
     //获取传递数据
     function getParent_data(obj) {
-      g_data = obj.data; 
+      g_data = obj.data;
     }
 
     layui.extend({
@@ -283,7 +284,7 @@
         });
         return datas;
       }
-      g_data = getDetail(g_data.order_id);  
+      g_data = getDetail(g_data.order_id);
       order = g_data[0].head;
       goods = g_data[0].content;
       //订单信息初始赋值

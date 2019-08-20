@@ -187,16 +187,16 @@
 							}, {
 								field: 'merchantName', title: '商户名称', width: 190
 							}, {
-								field: 'merchantId', title: '商户编号',width: 180
+								field: 'merchantId', title: '商户编号', width: 180
 							}, {
-								field: 'serialNo', title: '流水号',width: 170
+								field: 'serialNo', title: '流水号', width: 170
 							}, {
-								field: 'count', title: '订单数量',width: 90
+								field: 'count', title: '订单数量', width: 90
 							}, {
-								field: 'amount', title: '结算金额',width: 100
+								field: 'amount', title: '结算金额', width: 100
 							}, {
 								// 流程节点：1-运营审核、2-财务审核、200-完成、400-终止
-								field: 'processNode', title: '审核状态', width: 90,templet: function (item) {
+								field: 'processNode', title: '审核状态', width: 90, templet: function (item) {
 									if (item.processNode == '1') {
 										return '运营审核';
 									} else if (item.processNode == '2') {
@@ -209,8 +209,7 @@
 								}
 							}, {
 								// 状态：success-成功、failure-失败、process-处理中、pending-待处理
-								field: 'status', title: '结算状态',width: 90 ,templet: function (item) {
-									// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
+								field: 'status', title: '结算状态', width: 90, templet: function (item) {
 									if (item.status == 'pending') {
 										return '待处理';
 									} else if (item.status == 'process') {
@@ -219,10 +218,12 @@
 										return '成功';
 									} else if (item.status == 'failure') {
 										return '失败';
+									} else if (item.status == 'abnormal') {
+										return '异常';
 									}
 								}
 							}, {
-								field: 'createDate', title: '创建日期',width: 170,templet: function (item) {
+								field: 'createDate', title: '创建日期', width: 170, templet: function (item) {
 									return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 								}
 							}, {
