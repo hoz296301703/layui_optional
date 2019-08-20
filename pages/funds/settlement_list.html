@@ -100,7 +100,7 @@
 									<input type="text" class="layui-input" id="startDate" name="startDate"
 										autocomplete="off" placeholder="年-月-日">
 								</div>
-								    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+								    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
 								<div class="layui-input-inline">
 									<input type="text" class="layui-input" id="endDate" name="endDate"
 										autocomplete="off" placeholder="年-月-日">
@@ -187,16 +187,16 @@
 							}, {
 								field: 'merchantName', title: '商户名称', width: 190
 							}, {
-								field: 'merchantId', title: '商户编号',width: 180
+								field: 'merchantId', title: '商户编号', width: 180
 							}, {
-								field: 'serialNo', title: '流水号',width: 170
+								field: 'serialNo', title: '流水号', width: 170
 							}, {
-								field: 'count', title: '订单数量',width: 90
+								field: 'count', title: '订单数量', width: 90
 							}, {
-								field: 'amount', title: '结算金额',width: 100
+								field: 'amount', title: '结算金额', width: 100
 							}, {
 								// 流程节点：1-运营审核、2-财务审核、200-完成、400-终止
-								field: 'processNode', title: '审核状态', width: 90,templet: function (item) {
+								field: 'processNode', title: '审核状态', width: 90, templet: function (item) {
 									if (item.processNode == '1') {
 										return '运营审核';
 									} else if (item.processNode == '2') {
@@ -209,7 +209,7 @@
 								}
 							}, {
 								// 状态：success-成功、failure-失败、process-处理中、pending-待处理
-								field: 'status', title: '结算状态',width: 90 ,templet: function (item) {
+								field: 'status', title: '结算状态', width: 90, templet: function (item) {
 									// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
 									if (item.status == 'pending') {
 										return '待处理';
@@ -222,7 +222,7 @@
 									}
 								}
 							}, {
-								field: 'createDate', title: '创建日期',width: 170,templet: function (item) {
+								field: 'createDate', title: '创建日期', width: 170, templet: function (item) {
 									return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 								}
 							}, {
@@ -325,11 +325,142 @@
 						});
 					}
 				};
+
 				// 监听查询按钮
 				$('#form_sreach .layui-btn').on('click', function () {
 					var type = $(this).data('type');
 					active[type] ? active[type].call(this) : '';
 				});
+
+				//监听操作工具条
+				table.on('tool(articleList)', function (obj) {
+					var data = obj.data;
+					console.log(data)
+					if (obj.event === 'detail') {// 查看详情
+						layer.open({
+							type: 2,
+							title: '订单详情',
+							area: ['95%', '90%'],
+							// fixed: false, //不固定
+							maxmin: true,
+							content: './settlement_detail.html',
+							btnAlign: 'c',
+							btn: ["通过", "不通过", "关闭"],
+							success: function (layero, index) {
+								// console.log(obj)
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								iframe.getParent_data(obj);
+							},
+							yes: function (index) {
+								layer.prompt({
+									value: "",
+									formType: 2,
+									title: "批注",
+									yes: function (index, layero) {
+										if (
+											$("#managerName").attr("name") == 2 ||
+											$("#managerName").attr("name") == 1
+										) {
+											_managerReview({
+												serialNo: data.serialNo,
+												status: 2, // 通过
+												note: $.trim(
+													$(layero)
+														.find("textarea")
+														.val()
+												) // 批注
+											});
+										} else {
+											_financialReview({
+												serialNo: data.serialNo,
+												status: 2, // 通过
+												note: $.trim(
+													$(layero)
+														.find("textarea")
+														.val()
+												) // 批注
+											});
+										}
+									}
+								});
+							},
+							btn2: function () {
+								layer.prompt({
+									value: "",
+									formType: 2,
+									title: "批注",
+									yes: function (index, layero) {
+										if (
+											$.trim(
+												$(layero)
+													.find("textarea")
+													.val()
+											) == ""
+										) {
+											layer.alert("请填写不通过的批注！");
+										} else {
+											if (
+												$("#managerName").attr("name") == 2 ||
+												$("#managerName").attr("name") == 1
+											) {
+												_managerReview({
+													serialNo: data.serialNo,
+													status: 3, // 不通过
+													note: $.trim(
+														$(layero)
+															.find("textarea")
+															.val()
+													) // 批注
+												});
+											} else {
+												_financialReview({
+													serialNo: data.serialNo,
+													status: 3, // 不通过
+													note: $.trim(
+														$(layero)
+															.find("textarea")
+															.val()
+													) // 批注
+												});
+											}
+										}
+									}
+								});
+								return false;
+							},
+							btn3: function () {
+								layer.closeAll();
+							}
+						});
+						if (
+							($("#managerName").attr("name") == 2 && data.processNode == "1") ||
+							($("#managerName").attr("name") == 3 && data.processNode == "2") ||
+							($("#managerName").attr("name") == 1 && data.processNode == "1")
+						) {
+							$("#offlineBox_detail")
+								.parents(".layui-layer")
+								.find(".layui-layer-btn0")
+								.show();
+							$("#offlineBox_detail")
+								.parents(".layui-layer")
+								.find(".layui-layer-btn1")
+								.show();
+						} else {
+							$("#offlineBox_detail")
+								.parents(".layui-layer")
+								.find(".layui-layer-btn0")
+								.hide();
+							$("#offlineBox_detail")
+								.parents(".layui-layer")
+								.find(".layui-layer-btn1")
+								.hide();
+						}
+					}
+				});
+
+
 				//跳转至日志
 				$('#logs_btn').on('click', function () {
 					var h = $(window).height() - 30;

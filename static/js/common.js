@@ -4,7 +4,7 @@ var urlPrefix = "https://ym.191ec.com/";
 
 
 var merchantImgPrefix = "https://ym.191ec.com/img/";// 图片拼接前缀
-// 日期格式化
+// 日期格式化 fmt => "yyyy-MM-dd hh:mm:ss"
 var G_format = function (datetime, fmt) {
   if (isEmpty(datetime)) {
     return '';
@@ -213,10 +213,18 @@ function toStringTime(time) {
   var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
   return time.replace(pattern, "$1-$2-$3 $4:$5:$6");
 }
+// yyyy-MM-dd
+function toStringDay(time) {
+  if (isEmpty(time)) {
+    return '';
+  }
+  var pattern = /(\d{4})(\d{2})(\d{2})/;
+  return time.replace(pattern, "$1-$2-$3");
+}
 
 
 // 获取当天日期
-function get_newDate_D(){// 年月日
+function get_newDate_D() {// 年月日
   var lw = new Date();
   var lastY = lw.getFullYear();
   var lastM = lw.getMonth() + 1;
@@ -229,7 +237,7 @@ function get_newDate_D(){// 年月日
 }
 
 // 获取当月
-function get_newDate_M(){// 年月日
+function get_newDate_M() {// 年月日
   var lw = new Date();
   var lastY = lw.getFullYear();
   var lastM = lw.getMonth() + 1;
@@ -238,4 +246,35 @@ function get_newDate_M(){// 年月日
   return startDate;
 }
 
+// 操作节点
+function actionNode(data) {
+  var processNode = "";
+  if (data == "1") {
+    processNode = "运营审核";
+  } else if (data == "2") {
+    processNode = "财务审核";
+  } else if (data == "200") {
+    processNode = "完成";
+  } else if (data == "400") {
+    processNode = "终止";
+  }
+  return processNode;
+}
+// 状态
+function g_orderStatus(data) {
+  var status = "";
+  if (data == "success") {
+    status = "成功";
+  } else if (data == "failure") {
+    status = "失败";
+  } else if (data == "process") {
+    status = "处理中";
+  } else if (data == "pending") {
+    status = "待处理";
+  } else if (data == "abnormal") {
+    status = "异常";
+  }
+
+  return status;
+}
 

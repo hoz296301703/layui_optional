@@ -134,7 +134,7 @@
 						if (response.status != 1) {
 							window.location = "login.html";
 						} else {
-							$('#managerName').html(response.datas.managerName);
+							$('#managerName').html(response.datas.managerName).attr('name',response.datas.managerMarks);
 							menu.getMenu('./json/menu.json');
 						}
 					},
