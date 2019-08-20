@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<!--分账(日志)信息详情html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <form class="layui-form" id="manager_detail_form" lay-filter="example" style="margin-bottom: 24px;">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">商户名称</label>
+          <div class="layui-input-inline">
+            <input type="text" name="merchantName" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">商户编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="merchantId" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">流水号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="serialNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">订单数量</label>
+          <div class="layui-input-inline">
+            <input type="text" name="count" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">金额</label>
+          <div class="layui-input-inline">
+            <input type="text" name="amount" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">当前节点</label>
+          <div class="layui-input-inline">
+            <input type="text" name="processNode" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">结算状态</label>
+          <div class="layui-input-inline">
+            <input type="text" name="status" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">日期</label>
+          <div class="layui-input-inline">
+            <input type="text" name="dateSign" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+      </div>
+    </form>
+    <table class="layui-table" lay-size="sm">
+      <colgroup>
+        <col width="150">
+        <col width="100">
+        <col width="100">
+        <col width="100">
+        <col>
+      </colgroup>
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>当前节点名称</th>
+          <th>当前处理人</th>
+          <th>操作状态</th>
+          <th>备注</th>
+        </tr>
+      </thead>
+      <tbody id="ordersIC_offlineBox_detail">
+
+      </tbody>
+    </table>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    var g_data = '';// 全局数据变量
+    //
+    var head = '';
+    var content = '';
+    //获取传递数据
+    function getParent_data(obj) {
+      g_data = obj.data;
+    }
+
+    layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+      var table = layui.table,
+        $ = layui.jquery,
+        form = layui.form,
+        tree = layui.tree,
+        admin = layui.admin,
+        laydate = layui.laydate;
+
+      // 
+      var getDetails = function () {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/dfOrder/getDetails",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: { serialNo: g_data.serialNo },
+          success: function (response) {
+            // console.log(response)
+
+            if (response.status == 1) {
+              var str = response.datas.log;
+              var LEN = str.length;
+              var lis = '';
+              for (var i = 0; i < LEN; i++) {
+                var reviewerFlag = "";
+                if (str[i].reviewerFlag == 1) {
+                  reviewerFlag = "待审核";
+                } else if (str[i].reviewerFlag == 2) {
+                  reviewerFlag = "通过";
+                } else if (str[i].reviewerFlag == 3) {
+                  reviewerFlag = "不通过";
+                }
+                lis +=
+                  "<tr><td>" +
+                  G_format(str[i].createDate.time, "yyyy-MM-dd hh:mm:ss") +
+                  "</td>" +
+                  "<td>" +
+                  str[i].currentNodeName +
+                  "</td>" +
+                  "<td>" +
+                  str[i].reviewerName +
+                  "</td>" +
+                  "<td>" +
+                  reviewerFlag +
+                  "</td>" +
+                  "<td>" +
+                  str[i].note +
+                  "</td>" +
+                  "</tr>";
+              }
+
+              lis += "</tbody>";
+              $("#ordersIC_offlineBox_detail").html(lis);
+            }
+          }
+        });
+      }
+      getDetails();
+
+      //初始赋值
+      form.val('example', {
+        "merchantName": g_data.merchantName
+        , "merchantId": g_data.merchantId
+        , "serialNo": g_data.serialNo
+        , "count": g_data.count
+        , "amount": g_data.amount + ' 元'
+        , "processNode": actionNode(g_data.processNode)
+        , "status": g_orderStatus(g_data.status)
+        , "dateSign": toStringDay(g_data.dateSign)
+
+      })
+
+    });
+  </script>
+</body>
+
+</html>
