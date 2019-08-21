@@ -1,5 +1,5 @@
-var urlPrefix = 'http:///192.168.1.116:8080/';
-// var urlPrefix = "https://ym.191ec.com/";
+// var urlPrefix = 'http:///192.168.1.116:8080/';
+var urlPrefix = "https://ym.191ec.com/";
 // var urlPrefix = 'http://120.132.118.211:8080/';
 
 
@@ -276,5 +276,14 @@ function g_orderStatus(data) {
   }
 
   return status;
+}
+// 格式化字符串时间 例如："2019-08-21T10:11:39.000Z"
+function G_formatStr(value) {
+  // 创建日期
+  var date = "";
+  if (isEmpty(value)) {
+    newDate = value.split("T")[0] + " " + value.split("T")[1].split(".")[0];
+  }
+  return date;
 }
 

@@ -38,7 +38,7 @@
 					"id": "goods_1",
 					"name": "备案信息",
 					"icon": "",
-					"url": "./pages/article/list.html"
+					"url": "./pages/goods/goodsRecord.html"
 				},
 				{
 					"id": "goods_2",
