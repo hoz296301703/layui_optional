@@ -302,7 +302,7 @@
 						var modules = $('#form_sreach').find('[name=module]');
 						var action = $('#form_sreach').find('[name=action]');
 						var startDate = $('#form_sreach').find('[name=startDate]');
-						var entDate = $('#form_sreach').find('[name=entDate]');
+						var endDate = $('#form_sreach').find('[name=endDate]');
 						startDate = appendStartDate(startDate.val());
 						//执行重载
 						table.reload('articleList', {
@@ -318,7 +318,7 @@
 								module: modules.val(),
 								action: action.val(),
 								startDate: startDate,
-								entDate: entDate.val()
+								endDate: endDate.val()
 							}
 						});
 					}

@@ -44,7 +44,7 @@
 			<ul class="layui-tab-title">
 				<li class="layui-this">订单结算</li>
 				<li id="mer_wit_btn">商户提现</li>
-				<li id="logs_btn">日志信息</li>
+				<li id="logs_btn">代付明细</li>
 				<li id="fz_btn">分账信息</li>
 			</ul>
 			<div class="layui-tab-content">
@@ -540,7 +540,7 @@
 				//跳转至日志
 				$('#logs_btn').on('click', function () {
 					var h = $(window).height() - 30;
-					$("#logs").find('iframe').attr('src', "set_logs_list.html").css('height', h + 'px');
+					$("#logs").find('iframe').attr('src', "df_details_logs_list.html").css('height', h + 'px');
 				})
 				//跳转至商户提现
 				$('#mer_wit_btn').on('click', function () {

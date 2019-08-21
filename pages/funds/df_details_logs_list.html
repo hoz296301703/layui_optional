@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!-- 结算日志信息html-->
+<!-- (代付明细)日志html-->
 
 <head>
 	<meta charset="UTF-8">
@@ -55,34 +55,34 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">名称</label>
 					<div class="layui-input-inline">
-						<input type="text" name="userName" placeholder="请输入商户/会员名称" class="layui-input">
+						<input type="text" name="merchantName" placeholder="请输入商户名称" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
 					<label class="layui-form-label">编号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="userId" placeholder="请输入商户/会员编号" class="layui-input">
+						<input type="text" name="merchantId" placeholder="请输入商户编号" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">交易流水号</label>
+					<label class="layui-form-label">开户人名称</label>
 					<div class="layui-input-inline">
-						<input type="text" name="tradeNo" placeholder="请输入交易流水号" class="layui-input">
+						<input type="text" name="bankAccName" placeholder="请输入银行开户人名称" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">订单编号</label>
+					<label class="layui-form-label">银行卡账号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="orderId" placeholder="请输入订单编号" class="layui-input">
+						<input type="text" name="bankAccNo" placeholder="请输入银行卡账号" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">手机号码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="bankPhone" placeholder="请输入预留手机号码" class="layui-input">
 					</div>
 				</div>
 				<!-- <div class="layui-inline">
-					<label class="layui-form-label">收款方编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="sellerId" placeholder="请输入收款方编号" class="layui-input">
-					</div>
-				</div> -->
-				<div class="layui-inline">
 					<label class="layui-form-label">类型</label>
 					<div class="layui-input-inline">
 						<select name="type" lay-verify="required" lay-search="">
@@ -99,14 +99,14 @@
 
 						</select>
 					</div>
-				</div>
+				</div> -->
 				<div class="layui-inline">
 					<label class="layui-form-label">状态</label>
 					<div class="layui-input-inline">
-						<select name="tradingStatus" lay-verify="required" lay-search="">
+						<select name="status" lay-verify="required" lay-search="">
 							<option value="">全部</option>
 							<option value="success">成功</option>
-							<option value="failure">关闭</option>
+							<option value="failure">失败</option>
 							<option value="process">处理中</option>
 							<option value="pending">待处理</option>
 						</select>
@@ -167,80 +167,75 @@
 				toolbar: '#articleList_toolbar',
 				cellMinWidth: 80,
 				height: tableHeight,
-				url: urlPrefix + 'silver-web-shop/dfOrder/getLogs',
+				url: urlPrefix + 'silver-web-shop/dfOrder/findInfo',
 				method: 'post',
 				cols: [
 					[
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '日期', fixed: 'left', templet: function (item) {
+							field: 'createDate', title: '日期', width: 170, fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'userName', title: '商户/会员名称',
+							field: 'merchantName', title: '商户名称', width: 170
 						}, {
-							field: 'userId', title: '商户/会员编号'
+							field: 'merchantId', title: '商户编号', width: 170
 						}, {
-							field: 'tradeNo', title: '交易流水号'
+							field: 'amount', title: '金额(元)', width: 100
 						}, {
-							field: 'orderId', title: '订单编号'
+							field: 'bankAccName', title: '银行开户人名称', width: 200
 						},
 						{
-							field: 'amount', title: '金额', width: 80
+							field: 'bankAccNo', title: '银行卡账号', width: 180
 						},
-						// {
-						// 	field: 'sellerId', title: '收/付款方（对方）'
-						// },
 						{
-							field: 'type', title: '交易类型', width: 90, templet: function (item) {
-								if (item.type == 'recharge') {
-									return '商户余额充值';
-								} else if (item.type == 'transfer') {
-									return '转账';
-								} else if (item.type == 'withdraw') {
-									return '提现';
-								} else if (item.type == 'telephoneFeeRecharge') {
-									return '话费充值';
-								} else if (item.type == 'shopping') {
-									return '购物';
-								} else if (item.type == 'recResAmo') {
-									return '会员货款充值';
-								} else if (item.type == 'offRecResAmo') {
-									return '线下充值会员货款';
-								} else if (item.type == 'offRecMerBal') {
-									return '线下充值商户余额';
-								} else if (item.type == 'offline') {
-									return '线下订单';
-								}
-							}
-						}, {
-							field: 'tradingStatus', title: '交易状态', width: 60, templet: function (item) {
-								// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
-								if (item.tradingStatus == 'success') {
-									return '成功';
-								} else if (item.tradingStatus == 'failure') {
-									return '关闭';
-								} else if (item.tradingStatus == 'process') {
+							field: 'bankPhone', title: '预留手机号码', width: 120
+						},
+						{
+							field: 'status', title: '状态', fixed: 'right', width: 80, templet: function (item) {
+								// 状态：success-结算成功、failure-结算失败、process-结算中、pending-待处理、abnormal-异常
+								if (item.status == 'success') {
+									return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">成功</span>';
+								} else if (item.status == 'failure') {
+									return '<span style="background: #e4393c; padding: 2px 3px;color: #fff;border-radius: 3px ;">失败</span>';
+								} else if (item.status == 'process') {
 									return '处理中';
-								} else if (item.tradingStatus == 'pending') {
+								} else if (item.status == 'pending') {
 									return '待处理';
+								} else if (item.type == 'abnormal') {
+									return '<span style="background: #e4393c; padding: 2px 3px;color: #fff;border-radius: 3px ;">异常</span>';
+								} else {
+									return '';
 								}
 							}
 						}, {
-							field: 'fenZhangStatus', title: '结算状态', width: 60, templet: function (item) {
-								// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
-								if (item.fenZhangStatus == 'success') {
-									return '成功';
-								} else if (item.fenZhangStatus == 'failure') {
-									return '关闭';
-								} else if (item.fenZhangStatus == 'process') {
-									return '处理中';
-								} else if (item.fenZhangStatus == 'pending') {
-									return '待处理';
-								}
-							}
-						}, {
+							// 	field: 'tradingStatus', title: '交易状态', width: 60, templet: function (item) {
+							// 		// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
+							// 		if (item.tradingStatus == 'success') {
+							// 			return '成功';
+							// 		} else if (item.tradingStatus == 'failure') {
+							// 			return '关闭';
+							// 		} else if (item.tradingStatus == 'process') {
+							// 			return '处理中';
+							// 		} else if (item.tradingStatus == 'pending') {
+							// 			return '待处理';
+							// 		}
+							// 	}
+							// }, {
+							// 	field: 'fenZhangStatus', title: '结算状态', width: 60, templet: function (item) {
+							// 		// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
+							// 		if (item.fenZhangStatus == 'success') {
+							// 			return '成功';
+							// 		} else if (item.fenZhangStatus == 'failure') {
+							// 			return '关闭';
+							// 		} else if (item.fenZhangStatus == 'process') {
+							// 			return '处理中';
+							// 		} else if (item.fenZhangStatus == 'pending') {
+							// 			return '待处理';
+							// 		}
+							// 	}
+							// }, {
 							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
@@ -279,28 +274,28 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var userName = $('#form_sreach').find('[name=userName]');
-				var userId = $('#form_sreach').find('[name=userId]');
-				var tradeNo = $('#form_sreach').find('[name=tradeNo]');
-				var orderId = $('#form_sreach').find('[name=orderId]');
-				var type = $('#form_sreach').find('[name=type]');
-				var tradingStatus = $('#form_sreach').find('[name=tradingStatus]');
+				var merchantName = $('#form_sreach').find('[name=merchantName]');
+				var merchantId = $('#form_sreach').find('[name=merchantId]');
+				var bankAccName = $('#form_sreach').find('[name=bankAccName]');
+				var bankAccNo = $('#form_sreach').find('[name=bankAccNo]');
+				var bankPhone = $('#form_sreach').find('[name=bankPhone]');
+				var status = $('#form_sreach').find('[name=status]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/dfOrder/getLogs',
+					url: urlPrefix + 'silver-web-shop/dfOrder/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						userNameblurry: userName.val(),
-						userId: userId.val(),
-						tradeNo: tradeNo.val(),
-						orderId: orderId.val(),
-						type: type.val(),
-						tradingStatus: tradingStatus.val(),
+						merchantNameblurry: merchantName.val(),
+						merchantId: merchantId.val(),
+						bankAccNameblurry: bankAccName.val(),
+						bankAccNo: bankAccNo.val(),
+						bankPhone: bankPhone.val(),
+						status: status.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -315,29 +310,29 @@
 			// });
 			var active = {
 				reload: function () {
-					var userName = $('#form_sreach').find('[name=userName]');
-					var userId = $('#form_sreach').find('[name=userId]');
-					var tradeNo = $('#form_sreach').find('[name=tradeNo]');
-					var orderId = $('#form_sreach').find('[name=orderId]');
-					var type = $('#form_sreach').find('[name=type]');
-					var tradingStatus = $('#form_sreach').find('[name=tradingStatus]');
+					var merchantName = $('#form_sreach').find('[name=merchantName]');
+					var merchantId = $('#form_sreach').find('[name=merchantId]');
+					var bankAccName = $('#form_sreach').find('[name=bankAccName]');
+					var bankAccNo = $('#form_sreach').find('[name=bankAccNo]');
+					var bankPhone = $('#form_sreach').find('[name=bankPhone]');
+					var status = $('#form_sreach').find('[name=status]');
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					startDate = appendStartDate(startDate.val());
 					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/dfOrder/getLogs',
+						url: urlPrefix + 'silver-web-shop/dfOrder/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
-							userNameblurry: userName.val(),
-							userId: userId.val(),
-							tradeNo: tradeNo.val(),
-							orderId: orderId.val(),
-							type: type.val(),
-							tradingStatus: tradingStatus.val(),
+							merchantNameblurry: merchantName.val(),
+							merchantId: merchantId.val(),
+							bankAccNameblurry: bankAccName.val(),
+							bankAccNo: bankAccNo.val(),
+							bankPhone: bankPhone.val(),
+							status: status.val(),
 							startDate: startDate,
 							endDate: endDate
 						}
