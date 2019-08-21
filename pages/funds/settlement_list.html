@@ -39,7 +39,7 @@
 
 <body>
 
-	<div class="weadmin-body">
+	<div class="weadmin-body" id="settlement_list">
 		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 			<ul class="layui-tab-title">
 				<li class="layui-this">订单结算</li>
@@ -331,7 +331,82 @@
 					var type = $(this).data('type');
 					active[type] ? active[type].call(this) : '';
 				});
-
+				// 运营审核
+				var _managerReview = function (data) {
+					$.ajax({
+						url: urlPrefix + "silver-web-shop/dfOrder/opeRev",
+						type: "POST",
+						xhrFields: {
+							withCredentials: true
+						},
+						data: data,
+						success: function (response) {
+							if (response.status == 1) {
+								layer.closeAll();
+								layer.msg(response.msg);
+								_reload();
+							} else {
+								layer.msg(response.msg, {
+									time: 0, //不自动关闭
+									btn: ["确定"],
+									btnAlign: "c",
+									yes: function (index) {
+										layer.close(index);
+									}
+								});
+							}
+							layer.closeAll("loading");
+						},
+						error: function (response) {
+							layer.msg(response.msg, {
+								time: 0, //不自动关闭
+								btn: ["确定"],
+								btnAlign: "c",
+								yes: function (index) {
+									layer.close(index);
+								}
+							});
+						}
+					});
+				};      
+				// 财务审核
+				var _financialReview = function (data) {
+					$.ajax({
+						url: urlPrefix + "silver-web-shop/dfOrder/finRev",
+						type: "POST",
+						xhrFields: {
+							withCredentials: true
+						},
+						data: data,
+						success: function (response) {
+							if (response.status == 1) {
+								layer.closeAll();
+								layer.msg(response.msg);
+								_reload();
+							} else {
+								layer.msg(response.msg, {
+									time: 0, //不自动关闭
+									btn: ["确定"],
+									btnAlign: "c",
+									yes: function (index) {
+										layer.close(index);
+									}
+								});
+							}
+							layer.closeAll("loading");
+						},
+						error: function (response) {
+							layer.msg(response.msg, {
+								time: 0, //不自动关闭
+								btn: ["确定"],
+								btnAlign: "c",
+								yes: function (index) {
+									layer.close(index);
+								}
+							});
+						}
+					});
+				};
 				//监听操作工具条
 				table.on('tool(articleList)', function (obj) {
 					var data = obj.data;
@@ -360,8 +435,8 @@
 									title: "批注",
 									yes: function (index, layero) {
 										if (
-											$("#managerName").attr("name") == 2 ||
-											$("#managerName").attr("name") == 1
+											$('#managerName', window.parent.document).attr("name") == 2 ||
+											$('#managerName', window.parent.document).attr("name") == 1
 										) {
 											_managerReview({
 												serialNo: data.serialNo,
@@ -402,8 +477,8 @@
 											layer.alert("请填写不通过的批注！");
 										} else {
 											if (
-												$("#managerName").attr("name") == 2 ||
-												$("#managerName").attr("name") == 1
+												$('#managerName', window.parent.document).attr("name") == 2 ||
+												$('#managerName', window.parent.document).attr("name") == 1
 											) {
 												_managerReview({
 													serialNo: data.serialNo,
@@ -435,25 +510,25 @@
 							}
 						});
 						if (
-							($("#managerName").attr("name") == 2 && data.processNode == "1") ||
-							($("#managerName").attr("name") == 3 && data.processNode == "2") ||
-							($("#managerName").attr("name") == 1 && data.processNode == "1")
+							($('#managerName', window.parent.document).attr("name") == 2 && data.processNode == "1") ||
+							($('#managerName', window.parent.document).attr("name") == 3 && data.processNode == "2") ||
+							($('#managerName', window.parent.document).attr("name") == 1 && data.processNode == "1")
 						) {
-							$("#offlineBox_detail")
-								.parents(".layui-layer")
+							$("#settlement_list")
+								.siblings(".layui-layer-iframe")
 								.find(".layui-layer-btn0")
 								.show();
-							$("#offlineBox_detail")
-								.parents(".layui-layer")
+							$("#settlement_list")
+								.siblings(".layui-layer-iframe")
 								.find(".layui-layer-btn1")
 								.show();
 						} else {
-							$("#offlineBox_detail")
-								.parents(".layui-layer")
+							$("#settlement_list")
+								.siblings(".layui-layer-iframe")
 								.find(".layui-layer-btn0")
 								.hide();
-							$("#offlineBox_detail")
-								.parents(".layui-layer")
+							$("#settlement_list")
+								.siblings(".layui-layer-iframe")
 								.find(".layui-layer-btn1")
 								.hide();
 						}
