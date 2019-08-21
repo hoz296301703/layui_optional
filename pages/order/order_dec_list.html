@@ -401,14 +401,13 @@
 					var detail_full = layer.open({
 						type: 2,
 						title: '订单信息',
-						area: ['95%', '90%'],
+						area: ['80%', '80%'],
 						// fixed: false, //不固定
-						maxmin: true,
+						// maxmin: true,
 						content: './order_dec_detail.html',
 						btnAlign: 'c',
 						btn: ['关闭'],
 						success: function (layero, index) {
-							// console.log(obj)
 							// 获取子页面的iframe
 							var iframe = window['layui-layer-iframe' + index];
 							// 向子页面的全局函数child传参
@@ -418,7 +417,7 @@
 							layer.close(index);
 						}
 					});
-					layer.full(detail_full);// 全屏显示
+					// layer.full(detail_full);// 全屏显示
 				} else if (obj.event === 'reset') {// 重置密码
 					layer.alert("确定重置密码？", {
 						time: 0, //不自动关闭
@@ -502,57 +501,7 @@
 							} else {
 							}
 						}
-					});
-
-					//页面层
-					layer.open({
-						type: 1,
-						title: '分配权限',
-						skin: "layui-layer-rim", //加上边框
-						area: ["690px", "450px"], //宽高
-						content: $("#maangerAllot"),
-						btn: ["保存", "关闭"],
-						btnAlign: "c",
-						yes: function (index) {
-							var arr = [];
-							$.each($("#maangerAllot").find('.layui-tree-main [type=checkbox]'), function (i, item) {
-								// console.log($(item))
-								if (item.checked && item.value != "undefined") {
-
-									arr.push(item.value);
-								}
-							})
-							var allot_data = { type: 'manager', userId: data.managerId, authorityPack: JSON.stringify(arr) };
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/authority/setAuthorityInfo",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: allot_data,
-								success: function (response) {
-									layer.closeAll("loading");
-									if (response.status == 1) {
-										layer.closeAll();
-										// $("#maangerAllot").html('').hide();
-										layer.msg('分配权限成功！');
-										_reload();
-									} else {
-										layer.msg(response.msg);
-									}
-								}
-							});
-						}
-						, btn2: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
-						}, cancel: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
-						}
-
-					});
-					// layer.alert('编辑行：<br>' + JSON.stringify(data))
+					});				
 				}
 			});
 			//跳转至已删除的订单信息

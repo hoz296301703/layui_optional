@@ -210,7 +210,6 @@
 							}, {
 								// 状态：success-成功、failure-失败、process-处理中、pending-待处理
 								field: 'status', title: '结算状态', width: 90, templet: function (item) {
-									// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
 									if (item.status == 'pending') {
 										return '待处理';
 									} else if (item.status == 'process') {
@@ -219,6 +218,8 @@
 										return '成功';
 									} else if (item.status == 'failure') {
 										return '失败';
+									} else if (item.status == 'abnormal') {
+										return '异常';
 									}
 								}
 							}, {
