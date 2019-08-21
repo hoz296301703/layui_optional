@@ -57,118 +57,125 @@
 			</ul>
 			<div class="layui-tab-content">
 				<div class="layui-tab-item layui-show">
-					<form id="form_sreach" class="layui-form">
-						<div class="layui-form-item">
-							<div class="layui-inline">
-								<label class="layui-form-label">商户名称</label>
-								<div class="layui-input-inline">
-									<input type="text" name="create_by" placeholder="请输入商户名称" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">商户编号</label>
-								<div class="layui-input-inline">
-									<input type="text" name="merchant_no" placeholder="请输入商户编号" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">订单编号</label>
-								<div class="layui-input-inline">
-									<input type="text" name="order_id" placeholder="请输入订单编号" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">交易流水号</label>
-								<div class="layui-input-inline">
-									<input type="text" name="trade_no" placeholder="请输入交易流水号" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">收货人姓名</label>
-								<div class="layui-input-inline">
-									<input type="text" name="recipientName" placeholder="请输入收货人姓名" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">收货人手机</label>
-								<div class="layui-input-inline">
-									<input type="text" name="recipientTel" placeholder="请输入收货人手机号码" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">下单人姓名</label>
-								<div class="layui-input-inline">
-									<input type="text" name="orderDocName" placeholder="请输入下单人姓名" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">下单人身份证</label>
-								<div class="layui-input-inline">
-									<input type="text" name="orderDocId" placeholder="请输入下单人身份证号码" class="layui-input">
-								</div>
-							</div>
-							<div class="layui-inline">
+					<div class="layui-form-item">
+						<form id="form_sreach" class="layui-form">
+							<div class="layui-form-item">
 								<div class="layui-inline">
-									<label class="layui-form-label">申报状态</label>
+									<label class="layui-form-label">商户名称</label>
 									<div class="layui-input-inline">
-										<select name="order_record_status" lay-verify="required" lay-search="">
-											<option value="">全部</option>
-											<option value="1">未申报</option>
-											<option value="2">申报中</option>
-											<option value="3">申报成功</option>
-											<option value="4">申报失败</option>
-										</select>
+										<input type="text" name="create_by" placeholder="请输入商户名称" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">商户编号</label>
+									<div class="layui-input-inline">
+										<input type="text" name="merchant_no" placeholder="请输入商户编号" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">订单编号</label>
+									<div class="layui-input-inline">
+										<input type="text" name="order_id" placeholder="请输入订单编号" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">交易流水号</label>
+									<div class="layui-input-inline">
+										<input type="text" name="trade_no" placeholder="请输入交易流水号" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">收货人姓名</label>
+									<div class="layui-input-inline">
+										<input type="text" name="recipientName" placeholder="请输入收货人姓名"
+											class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">收货人手机</label>
+									<div class="layui-input-inline">
+										<input type="text" name="recipientTel" placeholder="请输入收货人手机号码"
+											class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">下单人姓名</label>
+									<div class="layui-input-inline">
+										<input type="text" name="orderDocName" placeholder="请输入下单人姓名"
+											class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">下单人身份证</label>
+									<div class="layui-input-inline">
+										<input type="text" name="orderDocId" placeholder="请输入下单人身份证号码"
+											class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<div class="layui-inline">
+										<label class="layui-form-label">申报状态</label>
+										<div class="layui-input-inline">
+											<select name="order_record_status" lay-verify="required" lay-search="">
+												<option value="">全部</option>
+												<option value="1">未申报</option>
+												<option value="2">申报中</option>
+												<option value="3">申报成功</option>
+												<option value="4">申报失败</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="layui-inline">
+									<div class="layui-inline">
+										<label class="layui-form-label">类型</label>
+										<div class="layui-input-inline">
+											<select name="orderSourceType" lay-verify="required" lay-search="">
+												<option value="">全部</option>
+												<option value="online">线上</option>
+												<option value="offline">线下</option>
+												<option value="expand">推广</option>
+												<option value="mall">商城</option>
+												<option value="excelImport">导入</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">接收日期</label>
+									<div class="layui-input-inline">
+										<input type="text" class="layui-input" id="startDate" name="startDate"
+											autocomplete="off" placeholder="年-月-日">
+									</div>
+									    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
+									<div class="layui-input-inline">
+										<input type="text" class="layui-input" id="endDate" name="endDate"
+											autocomplete="off" placeholder="年-月-日">
 									</div>
 								</div>
 							</div>
-							<div class="layui-inline">
-								<div class="layui-inline">
-									<label class="layui-form-label">类型</label>
-									<div class="layui-input-inline">
-										<select name="orderSourceType" lay-verify="required" lay-search="">
-											<option value="">全部</option>
-											<option value="online">线上</option>
-											<option value="offline">线下</option>
-											<option value="expand">推广</option>
-											<option value="mall">商城</option>
-											<option value="excelImport">导入</option>
-										</select>
-									</div>
-								</div>
+							<div style="text-align: center;">
+								<button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+									data-type="reload">搜索</button>
 							</div>
-							<div class="layui-inline">
-								<label class="layui-form-label">接收日期</label>
-								<div class="layui-input-inline">
-									<input type="text" class="layui-input" id="startDate" name="startDate"
-										autocomplete="off" placeholder="年-月-日">
-								</div>
-								    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
-								<div class="layui-input-inline">
-									<input type="text" class="layui-input" id="endDate" name="endDate"
-										autocomplete="off" placeholder="年-月-日">
-								</div>
-							</div>
-						</div>
-						<div style="text-align: center;">
-							<button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
-								data-type="reload">搜索</button>
-						</div>
 
-						<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-						<script type="text/html" id="operateTpl">
+							<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+							<script type="text/html" id="operateTpl">
 										<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
 										</script>
-						<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-						<script src="../../static/js/common.js" charset="utf-8"></script>
-					</form>
+							<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+							<script src="../../static/js/common.js" charset="utf-8"></script>
+						</form>
+					</div>
 				</div>
-				<!----已删除申报订单信息------------start-------------------->
-				<div class="layui-tab-item" id="delInfo">
-					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
-				</div>
-				<!----已删除申报订单信息------------end---------------------->
 			</div>
+			<!----已删除申报订单信息------------start-------------------->
+			<div class="layui-tab-item" id="delInfo">
+				<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+			</div>
+			<!----已删除申报订单信息------------end---------------------->
 		</div>
+	</div>
 	</div>
 
 	<script>
@@ -214,10 +221,10 @@
 						field: 'merchant_no', title: '商户编号', width: 180
 					}, {
 						field: 'order_id', title: '订单编号', width: 200
-					// }, {
-					// 	field: 'FCY', title: '商品金额', width: 100
-					// }, {
-					// 	field: 'tax', title: '税费', width: 60
+						// }, {
+						// 	field: 'FCY', title: '商品金额', width: 100
+						// }, {
+						// 	field: 'tax', title: '税费', width: 60
 					}, {
 						field: 'actualAmountPaid', title: '实际支付金额', width: 120
 					}, {
@@ -239,15 +246,15 @@
 							//类型：online-线上订单接入、offline-线下导入、expand-推广商城下单(线上)、mall-商城下单、excelImport-表单导入
 							if (item.orderSourceType == 'online') {
 								return '线上';
-							} else if (item.orderSourceType == 'offline' ) {
+							} else if (item.orderSourceType == 'offline') {
 								return '线下';
 							} else if (item.orderSourceType == 'expand') {
 								return '推广';
 							} else if (item.orderSourceType == 'mall') {
 								return '商城';
-							}else if(item.orderSourceType == 'excelImport' ){
+							} else if (item.orderSourceType == 'excelImport') {
 								return '导入';
-							}else {
+							} else {
 								return '';
 							}
 						}
@@ -257,7 +264,7 @@
 							if (item.order_record_status == '1') {
 								return '未申报';
 							} else if (item.order_record_status == '2' || item.order_record_status == '11' || item.order_record_status == '10') {
-								
+
 								// return '申报中';
 								return '<span style="background: #08a0ea; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报中</span>';
 							} else if (item.order_record_status == '3') {
@@ -335,7 +342,7 @@
 						OrderDocId: orderDocId.val(),
 						trade_no: trade_no.val(),
 						order_record_status: order_record_status.val(),
-						orderSourceType:orderSourceType.val(),
+						orderSourceType: orderSourceType.val(),
 						startTime: startDate,
 						endTime: endDate
 					}
@@ -381,7 +388,7 @@
 							OrderDocId: orderDocId.val(),
 							trade_no: trade_no.val(),
 							order_record_status: order_record_status.val(),
-							orderSourceType:orderSourceType.val(),
+							orderSourceType: orderSourceType.val(),
 							startTime: startDate,
 							endTime: endDate
 						}
@@ -501,7 +508,7 @@
 							} else {
 							}
 						}
-					});				
+					});
 				}
 			});
 			//跳转至已删除的订单信息
