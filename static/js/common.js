@@ -281,9 +281,31 @@ function g_orderStatus(data) {
 function G_formatStr(value) {
   // 创建日期
   var date = "";
-  if (isEmpty(value)) {
-    newDate = value.split("T")[0] + " " + value.split("T")[1].split(".")[0];
+  if (!isEmpty(value)) {
+    date = value.split("T")[0] + " " + value.split("T")[1].split(".")[0];
   }
   return date;
+}
+// 截取图片
+var imgPrefix = function(id) {
+  var imgPrefix1 = "https://ym.191ec.com/img/merchant/";
+  var imgPrefix2 = "/goods/";
+
+  return imgPrefix1 + id + imgPrefix2;
+};
+function g_imgSplit(img,goodsMerchantId) {// 传图片与商户id
+  var goodsImg = "../../static/images/bgImg.jpg";
+
+  if (!isEmpty(img)) {
+    var tag = "https://ym.191ec.com/img/";
+    if (img.indexOf(tag) != -1) {
+      goodsImg = img.split(";")[0];
+    } else {
+      goodsImg =
+        imgPrefix(goodsMerchantId) +
+        img.split(";")[0];
+    }
+  }
+  return goodsImg;
 }
 

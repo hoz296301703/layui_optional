@@ -46,6 +46,12 @@
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
 				<div class="layui-inline">
+					<label class="layui-form-label">商户名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="merchantName" placeholder="请输入商户名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
 					<label class="layui-form-label">名称</label>
 					<div class="layui-input-inline">
 						<input type="text" name="goodsName" placeholder="请输入商品名称" class="layui-input">
@@ -58,18 +64,55 @@
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">供货商</label>
+					<label class="layui-form-label">条形码</label>
 					<div class="layui-input-inline">
-						<input type="text" name="goodsMerName" placeholder="请输入供货商名称" class="layui-input">
+						<input type="text" name="code" placeholder="请输入条形码" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">供货商编号</label>
+					<label class="layui-form-label">备案状态</label>
 					<div class="layui-input-inline">
-						<input type="text" name="goodsMerId" placeholder="请输入供货商编号" class="layui-input">
+						<select name="status">
+							<option value="">全部</option>
+							<option value="1">待付款</option>
+							<option value="2">已付款,待处理</option>
+							<option value="10">待发货</option>
+							<option value="3">待清关</option>
+							<option value="4">快件运输中</option>
+							<option value="5">快件已签收</option>
+							<option value="200">交易成功</option>
+							<option value="400">交易关闭</option>
+						</select>
 					</div>
 				</div>
-
+				<div class="layui-inline">
+					<label class="layui-form-label">已备案状态</label>
+					<div class="layui-input-inline">
+						<select name="recordFlag">
+							<option value="">全部</option>
+							<option value="0">已备案,待审核</option>
+							<option value="1">备案审核通过</option>
+							<option value="2">正常备案</option>
+							<option value="3">审核不通过</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">口岸</label>
+					<div class="layui-input-inline">
+						<select name="customsPort"></select>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">主图标识</label>
+					<div class="layui-input-inline">
+						<select name="imageFlag">
+							<option value="">全部</option>
+							<option value="1">没有</option>
+							<option value="2">已有</option>
+						</select>
+					</div>
+				</div>
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
@@ -102,10 +145,10 @@
 
 	</div>
 	<script>
+		// import findAllCustomsPort from '../../static/js/ajaxs.js';
 		layui.extend({
 			admin: '{/}../../static/js/admin'
 		});
-
 		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
@@ -140,40 +183,89 @@
 								return G_formatStr(item.createDate.value);
 							}
 						}, {
-							field: 'updateDate', width: 160, title: '更新时间', fixed: 'left', templet: function (item) {
-								return G_formatStr(item.updateDate.value);
+							field: 'goodsMerchantName', width: 120, title: '商户名称', templet: function (item) {
+								return item.goodsMerchantName.value;
 							}
 						}, {
-							field: 'goodsImage', width: 110, title: '图片', templet: function (item) {
-								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + item.goodsName + '"  src="' + splitImg(item.goodsImage) + '" width="80px" height="80px"></div>';
+							field: 'spareGoodsImage', width: 100, title: '图片', templet: function (item) {
+								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + g_imgSplit(item.spareGoodsImage.value, item.goodsMerchantId.value) + '"  src="' + g_imgSplit(item.spareGoodsImage.value, item.goodsMerchantId.value) + '" width="80px" height="80px"></div>';
 							}
 						}, {
-							field: 'goodsName', title: '商品名称', templet: function (item) {
-								return G_formatStr(item.updateDate.value);
+							field: 'goodsName', title: '商品名称', width: 140, templet: function (item) {
+								return item.goodsName.value;
 							}
 						}, {
-							field: 'goodsId', title: '商品自编号', templet: function (item) {
-								return G_formatStr(item.updateDate.value);
+							field: 'barCode', title: '条形码', templet: function (item) {
+								return item.barCode.value;
 							}
 						}, {
-							field: 'goodsMerName', title: '供货商', templet: function (item) {
-								return G_formatStr(item.updateDate.value);
+							field: 'entGoodsNo', title: '商品自编号', width: 120, templet: function (item) {
+								return item.entGoodsNo.value;
 							}
 						}, {
-							field: 'goodsMerId', title: '供货商编号', templet: function (item) {
-								return G_formatStr(item.updateDate.value);
+							field: 'regPrice', title: '商品价格(元)', width: 110, templet: function (item) {
+								return item.regPrice.value;
 							}
 						}, {
-							field: 'price', title: '价格', width: 80, templet: function (item) {
-								return G_formatStr(item.updateDate.value);
+							field: 'goodsClass', title: '商品分类', width: 120, templet: function (item) {
+
+								var goodsClass = "";
+								if (!isEmpty(item.spareGoodsThirdTypeName.value)) {
+									goodsClass =
+										item.spareGoodsFirstTypeName.value +
+										"/" +
+										item.spareGoodsSecondTypeName.value +
+										"/" +
+										item.spareGoodsThirdTypeName.value;
+								} else if (!isEmpty(item.spareGoodsSecondTypeName.value)) {
+									goodsClass =
+										item.spareGoodsFirstTypeName.value +
+										"/" +
+										item.spareGoodsSecondTypeName.value;
+								} else if (!isEmpty(item.spareGoodsFirstTypeName.value)) {
+									goodsClass = item.spareGoodsFirstTypeName.value;
+								} else {
+									goodsClass = "";
+								}
+								return goodsClass;
 							}
 						}, {
-							field: 'divRate', title: '佣金比例(%)', width: 110, templet: function (item) {
-								return G_formatStr(item.updateDate.value);
+							field: 'customsPortName', title: '口岸', width: 90, templet: function (item) {
+								return item.customsPortName.value;
 							}
 						}, {
-							field: '', title: '佣金', width: 100, templet: function (item) {
-								return G_formatStr(item.updateDate.value);
+							field: 'customsName', title: '主管海关', width: 120, templet: function (item) {
+								return item.customsCode.value + '-' + item.customsName.value;
+							}
+						}, {
+							field: 'ciqOrgName', title: '检验检疫机构', width: 140, templet: function (item) {
+								return item.ciqOrgCode.value + '-' + item.ciqOrgName.value;
+							}
+						}, {
+							field: 'status', title: '备案状态', width: 100, templet: function (item) {
+								var status = "";
+								if (item.status.value == 1) {
+									status = "备案中";
+								} else if (item.status.value == 2) {
+									status = "备案成功";
+								} else if (item.status.value == 3) {
+									status = "备案失败";
+								} else if (item.status.value == 4) {
+									status = "未备案";
+								}
+								return status;
+							}
+						}, {
+							field: 'recordFlag', title: '已备案状态', width: 100, templet: function (item) {
+								var recordFlag = "";
+								if (item.recordFlag.value == 0) {
+									recordFlag = "待审核";
+								} else if (item.recordFlag.value == 1) {
+									recordFlag = "审核通过";
+								} else if (item.recordFlag.value == 2) {
+									recordFlag = "正常备案";
+								}
+								return recordFlag;
 							}
 						}, {
 							field: 'operate', title: '操作', width: 100, toolbar: '#operateTpl', fixed: 'right'
