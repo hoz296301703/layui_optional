@@ -96,7 +96,7 @@
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
-				, value: getDay(-7)
+				// , value: getDay(-7)
 				, isInitValue: true
 			});
 			laydate.render({
@@ -120,23 +120,23 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'merchantName', title: '名称',
+							field: 'merchantName', title: '名称', width: 210
 						}, {
-							field: 'merchantId', title: '编号'
+							field: 'merchantId', title: '编号',width:170
 						}, {
-							field: 'balance', title: '可用余额',width: 100
+							field: 'balance', title: '可用余额', width: 100
 						}, {
-							field: 'reserveAmount', title: '可结算货款' ,width: 100
+							field: 'reserveAmount', title: '可结算货款', width: 100
 						}, {
-							field: '', title: '总货款', width: 120,  templet: function (item) {
+							field: '', title: '总货款', width: 120, templet: function (item) {
 								//商户真实订单货款+代付货款
 								return accAdd(item.cash, item.reserveAmount);
 							}
 						}, {
-							field: 'freezingFunds', title: '冻结资金',width:90
+							field: 'freezingFunds', title: '冻结资金', width: 90
 						}, {
 							field: 'withdraw', title: '可提现资金'
-						},{
+						}, {
 							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
@@ -158,9 +158,9 @@
 						"data": res.datas //解析数据列表
 					};
 				},
-				where: {
-					startDate: appendStartDate(getDay(-7))
-				},
+				// where: {
+				// 	startDate: appendStartDate(getDay(-7))
+				// },
 				done: function (res, curr, count) {
 					//如果是异步请求数据方式，res即为你接口返回的信息。
 					//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
@@ -208,7 +208,7 @@
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());				
+					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/managerWallet/getMerchantWalletInfo',
@@ -237,10 +237,9 @@
 					layer.open({
 						type: 2,
 						title: '详情',
-						area: ['750px', '350px'],
-						fixed: false, //不固定
+						area: ['100%', '100%'],
 						maxmin: true,
-						content: './manager_detail.html',
+						content: './merchant_wallet_detail.html',
 						btnAlign: 'c',
 						btn: ['关闭'],
 						success: function (layero, index) {

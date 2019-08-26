@@ -192,7 +192,7 @@
 		</script>
 		<script type="text/html" id="order_list_toolbar">
 			<div class="layui-btn-container">
-				<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>下载查询结果</button>				
+				<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>导出</button>				
 			</div>
 		</script>
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -217,8 +217,7 @@
 				, isInitValue: true
 			});
 			laydate.render({
-				elem: '#endDate'
-				, type: 'datetime'
+				elem: '#endDate'				
 			});
 			laydate.render({
 				elem: '#sendingDate'
@@ -230,6 +229,7 @@
 				elem: '#articleList',
 				cellMinWidth: 80,
 				height: tableHeight,
+				defaultToolbar: ['filter'],
 				toolbar: '#order_list_toolbar',
 				url: urlPrefix + 'silver-web-shop/order/findDatas',
 				method: 'post',

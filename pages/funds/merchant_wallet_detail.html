@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+<!--商户钱包(日志)信息详情html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+
+    .layui-input-inline {
+      width: 150px;
+    }
+
+    #serchUl .layui-input-inline {
+      margin-right: 5px;
+    }
+
+    .typeItem .item {
+      float: left;
+    }
+
+    .typeItem {
+      margin-bottom: 10px;
+    }
+
+    .typeItem .item>a {
+      display: inline-block;
+      padding: 3px 10px;
+      margin: 0 4px;
+    }
+
+    .typeItem .item>a.active {
+      background: #999;
+      color: #fff;
+    }
+
+    .typeItem .date_picker {
+      border: 1px solid #ddd;
+      width: 130px;
+      height: 28px;
+      padding-left: 10px;
+    }
+
+    /*钱包合计余额样式*/
+    .balance {
+      margin: 10px 0;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    /* 收入样式 */
+    .balance .ft-in {
+      color: #1BB974;
+      font-size: 18px;
+    }
+
+    /* 支出样式 */
+    .balance .ft-out {
+      color: #FF7B0E;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-collapse" lay-filter="test">
+    <div class="layui-colla-item">
+        <form class="layui-form" id="form_sreach" lay-filter="example">
+          <ul id="merNameItem" class="clearfix merNameItem"
+            style="line-height: 20px;overflow: hidden; border-bottom: 1px dashed #ddd;">
+            <li class="item" style="height: 26px;line-height: 26px;font-weight: bold;">
+              商户名称：<cite id="g-merchantName"></cite></li>
+          </ul>
+      
+      <ul id="dateItem" class="clearfix typeItem"
+        style="line-height: 20px;overflow: hidden; border-bottom: 1px dashed #ddd; padding-bottom: 10px; padding-top: 10px;">
+        <li class="item" style="height: 26px;line-height: 26px;font-weight: bold;">
+          日期
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+              placeholder="年-月-日">
+          </div>
+          <div class="layui-input-inline" style="width: 0;line-height: 24px;margin-right: 5px;">-</div>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" placeholder="年-月-日">
+          </div>
+        <li class="item">
+          <a name="today">今天</a>
+        </li>
+        <li class="item">
+          <a class="active" href="javascript:;" name="oneMonth">一个月</a>
+        </li>
+        <li class="item">
+          <a href="javascript:;" name="threeMonth">三个月</a>
+        </li>
+        </li>
+      </ul>
+      <ul id="typeItem" class="clearfix typeItem"
+        style="line-height: 20px;overflow: hidden; border-bottom: 1px dashed #ddd; padding-bottom: 10px;">
+        <li class="item" style="height: 26px;line-height: 26px;font-weight: bold;">
+          分类
+        </li>
+        <li class="item">
+          <a class="active" href=" " id="type" name="">全部</a>
+        </li>
+        <li class="item">
+          <a href="javascript:;" name="5">购物</a>
+        </li>
+        <li class="item">
+          <a href="javascript:;" name="2">充值</a>
+        </li>
+        <li class="item">
+          <a href="javascript:;" name="3">提现</a>
+        </li>
+        <li class="item">
+          <a href="javascript:;" name="4">缴费</a>
+        </li>
+        <li class="item">
+          <a href="javascript:;" name="1">佣金</a>
+        </li>
+        <li class="item">
+          <a href="javascript:;" name="6">线上</a>
+        </li>
+      </ul>
+      <ul id="serchUl" class="clearfix" style="line-height: 28px;padding-bottom: 10px;">
+        <li class="item" style="height: 26px;line-height: 26px;font-weight: bold;">
+          订单编号
+          <div class="layui-input-inline">
+            <input type="text" name="orderId" placeholder="请输入订单编号" class="layui-input">
+          </div>
+          交易名称
+          <div class="layui-input-inline">
+            <input type="text" name="serialName" placeholder="请输入交易名称" class="layui-input">
+          </div>
+          对方
+          <div class="layui-input-inline">
+            <input type="text" name="targetName" placeholder="请输入对方名称" class="layui-input">
+          </div>
+          <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
+          <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="download"><em
+              class="layui-icon">&#xe601;</em>下载查询结果</button>
+        </li>
+      </ul>
+      </form>
+    </div>
+  </div>
+  <div class="balance" id="balance">
+    <em class="layui-icon layui-anim layui-anim-rotate layui-anim-loop">&#xe63d;</em>
+    <span class="fn-zoom">收入:
+      <span class="ft-in"> 0.00 </span> 元
+    </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span class="fn-zoom">支出:
+      <span class="ft-out"> 0.00 </span> 元
+    </span>
+  </div>
+  <div class="layui-form">
+    <table class="layui-hide" id="mer_wal_List" lay-filter="mer_wal_List" lay-size="sm"></table>
+    <script type="text/html" id="operateTpl_df">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">明细</a>					
+          </script>
+  </div>
+  </div>
+  </div>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    var g_data = '';// 全局数据变量
+    //
+    var head = '';
+    var content = '';
+    //获取传递数据
+    function getParent_data(obj) {
+      g_data = obj.data;
+      console.info(g_data);
+    }
+
+    layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+      var table = layui.table,
+        $ = layui.jquery,
+        form = layui.form,
+        tree = layui.tree,
+        admin = layui.admin,
+        laydate = layui.laydate;
+      //日期时间选择器
+      laydate.render({
+        elem: '#startDate'
+        , value: getDay(-30)
+        , isInitValue: true
+      });
+      laydate.render({
+        elem: '#endDate'
+        , value: getDay(0)
+      });
+      // 动态设置表格高度
+      table.render({
+        elem: '#mer_wal_List',
+        cellMinWidth: 80,
+        height: 350,
+        url: urlPrefix + 'silver-web-shop/merchantWalletLog/getLogs',
+        method: 'post',
+        cols: [
+          [
+            {
+              field: 'zizeng', width: 50, title: '序号', fixed: 'left', type: 'numbers'
+            }, {
+              field: 'careateDate', title: '创建日期', width: 170, templet: function (item) {
+                return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
+              }
+            }, {
+              field: 'type', title: '分类', width: 80, templet: function (item) {
+                // 类型:1-佣金、2-充值、3-提现、4-缴费、5-购物、6-线上、10-转账
+                if (item.type == '1') {
+                  return '佣金';
+                } else if (item.type == '2') {
+                  return '充值';
+                } else if (item.type == '3') {
+                  return '提现';
+                } else if (item.type == '4') {
+                  return '缴费';
+                } else if (item.type == '5') {
+                  return '购物';
+                } else if (item.type == '6') {
+                  return '线上';
+                } else if (item.type == '10') {
+                  return '转账';
+                } else {
+                  return '';
+                }
+              }
+            }, {
+              field: 'serialName', title: '交易名称', width: 140
+            }, {
+              // field: 'serialNo', title: '流水号', width: 110
+              // }, {
+              field: 'orderId', title: '订单编号', width: 170
+            }, {
+              field: 'amount', title: '收入(元)', width: 90, templet: function (item) {
+                if (item.flag == 'in') {
+                  return '<span style="font-size: 16px; font-weight: 400; color: #000;">' + item.amount + '</span>';
+                } else {
+                  return '\\';
+                }
+              }
+            }, {
+              field: 'amount', title: '支出(元)', width: 90, templet: function (item) {
+                if (item.flag == 'out') {
+                  return '<span style="font-size: 16px; font-weight: 400; color: #000;">' + item.amount + '</span>';
+                } else {
+                  return '\\';
+                }
+              }
+            }, {
+              field: 'afterChangeBalance', title: '账号余额（元）', width: 130, templet: function (item) {
+                return '<span style="font-size: 16px; font-weight: 400; color: #000;">' + item.afterChangeBalance + '</span>';
+              }
+            }, {
+              field: 'targetName', title: '对方', width: 140,
+            }, {
+              field: 'status', title: '状态', fixed: 'right', templet: function (item) {
+                if (item.status == 'success') {
+                  return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">成功</span>';
+                } else if (item.status == 'failure') {
+                  return '<span style="background: #ea2626; padding: 2px 3px;color: #fff;border-radius: 3px ;">失败</span>';
+                } else if (item.status == 'process') {
+                  return '处理中';
+                } else if (item.status == 'pending') {
+                  return '待处理';
+                }
+              }
+            }, {
+              field: 'operate', title: '操作', toolbar: '#operateTpl_df', fixed: 'right'
+            }]
+        ],
+        event: true,
+        page: true,
+        response: {
+          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+        },
+        request: {
+          pageName: 'page', //页码的参数名称，默认：page
+          limitName: 'size', //每页数据量的参数名，默认：limit
+        },
+        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+          return {
+            "code": res.status, //解析接口状态
+            "msg": res.msg, //解析提示文本
+            "count": res.totalCount, //解析数据长度
+            "data": res.datas //解析数据列表
+          };
+        },
+        where: {
+          merchantId: g_data.merchantId
+        }
+      });
+
+      // 监听查询按钮
+      $('#form_sreach .layui-btn').on('click', function () {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+
+      //监听工具条
+      table.on('tool(fen_zhang_detail)', function (obj) {
+        var data = obj.data;
+        // console.info(data);
+        if (obj.event === 'detail') {// 查看详情
+          layer.open({
+            type: 2,
+            title: '分账明细',
+            area: ['60%', '80%'],
+            maxmin: true,
+            content: './fz_details.html',
+            btnAlign: 'c',
+            btn: ['关闭'],
+            success: function (layero, index) {
+              // 获取子页面的iframe
+              var iframe = window['layui-layer-iframe' + index];
+              // 向子页面的全局函数child传参
+              iframe.getParent_data(obj);
+            },
+            btn1: function (index) {
+              layer.close(index);
+            }
+          });
+        }
+      });
+
+      //日期选中
+      $('#dateItem .item').on('click', 'a', function () {
+        var type = $(this).attr('name');
+        var startDate = null;
+        var endDate = getDay(0);
+        if (type == 'today') {//今天
+          startDate = getDay(0);
+          endDate = getDay(0);
+        } else if (type == 'oneMonth') {//一个月
+          startDate = getDay(-30);
+        } else if (type == 'threeMonth') {//三个月
+          startDate = getDay(-90);
+        }
+        laydate.render({
+          elem: '#startDate'
+          , value: startDate
+          , isInitValue: true
+        });
+        laydate.render({
+          elem: '#endDate'
+          , value: endDate
+        });
+        //渲染选中
+        $(this).addClass('active').parents('.item').siblings('.item').find('a').removeClass('active');
+      })
+
+      // 点击类型筛选
+      $('#typeItem .item').on('click', 'a', function () {
+        $(this).addClass('active').parents('.item').siblings('.item').find('a').removeClass('active');
+      })
+      //监听折叠
+      // element.on('collapse(test)', function (data) {
+      //   //点击触发事件
+      //   layer.msg('展开状态：' + data.show);
+      // });
+
+      var active = {
+        reload: function () {
+          //访问合计
+          total();
+          var startDate = $('#form_sreach').find('[name=startDate]').val();
+          var endDate = $('#form_sreach').find('[name=endDate]').val();
+          //类型
+          var type = $('#typeItem').find('.active').attr('name');
+          //订单编号
+          var orderId = $('#form_sreach').find('[name=orderId]').val();
+          var serialName = $('#form_sreach').find('[name=serialName]').val();
+          var targetName = $('#form_sreach').find('[name=targetName]').val();
+          startDate = appendStartDate(startDate);
+          endDate = appendEndDate(endDate);
+          //执行重载					
+          table.reload('mer_wal_List', {
+            url: urlPrefix + 'silver-web-shop/merchantWalletLog/getLogs',
+            page: {
+              curr: 1 //重新从第 1 页开始
+            },
+            where: {
+              type: type,
+              orderId: orderId,
+              serialName: serialName,
+              targetName: targetName,
+              startDate: startDate,
+              endDate: endDate
+            }
+          });
+        }
+      };
+
+      //渲染合计
+      function total() {
+        //显示
+        $('#balance').find('.layui-icon').attr("style", "display:block");
+        //类型
+        var type = $('#typeItem').find('.active').attr('name');
+        console.info('--->>'+type);
+        //订单编号
+        var orderId = $('#form_sreach').find('[name=orderId]').val();
+        var serialName = $('#form_sreach').find('[name=serialName]').val();
+        var targetName = $('#form_sreach').find('[name=targetName]').val();
+        //
+        var startDate = $('#form_sreach').find('[name=startDate]').val();
+        if (isEmpty(startDate)) {
+          startDate = getDay(-30);
+        }
+        var endDate = $('#form_sreach').find('[name=endDate]').val();
+        startDate = appendStartDate(startDate);
+        endDate = appendEndDate(endDate);
+        var datas = { type: type, orderId: orderId, serialName: serialName, targetName: targetName, startDate: startDate, endDate: endDate, merchantWalletId: g_data.walletId };
+        for (var key in datas) {
+          if (isEmpty(datas[key])) {
+            delete datas[key]
+          }
+        }
+        //请求合计接口
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merchantWalletLog/getTotal",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: datas,
+          success: function (response) {
+            if (response.status == 1) {
+              //隐藏加载动画
+              $('#balance').find('.layui-icon').attr("style", "display:none");
+              // console.info();
+              $('#balance').find('.ft-in').html(response.datas.in);
+              $('#balance').find('.ft-out').html(response.datas.out);
+            } else {
+              layer.msg(response.msg);
+            }
+          }
+        });
+      }
+      //渲染统计
+      total();
+
+      $(document).on('click', '#download', function () {
+        layer.alert("下载当前查询结果", {
+          time: 0, //不自动关闭
+          btnAlign: "c",
+          btn: ["下载", "取消"],
+          yes: function (index) {
+            //下载URL
+            var url = "silver-web-shop/merchantWalletLog/download?merchantWalletId=" + g_data.walletId;
+
+            var startDate = $('#form_sreach').find('[name=startDate]').val();
+            var endDate = $('#form_sreach').find('[name=endDate]').val();
+            if (isEmpty(startDate) || isEmpty(endDate)) {
+              layer.alert('请选择查询时间');
+              return false;
+            }
+            //拼接开始时间
+            startDate = appendStartDate(startDate);
+            //拼接结束时间
+            endDate = appendEndDate(endDate);
+
+            url += '&startDate=' + startDate + '&endDate=' + endDate;
+            //订单编号
+            var orderId = $('#form_sreach').find('[name=orderId]').val();
+            if (!isEmpty(orderId)) {// 商户id
+              url += '&orderId=' + orderId;
+            }
+            //交易名称
+            var serialName = $('#form_sreach').find('[name=serialName]').val();
+            if (!isEmpty(serialName)) {
+              url += '&serialName=' + serialName;
+            }
+            // 对方名称
+            var targetName = $('#form_sreach').find('[name=targetName]').val();
+            if (!isEmpty(targetName)) {
+              url += '&targetName=' + targetName;
+            }
+            // 类型
+            var type = $('#typeItem').find('.active').attr('name');
+            if (!isEmpty(type)) {
+              url += '&type=' + type;
+            }
+            console.info(urlPrefix + url);
+            window.location.href = urlPrefix + url;
+            layer.closeAll();
+            layer.alert(
+              '<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+              {
+                time: 0, //不自动关闭
+                btn: ["关闭"],
+                btnAlign: "c",
+                yes: function (index) {
+                  layer.close(index);
+                }
+              }
+            );
+          }
+        });
+      })
+      // console.info(g_data.merchantName);
+      $('#g-merchantName').html(g_data.merchantName)
+    });
+  </script>
+</body>
+
+</html>

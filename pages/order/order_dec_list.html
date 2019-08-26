@@ -162,7 +162,13 @@
 							<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 							<script type="text/html" id="operateTpl">
 										<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
-										</script>
+							</script>
+
+							<script type="text/html" id="order_dec_list_toolbar">
+								<div class="layui-btn-container">
+									<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>导出</button>				
+								</div>
+							</script>
 							<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 							<script src="../../static/js/common.js" charset="utf-8"></script>
 						</form>
@@ -197,12 +203,12 @@
 			});
 			laydate.render({
 				elem: '#endDate'
-				, type: 'datetime'
 			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
+				defaultToolbar: ['filter'],
 				toolbar: '#order_dec_list_toolbar',
 				cellMinWidth: 80,
 				height: tableHeight,
@@ -336,9 +342,9 @@
 						create_byblurry: create_by.val(),
 						merchant_no: merchant_no.val(),
 						order_id: order_id.val(),
-						recipientName: recipientName.val(),
+						recipientNameblurry: recipientName.val(),
 						recipientTel: recipientTel.val(),
-						OrderDocName: orderDocName.val(),
+						OrderDocNameblurry: orderDocName.val(),
 						OrderDocId: orderDocId.val(),
 						trade_no: trade_no.val(),
 						order_record_status: order_record_status.val(),
@@ -384,7 +390,7 @@
 							order_id: order_id.val(),
 							RecipientName: recipientName.val(),
 							RecipientTel: recipientTel.val(),
-							OrderDocName: orderDocName.val(),
+							OrderDocNameblurry: orderDocName.val(),
 							OrderDocId: orderDocId.val(),
 							trade_no: trade_no.val(),
 							order_record_status: order_record_status.val(),
@@ -426,91 +432,110 @@
 					});
 					// layer.full(detail_full);// 全屏显示
 				} else if (obj.event === 'reset') {// 重置密码
-					layer.alert("确定重置密码？", {
-						time: 0, //不自动关闭
-						btn: ["保存", "关闭"],
-						yes: function (index) {
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/manager/resetManagerPassword",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: { managerId: data.managerId },
-								success: function (response) {
-									if (response.status == 1) {
-										layer.msg("重置成功！");
-										_reload();
-									} else {
-										layer.alert(response.msg);
-									}
-								}
-							});
-						}
-					});
+
 
 				} else if (obj.event === 'edit') {// 分配权限
-					$('#maangerAllot').html('');
-					layer.load(1);
-					var _this = this;
-					$.ajax({
-						url: urlPrefix + "silver-web-shop/authority/getUserAuthorityInfo",
-						type: "POST",
-						xhrFields: {
-							withCredentials: true
-						},
-						data: { userId: data.managerId, groupName: "manager" },
-						success: function (response) {
 
-							if (response.status == 1) {
-
-								var jsonArr = [];
-								var ii = 0;
-								$.each(response.datas, function (i, val1) {
-									jsonArr.push({ title: i, children: [] });
-									var jj = 0;
-									$.each(val1, function (j, val2) {
-										jsonArr[ii].children.push({ title: j, children: [] });
-										$.each(val2, function (k, val3) {
-											var checked = false;
-											if (k.split("#")[1] == 'true') {
-												jsonArr[ii].checked = true;
-												jsonArr[ii].children[jj].checked = true;
-												checked = true;
-											}
-											jsonArr[ii].children[jj].children.push({
-												title: val3,
-												checked: checked,
-												id: k.split("#")[0]
-											});
-										});
-										jj++;
-									});
-									ii++;
-								});
-
-								//基本演示
-								tree.render({
-									elem: '#maangerAllot'
-									, data: jsonArr
-									, check: "checkbox" //勾选风格
-									, showCheckbox: true  //是否显示复选框
-									, id: 'demoId1'
-									, checkboxName: "allot" //复选框的name属性值
-									, checkboxStyle: "" //设置复选框的样式，必须为字符串，css样式怎么写就怎么写
-									// , isJump: true //是否允许点击节点时弹出新窗口跳转
-									, click: function (obj) {
-										// var data = obj.data;  //获取当前点击的节点数据
-										// layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
-									}
-								});
-								layer.closeAll('loading');
-							} else {
-							}
-						}
-					});
 				}
 			});
+
+			//头工具栏事件
+			table.on('toolbar(articleList)', function (obj) {
+				// var checkStatus = table.checkStatus(obj.config.id);
+				switch (obj.event) {
+					case 'download':
+
+						layer.alert("下载当前查询结果", {
+							time: 0, //不自动关闭
+							btnAlign: "c",
+							btn: ["下载", "取消"],
+							yes: function (index) {
+								//下载URL
+								var url = "silver-web-shop/manualOrder/downAllManualOrder?";
+
+								var startDate = $('#form_sreach').find('[name=startDate]').val();
+								var endDate = $('#form_sreach').find('[name=endDate]').val();
+								if (isEmpty(startDate) || isEmpty(endDate)) {
+									layer.alert('请选择查询时间');
+									return false;
+								}
+								//拼接开始时间
+								startDate = appendStartDate(startDate);
+								//拼接结束时间
+								endDate = appendEndDate(endDate);
+
+								url += 'startTime=' + startDate + '&endTime=' + endDate;
+
+								var merchant_no = $('#form_sreach').find('[name=merchant_no]').val();
+								if (!isEmpty(merchant_no)) {// 商户id
+									url += '&merchant_no=' + merchant_no;
+								}
+								var create_by = $('#form_sreach').find('[name=create_by]').val();
+								if (!isEmpty(create_by)) {// 商户名称
+									url += '&create_byblurry=' + create_by;
+								}
+								// 订单编号
+								var order_id = $('#form_sreach').find('[name=order_id]').val();
+								if (!isEmpty(order_id)) {
+									url += '&order_id=' + order_id;
+								}
+								// 收货人姓名
+								var recipientName = $('#form_sreach').find('[name=recipientName]').val();
+								if (!isEmpty(recipientName)) {
+									url += '&recipientName=' + recipientName;
+								}
+								// 收货人电话
+								var recipientTel = $('#form_sreach').find('[name=recipientTel]').val();
+								if (!isEmpty(recipientTel)) {
+									url += '&recipientTel=' + recipientTel;
+								}
+								// 下单人姓名
+								var orderDocName = $('#form_sreach').find('[name=orderDocName]').val();
+								if (!isEmpty(orderDocName)) {
+									url += '&OrderDocNameblurry=' + orderDocName;
+								}
+								// 下单人身份证号码
+								var orderDocId = $('#form_sreach').find('[name=orderDocId]').val();
+								if (!isEmpty(orderDocId)) {
+									url += '&OrderDocId=' + orderDocId;
+								}
+								// 申报状态
+								var order_record_status = $('#form_sreach').find('[name=order_record_status]').val();
+								if (!isEmpty(order_record_status)) {
+									url += '&order_record_status=' + order_record_status;
+								}
+								// 交易流水号
+								var trade_no = $('#form_sreach').find('[name=trade_no]').val();
+								if (!isEmpty(trade_no)) {
+									url += '&trade_no=' + trade_no;
+								}
+								// 类型
+								var orderSourceType = $('#form_sreach').find('[name=orderSourceType]').val();
+								if (!isEmpty(orderSourceType)) {
+									url += '&orderSourceType=' + orderSourceType;
+								}
+								console.info(urlPrefix + url);
+								window.location.href = urlPrefix + url;
+								layer.closeAll();
+								layer.alert(
+									'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+									{
+										time: 0, //不自动关闭
+										btn: ["关闭"],
+										btnAlign: "c",
+										yes: function (index) {
+											layer.close(index);
+										}
+									}
+								);
+							}
+						});
+						break;
+					case 'downManualOrder':
+						break;
+				};
+			});
+
 			//跳转至已删除的订单信息
 			$('#del_info_btn').on('click', function () {
 				var h = $(window).height() - 30;

@@ -129,7 +129,11 @@
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
 			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-
+			<script type="text/html" id="articleList_toolbar">
+				<div class="layui-btn-container">
+					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>导出</button>				
+				</div>
+			</script>
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
 			</script>
@@ -157,8 +161,7 @@
 				, isInitValue: true
 			});
 			laydate.render({
-				elem: '#endDate'
-				, type: 'datetime'
+				elem: '#endDate'				
 			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
@@ -178,7 +181,7 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'merchantName', title: '商户名称', width: 170
+							field: 'merchantName', title: '商户名称', width: 200
 						}, {
 							field: 'merchantId', title: '商户编号', width: 170
 						}, {
@@ -370,141 +373,87 @@
 						}
 					});
 				} else if (obj.event === 'reset') {// 重置密码
-					layer.alert("确定重置密码？", {
-						time: 0, //不自动关闭
-						btn: ["保存", "关闭"],
-						yes: function (index) {
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/manager/resetManagerPassword",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: { managerId: data.managerId },
-								success: function (response) {
-									if (response.status == 1) {
-										layer.msg("重置成功！");
-										_reload();
-									} else {
-										layer.alert(response.msg);
-									}
-								}
-							});
-						}
-					});
 
-				} else if (obj.event === 'edit') {// 分配权限
-					$('#maangerAllot').html('');
-					layer.load(1);
-					var _this = this;
-					$.ajax({
-						url: urlPrefix + "silver-web-shop/authority/getUserAuthorityInfo",
-						type: "POST",
-						xhrFields: {
-							withCredentials: true
-						},
-						data: { userId: data.managerId, groupName: "manager" },
-						success: function (response) {
-
-							if (response.status == 1) {
-
-								var jsonArr = [];
-								var ii = 0;
-								$.each(response.datas, function (i, val1) {
-									jsonArr.push({ title: i, children: [] });
-									var jj = 0;
-									$.each(val1, function (j, val2) {
-										jsonArr[ii].children.push({ title: j, children: [] });
-										$.each(val2, function (k, val3) {
-											var checked = false;
-											if (k.split("#")[1] == 'true') {
-												jsonArr[ii].checked = true;
-												jsonArr[ii].children[jj].checked = true;
-												checked = true;
-											}
-											jsonArr[ii].children[jj].children.push({
-												title: val3,
-												checked: checked,
-												id: k.split("#")[0]
-											});
-										});
-										jj++;
-									});
-									ii++;
-								});
-
-								//基本演示
-								tree.render({
-									elem: '#maangerAllot'
-									, data: jsonArr
-									, check: "checkbox" //勾选风格
-									, showCheckbox: true  //是否显示复选框
-									, id: 'demoId1'
-									, checkboxName: "allot" //复选框的name属性值
-									, checkboxStyle: "" //设置复选框的样式，必须为字符串，css样式怎么写就怎么写
-									// , isJump: true //是否允许点击节点时弹出新窗口跳转
-									, click: function (obj) {
-										// var data = obj.data;  //获取当前点击的节点数据
-										// layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
-									}
-								});
-								layer.closeAll('loading');
-							} else {
-							}
-						}
-					});
-
-					//页面层
-					layer.open({
-						type: 1,
-						title: '分配权限',
-						skin: "layui-layer-rim", //加上边框
-						area: ["690px", "450px"], //宽高
-						content: $("#maangerAllot"),
-						btn: ["保存", "关闭"],
-						btnAlign: "c",
-						yes: function (index) {
-							var arr = [];
-							$.each($("#maangerAllot").find('.layui-tree-main [type=checkbox]'), function (i, item) {
-								// console.log($(item))
-								if (item.checked && item.value != "undefined") {
-
-									arr.push(item.value);
-								}
-							})
-							var allot_data = { type: 'manager', userId: data.managerId, authorityPack: JSON.stringify(arr) };
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/authority/setAuthorityInfo",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: allot_data,
-								success: function (response) {
-									layer.closeAll("loading");
-									if (response.status == 1) {
-										layer.closeAll();
-										// $("#maangerAllot").html('').hide();
-										layer.msg('分配权限成功！');
-										_reload();
-									} else {
-										layer.msg(response.msg);
-									}
-								}
-							});
-						}
-						, btn2: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
-						}, cancel: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
-						}
-
-					});
-					// layer.alert('编辑行：<br>' + JSON.stringify(data))
 				}
 			});
+			//头工具栏事件
+			table.on('toolbar(articleList)', function (obj) {
+				// var checkStatus = table.checkStatus(obj.config.id);
+				switch (obj.event) {
+					case 'download':
+						layer.alert("下载当前查询结果", {
+							time: 0, //不自动关闭
+							btnAlign: "c",
+							btn: ["下载", "取消"],
+							yes: function (index) {
+								//下载URL
+								var url = "silver-web-shop/dfOrder/download?";
+
+								var startDate = $('#form_sreach').find('[name=startDate]').val();
+								var endDate = $('#form_sreach').find('[name=endDate]').val();
+								if (isEmpty(startDate) || isEmpty(endDate)) {
+									layer.alert('请选择查询时间');
+									return false;
+								}
+								//拼接开始时间
+								startDate = appendStartDate(startDate);
+								//拼接结束时间
+								endDate = appendEndDate(endDate);
+
+								url += 'startDate=' + startDate + '&endDate=' + endDate;
+								// 商户id
+								var merchantId = $('#form_sreach').find('[name=merchantId]').val();
+								if (!isEmpty(merchantId)) {
+									url += '&merchantId=' + merchantId;
+								}
+								// 商户名称
+								var merchantName = $('#form_sreach').find('[name=merchantName]').val();
+								if (!isEmpty(merchantName)) {
+									url += '&merchantNameyblurry=' + merchantName;
+								}
+								// 银行账户名称
+								var bankAccName = $('#form_sreach').find('[name=bankAccName]').val();
+								if (!isEmpty(bankAccName)) {
+									url += '&bankAccName=' + bankAccName;
+								}
+								// 银行卡号
+								var bankAccNo = $('#form_sreach').find('[name=bankAccNo]').val();
+								if (!isEmpty(bankAccNo)) {
+									url += '&bankAccNo=' + bankAccNo;
+								}
+								// 预留手机号码
+								var bankPhone = $('#form_sreach').find('[name=bankPhone]').val();
+								if (!isEmpty(bankPhone)) {
+									url += '&bankPhone=' + bankPhone;
+								}
+								// 状态
+								var status = $('#form_sreach').find('[name=status]').val();
+								if (!isEmpty(status)) {
+									url += '&status=' + status;
+								}
+								console.info(urlPrefix + url);
+								window.location.href = urlPrefix + url;
+								layer.closeAll();
+								layer.alert(
+									'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+									{
+										time: 0, //不自动关闭
+										btn: ["关闭"],
+										btnAlign: "c",
+										yes: function (index) {
+											layer.close(index);
+										}
+									}
+								);
+							}
+						});
+						break;
+					case 'downManualOrder':
+						break;
+				};
+			});
+
+
 
 		});
 	</script>

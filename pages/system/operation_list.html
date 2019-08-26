@@ -85,7 +85,7 @@
 										<option value="pushorderLogi">推送物流</option>
 										<option value="merchant">商户</option>
 										<option value="manager">管理员</option>
-										<option value="merDivRate">商户分润费率</option>
+										<option value="merDivRate">分润费率</option>
 										<option value="member">会员</option>
 									</select>
 								</div>
@@ -98,6 +98,9 @@
 										<option value="login">登录</option>
 										<option value="update">更新</option>
 										<option value="pushLogi">推送物流</option>
+										<option value="changePrice">调价</option>
+										<option value="upOrDownShelf">上/下架</option>
+										<option value="changeCount">售卖数量</option>
 									</select>
 								</div>
 							</div>
@@ -172,6 +175,8 @@
 				var tableHeight = $(window).height() - $('.layui-tab-title').height() - 50 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 				table.render({
 					elem: '#articleList',
+					defaultToolbar: ['filter'],
+					toolbar: '#ope_list_toolbar',
 					cellMinWidth: 80,
 					height: tableHeight,
 					url: urlPrefix + 'silver-web-shop/opeLogs/getInfo',
@@ -188,9 +193,9 @@
 								field: 'ipAddress', width: 135, title: 'IP'
 							},
 							{
-								field: 'operatorId', title: '操作人编号', width: 174
+								field: 'operatorId', title: '操作人编号', width: 180
 							}, {
-								field: 'operatorName', width: 120, title: '操作人名称'
+								field: 'operatorName', width: 200, title: '操作人名称'
 							}, {
 								field: 'role', width: 80, title: '角色', templet: function (item) {
 									if (item.role == 'merchant') {
@@ -217,6 +222,8 @@
 										return '分润费率';
 									} else if (item.module == 'member') {
 										return '会员';
+									}else if(item.module=='merCost'){
+										return '商户计费';
 									}
 								}
 							}, {
@@ -231,10 +238,16 @@
 										return '推送物流';
 									} else if (item.action == 'insert') {
 										return '添加';
+									} else if (item.action == 'changePrice') {
+										return '调价';
+									} else if (item.action == 'upOrDownShelf') {
+										return '上/下架';
+									} else if (item.action == 'changeCount') {
+										return '售卖数量';
 									}
 								}
 							}, {
-								field: 'content', title: '内容'
+								field: 'content', title: '内容', width: 500
 							}
 							// {
 							// 	field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
