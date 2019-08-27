@@ -103,6 +103,11 @@
 					"name": "综合报表",
 					"icon": "",
 					"url": "./pages/report/complex_report_list.html"
+				},{
+					"id": "report_2",
+					"name": "分润报表",
+					"icon": "",
+					"url": "./pages/report/exp_div_report_list.html"
 				}
 			]
 		},
@@ -123,15 +128,9 @@
 					"name": "商品库",
 					"icon": "",
 					"url": "./pages/distribution/goods_supply_list.html"
-				},
+				},				
 				{
 					"id": "distribution_3",
-					"name": "分润报表",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				},
-				{
-					"id": "distribution_4",
 					"name": "专店信息",
 					"icon": "",
 					"url": "./pages/distribution/counter_list.html"
