@@ -125,7 +125,7 @@
 			</div>
 			<script type="text/html" id="operateTpl">
 				<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					 -->
-			<a class="layui-btn layui-btn-xs" lay-event="getSelAmount">明细</a>
+			<a class="layui-btn layui-btn-xs" lay-event="details">明细</a>
 			</script>
 			<script type="text/html" id="report_toolbar">
 				<!-- <div class="layui-btn-container">						
@@ -333,7 +333,8 @@
 			table.on('tool(articleList)', function (obj) {
 
 				var data = obj.data;
-				if (obj.event === 'getSelAmount') {// 结算货款
+				var  event = obj.event;
+				if (event  == 'getSelAmount') {// 结算货款
 					var data = {
 						merchantId: data.merchantId,
 						date: data.dateSign
@@ -368,6 +369,25 @@
 						}
 					});
 
+				}else if(event == "details"){
+					layer.open({
+						type: 2,
+						title: '订单费用明细',
+						area: ['95%', '90%'],
+						maxmin: true,
+						content: './exp_div_order_detail.html',
+						btnAlign: 'c',
+						btn: ['关闭'],
+						success: function (layero, index) {
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传参
+							iframe.getParent_data(obj);
+						},
+						btn1: function (index) {
+							layer.close(index);
+						}
+					});
 				}
 			});
 			//头工具栏事件

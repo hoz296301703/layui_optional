@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<!--推广商订单费用明细详情html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-collapse" lay-filter="test">  
+
+    <div class="layui-colla-item">
+      <div class="layui-colla-content layui-show">
+        <div class="layui-form">
+          <table class="layui-hide" id="fen_zhang_detail" lay-filter="fen_zhang_detail" lay-size="sm"></table>
+          <!-- <script type="text/html" id="operateTpl_df">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">明细</a>					
+          </script> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    var g_data = '';// 全局数据变量
+    //
+    var head = '';
+    var content = '';
+    //获取传递数据
+    function getParent_data(obj) {
+      g_data = obj.data;        
+    }
+
+    layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+      var table = layui.table,
+        $ = layui.jquery,
+        form = layui.form,
+        tree = layui.tree,
+        admin = layui.admin,
+        laydate = layui.laydate;
+      // 动态设置表格高度
+      table.render({
+        elem: '#fen_zhang_detail',
+        cellMinWidth: 80,
+        // height: 400,
+        height: 'full-200',
+        url: urlPrefix + 'silver-web-shop/repLogs/getPlaDetails',
+        method: 'post',
+        cols: [
+          [
+            {
+              field: 'zizeng', width: 50, title: '序号', fixed: 'left', type: 'numbers'
+            }, {
+              field: 'date', title: '日期', width: 120,              
+            }, {
+              field: 'orderId', title: '订单编号',
+            }, {
+              field: 'payFee', title: '支付服务费(元)', width: 130
+            }, {
+              field: 'masDivAmount', title: '货款(元)', width: 110
+            }, {
+              field: 'plaDivAmount', title: '平台金额(元)', width: 130
+            }, {
+              field: 'expMerDivAmount', title: '白金金额(元)', width: 130
+            }, {
+              field: 'divAmount', title: '一级代理商(元)', width: 130,
+            }, {
+              field: 'secDivAmount', title: '二级代理商(元)', width: 130           
+            }
+            // , {
+            //   field: 'operate', title: '操作', toolbar: '#operateTpl_df', fixed: 'right'
+            // }
+          ]
+        ],
+        event: true,
+        page: true,
+        response: {
+          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+        },
+        request: {
+          pageName: 'page', //页码的参数名称，默认：page
+          limitName: 'size', //每页数据量的参数名，默认：limit
+        },
+        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+          return {
+            "code": res.status, //解析接口状态
+            "msg": res.msg, //解析提示文本
+            "count": res.totalCount, //解析数据长度
+            "data": res.datas //解析数据列表
+          };
+        },
+        where: {
+          merchantId: g_data.expadndMerchantCode.value,
+          date:g_data.date.value
+        }
+      });
+
+
+      //监听工具条
+      table.on('tool(fen_zhang_detail)', function (obj) {
+        var data = obj.data;
+        // console.info(data);
+        if (obj.event === 'detail') {// 查看详情
+          layer.open({
+            type: 2,
+            title: '分账明细',
+            area: ['60%', '80%'],
+            maxmin: true,
+            content: './fz_details.html',
+            btnAlign: 'c',
+            btn: ['关闭'],
+            success: function (layero, index) {
+              // 获取子页面的iframe
+              var iframe = window['layui-layer-iframe' + index];
+              // 向子页面的全局函数child传参
+              iframe.getParent_data(obj);
+            },
+            btn1: function (index) {
+              layer.close(index);
+            }
+          });
+        }
+      });
+
+
+      //监听折叠
+      // element.on('collapse(test)', function (data) {
+      //   //点击触发事件
+      //   layer.msg('展开状态：' + data.show);
+      // });
+
+      //初始赋值
+      // form.val('example', {
+      //   "serialNo": head.serialNo
+      //   , "merchantName": head.merchantName
+      //   , "merchantId": head.merchantId
+      //   , "totalAmount": head.totalAmount
+      //   , "successAmount": head.successAmount
+      //   , "settlementStatus": head.settlementStatus
+      //   , "settlementMode": head.settlementMode
+      //   , "createDate": G_format(head.createDate.time, "yyyy-MM-dd hh:mm:ss")
+        // , "otherPayNotes": head.settlementMode
+        // , "actualAmountPaid": head.actualAmountPaid
+        // , "recipientName": head.recipientName
+        // , "recipientCardId": head.recipientID
+        // , "recipientTel": order.recipientTel
+        // , "recProvincesName": order.recipientProvincesName
+        // , "recCityName": order.recipientCityName
+        // , "recAreaName": order.recipientAreaName
+        // , "recipientAddr": order.recipientAddr
+        // , "ordererName": order.orderDocName
+        // , "ordererIdCardNumber": order.orderDocId
+        // , "ordererTel": order.orderDocTel
+        // , "orderDate": toStringTime(order.orderDate)
+        // , "order_record_status": order.order_record_status
+        // , "tradeNo": order.trade_no
+        // , "orderTotalPrice": g_data.order.orderTotalPrice
+        // , "tax": g_data.order.tax
+        // , "freight": g_data.order.freight
+      // })
+
+    });
+  </script>
+</body>
+
+</html>
