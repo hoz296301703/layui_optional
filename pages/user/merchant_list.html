@@ -62,14 +62,22 @@
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">商户帐号</label>
+					<label class="layui-form-label">登录帐号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="loginAccount" placeholder="请输入商户帐号" autocomplete="off"
+						<input type="text" name="loginAccount" placeholder="请输入登录帐号" autocomplete="off"
 							class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
-					<label class="layui-form-label">商户状态</label>
+					<label class="layui-form-label">手机号码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="merchantPhone" placeholder="请输入手机号码" autocomplete="off"
+							class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-inline">
+					<label class="layui-form-label">状态</label>
 					<div class="layui-input-inline">
 						<select name="merchantStatus" lay-verify="required" lay-search="">
 							<option value="">全部</option>
@@ -109,8 +117,9 @@
 		</script>
 		<script type="text/html" id="statusTpl">
 			<!-- 这里的 checked 的状态只是演示 -->
-			<input type="checkbox" data-managerId="{{d.managerId}}" name="status" value="{{d.status}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="statusDemo" {{ d.status == 'enable' ? 'checked' : '' }}>
-		  </script>
+		<input type="checkbox" data-managerId="{{d.managerId}}" name="status" value="{{d.status}}" lay-skin="switch"
+			lay-text="启用|禁用" lay-filter="statusDemo" {{ d.status == 'enable' ? 'checked' : '' }}>
+		</script>
 		<script type="text/html" id="operateTpl">
 			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
 			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置密码</a>
@@ -130,7 +139,7 @@
 			<form class="layui-form" style="display: flex; justify-content: center; margin-top: 20px;">
 				<div class="layui-form-item">
 					<div class="layui-inline">
-						<label class="layui-form-label">商户状态</label>
+						<label class="layui-form-label">状态</label>
 						<div class="layui-input-inline">
 							<select name="merchantStatus" lay-verify="required" lay-search="">
 								<option value="">请选择</option>
@@ -190,13 +199,15 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'merchantName', title: '商户名称',
+							field: 'merchantName', title: '商户名称', width: 190
 						}, {
-							field: 'merchantId', title: '商户编号'
+							field: 'merchantId', title: '商户编号', width: 180
 						}, {
-							field: 'loginAccount', title: '商户帐号'
+							field: 'loginAccount', title: '登录帐号', width: 120
 						}, {
-							field: 'merchantStatus', width: 100, title: '商户状态', templet: function (item) {
+							field: 'merchantPhone', title: '手机号码', width: 130
+						}, {
+							field: 'merchantStatus', width: 70, title: '状态', templet: function (item) {
 								if (item.merchantStatus == '1') {
 									return '启用';
 								} else if (item.merchantStatus == '2') {
@@ -251,6 +262,7 @@
 				var merchantId = $('#form_sreach').find('[name=merchantId]');
 				var loginAccount = $('#form_sreach').find('[name=loginAccount]');
 				var merchantStatus = $('#form_sreach').find('[name=merchantStatus]');
+				var merchantPhone = $('#form_sreach').find('[name=merchantPhone]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 
@@ -264,6 +276,7 @@
 						merchantId: merchantId.val(),
 						loginAccount: loginAccount.val(),
 						merchantStatus: merchantStatus.val(),
+						merchantPhone: merchantPhone.val(),
 						startDate: startDate.val(),
 						endDate: endDate.val()
 					}
@@ -407,6 +420,8 @@
 					var merchantId = $('#form_sreach').find('[name=merchantId]');
 					var loginAccount = $('#form_sreach').find('[name=loginAccount]');
 					var merchantStatus = $('#form_sreach').find('[name=merchantStatus]');
+					var merchantPhone = $('#form_sreach').find('[name=merchantPhone]');
+
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					// 执行重载
@@ -420,6 +435,8 @@
 							merchantId: merchantId.val(),
 							loginAccount: loginAccount.val(),
 							merchantStatus: merchantStatus.val(),
+							merchantPhone: merchantPhone.val(),
+
 							startDate: startDate.val(),
 							endDate: endDate.val()
 						}
@@ -503,6 +520,25 @@
 					});
 				}
 			});
+			//单击行勾选checkbox事件
+			$(document).on("click", ".layui-table-body table.layui-table tbody tr", function () {
+				var index = $(this).attr('data-index');
+				var tableBox = $(this).parents('.layui-table-box');
+				//存在固定列
+				if (tableBox.find(".layui-table-fixed.layui-table-fixed-l").length > 0) {
+					tableDiv = tableBox.find(".layui-table-fixed.layui-table-fixed-l");
+				} else {
+					tableDiv = tableBox.find(".layui-table-body.layui-table-main");
+				}
+				var checkCell = tableDiv.find("tr[data-index=" + index + "]").find("td div.laytable-cell-checkbox div.layui-form-checkbox I");
+				if (checkCell.length > 0) {
+					checkCell.click();
+				}
+			});
+			$(document).on("click", "td div.laytable-cell-checkbox div.layui-form-checkbox", function (e) {
+				e.stopPropagation();
+			});
+			//------------------------------------------------------------------------
 		});
 	</script>
 </body>
