@@ -59,6 +59,12 @@
 						<input type="text" name="headContent" placeholder="请输入专店名称" class="layui-input">
 					</div>
 				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">专店编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="counterId" placeholder="请输入专店编号" class="layui-input">
+					</div>
+				</div>
 
 
 				<div class="layui-inline">
@@ -139,10 +145,13 @@
 						}, {
 							field: 'merchantId', title: '商户编号', width: 180
 						}, {
+
 							field: 'headContent', title: '专店名称', width: 150
 						}, {
-							field: 'description', title: '专店描述', width: 250
+							field: 'counterId', title: '专店编号', width: 150
 						}, {
+						// 	field: 'description', title: '专店描述', width: 250
+						// }, {
 							// 	field: 'price', title: '价格', width: 80
 							// }, {
 							// 	field: 'divRate', title: '佣金比例(%)', width: 110, templet: function (item) {
@@ -195,7 +204,7 @@
 				var merchantName = $('#form_sreach').find('[name=merchantName]');
 				var merchantId = $('#form_sreach').find('[name=merchantId]');
 				var headContent = $('#form_sreach').find('[name=headContent]');
-				// var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
+				var counterId = $('#form_sreach').find('[name=counterId]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
@@ -209,6 +218,7 @@
 						merchantNameblurry: merchantName.val(),
 						merchantId: merchantId.val(),
 						headContentblurry: headContent.val(),
+						counterId:counterId.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -226,7 +236,7 @@
 					var merchantName = $('#form_sreach').find('[name=merchantName]');
 					var merchantId = $('#form_sreach').find('[name=merchantId]');
 					var headContent = $('#form_sreach').find('[name=headContent]');
-					// var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
+					var counterId = $('#form_sreach').find('[name=counterId]');
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					//拼接时间
@@ -242,6 +252,7 @@
 							merchantNameblurry: merchantName.val(),
 							merchantId: merchantId.val(),
 							headContentblurry: headContent.val(),
+							counterId:counterId.val(),
 							startDate: startDate,
 							endDate: endDate
 						}

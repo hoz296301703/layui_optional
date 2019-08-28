@@ -73,9 +73,9 @@
 									</div>
 								</div>
 								<div class="layui-inline">
-									<label class="layui-form-label">订单编号</label>
+									<label class="layui-form-label">订单号</label>
 									<div class="layui-input-inline">
-										<input type="text" name="order_id" placeholder="请输入订单编号" class="layui-input">
+										<input type="text" name="order_id" placeholder="请输入订单号" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-inline">
@@ -226,7 +226,7 @@
 					}, {
 						field: 'merchant_no', title: '商户编号', width: 180
 					}, {
-						field: 'order_id', title: '订单编号', width: 200
+						field: 'order_id', title: '订单号', width: 200
 						// }, {
 						// 	field: 'FCY', title: '商品金额', width: 100
 						// }, {
@@ -270,14 +270,13 @@
 							if (item.order_record_status == '1') {
 								return '未申报';
 							} else if (item.order_record_status == '2' || item.order_record_status == '11' || item.order_record_status == '10') {
-
-								// return '申报中';
 								return '<span style="background: #08a0ea; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报中</span>';
 							} else if (item.order_record_status == '3') {
 								return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报成功</span>';
 							} else if (item.order_record_status == '4') {
 								return '<span style="background: #e4393c; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报失败</span>';
-								// return '申报失败';
+							}else if(item.order_record_status == '20'){
+								return '余额不足';
 							}
 						}
 					}, {

@@ -116,7 +116,7 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '日期', fixed: 'left', templet: function (item) {
+							field: 'createDate', title: '日期',width:170, fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
@@ -138,7 +138,8 @@
 							field: 'withdraw', title: '可提现资金'
 						}, {
 							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
-						}]
+						}
+					]
 				],
 				// skin: 'row', //行边框风格
 				event: true,

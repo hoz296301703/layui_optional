@@ -141,18 +141,43 @@
 				</form>
 
 			</div>
+			<script src="../../static/js/jquery.js"></script>
 			<script type="text/html" id="operateTpl">
-				<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					 -->
-				<a class="layui-btn layui-btn-xs" lay-event="getSelAmount">结算货款</a>					
+			<!-- laytpl语法--start-- -->
+			{{#  				
+				var  checkSel = function (dateSign, merchantId) {
+					var flag = false;
+					var datas = {  dateSign: dateSign, merchantId: merchantId, page: 0, size: 0 };				
+					$.ajax({
+						url: urlPrefix + "silver-web-shop/dfOrder/getInfo",
+						type: "POST",
+						async: false,
+						xhrFields: {
+							withCredentials: true
+						},
+						data: datas,
+						success: function (response) {
+							if (response.status == 1) {
+								flag = true;												
+							}
+						}
+					});
+					return flag;
+				}
+			}}
+			{{#  if(checkSel(d.dateSign, d.merchantId)){ }}
+			<a class="layui-btn layui-btn-xs" lay-event="getSelAmount">结算货款</a>
+			{{#  } else { }}
+
+			{{#  } }}
+			<!-- laytpl语法--end-- -->
 			</script>
 			<script type="text/html" id="report_toolbar">
-				<div class="layui-btn-container">
-						
+				<div class="layui-btn-container">						
 					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrder"><i class="layui-icon">&#xe601;</i>明细下载</button>
 					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrderAll"><i class="layui-icon">&#xe601;</i>汇总下载</button>				
 				</div>
 			</script>
-
 			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 			<script src="../../static/js/common.js" charset="utf-8"></script>
 
@@ -213,7 +238,6 @@
 								} else if (item.type == 'month') {
 									return item.dateSign.slice(0, 4) + '-' + item.dateSign.slice(4, 6);
 								}
-
 							}
 						}, {
 							field: 'merchantName', title: '商户名称', width: 170
@@ -245,7 +269,6 @@
 							field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
-
 				// skin: 'row', //行边框风格
 				event: true,
 				page: true,
@@ -268,7 +291,6 @@
 					startDate: get_newDate_D().replace("-", "").replace("-", ""),
 					type: $('#dateClass').find('.active').attr('data-type')
 				}
-
 			});
 
 			var active = {
@@ -295,22 +317,16 @@
 							return false;
 						}
 					}
-
-
 					var merchantId = $('#form_sreach').find('[name=merchantId]').val();
-
 					var merchantName = $('#form_sreach').find('[name=merchantName]').val();
-
 					var startDate = startDate;
 					var endDate = endDate;
 					if (!isEmpty(startDate)) {
-
 						startDate = startDate.replace("-", "").replace("-", "");
 					}
 					if (!isEmpty(endDate)) {
 						endDate = endDate.replace("-", "").replace("-", "");
 					}
-
 					//执行重载					
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/repLogs/getInfo',
@@ -352,9 +368,9 @@
 			})
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
-				
 				var data = obj.data;
-				if (obj.event === 'getSelAmount') {// 结算货款
+				if (obj.event == 'getSelAmount') {// 结算货款
+					layer.msg('加载中...', { time: 0, icon: 16, shade: 0.1 });
 					var data = {
 						merchantId: data.merchantId,
 						date: data.dateSign
@@ -362,33 +378,32 @@
 					$.ajax({
 						url: urlPrefix + "silver-web-shop/repLogs/getSelAmount",
 						type: "POST",
-						async: false,
 						xhrFields: {
 							withCredentials: true
 						},
 						data: data,
 						success: function (response) {
+							// layer.closeAll('loading');
 							if (response.status == 1) {
 								$('#getSelAmount_detail').find('[name=dai_fu]').val(response.datas.dai_fu)
 								$('#getSelAmount_detail').find('[name=order]').val(response.datas.order)
+								layer.open({
+									title: "结算货款明细",
+									type: 1,
+									closeBtn: 0,
+									skin: "layui-layer-rim", //加上边框
+									area: ["354px", "217px"], //宽高
+									btnAlign: "c",
+									content: $("#getSelAmount_detail"),
+									btn: ["确定"],
+									yes: function (index) {
+										$("#getSelAmount_detail").hide();
+										layer.closeAll();
+									}
+								});
 							}
 						}
 					});
-					layer.open({
-						title: "结算货款明细",
-						type: 1,
-						closeBtn: 0,
-						skin: "layui-layer-rim", //加上边框
-						area: ["354px", "217px"], //宽高
-						btnAlign: "c",
-						content: $("#getSelAmount_detail"),
-						btn: ["确定"],
-						yes: function (index) {
-							$("#getSelAmount_detail").hide();
-							layer.closeAll();
-						}
-					});
-
 				}
 			});
 			//头工具栏事件
@@ -396,23 +411,18 @@
 				// var checkStatus = table.checkStatus(obj.config.id);
 				switch (obj.event) {
 					case 'downManualOrderAll':
-
 						layer.alert("下载查询结果", {
 							time: 0, //不自动关闭
 							btnAlign: "c",
 							btn: ["下载", "取消"],
 							yes: function (index) {
-
 								var url = "silver-web-shop/repLogs/downLogs?displayType=collect";
-
 								if (!isEmpty($('#form_sreach').find('[name=merchantId]').val())) {// 商户id
 									url += '&merchantId=' + $('#form_sreach').find('[name=merchantId]').val();
 								}
-
 								if (!isEmpty($('#form_sreach').find('[name=merchantName]').val())) {// 商户名称
 									url += '&merchantNameblurry=' + $('#form_sreach').find('[name=merchantName]').val();
 								}
-
 								var startDate = '';
 								var endDate = '';
 								if ($('#dateClass').find('.active').attr('data-type') == 'day') {// 天
@@ -430,7 +440,6 @@
 										layer.alert('请选择查询时间');
 										return false;
 									}
-
 									startDate = startDate.replace("-", "").replace("-", "");
 									endDate = endDate.replace("-", "").replace("-", "");
 									url += '&type=customized' + '&startDate=' + startDate + '&endDate=' + endDate;
@@ -456,19 +465,15 @@
 										}
 									}
 								);
-
 							}
 						});
-
 						break;
 					case 'downManualOrder':
-
 						layer.alert("下载查询结果", {
 							time: 0, //不自动关闭
 							btnAlign: "c",
 							btn: ["下载", "取消"],
 							yes: function (index) {
-
 								var url = "silver-web-shop/repLogs/downLogs?";
 
 								if (!isEmpty($('#form_sreach').find('[name=merchantId]').val())) {// 商户id
@@ -525,9 +530,7 @@
 
 							}
 						});
-
 						break;
-
 				};
 			});
 
