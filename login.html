@@ -24,11 +24,13 @@
         <div id="darkbannerwrap"></div>
 
         <form method="post" class="layui-form">
+                <input id="token" name="token" value="" type="hidden" />
             <input name="account" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
             <hr class="hr15">
             <input name="loginPassword" lay-verify="required" placeholder="密码" type="password" class="layui-input">
             <hr class="hr15">
-            <input class="loginin" id="login" value="登录" lay-submit lay-filter="login" style="width:100%;" type="button">
+            <input class="loginin" id="login" value="登录" lay-submit lay-filter="login" style="width:100%;"
+                type="button">
         </form>
     </div>
 
@@ -42,7 +44,7 @@
             var $ = layui.jquery,
                 form = layui.form
                 , admin = layui.admin;
-           
+
             $(document).keydown(function (e) {
                 if (e.keyCode === 13) {
                     $("#login").trigger("click");
@@ -79,6 +81,19 @@
                 return false;
             });
         });   
+    </script>
+    <script src="https://www.recaptcha.net/recaptcha/api.js?render=6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD"></script>
+    <script>
+           // 请求Google reCaptcha 
+           var requset = function () {
+                grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'managerLogin' }).then(function (token) {
+                    document.getElementById('token').value = token;
+                });
+            }
+            grecaptcha.ready(function () {
+                requset();
+            });
+            //---------------------------------
     </script>
     <!-- 底部结束 -->
 </body>

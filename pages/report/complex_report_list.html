@@ -383,7 +383,6 @@
 						},
 						data: data,
 						success: function (response) {
-							// layer.closeAll('loading');
 							if (response.status == 1) {
 								$('#getSelAmount_detail').find('[name=dai_fu]').val(response.datas.dai_fu)
 								$('#getSelAmount_detail').find('[name=order]').val(response.datas.order)
