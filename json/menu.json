@@ -51,12 +51,6 @@
 					"name": "库存信息",
 					"icon": "",
 					"url": "./pages/goods/stock_list.html"
-				},
-				{
-					"id": "goods_4",
-					"name": "兑换卷",
-					"icon": "",
-					"url": "./pages/goods/gift_volume_list.html"
 				}
 			]
 		},	
@@ -134,6 +128,26 @@
 					"name": "专店信息",
 					"icon": "",
 					"url": "./pages/distribution/counter_list.html"
+				}
+			]
+		},
+		{
+			"id": "volume",
+			"name": "卡卷管理",
+			"icon": "&#xe723;",
+			"url": "",
+			"children": [			
+				{
+					"id": "volume_1",
+					"name": "兑换卷",
+					"icon": "",
+					"url": "./pages/volume/gift_volume_list.html"
+				},
+				{
+					"id": "volume_2",
+					"name": "优惠卷",
+					"icon": "",
+					"url": "./pages/volume/goods_supply_list.html"
 				}
 			]
 		},

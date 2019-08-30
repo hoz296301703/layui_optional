@@ -190,7 +190,7 @@
 				{{#  if(d.waybillNo == ''){ }}<!--首先判断运单号为空-->
 				<!--并且订单状态为待发货、待清关、运输中，其中任意一种-->
 				<!--订单状态：1-待付款、2-已付款,待商家处理、10-待发货、 3-待清关、4-快件运输中、5-快件已签收、200-交易成功、400-交易关闭 -->	
-				{{# if(d.status == 3 || d.status == 4 || d.status== 10){  }}
+				{{# if( d.status == 2 ||d.status == 3 || d.status == 4 || d.status== 10){  }}
 					<a  class="layui-btn layui-btn-xs"  lay-event="insert_logi_btn">录入物流</a>		
 					{{#  } }}
 				{{#  } }}

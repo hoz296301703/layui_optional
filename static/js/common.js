@@ -1,7 +1,7 @@
 // var urlPrefix = 'http:///192.168.1.116:8080/';
 var urlPrefix = "https://ym.191ec.com/";
 // var urlPrefix = 'http://120.132.118.211:8080/';
-
+var volumeUrl = "https://192.168.1.116:7070/";
 
 var merchantImgPrefix = "https://ym.191ec.com/img/";// 图片拼接前缀
 // 日期格式化 fmt => "yyyy-MM-dd hh:mm:ss"
