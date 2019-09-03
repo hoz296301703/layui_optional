@@ -40,6 +40,10 @@
     #info .layui-form-item .layui-input-inline {
       width: 283px;
     }
+
+    #merchantBank_add .layui-form-label {
+      width: 100px;
+    }
   </style>
 </head>
 
@@ -50,7 +54,7 @@
       <div class="weadmin-nav">
         <span class="layui-breadcrumb">
           <a>
-              商户：<cite id="g-merchantName"></cite></a>
+            商户：<cite id="g-merchantName"></cite></a>
         </span>
       </div>
       <ul class="layui-tab-title">
@@ -783,7 +787,7 @@
     var g_data = '';// 全局数据变量
     function getParent_data(obj) {
       g_data = obj.data;
- 
+
     }
     layui.use(['tree', 'form', 'jquery', 'util', 'admin', 'layer', 'upload', 'table'], function () {
       var form = layui.form,

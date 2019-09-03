@@ -38,6 +38,10 @@
 			height: auto;
 			line-height: 80px;
 		}
+
+		th .layui-table-cell {
+			line-height: 28px;
+		}
 	</style>
 </head>
 
@@ -130,22 +134,41 @@
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
 			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+		</form>
 	</div>
-	<!-- <div class="weadmin-block demoTable">
-		<button class="layui-btn" onclick="WeAdminShow('添加用户','./customs_add.html',600,400)">
-			<em class="layui-icon">&#xe61f;</em>添加</button>
-	</div> -->
+
+	<div style="display: none;" id="managerAuditMerchantInfo">
+		<form class="layui-form" style="display: flex; justify-content: center; margin-top: 20px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">状态</label>
+					<div class="layui-input-inline">
+						<select name="managerEditGoodsRecordStatus" lay-verify="required" lay-search="">
+							<option value="">请选择</option>
+							<option value="1">备案审核通过</option>
+							<option value="3">审核不通过</option>
+						</select>
+					</div>
+				</div>
+
+			</div>
+
+		</form>
+	</div>
 	<script type="text/html" id="operateTpl">
-			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>			
-			<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">删除</a> -->
-		</script>
+		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>			
+		<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">删除</a> -->
+	</script>
+	<script type="text/html" id="goodsRecord_toolbar">
+		<div class="layui-btn-container">				
+			<button type='button' class="layui-btn layui-btn-sm" lay-event="getCheckData">审核</button>		
+		</div>
+	</script>
 
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 
-	</div>
 	<script>
-		// import findAllCustomsPort from '../../static/js/ajaxs.js';
 		layui.extend({
 			admin: '{/}../../static/js/admin'
 		});
@@ -170,12 +193,15 @@
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
+				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
+				toolbar: '#goodsRecord_toolbar',
 				height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/goodsRecord/findInfo',
 				method: 'post',
 				cols: [
 					[
+						{ type: 'checkbox', fixed: 'left' },
 						{
 							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
@@ -202,34 +228,37 @@
 							field: 'entGoodsNo', title: '商品自编号', width: 120, templet: function (item) {
 								return item.entGoodsNo.value;
 							}
-						}, {
-							field: 'regPrice', title: '商品价格(元)', width: 110, templet: function (item) {
-								return item.regPrice.value;
-							}
-						}, {
-							field: 'goodsClass', title: '商品分类', width: 120, templet: function (item) {
+						},
+						//  {
+						// 	field: 'regPrice', title: '商品价格(元)', width: 110, templet: function (item) {
+						// 		return item.regPrice.value;
+						// 	}
+						// },
+						//  {
+						// 	field: 'goodsClass', title: '商品分类', width: 120, templet: function (item) {
 
-								var goodsClass = "";
-								if (!isEmpty(item.spareGoodsThirdTypeName.value)) {
-									goodsClass =
-										item.spareGoodsFirstTypeName.value +
-										"/" +
-										item.spareGoodsSecondTypeName.value +
-										"/" +
-										item.spareGoodsThirdTypeName.value;
-								} else if (!isEmpty(item.spareGoodsSecondTypeName.value)) {
-									goodsClass =
-										item.spareGoodsFirstTypeName.value +
-										"/" +
-										item.spareGoodsSecondTypeName.value;
-								} else if (!isEmpty(item.spareGoodsFirstTypeName.value)) {
-									goodsClass = item.spareGoodsFirstTypeName.value;
-								} else {
-									goodsClass = "";
-								}
-								return goodsClass;
-							}
-						}, {
+						// 		var goodsClass = "";
+						// 		if (!isEmpty(item.spareGoodsThirdTypeName.value)) {
+						// 			goodsClass =
+						// 				item.spareGoodsFirstTypeName.value +
+						// 				"/" +
+						// 				item.spareGoodsSecondTypeName.value +
+						// 				"/" +
+						// 				item.spareGoodsThirdTypeName.value;
+						// 		} else if (!isEmpty(item.spareGoodsSecondTypeName.value)) {
+						// 			goodsClass =
+						// 				item.spareGoodsFirstTypeName.value +
+						// 				"/" +
+						// 				item.spareGoodsSecondTypeName.value;
+						// 		} else if (!isEmpty(item.spareGoodsFirstTypeName.value)) {
+						// 			goodsClass = item.spareGoodsFirstTypeName.value;
+						// 		} else {
+						// 			goodsClass = "";
+						// 		}
+						// 		return goodsClass;
+						// 	}
+						// },
+						 {
 							field: 'customsPortName', title: '口岸', width: 90, templet: function (item) {
 								return item.customsPortName.value;
 							}
@@ -264,6 +293,8 @@
 									recordFlag = "审核通过";
 								} else if (item.recordFlag.value == 2) {
 									recordFlag = "正常备案";
+								} else if (item.recordFlag.value == 3) {
+									recordFlag = "审核不通过";
 								}
 								return recordFlag;
 							}
@@ -286,12 +317,21 @@
 					// startDate: appendStartDate(getDay(-7))
 				},
 				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-					return {
-						"code": res.status, //解析接口状态
-						"msg": res.msg, //解析提示文本
-						"count": res.totalCount, //解析数据长度
-						"data": res.datas.rows //解析数据列表
-					};
+					if (res.status == 1) {
+						return {
+							"code": res.status, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.totalCount, //解析数据长度
+							"data": res.datas.rows //解析数据列表
+						};
+					} else {
+						return {
+							"code": res.status, //解析接口状态
+							"msg": res.msg, //解析提示文本
+							"count": res.totalCount //解析数据长度
+						};
+					}
+
 				},
 				done: function (res, curr, count) {
 					//如果是异步请求数据方式，res即为你接口返回的信息。
@@ -307,29 +347,96 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
+				var merchantName = $('#form_sreach').find('[name=merchantName]');
 				var goodsName = $('#form_sreach').find('[name=goodsName]');
 				var goodsId = $('#form_sreach').find('[name=goodsId]');
-				var goodsMerName = $('#form_sreach').find('[name=goodsMerName]');
-				var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
+				var code = $('#form_sreach').find('[name=code]');
+				var status = $('#form_sreach').find('[name=status]');
+				var recordFlag = $('#form_sreach').find('[name=recordFlag]');
+				var customsPort = $('#form_sreach').find('[name=customsPort]');
+				var imageFlag = $('#form_sreach').find('[name=imageFlag]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
+				//拼接时间
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
+				//执行重载
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/goodsRecord/findInfo',
 					page: {
-						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+						curr: $(".layui-laypage-em").next().html()
 					},
 					where: {
+						goodsMerchantNameblurry: merchantName.val(),
 						goodsNameblurry: goodsName.val(),
 						goodsId: goodsId.val(),
-						goodsMerId: goodsMerId.val(),
-						goodsMerNameblurry: goodsMerName.val(),
+						code: code.val(),
+						status: status.val(),
+						recordFlag: recordFlag.val(),
+						customsPort: customsPort.val(),
+						imageFlag: imageFlag.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
 				});
 			}
+
+
+			//头工具栏事件
+			table.on('toolbar(articleList)', function (obj) {
+				var checkStatus = table.checkStatus(obj.config.id);
+				switch (obj.event) {
+					case 'getCheckData':
+						var data = checkStatus.data;
+						var len = data.length;
+						if (data.length == 0) {
+							layer.alert("请选择要审核的商品！");
+							return;
+						} else {
+
+							layer.open({
+								type: 1,
+								skin: "layui-layer-rim", //加上边框
+								area: ["385px", "291px"], //宽高
+								content: $("#managerAuditMerchantInfo"),
+								btn: ["保存", "取消"],
+								yes: function (index, layero) {
+									if ($("#managerAuditMerchantInfo").find('[name=managerEditGoodsRecordStatus]').val() == '') {
+										layer.alert('请选择审核结果！');
+									} else {
+										var arr = [];
+										for (var i = 0; i < len; i++) {
+											arr.push({
+												entGoodsNo: data[i].entGoodsNo.value,
+												status: $("#managerAuditMerchantInfo").find('[name=managerEditGoodsRecordStatus]').val()
+											});
+										}
+										$.ajax({
+											url: urlPrefix + "silver-web-shop/goodsRecord/managerEditGoodsRecordStatus",
+											type: "POST",
+											xhrFields: {
+												withCredentials: true
+											},
+											data: { goodsPack: JSON.stringify(arr) },
+											success: function (response) {
+												if (response.status == 1) {
+													layer.closeAll();
+													layer.msg("审核完成！", { time: 1000 }, function () {
+														_reload();
+													});
+												} else {
+													layer.alert(response.msg);
+												}
+											}
+										});
+									}
+								}
+							});
+						}
+						break;
+
+				};
+			});
 			/*
 			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
 			 * http://www.layui.com/doc/modules/form.html#render
@@ -339,10 +446,14 @@
 			// });
 			var active = {
 				reload: function () {
+					var merchantName = $('#form_sreach').find('[name=merchantName]');
 					var goodsName = $('#form_sreach').find('[name=goodsName]');
 					var goodsId = $('#form_sreach').find('[name=goodsId]');
-					var goodsMerName = $('#form_sreach').find('[name=goodsMerName]');
-					var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
+					var code = $('#form_sreach').find('[name=code]');
+					var status = $('#form_sreach').find('[name=status]');
+					var recordFlag = $('#form_sreach').find('[name=recordFlag]');
+					var customsPort = $('#form_sreach').find('[name=customsPort]');
+					var imageFlag = $('#form_sreach').find('[name=imageFlag]');
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					//拼接时间
@@ -355,10 +466,14 @@
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
+							goodsMerchantNameblurry: merchantName.val(),
 							goodsNameblurry: goodsName.val(),
 							goodsId: goodsId.val(),
-							goodsMerId: goodsMerId.val(),
-							goodsMerNameblurry: goodsMerName.val(),
+							code: code.val(),
+							status: status.val(),
+							recordFlag: recordFlag.val(),
+							customsPort: customsPort.val(),
+							imageFlag: imageFlag.val(),
 							startDate: startDate,
 							endDate: endDate
 						}
@@ -370,7 +485,28 @@
 				var type = $(this).data('type');
 				active[type] ? active[type].call(this) : '';
 			});
-
+			//监听工具条
+			table.on('tool(articleList)', function (obj) {
+				var data = obj.data;
+				console.log(obj)
+				if (obj.event === 'detail') {// 查看详情
+					layer.open({
+						type: 2,
+						title: '备案详情',
+						area: ['100%', '100%'],
+						// fixed: false, //不固定
+						// maxmin: true,
+						content: './goodsRecord_detail.html',
+						btnAlign: 'c',
+						success: function (layero, index) {
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传参
+							iframe.getParent_data(obj);
+						}
+					});
+				}
+			});
 			//图片浏览
 			$('#form_sreach').on('click', '[lay-id="articleList"] .checkImg img', function (e) {
 				layer.photos({
