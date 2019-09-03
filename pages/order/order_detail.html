@@ -174,6 +174,51 @@
                 </div>
               </div>
             </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                  <select name="status" lay-filter="aihao" class="layui-disabled" disabled>
+                    <option value="">全部</option>
+                    <option value="1">待付款</option>
+                    <option value="2">已付款,待处理</option>
+                    <option value="10">待发货</option>
+                    <option value="3">待清关</option>
+                    <option value="4">快件运输中</option>
+                    <option value="5">快件已签收</option>
+                    <option value="200">交易成功</option>
+                    <option value="400">交易关闭</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">来源</label>
+                <div class="layui-input-inline">
+                  <select name="orderSourceType" class="layui-disabled" disabled>
+                    <option value="">全部</option>
+                    <option value="online">线上</option>
+                    <option value="offline">线下</option>
+                    <option value="expand">推广</option>
+                    <option value="mall">商城</option>
+                    <option value="excelImport">导入</option>
+                  </select>
+                </div>
+              </div>
+              <!-- <div class="layui-inline">
+                <label class="layui-form-label">专柜编号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="counterId" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">专柜名称</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="counterName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+            </div> -->
+
+
           </form>
         </div>
       </div>
@@ -208,7 +253,7 @@
         </div>
       </div>
     </div>
-    <div class="layui-colla-item">
+    <div class="layui-colla-item" id="order_div" style="display: none">
       <h2 class="layui-colla-title">分润详情</h2>
       <div class="layui-colla-content ">
         <div class="layui-form">
@@ -216,7 +261,7 @@
             <colgroup>
               <col width="180">
               <col width="180">
-              <col width="180">             
+              <col width="180">
               <col>
             </colgroup>
             <thead>
@@ -244,9 +289,9 @@
   <script type="text/javascript">
     var g_data = '';// 全局数据变量
 
-    
+
     function getParent_data(obj) {
-      g_data = obj.data;  
+      g_data = obj.data;
     }
 
     layui.extend({
@@ -285,8 +330,8 @@
         return datas;
       }
       g_data = getDetail(g_data.entOrderNo);
-     
-      
+
+
       //表单初始赋值
       form.val('example', {
         "entOrderNo": g_data.order.entOrderNo
@@ -310,7 +355,8 @@
         , "tradeNo": g_data.order.tradeNo
         , "counterId": g_data.order.counterId
         , "counterName": g_data.order.counterName
-        // , "freight": g_data.order.freight
+        , "status": g_data.order.status
+        , "orderSourceType": g_data.order.orderSourceType
 
       })
 
@@ -349,8 +395,6 @@
         $('#order_goods_table tbody').html(divStr);
         form.render();
       }
-      //渲染商品
-      orderGoods();
 
 
       // 查询订单分润
@@ -361,7 +405,6 @@
           xhrFields: {
             withCredentials: true
           },
-          // : 190809122331518499
           data: { orderId: g_data.order.entOrderNo },
           success: function (response) {
             if (response.status == 1) {
@@ -370,9 +413,7 @@
               var divStr = "";// 表格字符串
               var arr = [];
               $.each(response.datas, function (i, item) {
-                // console.info(item);
                 //将4级商户缓存起来，用作循环渲染表格
-
                 //主商户
                 var masDivAmo = item.masterDividendAmount;
                 var merchantName = item.merchantName;
@@ -394,7 +435,7 @@
                 var arr = [];
                 //数组下标
                 var i = 0;
-                if (masDivAmo > 0) {
+                if (masDivAmo > 0) {//主商户
                   var cache = {};
                   cache.name = merchantName;
                   cache.merId = merchantId;
@@ -402,15 +443,15 @@
                   arr[i] = cache;
                   i++;
                 }
-                if (plaDivAmo > 0) {
+                if (plaDivAmo > 0) {//平台商户
                   var cache = {};
                   cache.name = "平台";
-                  cache.amount = plaDivAmo;   
+                  cache.amount = plaDivAmo;
                   cache.merId = "";
                   arr[i] = cache;
                   i++;
                 }
-                if (expMerAmo > 0) {
+                if (expMerAmo > 0) {//白金
                   var cache = {};
                   cache.name = expadndMerchantName;
                   cache.amount = expMerAmo;
@@ -418,7 +459,7 @@
                   arr[i] = cache;
                   i++;
                 }
-                if (divAmo > 0) {
+                if (divAmo > 0) {//一级推广商
                   var cache = {};
                   cache.name = firstLevelMerchantName;
                   cache.amount = divAmo;
@@ -426,7 +467,7 @@
                   arr[i] = cache;
                   i++;
                 }
-                if (secDivAmo > 0) {
+                if (secDivAmo > 0) { //二级推广商
                   var cache = {};
                   cache.name = secondaryMerchantName;
                   cache.amount = secDivAmo;
@@ -434,10 +475,9 @@
                   arr[i] = cache;
                   i++;
                 }
-                console.info(arr);
+
                 for (var key in arr) {
                   var obj = arr[key];
-
                   divStr += `<tr >
                     <td>
                     <div class="layui-input-inline"><input style="width: 180px"  lay-verify="required"  value="${obj.name}" name="" autocomplete="off" class="layui-input layui-disabled" disabled></div>
@@ -451,7 +491,6 @@
                   
                 </tr>`
                 }
-
               });
               $('#order_div_table tbody').html(divStr);
               form.render();
@@ -460,7 +499,21 @@
         });
       };
 
-      _orderDiv();
+      //页面加载成功后执行
+      $(document).ready(function () {
+        //渲染商品
+        orderGoods();
+        var status = g_data.order.status;
+        //
+        if (status == '1' || status == '400') {
+          // $('#order_div').hide();
+        } else {
+          $('#order_div').show();
+          // 订单分润信息渲染
+          _orderDiv();
+        }
+      })
+
     });
   </script>
 </body>

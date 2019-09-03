@@ -147,7 +147,7 @@
 					"id": "volume_2",
 					"name": "优惠卷",
 					"icon": "",
-					"url": "./pages/volume/goods_supply_list.html"
+					"url": "./pages/volume/coupon_list.html"
 				}
 			]
 		},
