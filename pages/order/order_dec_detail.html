@@ -62,12 +62,21 @@
                 </div>
               </div>
               <div class="layui-inline">
-                <label class="layui-form-label">抵付说明</label>
+                <label class="layui-form-label">优惠金额</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="otherPayment" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">优惠说明</label>
                 <div class="layui-input-inline">
                   <input type="text" name="otherPayNotes" autocomplete="off" class="layui-input layui-disabled"
                     disabled>
                 </div>
               </div>
+
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">实际支付金额</label>
                 <div class="layui-input-inline">
@@ -75,8 +84,6 @@
                     disabled>
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">收货人姓名</label>
                 <div class="layui-input-inline">
@@ -91,16 +98,17 @@
                     disabled>
                 </div>
               </div>
+
+
+            </div>
+
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">收货人电话</label>
                 <div class="layui-input-inline">
                   <input type="text" name="recipientTel" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">收货人省份</label>
                 <div class="layui-input-inline">
@@ -114,6 +122,9 @@
                   <input type="text" name="recCityName" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">区县</label>
                 <div class="layui-input-inline">
@@ -121,8 +132,6 @@
                 </div>
               </div>
 
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">详细地址</label>
                 <div class="layui-input-inline">
@@ -136,6 +145,8 @@
                   <input type="text" name="ordererName" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">下单人身份证号</label>
                 <div class="layui-input-inline">
@@ -143,7 +154,6 @@
                     disabled>
                 </div>
               </div>
-
               <div class="layui-inline">
                 <label class="layui-form-label">下单人电话</label>
                 <div class="layui-input-inline">
@@ -310,7 +320,7 @@
         , "order_record_status": order.order_record_status
         , "createDate": G_format(order.create_date.time, "yyyy-MM-dd hh:mm:ss")
         , "tradeNo": order.trade_no
-        // , "orderTotalPrice": g_data.order.orderTotalPrice
+        , "otherPayment": order.otherPayment
         // , "tax": g_data.order.tax
         // , "freight": g_data.order.freight
       })

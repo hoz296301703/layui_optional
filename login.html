@@ -16,6 +16,11 @@
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
 
 </head>
+<style>
+    /* .grecaptcha-badge {
+        display: none;
+    } */
+</style>
 
 <body class="login-bg">
 
@@ -24,11 +29,14 @@
         <div id="darkbannerwrap"></div>
 
         <form method="post" class="layui-form">
-                <input id="token" name="token" value="" type="hidden" />
+            <input id="token" name="token" value="" type="hidden" />
             <input name="account" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
             <hr class="hr15">
             <input name="loginPassword" lay-verify="required" placeholder="密码" type="password" class="layui-input">
             <hr class="hr15">
+            <!-- 此网站受reCAPTCHA和Google保护
+            <a href="https://policies.google.com/privacy">隐私政策</a> 与
+            <a href="https://policies.google.com/terms">服务条款</a> 应用. -->
             <input class="loginin" id="login" value="登录" lay-submit lay-filter="login" style="width:100%;"
                 type="button">
         </form>
@@ -84,15 +92,15 @@
     </script>
     <script src="https://www.recaptcha.net/recaptcha/api.js?render=6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD"></script>
     <script>
-           // 请求Google reCaptcha 
-           var requset = function () {
-                grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'managerLogin' }).then(function (token) {
-                    document.getElementById('token').value = token;
-                });
-            }
-            grecaptcha.ready(function () {
-                requset();
+        // 请求Google reCaptcha 
+        var requset = function () {
+            grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'managerLogin' }).then(function (token) {
+                document.getElementById('token').value = token;
             });
+        }
+        grecaptcha.ready(function () {
+            requset();
+        });
             //---------------------------------
     </script>
     <!-- 底部结束 -->

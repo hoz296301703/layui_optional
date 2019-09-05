@@ -1,6 +1,5 @@
-var urlPrefix = 'http:///192.168.1.116:8080/';
-// var urlPrefix = 'http:///localhost:86/';
-// var urlPrefix = "https://ym.191ec.com/";
+// var urlPrefix = 'http:///192.168.1.116:8080/';
+var urlPrefix = "https://ym.191ec.com/";
 // var urlPrefix = 'http://120.132.118.211:8080/';
 
 

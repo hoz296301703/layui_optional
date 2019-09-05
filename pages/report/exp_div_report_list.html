@@ -73,10 +73,17 @@
 	<div class="weadmin-body">
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
-				<div class="layui-inline">
-					<label class="layui-form-label">商户名称</label>
-					<div class="layui-input-inline">
-						<input type="text" name="merchantName" placeholder="请输入商户名称" class="layui-input">
+				<div style="float: left;border: 1px solid #ddd;margin-left: 10px;">
+					<div class="layui-inline" style="padding-top: 5px;">
+						<label class="layui-form-label">商户名称</label>
+						<div class="layui-input-inline">
+							<input type="text" name="merchantName" placeholder="请输入商户名称" class="layui-input">
+						</div>
+					</div>
+					<div id="nameType" class="layui-input-block" style="margin-left:10px;">
+						<input type="radio" name="nameType" lay-verify="couponType" value="pla" title="白金" checked>
+						<input type="radio" name="nameType" lay-verify="couponType" value="one" title="一级">
+						<input type="radio" name="nameType" lay-verify="couponType" value="two" title="二级">
 					</div>
 				</div>
 				<div class="layui-inline">
@@ -121,11 +128,20 @@
 						</div>元
 					</div>
 				</form>
-
 			</div>
 			<script type="text/html" id="operateTpl">
-				<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					 -->
-			<a class="layui-btn layui-btn-xs" lay-event="details">明细</a>
+				<a class="layui-btn layui-btn-xs" lay-event="details">明细</a>
+				<!-- laytpl语法--start-- -->
+				{{#  if(d.divAmount.value > 0 ){ }}			
+					<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="one_detail">一级</a>					
+				{{#  } else { }}
+					
+				{{#  } }}
+				{{#  if(d.secDivAmount.value > 0 ){ }}	
+					<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="two_detail">二级</a>					
+				{{#  } else { }}
+				{{#  } }}
+				<!-- laytpl语法--end-- -->
 			</script>
 			<script type="text/html" id="report_toolbar">
 				<!-- <div class="layui-btn-container">						
@@ -133,10 +149,9 @@
 					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrderAll"><i class="layui-icon">&#xe601;</i>汇总下载</button>				
 				</div> -->
 			</script>
-
-			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-			<script src="../../static/js/common.js" charset="utf-8"></script>
-
+		</form>
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<script src="../../static/js/common.js" charset="utf-8"></script>
 	</div>
 	<script>
 		layui.extend({
@@ -160,8 +175,6 @@
 			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
-
-
 			table.render({
 				elem: '#articleList',
 				// defaultToolbar: ['filter'],
@@ -188,41 +201,39 @@
 								return item.expadndMerchantCode.value;
 							}
 						}, {
-							field: 'count', title: '订单数量', width: 90, templet:function(item){
+							field: 'count', title: '订单数量', width: 90, templet: function (item) {
 								return item.count.value;
 							}
-						},
-						{
-							field: 'amount', title: '订单总金额(元)', width: 125, templet:function(item){
+						}, {
+							field: 'amount', title: '订单总金额(元)', width: 125, templet: function (item) {
 								return item.amount.value;
 							}
 						}, {
-							field: 'payFee', title: '支付服务费(元)', width: 130, templet:function(item){
+							field: 'payFee', title: '支付服务费(元)', width: 130, templet: function (item) {
 								return item.payFee.value;
 							}
 						}, {
-							field: 'masDivAmount', title: '货款(元)', width: 100, templet:function(item){
+							field: 'masDivAmount', title: '货款(元)', width: 90, templet: function (item) {
 								return item.masDivAmount.value;
 							}
-						},
-						{
-							field: 'plaDivAmount', title: '平台分佣(元)', width: 120, templet:function(item){
+						}, {
+							field: 'plaDivAmount', title: '平台分佣(元)', width: 110, templet: function (item) {
 								return item.plaDivAmount.value;
 							}
 						}, {
-							field: 'expMerDivAmount', title: '白金分润金额(元)', width: 140, templet:function(item){
-								return item.expMerDivAmount.value;
+							field: 'expMerDivAmount', title: '白金商户(元)', width: 125, templet: function (item) {
+								return '<a>' + item.expMerDivAmount.value + '</a>';
 							}
 						}, {
-							field: 'divAmount', title: '一级代理商(元)', width: 125, templet:function(item){
+							field: 'divAmount', title: '一级代理商(元)', width: 125, templet: function (item) {
 								return item.divAmount.value;
 							}
 						}, {
-							field: 'secDivAmount', title: '二级代理商(元)', width: 125, templet:function(item){
+							field: 'secDivAmount', title: '二级代理商(元)', width: 125, templet: function (item) {
 								return item.secDivAmount.value;
 							}
 						}, {
-							field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', width: 160, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
 
@@ -245,61 +256,33 @@
 					};
 				},
 				where: {
-					startDate: getDay(-30)
+					// startDate: appendStartDate($('#form_sreach').find('[name=startDate]').val())
+					startDate: appendStartDate(getDay(-30))
 				}
-
 			});
 
 			var active = {
 				reload: function () {
-					var startDate = '';
-					var endDate = '';
-					if ($('#dateClass').find('.active').attr('data-type') == 'day') {// 天
-						startDate = $('#startDate_D_input').val();
-						if (isEmpty(startDate)) {
-							layer.alert('请选择查询时间');
-							return false;
-						}
-					} else if ($('#dateClass').find('.active').attr('data-type') == 'customized') {// 自定义
-						startDate = $('#userDefined_startDate').val();
-						endDate = $('#userDefined_endDate').val();
-						if (isEmpty(startDate) || isEmpty(endDate)) {
-							layer.alert('请选择查询时间');
-							return false;
-						}
-					} else if ($('#dateClass').find('.active').attr('data-type') == 'month') {// 月
-						startDate = $('#startDate_M_input').val();
-						if (isEmpty(startDate)) {
-							layer.alert('请选择查询时间');
-							return false;
-						}
-					}
-
-
+					//获取名称类型选中的name值
+					var nameType = $("#nameType input[name=nameType]:checked").val();
 					var merchantId = $('#form_sreach').find('[name=merchantId]').val();
-
 					var merchantName = $('#form_sreach').find('[name=merchantName]').val();
-
-					var startDate = startDate;
-					var endDate = endDate;
-					if (!isEmpty(startDate)) {
-
-						startDate = startDate.replace("-", "").replace("-", "");
-					}
+					var startDate = $('#form_sreach').find('[name=startDate]').val();
+					startDate = appendStartDate(startDate);
+					var endDate = $('#form_sreach').find('[name=endDate]').val();
 					if (!isEmpty(endDate)) {
-						endDate = endDate.replace("-", "").replace("-", "");
+						endDate = appendEndDate(endDate);
 					}
-
 					//执行重载					
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/repLogs/getPlaDivTotal',
+						url: urlPrefix + 'silver-web-shop/repLogs/getPlaDiv',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
-							merchantId: $.trim(merchantId),
-							merchantNameblurry: $.trim(merchantName),
-							type: $('#dateClass').find('.active').attr('data-type'),
+							merchantId: merchantId,
+							merchantName: merchantName,
+							nameType: nameType,
 							startDate: startDate,
 							endDate: endDate
 						}
@@ -333,47 +316,65 @@
 			table.on('tool(articleList)', function (obj) {
 
 				var data = obj.data;
-				var  event = obj.event;
-				if (event  == 'getSelAmount') {// 结算货款
-					var data = {
-						merchantId: data.merchantId,
-						date: data.dateSign
-					}
-					$.ajax({
-						url: urlPrefix + "silver-web-shop/repLogs/getSelAmount",
-						type: "POST",
-						async: false,
-						xhrFields: {
-							withCredentials: true
-						},
-						data: data,
-						success: function (response) {
-							if (response.status == 1) {
-								$('#getSelAmount_detail').find('[name=dai_fu]').val(response.datas.dai_fu)
-								$('#getSelAmount_detail').find('[name=order]').val(response.datas.order)
-							}
-						}
-					});
-					layer.open({
-						title: "结算货款明细",
-						type: 1,
-						closeBtn: 0,
-						skin: "layui-layer-rim", //加上边框
-						area: ["354px", "217px"], //宽高
-						btnAlign: "c",
-						content: $("#getSelAmount_detail"),
-						btn: ["确定"],
-						yes: function (index) {
-							$("#getSelAmount_detail").hide();
-							layer.closeAll();
-						}
-					});
+				var event = obj.event;
+				if (event == 'one_detail') {// 结算货款
 
-				}else if(event == "details"){
+					layer.open({
+						type: 2,
+						title: '一级推广商分润报表明细',
+						area: ['95%', '90%'],
+						maxmin: true,
+						content: './one_div_report_detail.html',
+						btnAlign: 'c',
+						btn: ['关闭'],
+						success: function (layero, index) {
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传参
+							iframe.getParent_data(obj);
+						},
+						btn1: function (index) {
+							layer.close(index);
+						}
+					});
+					// var data = {
+					// 	merchantId: data.merchantId,
+					// 	date: data.dateSign
+					// }
+					// $.ajax({
+					// 	url: urlPrefix + "silver-web-shop/repLogs/getSelAmount",
+					// 	type: "POST",
+					// 	async: false,
+					// 	xhrFields: {
+					// 		withCredentials: true
+					// 	},
+					// 	data: data,
+					// 	success: function (response) {
+					// 		if (response.status == 1) {
+					// 			$('#getSelAmount_detail').find('[name=dai_fu]').val(response.datas.dai_fu)
+					// 			$('#getSelAmount_detail').find('[name=order]').val(response.datas.order)
+					// 		}
+					// 	}
+					// });
+					// layer.open({
+					// 	title: "结算货款明细",
+					// 	type: 1,
+					// 	closeBtn: 0,
+					// 	skin: "layui-layer-rim", //加上边框
+					// 	area: ["354px", "217px"], //宽高
+					// 	btnAlign: "c",
+					// 	content: $("#getSelAmount_detail"),
+					// 	btn: ["确定"],
+					// 	yes: function (index) {
+					// 		$("#getSelAmount_detail").hide();
+					// 		layer.closeAll();
+					// 	}
+					// });
+				} else if (event == "details") {
 					layer.open({
 						type: 2,
 						title: '订单费用明细',
-						area: ['95%', '90%'],
+						area: ['100%', '100%'],
 						maxmin: true,
 						content: './exp_div_order_detail.html',
 						btnAlign: 'c',

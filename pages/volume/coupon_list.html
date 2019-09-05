@@ -121,18 +121,17 @@
 					</div>
 				</div>
 			</div>
-
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
-			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-			<script type="text/html" id="coupon_list_toolbar">
-				<div class="layui-btn-container">
-					<button type="button" class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>发行</button>				
-				</div>
-			</script>
 	</div>
 	</form>
+	<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+	<script type="text/html" id="coupon_list_toolbar">
+		<div class="layui-btn-container">
+			<button type="button" class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>发行</button>				
+		</div>
+	</script>
 
 	</div>
 	<script type="text/html" id="operateTpl">
@@ -262,7 +261,7 @@
 					limitName: 'size' //每页数据量的参数名，默认：limit
 				},
 				where: {
-					startDate: appendStartDate(getDay(-7))
+					startDate: appendStartDate($('#form_sreach').find('[name=startDate]').val())
 				},
 				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
 					return {
@@ -292,8 +291,8 @@
 				var userType = $('#form_sreach').find('[name=userType]');
 
 				var startDate = $('#form_sreach').find('[name=startDate]');
-				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
+				var endDate = $('#form_sreach').find('[name=endDate]');
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/coupon/findInfo',
@@ -318,9 +317,9 @@
 			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
 			 * http://www.layui.com/doc/modules/form.html#render
 			 * */
-			$(function () {
-				form.render();
-			});
+			// $(function () {
+			// 	form.render();
+			// });
 			var active = {
 				reload: function () {
 					var couponName = $('#form_sreach').find('[name=couponName]');
@@ -365,7 +364,8 @@
 							title: "发行",
 							skin: "layui-layer-rim", //加上边框
 							// fixed: false, //不固定
-							area: ["455px", "500px"], //宽高
+							area: ["400px", "500px"], //宽高
+							// maxmin: true,
 							// scrollbar: false,
 							// btnAlign: "c",
 							// btn: ["保存", "关闭"],

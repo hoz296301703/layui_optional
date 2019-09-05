@@ -66,7 +66,7 @@
 					<div class="layui-input-inline">
 						<select name="settlementStatus" lay-verify="required" lay-search="">
 							<option value="">全部</option>
-							<option value="pending">待处理</option>
+							<option value="pending" selected>待处理</option>
 							<option value="process">处理中</option>
 							<option value="success">成功</option>
 							<option value="failure">失败</option>
@@ -227,7 +227,8 @@
 					};
 				},
 				where: {
-					startDate: appendStartDate(getDay(-30))
+					startDate: appendStartDate(getDay(-30)),
+					settlementStatus: $('#form_sreach').find('[name=settlementStatus]').val()
 				},
 				done: function (res, curr, count) {
 					//如果是异步请求数据方式，res即为你接口返回的信息。
@@ -374,7 +375,7 @@
 								if (y == 'head') {
 									//获取结算总流水信息中的流水号、用于后台查询所有旗下的分账明细
 									serialNo.push(tem[y].serialNo);
-								}		
+								}
 							}
 						};
 						//转换格式

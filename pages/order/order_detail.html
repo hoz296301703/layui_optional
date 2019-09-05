@@ -51,21 +51,33 @@
                   <input type="text" name="tax" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+
+
+            </div>
+
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">运费</label>
                 <div class="layui-input-inline">
                   <input type="text" name="freight" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
-                <label class="layui-form-label">抵付说明</label>
+                <label class="layui-form-label">优惠金额</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="otherPayment" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">优惠说明</label>
                 <div class="layui-input-inline">
                   <input type="text" name="otherPayNotes" autocomplete="off" class="layui-input layui-disabled"
                     disabled>
                 </div>
               </div>
+
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">实际支付金额</label>
                 <div class="layui-input-inline">
@@ -87,9 +99,9 @@
                     disabled>
                 </div>
               </div>
-
             </div>
             <div class="layui-form-item">
+
               <div class="layui-inline">
                 <label class="layui-form-label">收货人电话</label>
                 <div class="layui-input-inline">
@@ -110,15 +122,16 @@
                   <input type="text" name="recCityName" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+            </div>
+
+            <div class="layui-form-item">
+
               <div class="layui-inline">
                 <label class="layui-form-label">区县</label>
                 <div class="layui-input-inline">
                   <input type="text" name="recAreaName" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">详细地址</label>
                 <div class="layui-input-inline">
@@ -132,6 +145,9 @@
                   <input type="text" name="ordererName" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+            </div>
+
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">下单人身份证号</label>
                 <div class="layui-input-inline">
@@ -139,22 +155,21 @@
                     disabled>
                 </div>
               </div>
-
               <div class="layui-inline">
                 <label class="layui-form-label">下单人电话</label>
                 <div class="layui-input-inline">
                   <input type="text" name="ordererTel" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">订单日期</label>
                 <div class="layui-input-inline">
                   <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
+
               <div class="layui-inline">
                 <label class="layui-form-label">交易流水号</label>
                 <div class="layui-input-inline">
@@ -292,6 +307,7 @@
 
     function getParent_data(obj) {
       g_data = obj.data;
+      console.info(g_data);
     }
 
     layui.extend({
@@ -357,6 +373,7 @@
         , "counterName": g_data.order.counterName
         , "status": g_data.order.status
         , "orderSourceType": g_data.order.orderSourceType
+        , "otherPayment": g_data.order.otherPayment
 
       })
 

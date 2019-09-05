@@ -232,7 +232,7 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'dateSign', width: 120, fixed: 'left', title: '日期', totalRowText: '合计', templet: function (item) {
+							field: 'dateSign', width: 110, fixed: 'left', title: '日期', totalRowText: '合计', templet: function (item) {
 								if (item.type == 'day') {
 									return item.dateSign.slice(0, 4) + '-' + item.dateSign.slice(4, 6) + '-' + item.dateSign.slice(6, 8);
 								} else if (item.type == 'month') {
@@ -242,12 +242,12 @@
 						}, {
 							field: 'merchantName', title: '商户名称', width: 170
 						}, {
-							field: 'merchantId', width: 170, title: '商户编号',
+							field: 'merchantId', width: 180, title: '商户编号',
 						}, {
 							field: 'orderDecTotalCount', title: '订单数量', width: 90, totalRow: true
 						},
 						{
-							field: 'orderDecTotalAmount', title: '订单总金额(元)', width: 150, totalRow: true
+							field: 'orderDecTotalAmount', title: '订单总金额(元)', width: 125, totalRow: true
 						}, {
 							field: 'orderDecFee', title: '订单申报服务费(元)', width: 150, totalRow: true
 						}, {

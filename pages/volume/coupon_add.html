@@ -25,106 +25,104 @@
 </head>
 
 <body>
-  <div class="weadmin-body">
-    <form class="layui-form" lay-filter="example">
-      <div class="layui-form-item">
-        <div class="layui-inline">
-          <label for="L_username" class="layui-form-label">
-            <span class="we-red">*</span>类型
-          </label>
-          <div class="layui-btn-group" id='type'>
-            <button type="button" name="1" class="layui-btn layui-btn-sm active">全平台</button>
-            <button type="button" name="2" class="layui-btn layui-btn-primary layui-btn-sm">店铺</button>
-            <button type="button" name="3" class="layui-btn layui-btn-primary layui-btn-sm">商品</button>
-          </div>
-        </div>
-        <div class="layui-inline">
-          <label for="L_username" class="layui-form-label">
-            <span class="we-red">*</span>优惠卷名称
-          </label>
-          <div class="layui-input-inline">
-            <input type="text" id="L_username" placeholder="请输入优惠卷的名称" name="couponName" lay-verify="required"
-              autocomplete="off" class="layui-input">
-          </div>
-        </div>
-
-        <div class="layui-inline">
-          <label for="L_username" class="layui-form-label">
-            <span class="we-red">*</span>介绍
-          </label>
-          <div class="layui-input-inline">
-            <input type="text" id="L_username" placeholder="请输入优惠卷的描述" name="detailInfo" lay-verify="required"
-              autocomplete="off" class="layui-input">
-          </div>
-        </div>
-        <div class="layui-inline">
-          <label class="layui-form-label">
-            <span class="we-red">*</span>金额
-          </label>
-          <div class="layui-input-inline" style="display: flex;justify-content: center;align-items: center;">
-            <input name="couponValue" placeholder="1-500" autocomplete="off" class="layui-input"
-              lay-verify="required|number" style="margin-right: 5px;">元
-          </div>
-        </div>
-        <div class="layui-inline">
-          <label for="L_username" class="layui-form-label">
-            <span class="we-red">*</span>条件
-          </label>
-          <input type="radio" name="couponType" lay-verify="couponType" value="1" title="满减">
-          <input type="radio" name="couponType" lay-verify="couponType" value="2" title="无门槛">
-        </div>
-        <div class="layui-inline" id='satisfy' style="display:none">
-          <label class="layui-form-label">
-            <span class="we-red">*</span>最低消费
-          </label>
-          <div class="layui-input-inline">
-            <input type="text" placeholder="请输入最低订单金额" name="satisfy" autocomplete="off" class="layui-input">
-          </div>
-        </div>
-        <div class="layui-inline">
-          <label class="layui-form-label">
-            <span class="we-red">*</span>发行张数
-          </label>
-          <div class="layui-input-inline">
-            <input placeholder="1-100" name="couponNumber" autocomplete="off" class="layui-input"
-              lay-verify="required|number">
-          </div>
-        </div>
-
-        <div class="layui-inline">
-          <label class="layui-form-label">
-            <span class="we-red">*</span>每人限领
-          </label>
-          <div class="layui-input-inline">
-            <input type="text" name="receiveLimit" placeholder="1-10" lay-verify="required" autocomplete="off"
-              class="layui-input" lay-verify="required|number">
-          </div>
-        </div>
-        <div class="layui-inline">
-          <label class="layui-form-label">
-            <span class="we-red">*</span>开始时间
-          </label>
-          <div class="layui-input-inline">
-            <input type="text" name="startTime" id="startTime" placeholder="请选择" lay-verify="required"
-              autocomplete="off" class="layui-input">
-          </div>
-        </div>
-        <div class="layui-inline">
-          <label class="layui-form-label">
-            <span class="we-red">*</span>结束时间
-          </label>
-          <div class="layui-input-inline">
-            <input type="text" name="endingTime" id="endingTime" placeholder="请选择" lay-verify="required"
-              autocomplete="off" class="layui-input">
-          </div>
-        </div>
+  <form id="form_sreach" class="layui-form " >
+    <div class="layui-inline">
+      <label for="L_username" class="layui-form-label">
+        <span class="we-red">*</span>类型
+      </label>
+      <div class="layui-btn-group" id='type'>
+        <button type="button" name="1" class="layui-btn layui-btn-sm active">全平台</button>
+        <button type="button" name="2" class="layui-btn layui-btn-primary layui-btn-sm">店铺</button>
+        <button type="button" name="3" class="layui-btn layui-btn-primary layui-btn-sm">商品</button>
       </div>
+    </div>
+    
+    <div class="layui-inline">
+      <label for="L_username" class="layui-form-label">
+        <span class="we-red">*</span>优惠卷名称
+      </label>
 
-      <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
-        <button type="button" class="layui-btn" lay-filter="publish" lay-submit="">发行</button>
+      <div class="layui-input-inline">
+        <input type="text" id="L_username" placeholder="请输入优惠卷的名称" name="couponName" lay-verify="required"
+          autocomplete="off" class="layui-input">
       </div>
-    </form>
-  </div>
+    </div>
+
+    <div class="layui-inline">
+      <label for="L_username" class="layui-form-label">
+        <span class="we-red">*</span>介绍
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="L_username" placeholder="请输入优惠卷的描述" name="detailInfo" lay-verify="required"
+          autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">
+        <span class="we-red">*</span>金额
+      </label>
+      <div class="layui-input-inline" style="display: flex;justify-content: center;align-items: center;">
+        <input name="couponValue" placeholder="1-500" autocomplete="off" class="layui-input"
+          lay-verify="required|number" style="margin-right: 5px;">元
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label for="L_username" class="layui-form-label">
+        <span class="we-red">*</span>条件
+      </label>
+      <input type="radio" name="couponType" lay-verify="couponType" value="1" title="满减">
+      <input type="radio" name="couponType" lay-verify="couponType" value="2" title="无门槛">
+    </div>
+    <div class="layui-inline" id='satisfy' style="display:none">
+      <label class="layui-form-label">
+        <span class="we-red">*</span>最低消费
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" placeholder="请输入最低订单金额"  lay-verify="required|number" name="satisfy" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">
+        <span class="we-red">*</span>发行张数
+      </label>
+      <div class="layui-input-inline">
+        <input placeholder="1-100" name="couponNumber" autocomplete="off" class="layui-input"
+          lay-verify="required|number">
+      </div>
+    </div>
+
+    <div class="layui-inline">
+      <label class="layui-form-label">
+        <span class="we-red">*</span>每人限领
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" name="receiveLimit" placeholder="1-10" lay-verify="required" autocomplete="off"
+          class="layui-input" lay-verify="required|number">
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">
+        <span class="we-red">*</span>开始时间
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" name="startTime" id="startTime" placeholder="请选择" lay-verify="required" autocomplete="off"
+          class="layui-input">
+      </div>
+    </div>
+    <div class="layui-inline">
+      <label class="layui-form-label">
+        <span class="we-red">*</span>结束时间
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" name="endingTime" id="endingTime" placeholder="请选择" lay-verify="required" autocomplete="off"
+          class="layui-input">
+      </div>
+    </div>
+
+    <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+      <button type="button" class="layui-btn" lay-filter="publish" lay-submit="">发行</button>
+    </div>
+  </form>
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
@@ -151,7 +149,7 @@
       });
       //自定义验证规则
       form.verify({
-        couponType: function (value,item) {
+        couponType: function (value, item) {
           var $ = layui.$;
           var verifyName = $(item).attr('name')
             , verifyType = $(item).attr('type')
@@ -191,7 +189,7 @@
         layer.load(2);
         //添加类型
         data.field.useLimit = $('#type').find('.active').attr('name');
-        console.info(data.field);
+        // console.info(data.field);
         $.ajax({
           url: urlPrefix + "silver-web-shop/coupon/publish",
           // type: "POST",
@@ -239,9 +237,7 @@
       //   console.info(data.value);
       //   layer.msg('hello');
       // });
-
     });
-
   </script>
 </body>
 
