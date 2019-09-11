@@ -155,6 +155,7 @@
             </div>
           </form>
         </div>
+
         <!-- 备案信息 -->
         <div class="layui-tab-item">
           <div class="layui-form" id="record">
@@ -185,7 +186,7 @@
               <div class="layui-colla-item">
                 <h2 class="layui-colla-title">备案商品信息</h2>
                 <div class="layui-colla-content layui-show">
-                  <form class="layui-form" lay-filter="accordion" id="accordion"> 
+                  <form class="layui-form" lay-filter="accordion" id="accordion">
                     <div class="layui-form-item">
                       <div class="layui-inline">
                         <label class="layui-form-label">企业商品自编号</label>
@@ -195,230 +196,247 @@
                         </div>
                       </div>
                       <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>检验检疫商品备案编号</label>
+                        <label class="layui-form-label">商家代码</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
+                          <input disabled type="text" name="marCode" autocomplete="off"
+                            class="layui-input layui-disabled">
                         </div>
                       </div>
+
                     </div>
                     <div class="layui-form-item">
                       <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>海关正式备案编号</label>
+                        <label class="layui-form-label"><span class="we-red">*</span>检验检疫商品备案编号</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
+                          <input type="text" name="ciqGoodsNo" lay-verify="required" autocomplete="off"
+                            class="layui-input">
                         </div>
                       </div>
+
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>海关正式备案编号</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="cusGoodsNo" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
 
                       <div class="layui-inline">
                         <label class="layui-form-label">账册号</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
+                          <input type="text" name="emsNo" autocomplete="off" class="layui-input">
                         </div>
                       </div>
-                    </div>
-
-                    <div class="layui-form-item">
                       <div class="layui-inline">
                         <label class="layui-form-label">项号</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
+                          <input type="text" name="itemNo" autocomplete="off" class="layui-input">
                         </div>
                       </div>
 
+
+                    </div>
+
+                    <div class="layui-form-item">
                       <div class="layui-inline">
                         <label class="layui-form-label"><span class="we-red">*</span>上架名称</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                      <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>行邮税号</label>
-                        <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
-                        </div>
-                      </div>
-
-                      <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>HS编码</label>
-                        <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                      <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>条形码</label>
-                        <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
-                        </div>
-                      </div>
-
-                      <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>商品名称</label>
-                        <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                      <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>规格</label>
-                        <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
-                        </div>
-                      </div>
-
-                      <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>品牌</label>
-                        <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" autocomplete="off" class="layui-input">
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                      <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>计量单位</label>
-                        <div class="layui-input-inline">
-                          <select name="aa" lay-verify="required" lay-search="">
-                            <option value="">请选择或搜索选择</option>
-                            <option value="1">layer</option>
-                            <option value="2">form</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>第一法定计量单位</label>
-                        <div class="layui-input-inline">
-                          <select name="" lay-verify="required" lay-search="">
-                            <option value="">请选择或搜索选择</option>
-                            <option value="1">layer</option>
-                            <option value="2">form</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                      <div class="layui-inline">
-                        <label class="layui-form-label">第二法定计量单位</label>
-                        <div class="layui-input-inline">
-                          <select name="" lay-search="">
-                            <option value="">请选择或搜索选择</option>
-                            <option value="1">layer</option>
-                            <option value="2">form</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>单价</label>
-                        <div class="layui-input-inline">
-                          <input type="text" name="spareGoodsBrand" lay-verify="required" autocomplete="off"
+                          <input type="text" name="shelfGName" lay-verify="required" autocomplete="off"
                             class="layui-input">
                         </div>
                       </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>行邮税号</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="ncadCode" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+
                     </div>
 
                     <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>HS编码</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="hsCode" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>条形码</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="barCode" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>商品名称</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="goodsName" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>规格</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="goodsStyle" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>品牌</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="brand" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>计量单位</label>
+                        <div class="layui-input-inline">
+                          <select name="gUnit" lay-verify="required" lay-search="">
+
+                          </select>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>第一法定计量单位</label>
+                        <div class="layui-input-inline">
+                          <select name="stdUnit" lay-verify="required" lay-search="">
+
+                          </select>
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label">第二法定计量单位</label>
+                        <div class="layui-input-inline">
+                          <select name="secUnit" lay-search="">
+
+                          </select>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>单价</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="regPrice" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
                       <div class="layui-inline">
                         <label class="layui-form-label">是否赠品</label>
                         <div class="layui-input-inline">
-                          <select name="" lay-search="">
+                          <select name="giftFlag" lay-search="">
                             <option value="0">是</option>
                             <option value="1">否</option>
                           </select>
                         </div>
                       </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
                       <div class="layui-inline">
                         <label class="layui-form-label"><span class="we-red">*</span>原产国</label>
                         <div class="layui-input-inline">
-                          <select name="" lay-verify="required" lay-search="">
-                            <option value="0">是</option>
-                            <option value="1">否</option>
+                          <select name="originCountry" lay-verify="required" lay-search="">
+
                           </select>
                         </div>
                       </div>
-                    </div>
-
-                    <div class="layui-form-item">
                       <div class="layui-inline">
                         <label class="layui-form-label"><span class="we-red">*</span>商品品质及说明</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="" autocomplete="off" lay-verify="required" class="layui-input">
+                          <input type="text" name="quality" autocomplete="off" lay-verify="required"
+                            class="layui-input">
                         </div>
                       </div>
 
+
+                    </div>
+
+                    <div class="layui-form-item">
                       <div class="layui-inline">
                         <label class="layui-form-label">品质证明说明</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="" autocomplete="off" class="layui-input">
+                          <input type="text" name="qualityCertify" autocomplete="off" class="layui-input">
                         </div>
                       </div>
-                    </div>
-
-                    <div class="layui-form-item">
                       <div class="layui-inline">
                         <label class="layui-form-label"><span class="we-red">*</span>生产厂家或供应商</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="" lay-verify="required" autocomplete="off" class="layui-input">
+                          <input type="text" name="manufactory" lay-verify="required" autocomplete="off"
+                            class="layui-input">
                         </div>
                       </div>
 
-                      <div class="layui-inline">
-                        <label class="layui-form-label"><span class="we-red">*</span>净重</label>
-                        <div class="layui-input-inline">
-                          <input type="text" name="" lay-verify="required" autocomplete="off" class="layui-input">
-                        </div>
-                      </div>
+
                     </div>
 
                     <div class="layui-form-item">
                       <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>净重</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="netWt" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
                         <label class="layui-form-label"><span class="we-red">*</span>毛重</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="" lay-verify="required" autocomplete="off" class="layui-input">
+                          <input type="text" name="grossWt" lay-verify="required" autocomplete="off"
+                            class="layui-input">
                         </div>
                       </div>
 
-                      <div class="layui-inline">
-                        <label class="layui-form-label">超范围使用食品添加剂</label>
-                        <div class="layui-input-inline">
-                          <input type="text" name="" autocomplete="off" class="layui-input">
-                        </div>
-                      </div>
+
                     </div>
 
                     <div class="layui-form-item layui-form-text">
                       <div class="layui-inline">
                         <label class="layui-form-label">备注</label>
                         <div class="layui-input-inline">
-                          <textarea placeholder="请输入备注" class="layui-textarea"></textarea>
+                          <textarea name="notes" placeholder="请输入备注" class="layui-textarea"></textarea>
                         </div>
                       </div>
                       <div class="layui-inline">
                         <label class="layui-form-label">成分</label>
                         <div class="layui-input-inline">
-                          <textarea placeholder="请输入成分" class="layui-textarea"></textarea>
+                          <textarea name="ingredient" placeholder="请输入成分" class="layui-textarea"></textarea>
                         </div>
                       </div>
                     </div>
 
                     <div class="layui-form-item">
                       <div class="layui-inline">
-                        <label class="layui-form-label">含有毒害物质</label>
+                        <label class="layui-form-label">超范围使用食品添加剂</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="" autocomplete="off" class="layui-input">
+                          <input type="text" name="additiveflag" autocomplete="off" class="layui-input">
                         </div>
                       </div>
                       <div class="layui-inline">
-                        <label class="layui-form-label">商家代码</label>
+                        <label class="layui-form-label">含有毒害物质</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="" autocomplete="off" class="layui-input">
+                          <input type="text" name="poisonflag" autocomplete="off" class="layui-input">
                         </div>
                       </div>
                     </div>
@@ -427,13 +445,13 @@
                       <div class="layui-inline">
                         <label class="layui-form-label">SKU</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="" autocomplete="off" class="layui-input">
+                          <input type="text" name="SKU" autocomplete="off" class="layui-input">
                         </div>
                       </div>
                       <div class="layui-inline">
                         <label class="layui-form-label"><span class="we-red">*</span>电子口岸(16位编号)</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="" lay-verify="required" autocomplete="off" class="layui-input">
+                          <input type="text" name="DZKN_NO" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
                       </div>
                     </div>
@@ -442,26 +460,32 @@
                       <div class="layui-inline">
                         <label class="layui-form-label"><span class="we-red">*</span>南沙智检备案号</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="" lay-verify="required" autocomplete="off" class="layui-input">
+                          <input type="text" name="ebEntNo" lay-verify="required" autocomplete="off"
+                            class="layui-input">
                         </div>
                       </div>
                       <div class="layui-inline">
                         <label class="layui-form-label"><span class="we-red">*</span>电商企业海关备案名称</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="" lay-verify="required" autocomplete="off" class="layui-input">
+                          <input type="text" name="ebEntName" lay-verify="required" autocomplete="off"
+                            class="layui-input">
                         </div>
                       </div>
+                    </div>
+                    <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+                      <button type="button" class="layui-btn" lay-filter="editMerchantRecordDetail"
+                        lay-submit="">保存</button>
                     </div>
                   </form>
                 </div>
 
               </div>
+
             </div>
-            <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
-              <button type="button" class="layui-btn" lay-filter="editMerchantRecordDetail" lay-submit="">保存</button>
-            </div>
+
           </div>
         </div>
+
         <!-- 备案详情 -->
         <div class="layui-tab-item">
           <table class="layui-table" lay-size="sm" id="reNote">
@@ -523,7 +547,7 @@
                   countryData[r].countryName +
                   "</option>";
               }
-              $('#accordion').find('[name=aa]').html(countryOptionStr);
+              $('#accordion').find('[name=originCountry]').html(countryOptionStr);
               form.render();
             } else {
 
@@ -540,13 +564,27 @@
           success: function (response) {
             if (response.status == 1) {
               unitData = response.datas;
+              var unitOptionStr = ""; // 国家
+              unitOptionStr += '<option value="">请选择</option>';
+              for (var r = 0; r < unitData.length; r++) {
+                unitOptionStr +=
+                  '<option value="' +
+                  unitData[r].meteringCode +
+                  '">' +
+                  unitData[r].meteringName +
+                  "</option>";
+              }
+              $('#accordion').find('[name=stdUnit]').html(unitOptionStr);
+              $('#accordion').find('[name=secUnit]').html(unitOptionStr);
+              $('#accordion').find('[name=gUnit]').html(unitOptionStr);
+              form.render();
             } else {
 
             }
           }
         });
       };
-
+      _queryUnit();
 
       var _findMerchantDetail = function () {
         $.ajax({
@@ -598,6 +636,67 @@
                 , "customsPortName": goodsRecord.customsPortName + '-' + goodsRecord.customsName + '-' + goodsRecord.ciqOrgName
               })
 
+              // 备案商品信息
+              var jsonParams = null;
+              if (!isEmpty(goods.spareParams)) {
+                jsonParams = JSON.parse(goods.spareParams);
+              } else {
+                jsonParams = {};
+              }
+
+              var accordion_entGoodsNo = '';// 商品编码
+              if (!isEmpty(jsonParams.marCode)) {
+                var index = goods.entGoodsNo.lastIndexOf("_");
+                accordion_entGoodsNo = goods.entGoodsNo.substring(0, index);
+              } else {
+                accordion_entGoodsNo = goods.entGoodsNo;
+              }
+              var accordion_marCode = '';// 商家代码
+              if (!isEmpty(jsonParams.marCode)) {
+                accordion_marCode = jsonParams.marCode;
+              }
+              var accordion_SKU = '';// SKU
+              if (!isEmpty(jsonParams.SKU)) {
+                accordion_SKU = jsonParams.SKU;
+              }
+              setTimeout(function () {
+                form.val('accordion', {
+                  "entGoodsNo": accordion_entGoodsNo
+                  , "ciqGoodsNo": goods.ciqGoodsNo
+                  , "cusGoodsNo": goods.cusGoodsNo
+                  , "emsNo": goods.emsNo
+                  , "itemNo": goods.itemNo
+                  , "shelfGName": goods.shelfGName
+                  , "ncadCode": goods.ncadCode
+                  , "hsCode": goods.hsCode
+                  , "barCode": goods.barCode
+                  , "goodsName": goods.goodsName
+                  , "goodsStyle": goods.goodsStyle
+                  , "brand": goods.brand
+                  , "gUnit": goods.gUnit
+                  , "stdUnit": goods.stdUnit
+                  , "secUnit": goods.secUnit
+                  , "regPrice": goods.regPrice
+                  , "giftFlag": goods.giftFlag
+                  , "originCountry": goods.originCountry
+                  , "quality": goods.quality
+                  , "qualityCertify": goods.qualityCertify
+                  , "manufactory": goods.manufactory
+                  , "netWt": goods.netWt
+                  , "grossWt": goods.grossWt
+                  , "additiveflag": goods.additiveflag
+                  , "notes": goods.notes
+                  , "ingredient": goods.ingredient
+                  , "poisonflag": goods.poisonflag
+                  , "marCode": accordion_marCode
+                  , "SKU": accordion_SKU
+                  , "DZKN_NO": goods.DZKNNo
+                  , "ebEntNo": goods.ebEntNo
+                  , "ebEntName": goods.ebEntName
+                })
+              }, 1000)
+
+
               // ** 商品备案详情 ** //
               if (goods.reNote != "") {
                 var reNoteArr = [];
@@ -618,7 +717,26 @@
         });
       };
       _findMerchantDetail()
-
+      // 修改备案商品信息
+      form.on('submit(editMerchantRecordDetail)', function (data) {
+        layer.load();
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/goodsRecord/managerUpdateGoodsRecordInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            layer.closeAll();
+            if (response.status == 1) {
+              layer.msg("保存成功");
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
     });
 
   </script>
