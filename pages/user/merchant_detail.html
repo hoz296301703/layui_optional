@@ -234,7 +234,7 @@
         <div class="layui-tab-item">
           <form class="layui-form" lay-filter="ywxx" id="ywxx">
             <input type="hidden" name="merchantId">
-            <div class="layui-form-item">            
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">
                   <span class="we-red">*</span>支付类型
@@ -331,8 +331,8 @@
                 </div>
               </div>
             </div>
-            
-            
+
+
             <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
               <button type="button" class="layui-btn" lay-filter="merchantBusiness" lay-submit="">保存</button>
             </div>
@@ -869,6 +869,7 @@
                 _findMerchantDetail();
               }, 1000);
             } else {
+              layer.close();
               layer.alert(response.msg);
             }
           }
@@ -984,6 +985,7 @@
                   layer.msg("删除成功！");
                   _findMerchantRecordDetail();
                 } else {
+                  layer.close();
                   layer.alert(response.msg);
                 }
               }
@@ -1035,6 +1037,7 @@
               }, 1000);
             } else {
               layer.alert(response.msg, function () {
+                layer.close();
                 _findMerchantRecordDetail();
               });
 
@@ -1189,7 +1192,8 @@
       form.on('submit(merchantBusiness)', function (data) {
         var url = "silver-web-shop/merchantBusiness/updateInfo"; // 修改接口
         if ($("#ywxx").attr("data-id") == 1) {
-          url = "silver-web-shop/merchantBusiness/addInfo";
+          url = "silver-web-shop/merchantBusiness/addInfo";// 新增
+          data.field.merchantId = g_data.merchantId;
         }
 
         layer.load(2);
@@ -1210,6 +1214,7 @@
               }, 1000);
             } else {
               layer.alert(response.msg, function () {
+                layer.close();
                 _merchantBusiness();
               });
 
@@ -2255,6 +2260,7 @@
               layer.msg("修改成功");
               _reload_portRate();
             } else {
+              
               layer.alert(response.msg);
             }
           }
