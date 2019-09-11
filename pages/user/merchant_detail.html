@@ -1037,7 +1037,7 @@
               }, 1000);
             } else {
               layer.alert(response.msg, function () {
-                layer.close();
+                layer.closeAll();
                 _findMerchantRecordDetail();
               });
 
@@ -1214,7 +1214,7 @@
               }, 1000);
             } else {
               layer.alert(response.msg, function () {
-                layer.close();
+                layer.closeAll();
                 _merchantBusiness();
               });
 
@@ -1410,6 +1410,7 @@
               }, 1000);
             } else {
               layer.alert(response.msg, function () {
+                layer.closeAll();
                 _logistics();
               });
 
