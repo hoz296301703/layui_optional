@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./static/css/weadmin.css">
     <script src="./static/js/common.js" charset="utf-8"></script>
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script src="https://www.recaptcha.net/recaptcha/api.js?render=6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD"></script>
 
 </head>
 <style>
@@ -60,50 +61,52 @@
             });
             //监听提交
             form.on('submit(login)', function (data) {
-                $.ajax({
-                    url: urlPrefix + "silver-web-shop/manager/login",
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    timeout: 10000, //超时时间设置，单位毫秒
-                    type: "POST",
-                    cache: false,
-                    // crossDomain: true == !(document.all),
-                    data: data.field,
-                    success: function (response) {
-                        if (response.status == 1) {
-                            location.href = './index.html';
-                        } else {
-                            layer.alert(response.msg);
+                requset(data);
+            });
+            // 请求Google reCaptcha 
+            var requset = function (data) {
+                //加载层-默认风格
+                layer.load();
+                //-----------------------
+                grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'managerLogin' }).then(function (token) {
+                    // document.getElementById('token').value = token;
+                    console.info(token);
+                    data.field.token = token;
+                    $.ajax({
+                        url: urlPrefix + "silver-web-shop/manager/login",
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        timeout: 10000, //超时时间设置，单位毫秒
+                        type: "POST",
+                        cache: false,                        
+                        data: data.field,
+                        success: function (response) {
+                            layer.closeAll('loading');
+                            if (response.status == 1) {
+                                location.href = './index.html';
+                            } else {
+                                layer.alert(response.msg);
+                            }
+                        },
+                        error: function () {
+                            layer.alert(response.msg)
+                        },
+                        complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                            if (status == 'timeout') {//超时,status还有success,error等值的情况
+                                layer.alert("请求超时！");
+                            }
                         }
-                    },
-                    error: function () {
-                        layer.alert(response.msg)
-                    },
-                    complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
-                        if (status == 'timeout') {//超时,status还有success,error等值的情况
-                            layer.alert("请求超时！");
-                        }
-                    }
+                    });
+                    return false;
+
+
                 });
-                return false;
-            });
-        });   
-    </script>
-    <script src="https://www.recaptcha.net/recaptcha/api.js?render=6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD"></script>
-    <script>
-        // 请求Google reCaptcha 
-        var requset = function () {
-            grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'managerLogin' }).then(function (token) {
-                document.getElementById('token').value = token;
-            });
-        }
-        grecaptcha.ready(function () {
-            requset();
-        });
+            }           
             //---------------------------------
+        });
     </script>
-    <!-- 底部结束 -->
+
 </body>
 
 </html>

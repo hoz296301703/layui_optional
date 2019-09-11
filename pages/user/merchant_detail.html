@@ -234,19 +234,10 @@
         <div class="layui-tab-item">
           <form class="layui-form" lay-filter="ywxx" id="ywxx">
             <input type="hidden" name="merchantId">
-            <div class="layui-form-item">
+            <div class="layui-form-item">            
               <div class="layui-inline">
                 <label class="layui-form-label">
-                  <span class="we-red">*</span>商户名称
-                </label>
-                <div class="layui-input-inline">
-                  <input type="text" placeholder="请输入商户名称" name="merchantName" lay-verify="required " autocomplete="off"
-                    disabled class="layui-input layui-disabled">
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">
-                  <span class="we-red">*</span>业务类型
+                  <span class="we-red">*</span>支付类型
                 </label>
                 <div class="layui-input-inline">
                   <select name="businessType" lay-verify="required" lay-filter="aihao">
@@ -256,26 +247,25 @@
                   </select>
                 </div>
               </div>
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">
-                  <span class="we-red">*</span>推送类型
+                  <span class="we-red">*</span>申报类型
                 </label>
                 <div class="layui-input-inline">
                   <select name="pushType" lay-verify="required" lay-filter="aihao">
                     <option value=""></option>
                     <option value="all">全部</option>
-                    <option value="orderRecord">订单推送</option>
-                    <option value="paymentRecord">支付单推送</option>
-                    <option value="goodsRecord">商品备案推送</option>
+                    <option value="goodsRecord">商品备案</option>
+                    <option value="orderRecord">订单申报</option>
+                    <option value="paymentRecord">支付单申报</option>
                   </select>
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">
-                  <span class="we-red">*</span>实名认证状态
+                  <span class="we-red">*</span>实名认证
                 </label>
                 <div class="layui-input-inline">
                   <select name="idCardVerifySwitch" lay-verify="required" lay-filter="aihao">
@@ -285,12 +275,9 @@
                   </select>
                 </div>
               </div>
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">
-                  <span class="we-red">*</span>第三方返回类型
+                  <span class="we-red">*</span>订单返回类型
                 </label>
                 <div class="layui-input-inline">
                   <select name="thirdPartyReType" lay-verify="required" lay-filter="aihao">
@@ -301,9 +288,12 @@
                   </select>
                 </div>
               </div>
+            </div>
+
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">
-                  <span class="we-red">*</span>会员代付状态
+                  <span class="we-red">*</span>订单代付
                 </label>
                 <div class="layui-input-inline">
                   <select name="memberPay" lay-verify="required" lay-filter="aihao">
@@ -313,12 +303,9 @@
                   </select>
                 </div>
               </div>
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">
-                  <span class="we-red">*</span>订单支付业务类型
+                  <span class="we-red">*</span>充值类型
                 </label>
                 <div class="layui-input-inline">
                   <select name="orderPayType" lay-verify="required" lay-filter="aihao">
@@ -330,6 +317,22 @@
               </div>
             </div>
 
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>订单接入类型
+                </label>
+                <div class="layui-input-inline">
+                  <select name="orderAccessType" lay-verify="required" lay-filter="aihao">
+                    <option value="">请选择</option>
+                    <option value="api">线上接口</option>
+                    <option value="excel">excel导入</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            
             <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
               <button type="button" class="layui-btn" lay-filter="merchantBusiness" lay-submit="">保存</button>
             </div>
@@ -1166,6 +1169,7 @@
                 , "thirdPartyReType": datas.thirdPartyReType
                 , "memberPay": datas.memberPay
                 , "orderPayType": datas.orderPayType
+                , "orderAccessType": datas.orderAccessType
               })
               $("#ywxx").attr("data-id", 2); // 修改标识
             } else {

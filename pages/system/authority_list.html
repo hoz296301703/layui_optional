@@ -81,7 +81,6 @@
 				<div class="layui-btn-container">
 					<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>添加</button>
 				</div>
-				
 			</script>
 		<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 		<!-- 添加信息 -->
@@ -100,20 +99,20 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">一级名称</label>
 				<div class="layui-input-inline">
-					<input type="text" name="firstName" autocomplete="off" placeholder="请输入一级名称" class="layui-input"
+					<input type="text" name="firstName" autocomplete="off" placeholder="请输入一级权限名称" class="layui-input"
 						lay-verify="required">
 				</div>
 			</div>
 			<div class="layui-form-item">
 				<label class="layui-form-label">一级编码</label>
 				<div class="layui-input-inline">
-					<input type="tel" name="firstCode" autocomplete="off" class="layui-input" lay-verify="required">
+					<input type="tel" name="firstCode" autocomplete="off" placeholder="请输入一级权限编码" class="layui-input" lay-verify="required">
 				</div>
 			</div>
 			<div class="layui-form-item">
 				<label class="layui-form-label">二级名称</label>
 				<div class="layui-input-inline">
-					<input type="text" name="secondName" autocomplete="off" placeholder="" class="layui-input"
+					<input type="text" name="secondName" autocomplete="off" placeholder="请输入二级权限名称"  class="layui-input"
 						lay-verify="required">
 				</div>
 
@@ -121,13 +120,13 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">二级编码</label>
 				<div class="layui-input-inline">
-					<input type="tel" name="secondCode" autocomplete="off" class="layui-input" lay-verify="required">
+					<input type="tel" name="secondCode" autocomplete="off"  placeholder="请输入二级权限编码" class="layui-input" lay-verify="required">
 				</div>
 			</div>
 			<div class="layui-form-item">
 				<label class="layui-form-label">三级名称</label>
 				<div class="layui-input-inline">
-					<input type="text" name="thirdName" autocomplete="off" placeholder="" class="layui-input"
+					<input type="text" name="thirdName" autocomplete="off"placeholder="请输入三级权限名称" class="layui-input"
 						lay-verify="required">
 				</div>
 
@@ -135,7 +134,7 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">三级编码</label>
 				<div class="layui-input-inline">
-					<input type="tel" name="thirdCode" autocomplete="off" class="layui-input" lay-verify="required">
+					<input type="tel" name="thirdCode" autocomplete="off"   placeholder="请输入二级权限编码" class="layui-input" lay-verify="required">
 				</div>
 			</div>
 			<div class="layui-form-item" style="text-align: center;">
@@ -324,25 +323,23 @@
 			//头工具栏事件
 			table.on('toolbar(articleList)', function (obj) {
 				var checkStatus = table.checkStatus(obj.config.id);
+				var data = obj.data;
 				switch (obj.event) {
 					case 'add':
-						layer.open({
-							title: "添加",
-							type: 2,
+						// console.info(data);
+						$("#insert").find("[name]").val("");// 初始化内容    						
+						$("#insert").find("[name]").attr("disabled", false).removeClass("layui-disabled");
+						//屏蔽
+						$("#insert").find("[name=update_btn]").attr("style", 'display:none');
+						// $("#insert").find("[name=firstName]").attr("disabled", true).addClass("layui-disabled");
+						// $("#insert").find("[name=firstCode]").attr("disabled", true).addClass("layui-disabled");
+						form.render('select');
+						insertLogi = layer.open({
+							title: "添加二级权限信息",
+							type: 1,
 							skin: "layui-layer-rim", //加上边框
-							area: ["600px", "510px"], //宽高
-							scrollbar: false,
-							// btnAlign: "c",
-							// btn: ["保存", "关闭"],
-							content: './customs_add.html',
-							// yes: function (index) {
-
-							// }
-							// , btn2: function () {
-
-							// }, cancel: function () {
-
-							// }
+							area: ["300px", "350px"], //宽高
+							content: $("#insert")
 						});
 						break;
 					// case 'getCheckLength':
@@ -371,7 +368,6 @@
 					$("#insert").find("[name=groupName]").attr("disabled", true);
 					$("#insert").find("[name=firstName]").attr("disabled", true).addClass("layui-disabled");
 					$("#insert").find("[name=firstCode]").attr("disabled", true).addClass("layui-disabled");
-
 
 					form.render('select');
 					insertLogi = layer.open({
@@ -459,7 +455,7 @@
 				});
 			});
 
-			// 添加权限信息
+			// 更新权限信息
 			form.on('submit(update_btn)', function (data) {
 				layer.load(2);
 				$.ajax({
