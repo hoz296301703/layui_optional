@@ -303,7 +303,7 @@
 			});
 			var wind = null;
 			var _tools = {
-				func1: function () {					
+				func1: function () {
 					layer.close(wind);
 				}
 			}
@@ -330,6 +330,7 @@
 						success: function (layero, index) {
 							// 获取子页面的iframe
 							var iframe = window['layui-layer-iframe' + index];
+							console.info(obj);
 							// 向子页面的全局函数child传参
 							iframe.getParent_data(obj);
 						}

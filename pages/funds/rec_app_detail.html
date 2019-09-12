@@ -143,7 +143,7 @@
             <thead>
               <tr>
                 <th>日期<span class="we-red"></span></th>
-                <th>当前节点<span class="we-red"></span></th>
+                <th>节点<span class="we-red"></span></th>
                 <th>处理人<span class="we-red"></span></th>
                 <th>状态<span class="we-red"></span></th>
                 <th>备注<span class="we-red"></span></th>
@@ -161,7 +161,8 @@
             <textarea name="note" placeholder="不通过时必须填写" class="layui-textarea"></textarea>
           </div>
         </div>
-        <div id="rev_btn" class="layui-form-item" style="text-align: center;  position: fixed; bottom: 0;left: 50%; transform: translate(-50%);">
+        <div id="rev_btn" class="layui-form-item"
+          style="text-align: center;  position: fixed; bottom: 0;left: 50%; transform: translate(-50%);">
           <button type="button" id="passed" class="layui-btn layui-btn-sm" lay-filter="passed" lay-submit=""
             style="display: none">通过</button>
           <button type="button" id='failure' class="layui-btn layui-btn-sm layui-btn-warm" lay-filter="failure"
@@ -219,63 +220,7 @@
         logs = datas.log;
         return datas;
       }
-      g_data = getDetail();
 
-      //表单初始赋值
-      form.val('example', {
-        "remittanceSerialNo": content.remittanceSerialNo
-        , "remittanceAmount": toMoney(content.remittanceAmount)
-        , "remittanceAccount": content.remittanceAccount
-        , "remittanceDate": G_format(content.remittanceDate.time, "yyyy-MM-dd")
-        , "remittanceName": content.remittanceName
-        , "remittanceBank": content.remittanceBank
-        , "beneficiaryAccount": content.beneficiaryAccount
-        , "beneficiaryBank": content.beneficiaryBank
-        , "beneficiaryName": content.beneficiaryName
-        , "remittanceReceipt": content.remittanceReceipt
-        , "capitalAmount": digitUppercase(content.remittanceAmount)
-        , "type": content.type
-      })
-
-      //渲染审核日志信息
-      function logs_info() {
-        var divStr;
-        for (var key in logs) {
-          var obj = logs[key];
-          // 审核标识：1-待审核、2-通过、3-不通过
-          var flag = obj.reviewerFlag;
-          var name = "";
-          if (flag == 1) {
-            name = "待审核";
-          } else if (flag == 2) {
-            name = "通过";
-          } else if (flag == 3) {
-            name = "不通过";
-          }
-          divStr += `
-                 <tr >                 
-                  <td>
-                    <div class="layui-input-inline">${G_format(obj.createDate.time, "yyyy-MM-dd hh:mm:ss")}</div>
-                  </td>
-                  <td>
-                    <div class="layui-input-inline">${obj.currentNodeName}</div>
-                  </td>
-                  <td>
-                    <div class="layui-input-inline">${obj.reviewerName}</div>
-                  </td>
-                  <td>
-                    <div class="layui-input-inline">${name}</div>
-                  </td>
-                  <td>
-                    <div class="layui-input-inline">${obj.note}</div>
-                  </td>                 
-                              
-                </tr>`
-        }
-        $('#rec_app_rev_table tbody').html(divStr);
-        form.render();
-      }
-      logs_info();
 
       function img() {
         var url = content.remittanceReceipt;
@@ -334,7 +279,7 @@
           success: function (a, b) {
             // $("#insert").find("[name=insert_btn]").attr("style", "display:none;");
             // $(".layui-layer-btn0").attr("style", "class='layui-btn layui-btn-disabled'");
-            $(".layui-layer-btn0").css({ "border": "1px solid #e6e6e6", "background-color": "#FBFBFB", "color": "#C9C9C9", "cursor": "not-allowed" ,"opacity" : "1"});
+            $(".layui-layer-btn0").css({ "border": "1px solid #e6e6e6", "background-color": "#FBFBFB", "color": "#C9C9C9", "cursor": "not-allowed", "opacity": "1" });
             var fn = function () {
               $(".layui-layer-btn0").text('确定(' + i + ')s');
             };
@@ -431,7 +376,61 @@
           }
         });
       }
-
+      g_data = getDetail();
+      //表单初始赋值
+      form.val('example', {
+        "remittanceSerialNo": content.remittanceSerialNo
+        , "remittanceAmount": toMoney(content.remittanceAmount)
+        , "remittanceAccount": content.remittanceAccount
+        , "remittanceDate": G_format(content.remittanceDate.time, "yyyy-MM-dd")
+        , "remittanceName": content.remittanceName
+        , "remittanceBank": content.remittanceBank
+        , "beneficiaryAccount": content.beneficiaryAccount
+        , "beneficiaryBank": content.beneficiaryBank
+        , "beneficiaryName": content.beneficiaryName
+        , "remittanceReceipt": content.remittanceReceipt
+        , "capitalAmount": digitUppercase(content.remittanceAmount)
+        , "type": content.type
+      })
+      //渲染审核日志信息
+      function logs_info() {
+        var divStr;
+        for (var key in logs) {
+          var obj = logs[key];
+          // 审核标识：1-待审核、2-通过、3-不通过
+          var flag = obj.reviewerFlag;
+          var name = "";
+          if (flag == 1) {
+            name = "待审核";
+          } else if (flag == 2) {
+            name = "通过";
+          } else if (flag == 3) {
+            name = "不通过";
+          }
+          divStr += `
+                 <tr >                 
+                  <td>
+                    <div class="layui-input-inline">${G_format(obj.createDate.time, "yyyy-MM-dd hh:mm:ss")}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${obj.currentNodeName}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${obj.reviewerName}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${name}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${obj.note}</div>
+                  </td>                 
+                              
+                </tr>`
+        }
+        $('#rec_app_rev_table tbody').html(divStr);
+        form.render();
+      }
+      logs_info();
     });
   </script>
 </body>
