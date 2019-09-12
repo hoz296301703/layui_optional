@@ -29,8 +29,7 @@
         <div class="message">银盟跨境电商服务平台运营系统</div>
         <div id="darkbannerwrap"></div>
 
-        <form method="post" class="layui-form">
-            <input id="token" name="token" value="" type="hidden" />
+        <form method="post" class="layui-form">           
             <input name="account" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
             <hr class="hr15">
             <input name="loginPassword" lay-verify="required" placeholder="密码" type="password" class="layui-input">
@@ -63,14 +62,13 @@
             form.on('submit(login)', function (data) {
                 requset(data);
             });
-            // 请求Google reCaptcha 
             var requset = function (data) {
                 //加载层-默认风格
                 layer.load();
-                //-----------------------
+                // 请求Google reCaptcha 
                 grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'managerLogin' }).then(function (token) {
                     // document.getElementById('token').value = token;
-                    console.info(token);
+                    // console.info(token);
                     data.field.token = token;
                     $.ajax({
                         url: urlPrefix + "silver-web-shop/manager/login",
@@ -99,8 +97,6 @@
                         }
                     });
                     return false;
-
-
                 });
             }           
             //---------------------------------
