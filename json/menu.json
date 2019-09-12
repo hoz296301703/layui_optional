@@ -133,19 +133,19 @@
 		},
 		{
 			"id": "volume",
-			"name": "卡卷管理",
+			"name": "卡券管理",
 			"icon": "&#xe723;",
 			"url": "",
 			"children": [			
 				{
 					"id": "volume_1",
-					"name": "兑换卷",
+					"name": "兑换券",
 					"icon": "",
 					"url": "./pages/volume/gift_volume_list.html"
 				},
 				{
 					"id": "volume_2",
-					"name": "优惠卷",
+					"name": "优惠券",
 					"icon": "",
 					"url": "./pages/volume/coupon_list.html"
 				}

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<!--优惠卷的html-->
+<!--优惠券的html-->
 
 <head>
 	<meta charset="UTF-8">
@@ -39,47 +39,56 @@
 
 <body>
 	<div class="weadmin-body">
-		<form id="form_sreach" class="layui-form">
-			<div class="layui-form-item">
-				<div class="layui-inline">
-					<label class="layui-form-label">名称</label>
-					<div class="layui-input-inline">
-						<input type="text" name="couponName" placeholder="请输入姓名" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">种类</label>
-					<div class="layui-input-inline">
-						<select name="couponType" lay-verify="required" lay-search="">
-							<option value="" hidden>全部</option>
-							<option value="1">满减</option>
-							<option value="2">无门槛</option>
-						</select>
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">区间</label>
-					<div class="layui-input-inline">
-						<select name="useLimit" lay-verify="required" lay-search="">
-							<option value="" hidden>全部</option>
-							<option value="1">全平台</option>
-							<option value="2">店铺</option>
-							<option value="3">单个商品</option>
-						</select>
-					</div>
-				</div>
+		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+			<ul class="layui-tab-title">
+				<li class="layui-this">优惠券信息</li>
+				<li id="cou_wal_btn">钱包信息</li>
+				<li id="recharge_btn">充值信息</li>
+			</ul>
+			<div class="layui-tab-content">
+				<!--优惠券-->
+				<div class="layui-tab-item layui-show">
+					<form id="form_sreach" class="layui-form">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">名称</label>
+								<div class="layui-input-inline">
+									<input type="text" name="couponName" placeholder="请输入姓名" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">种类</label>
+								<div class="layui-input-inline">
+									<select name="couponType" lay-verify="required" lay-search="">
+										<option value="" hidden>全部</option>
+										<option value="1">满减</option>
+										<option value="2">无门槛</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">区间</label>
+								<div class="layui-input-inline">
+									<select name="useLimit" lay-verify="required" lay-search="">
+										<option value="" hidden>全部</option>
+										<option value="1">全平台</option>
+										<option value="2">店铺</option>
+										<option value="3">单个商品</option>
+									</select>
+								</div>
+							</div>
 
-				<div class="layui-inline">
-					<label class="layui-form-label">发行角色</label>
-					<div class="layui-input-inline">
-						<select name="userType" lay-verify="required" lay-search="">
-							<option value="" hidden>全部</option>
-							<option value="merchant">商户</option>
-							<option value="manager">管理员</option>
-						</select>
-					</div>
-				</div>
-				<!-- 	<div class="layui-inline">
+							<div class="layui-inline">
+								<label class="layui-form-label">发行角色</label>
+								<div class="layui-input-inline">
+									<select name="userType" lay-verify="required" lay-search="">
+										<option value="" hidden>全部</option>
+										<option value="merchant">商户</option>
+										<option value="manager">管理员</option>
+									</select>
+								</div>
+							</div>
+							<!-- 	<div class="layui-inline">
 					<label class="layui-form-label">商品名称</label>
 					<div class="layui-input-inline">
 						<input type="text" name="goodsName" placeholder="请输入商品名称" class="layui-input">
@@ -108,30 +117,46 @@
 						</select>
 					</div>
 				</div> -->
-				<div class="layui-inline">
-					<label class="layui-form-label">日期</label>
-					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
-							placeholder="年-月-日">
-					</div>
-					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
-					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
-							placeholder="年-月-日">
-					</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">日期</label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="startDate" name="startDate"
+										autocomplete="off" placeholder="年-月-日">
+								</div>
+								    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="endDate" name="endDate"
+										autocomplete="off" placeholder="年-月-日">
+								</div>
+							</div>
+						</div>
+						<div style="text-align: center;">
+							<button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+								data-type="reload">搜索</button>
+						</div>
+					</form>
+					<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+					<script type="text/html" id="coupon_list_toolbar">
+						<div class="layui-btn-container">
+							<button type="button" class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>发行</button>				
+						</div>
+					</script>
 				</div>
+				<!---钱包信息--start--------------------->
+				<div class="layui-tab-item" id="cou_wal_Details">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!---钱包信息--end----------------------->
+				<!---充值信息--start--------------------->
+				<div class="layui-tab-item" id="recharge_info">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!---充值信息--end----------------------->
 			</div>
-			<div style="text-align: center;">
-				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
-			</div>
-	</div>
-	</form>
-	<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-	<script type="text/html" id="coupon_list_toolbar">
-		<div class="layui-btn-container">
-			<button type="button" class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>发行</button>				
 		</div>
-	</script>
+	</div>
+
+
 
 	</div>
 	<script type="text/html" id="operateTpl">
@@ -393,6 +418,16 @@
 			// table.on('tool(articleList)', function (obj) {
 			// 	var data = obj.data;			
 			// });
+			//跳转至钱包明细
+			$('#cou_wal_btn').on('click', function () {
+				var h = $(window).height() - 30;
+				$("#cou_wal_Details").find('iframe').attr('src', "cou_wal_detail.html").css('height', h + 'px');
+			})
+			//跳转至充值信息
+			$('#recharge_btn').on('click', function () {
+				var h = $(window).height() - 30;
+				$("#recharge_info").find('iframe').attr('src', "cou_rec_list.html").css('height', h + 'px');
+			})
 		});
 	</script>
 </body>
