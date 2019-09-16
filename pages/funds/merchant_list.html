@@ -75,11 +75,83 @@
 
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>					
+				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="offlineRecharge">线下充值</a>					
 			</script>
 			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 			<script src="../../static/js/common.js" charset="utf-8"></script>
 		</form>
+		<!--  代商户提交线下加款申请弹窗 -->
+		<div id="offlineBox_pop" style="display: none;">
+			<form style="margin-top: 20px;" id="apply_form" method="post">
+				<ul class="edit-ul" id="recharge_apply_ul_insApp">
+					<li>
+						<span>汇款金额:</span>
+						<input id="remittanceAmount" name="remittanceAmount" class="edit-input noVal"
+							style="width:100px;" type="text">
+						<b style="color:red;">*汇款金额与转账回执单上的金额必须一致</b>
+					</li>
+					<li>
+						<span>银行汇款流水号:</span>
+						<input class="edit-input noVal" style="width:180px;" name="remittanceSerialNo"
+							placeholder=" 银行汇款流水号" type="text">
+						<b style="color:red;">*汇款流水请填写正确，避免造成充值失败</b>
+					</li>
+					<li>
+						<span>收款账户:</span>
+						<input name="beneficiaryAccountType" value="public" class="" type="hidden">
+						<ul class="" id="bankList"
+							style="display: inline-block;vertical-align: text-top;margin-left: 3px;">
+							<li class="item" style="height: 35px;width: 122px;margin: 0;position: relative;
+				  line-height: 35px;">
+								<img width="100px" src="images/gs.jpg">
+								<!-- <i class="iconfont icon-youxiajiaogouxuan" style="position: absolute;right: 6px; bottom: 3px; font-size: 20px;color: #26ef10;"></i> -->
+							</li>
+						</ul>
+						<p style="display: none; margin-left: 160px;
+				color: #666;">
+							<b>收款人账户：3602062709200219758
+								<br>收款人名称：广州银盟信息科技有限公司
+								<br>收款人开户行：中国工商银行股份有限公司广州科技园支行
+							</b>
+						</p>
 
+					</li>
+
+					<li>
+						<span>汇款账户名称:</span>
+						<input class="edit-input noVal" name="remittanceName" type="text" style="width:180px;">
+						<b style="color:red;">*汇款账户银行开户名</b>
+					</li>
+					<li>
+						<span>汇款账号:</span>
+						<input class="edit-input noVal" name="remittanceAccount" type="text" style="width:276px;">
+						<b style="color:red;">*汇款账户银行账号</b>
+					</li>
+					<li>
+						<span>汇款开户行:</span>
+						<input class="edit-input noVal" name="remittanceBank" type="text" style="width:276px;">
+						<b style="color:red;">*汇款账户银行开户行名称</b>
+					</li>
+					</li>
+					<li>
+						<span>汇款时间:</span>
+						<input class="edit-input noVal" name="remittanceDate" type="date">
+					</li>
+					<li>
+						<span>汇款回执:</span>
+						<input id="hid_upfile" class="noVal" style="margin-left:3px;display: inline-block;" name="hz"
+							onchange="wallet_module.ImgChange(event)" type="file" />
+					</li>
+					<li>
+						<span></span>
+						<div id="select_upfile"
+							style="cursor:pointer;margin-top:5px;width:280px;height:160px;background-color:#d3dbde; display:inline-block;vertical-align:top;">
+							<p style="line-height:160px;text-align:center;">上传汇款回单+</p>
+						</div>
+					</li>
+				</ul>
+			</form>
+		</div>
 	</div>
 	<script>
 		layui.extend({
@@ -116,13 +188,13 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '日期',width:170, fixed: 'left', templet: function (item) {
+							field: 'createDate', title: '日期', width: 170, fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
 							field: 'merchantName', title: '名称', width: 210
 						}, {
-							field: 'merchantId', title: '编号',width:170
+							field: 'merchantId', title: '编号', width: 170
 						}, {
 							field: 'balance', title: '可用余额', width: 100
 						}, {
@@ -137,7 +209,7 @@
 						}, {
 							field: 'withdraw', title: '可提现资金'
 						}, {
-							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', width: 200, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}
 					]
 				],
@@ -254,6 +326,56 @@
 							layer.close(index);
 						}
 					});
+				} else if (obj.event === 'offlineRecharge') {// 线下充值
+					$("#offlineBox_pop .noVal").val("");
+					$("#select_upfile").html(
+						'<p style="line-height:160px;text-align:center;">上传汇款回单+</p>'
+					);
+					$("#apply_form [name=merchantId]").siblings('.searchable-select').find('.searchable-select-holder').html('请选择');
+					$("#apply_form [name=beneficiaryAccountType]")
+						.siblings("p")
+						.hide();
+					layer.open({
+						title: "代商户提交线下加款申请",
+						type: 1,
+						closeBtn: 0,
+						btnAlign: "c",
+						skin: "layui-layer-rim", //加上边框
+						area: ["1000px", "600px"], //宽高
+						content: $("#offlineBox_pop"),
+						btn: ["保存", "关闭"],
+						yes: function (index) {
+							var flag = false;
+							$("#recharge_apply_ul_insApp").find(".edit-input")
+								.each(function () {
+									if (
+										$(this)
+											.val()
+											.trim() == ""
+									) {
+										console.log($(this))
+										flag = true;
+										return;
+									}
+								});
+							if (flag) {
+								layer.alert("请填写完整信息再提交");
+								return;
+							}
+							if ($("#hid_upfile").val() == "") {
+								layer.alert("请上传汇款回执凭据图片");
+								return;
+							}
+
+
+							$("#apply_form").attr('action', urlPrefix + 'silver-web-shop/offlineRecharge/insApp');
+							$("#apply_form").submit();
+						},
+						btn2: function () {
+							$("#offlineBox_pop").hide();
+						}
+					});
+
 				} else if (obj.event === 'reset') {// 重置密码
 					layer.alert("确定重置密码？", {
 						time: 0, //不自动关闭

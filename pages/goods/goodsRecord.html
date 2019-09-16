@@ -64,7 +64,7 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">商品自编号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="goodsId" placeholder="请输入商品自编号" class="layui-input">
+						<input type="text" name="entGoodsNo" placeholder="请输入商品自编号" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
@@ -258,7 +258,7 @@
 						// 		return goodsClass;
 						// 	}
 						// },
-						 {
+						{
 							field: 'customsPortName', title: '口岸', width: 90, templet: function (item) {
 								return item.customsPortName.value;
 							}
@@ -349,7 +349,7 @@
 			var _reload = function () {
 				var merchantName = $('#form_sreach').find('[name=merchantName]');
 				var goodsName = $('#form_sreach').find('[name=goodsName]');
-				var goodsId = $('#form_sreach').find('[name=goodsId]');
+				var entGoodsNo = $('#form_sreach').find('[name=entGoodsNo]');
 				var code = $('#form_sreach').find('[name=code]');
 				var status = $('#form_sreach').find('[name=status]');
 				var recordFlag = $('#form_sreach').find('[name=recordFlag]');
@@ -369,7 +369,7 @@
 					where: {
 						goodsMerchantNameblurry: merchantName.val(),
 						goodsNameblurry: goodsName.val(),
-						goodsId: goodsId.val(),
+						entGoodsNo: entGoodsNo.val(),
 						code: code.val(),
 						status: status.val(),
 						recordFlag: recordFlag.val(),
@@ -448,7 +448,7 @@
 				reload: function () {
 					var merchantName = $('#form_sreach').find('[name=merchantName]');
 					var goodsName = $('#form_sreach').find('[name=goodsName]');
-					var goodsId = $('#form_sreach').find('[name=goodsId]');
+					var entGoodsNo = $('#form_sreach').find('[name=entGoodsNo]');
 					var code = $('#form_sreach').find('[name=code]');
 					var status = $('#form_sreach').find('[name=status]');
 					var recordFlag = $('#form_sreach').find('[name=recordFlag]');
@@ -468,7 +468,7 @@
 						where: {
 							goodsMerchantNameblurry: merchantName.val(),
 							goodsNameblurry: goodsName.val(),
-							goodsId: goodsId.val(),
+							entGoodsNo: entGoodsNo.val(),
 							code: code.val(),
 							status: status.val(),
 							recordFlag: recordFlag.val(),
@@ -521,6 +521,7 @@
 					}
 				});
 			});
+	
 
 
 		});

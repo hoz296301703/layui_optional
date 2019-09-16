@@ -138,9 +138,9 @@
               </div>
             </div>
             <div class="layui-form-item">
-              <div class="layui-inline">
+              <div class="layui-inline" style="width: 73%;">
                 <label class="layui-form-label">商品图片</label>
-                <div class="layui-input-inline">
+                <div class="layui-input-inline" style="width: 73%;">
                   <div class="layui-upload-list" id="goodsImg"></div>
                 </div>
               </div>
@@ -451,7 +451,8 @@
                       <div class="layui-inline">
                         <label class="layui-form-label"><span class="we-red">*</span>电子口岸(16位编号)</label>
                         <div class="layui-input-inline">
-                          <input type="text" name="DZKN_NO" lay-verify="required" autocomplete="off" class="layui-input">
+                          <input type="text" name="DZKN_NO" lay-verify="required" autocomplete="off"
+                            class="layui-input">
                         </div>
                       </div>
                     </div>
@@ -617,9 +618,16 @@
 
               // 商品主图
               var spareGoodsImageArr = goods.spareGoodsImage.split(';');
+              var tag = "https://ym.191ec.com/img/";
               for (var i = 0; i < spareGoodsImageArr.length; i++) {
                 if (spareGoodsImageArr.length - 1 != i) {
-                  $('#goodsImg').append('<img src="' + spareGoodsImageArr[i] + '" class="layui-upload-img">')
+                  if (goods.spareGoodsImage.indexOf(tag) != -1) {
+                    $('#goodsImg').append('<img src="' + spareGoodsImageArr[i] + '" class="layui-upload-img">');
+                  } else {
+                    // goodsImg = imgPrefix(goods.goodsMerchantId) + goods.spareGoodsImage.split(";")[0];
+                    $('#goodsImg').append('<img src="' + imgPrefix(goods.goodsMerchantId) + spareGoodsImageArr[i] + '" class="layui-upload-img">');
+                  }
+
                 }
 
               }
@@ -734,6 +742,20 @@
             } else {
               layer.alert(response.msg);
             }
+          }
+        });
+      });
+      //图片浏览
+      $('#goodsImg').on('click', 'img', function (e) {
+        layer.photos({
+          photos: {
+            "data": [   //相册包含的图片，数组格式
+              {
+                "alt": e.target.alt,
+                "src": e.target.src, //原图地址
+                "thumb": e.target.src //缩略图地址
+              }
+            ]
           }
         });
       });

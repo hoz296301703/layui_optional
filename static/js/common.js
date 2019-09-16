@@ -2,7 +2,12 @@
 var urlPrefix = "https://ym.191ec.com/";
 // var urlPrefix = 'http://120.132.118.211:8080/';
 
+var imgPrefix = function (id) {
+  var imgPrefix1 = "https://ym.191ec.com/img/merchant/";
+  var imgPrefix2 = "/goods/";
 
+  return imgPrefix1 + id + imgPrefix2;
+};
 var merchantImgPrefix = "https://ym.191ec.com/img/";// 图片拼接前缀
 // 日期格式化 fmt => "yyyy-MM-dd hh:mm:ss"
 var G_format = function (datetime, fmt) {
