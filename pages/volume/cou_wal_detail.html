@@ -154,8 +154,8 @@
               <input type="text" name="createBy" placeholder="请输入操作人名称" class="layui-input">
             </div>
             <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
-            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="download"
-              style="float: right;"><em class="layui-icon">&#xe601;</em>下载查询结果</button>
+            <!-- <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="download"
+              style="float: right;"><em class="layui-icon">&#xe601;</em>下载查询结果</button> -->
           </li>
         </ul>
       </form>
@@ -463,66 +463,92 @@
       //渲染统计
       // total();
 
-      $(document).on('click', '#download', function () {
-        layer.alert("下载当前查询结果", {
-          time: 0, //不自动关闭
-          btnAlign: "c",
-          btn: ["下载", "取消"],
-          yes: function (index) {
-            //下载URL
-            var url = "silver-web-shop/merchantWalletLog/download?merchantWalletId=" + g_data.walletId;
+      // $(document).on('click', '#download', function () {
+      //   layer.alert("下载当前查询结果", {
+      //     time: 0, //不自动关闭
+      //     btnAlign: "c",
+      //     btn: ["下载", "取消"],
+      //     yes: function (index) {
+      //       //下载URL
+      //       var url = "silver-web-shop/merchantWalletLog/download?merchantWalletId=" + g_data.walletId;
 
-            var startDate = $('#form_sreach').find('[name=startDate]').val();
-            var endDate = $('#form_sreach').find('[name=endDate]').val();
-            if (isEmpty(startDate) || isEmpty(endDate)) {
-              layer.alert('请选择查询时间');
-              return false;
-            }
-            //拼接开始时间
-            startDate = appendStartDate(startDate);
-            //拼接结束时间
-            endDate = appendEndDate(endDate);
+      //       var startDate = $('#form_sreach').find('[name=startDate]').val();
+      //       var endDate = $('#form_sreach').find('[name=endDate]').val();
+      //       if (isEmpty(startDate) || isEmpty(endDate)) {
+      //         layer.alert('请选择查询时间');
+      //         return false;
+      //       }
+      //       //拼接开始时间
+      //       startDate = appendStartDate(startDate);
+      //       //拼接结束时间
+      //       endDate = appendEndDate(endDate);
 
-            url += '&startDate=' + startDate + '&endDate=' + endDate;
-            //订单编号
-            var orderId = $('#form_sreach').find('[name=orderId]').val();
-            if (!isEmpty(orderId)) {// 商户id
-              url += '&orderId=' + orderId;
+      //       url += '&startDate=' + startDate + '&endDate=' + endDate;
+      //       //订单编号
+      //       var orderId = $('#form_sreach').find('[name=orderId]').val();
+      //       if (!isEmpty(orderId)) {// 商户id
+      //         url += '&orderId=' + orderId;
+      //       }
+      //       //交易名称
+      //       var serialName = $('#form_sreach').find('[name=serialName]').val();
+      //       if (!isEmpty(serialName)) {
+      //         url += '&serialName=' + serialName;
+      //       }
+      //       // 对方名称
+      //       var targetName = $('#form_sreach').find('[name=targetName]').val();
+      //       if (!isEmpty(targetName)) {
+      //         url += '&targetName=' + targetName;
+      //       }
+      //       // 类型
+      //       var type = $('#typeItem').find('.active').attr('name');
+      //       if (!isEmpty(type)) {
+      //         url += '&type=' + type;
+      //       }
+      //       console.info(urlPrefix + url);
+      //       window.location.href = urlPrefix + url;
+      //       layer.closeAll();
+      //       layer.alert(
+      //         '<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+      //         {
+      //           time: 0, //不自动关闭
+      //           btn: ["关闭"],
+      //           btnAlign: "c",
+      //           yes: function (index) {
+      //             layer.close(index);
+      //           }
+      //         }
+      //       );
+      //     }
+      //   });
+      // })     
+      function getWal() {
+        //加载层-默认风格
+        // layer.load();
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/coupon/query",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          // data: params,
+          success: function (response) {
+            // layer.closeAll('loading');
+            if (response.status == 1) {
+              console.info(response.datas);
+              $('#g-balance').html(response.datas.balance)
+              // layer.msg('操作成功', { icon: 1 });
+              //关闭弹窗
+              // setTimeout(function () {
+              // parent.tools.func1();
+              // parent.table_reload();
+              // }, 1500)
+            } else {
+              layer.alert(response.msg);
             }
-            //交易名称
-            var serialName = $('#form_sreach').find('[name=serialName]').val();
-            if (!isEmpty(serialName)) {
-              url += '&serialName=' + serialName;
-            }
-            // 对方名称
-            var targetName = $('#form_sreach').find('[name=targetName]').val();
-            if (!isEmpty(targetName)) {
-              url += '&targetName=' + targetName;
-            }
-            // 类型
-            var type = $('#typeItem').find('.active').attr('name');
-            if (!isEmpty(type)) {
-              url += '&type=' + type;
-            }
-            console.info(urlPrefix + url);
-            window.location.href = urlPrefix + url;
-            layer.closeAll();
-            layer.alert(
-              '<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
-              {
-                time: 0, //不自动关闭
-                btn: ["关闭"],
-                btnAlign: "c",
-                yes: function (index) {
-                  layer.close(index);
-                }
-              }
-            );
           }
         });
-      })
-      // console.info(g_data.merchantName);
-      $('#g-merchantName').html(g_data.merchantName)
+      }
+      getWal();
     });
   </script>
 </body>

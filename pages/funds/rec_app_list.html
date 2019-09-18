@@ -330,7 +330,6 @@
 						success: function (layero, index) {
 							// 获取子页面的iframe
 							var iframe = window['layui-layer-iframe' + index];
-							console.info(obj);
 							// 向子页面的全局函数child传参
 							iframe.getParent_data(obj);
 						}

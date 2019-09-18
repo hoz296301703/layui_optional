@@ -109,13 +109,13 @@
             </div>
           </div>
           <div class="layui-inline">
-            <label class="layui-form-label">收款人名称</label>
+            <label class="layui-form-label">收款人开户行</label>
             <div class="layui-input-inline">
               <input type="text" name="beneficiaryBank" autocomplete="off" class="layui-input layui-disabled" disabled>
             </div>
           </div>
           <div class="layui-inline">
-            <label class="layui-form-label">收款人开户行</label>
+            <label class="layui-form-label">收款人名称</label>
             <div class="layui-input-inline">
               <input type="text" name="beneficiaryName" autocomplete="off" class="layui-input layui-disabled" disabled>
             </div>
@@ -198,7 +198,7 @@
       // });
       //查询订单详情
       function getDetail() {
-        console.info(g_data.offlineRechargeId);
+        // console.info(g_data.offlineRechargeId);
         var datas = null;
         $.ajax({
           url: urlPrefix + "silver-web-shop/offlineRecharge/getDetail",
@@ -222,17 +222,7 @@
       }
 
 
-      function img() {
-        var url = content.remittanceReceipt;
-        // 银行回执
-        if (!isEmpty(url)) {// 判断是否有上传的图片
-          $("#remittanceReceipt").attr("src", url.replace("#", '')); // 渲染图片
-        } else {
-          $("#remittanceReceipt").attr("src", "../../static/images/bgImg.jpg"); // 渲染默认图片
-        }
-      }
-      //渲染汇款回执
-      img();
+
 
       //图片浏览
       $('#rec_app_detail_form').on('click', '#remittanceReceipt', function (e) {
@@ -248,14 +238,7 @@
           }
         });
       });
-      // 审核状态：firstTrial-运营初审、financialAudit-财务审核、termination-终止、complete-完成
-      var reviewerType = content.reviewerType;
-      // 判断管理员标识与当前申请单状态、进行按钮显示
-      if ((managerFlag == 2 && reviewerType == "firstTrial") || (managerFlag == 3 && reviewerType == "financialAudit") || (managerFlag == 1 && reviewerType == "firstTrial")) {
-        $("#rev_btn").find("#passed").show();
-        $("#rev_btn").find("#failure").show();
-        $("#note").show();
-      }
+
       // 关闭弹窗
       $('#rev_btn .close').click(function () {
         parent.tools.func1();
@@ -431,6 +414,29 @@
         form.render();
       }
       logs_info();
+
+      function img() {
+        var url = content.remittanceReceipt;
+        // 银行回执
+        if (!isEmpty(url)) {// 判断是否有上传的图片
+          $("#remittanceReceipt").attr("src", url.replace("#", '')); // 渲染图片
+        } else {
+          $("#remittanceReceipt").attr("src", "../../static/images/bgImg.jpg"); // 渲染默认图片
+        }
+      }
+      //渲染汇款回执
+      img();
+
+      // 审核状态：firstTrial-运营初审、financialAudit-财务审核、termination-终止、complete-完成
+      var reviewerType = content.reviewerType;
+      console.info('-reviewerType->' + reviewerType);
+      console.info('-managerFlag->' + managerFlag);
+      // 判断管理员标识与当前申请单状态、进行按钮显示
+      if ((managerFlag == 2 && reviewerType == "firstTrial") || (managerFlag == 3 && reviewerType == "financialAudit") || (managerFlag == 1 && reviewerType == "firstTrial")) {
+        $("#rev_btn").find("#passed").show();
+        $("#rev_btn").find("#failure").show();
+        $("#note").show();
+      }
     });
   </script>
 </body>

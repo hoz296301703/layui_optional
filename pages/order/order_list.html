@@ -48,7 +48,7 @@
 	<div class="weadmin-body">
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
-				
+
 
 				<div class="layui-inline">
 					<label class="layui-form-label">商户名称</label>
@@ -257,8 +257,7 @@
 						}, {
 							field: 'waybillNo', title: '运单号', width: 140
 						}, {
-							field: 'orderTotalPrice', title: '订单金额', width: 100
-
+							field: 'actualAmountPaid', title: '支付金额', width: 100
 						},
 						// {
 						// 	field: 'tax', title: '税款', width: 60
@@ -430,7 +429,7 @@
 						content: './order_detail.html',
 						btnAlign: 'c',
 						btn: ['关闭'],
-						success: function (layero, index) {							
+						success: function (layero, index) {
 							// 获取子页面的iframe
 							var iframe = window['layui-layer-iframe' + index];
 							// 向子页面的全局函数child传参

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<!--充值申请信息详情html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 120px;
+    }
+
+    .layui-input {
+      width: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-collapse" lay-filter="test">
+    <form class="layui-form" id="rec_app_detail_form" lay-filter="example">
+      <div class="weadmin-body">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">流水号</label>
+            <div class="layui-input-inline">
+              <input type="text" name="serialNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">申请人名称</label>
+            <div class="layui-input-inline">
+              <input type="text" name="createBy" autocomplete="off" class="layui-input layui-disabled" disabled>
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">申请人编号</label>
+            <div class="layui-input-inline">
+              <input type="text" name="operatorId" autocomplete="off" class="layui-input layui-disabled" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">金额</label>
+            <div class="layui-input-inline">
+              <input type="text" name="amount" autocomplete="off" class="layui-input layui-disabled" disabled>
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">节点</label>
+            <div class="layui-input-inline">
+              <div class="layui-input-inline">
+                <select name="processNode" lay-filter="aihao" class="layui-disabled" disabled>
+                  <option value="">全部</option>
+                  <option value="1">运营审核</option>
+                  <option value="2">财务审核</option>
+                  <option value="200">完成</option>
+                  <option value="400">终止</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">日期</label>
+            <div class="layui-input-inline">
+              <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+            </div>
+          </div>
+          <!-- <div class="layui-inline">
+            <label class="layui-form-label">汇款账户名称</label>
+            <div class="layui-input-inline">
+              <input type="text" name="remittanceName" autocomplete="off" class="layui-input layui-disabled" disabled>
+            </div>
+          </div>-->
+
+          <!-- <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">收款账户</label>
+            <div class="layui-input-inline">
+              <input type="text" name="beneficiaryAccount" autocomplete="off" class="layui-input layui-disabled"
+                disabled>
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">收款人开户行</label>
+            <div class="layui-input-inline">
+              <input type="text" name="beneficiaryBank" autocomplete="off" class="layui-input layui-disabled" disabled>
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">收款人名称</label>
+            <div class="layui-input-inline">
+              <input type="text" name="beneficiaryName" autocomplete="off" class="layui-input layui-disabled" disabled>
+            </div>
+          </div>
+        </div> -->
+          <!-- <div class="layui-inline">
+          <label class="layui-form-label">附件</label>
+          <div class="layui-input-inline">
+            <img width="100px" height="100px" style="border: 1px solid #ddd;" class="layui-upload-img"
+              id="remittanceReceipt">
+            <p id="remittanceReceipt" style="display: inline-block;"></p>
+          </div>
+        </div> -->
+          <hr class="layui-bg-blue">
+          <div class="layui-form">
+            <table class="layui-table" id="rec_app_rev_table" lay-size="sm">
+              <colgroup>
+                <col width="140">
+                <col width="210">
+                <col width="210">
+                <col width="210">
+                <col width="210">
+                <col>
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>日期<span class="we-red"></span></th>
+                  <th>节点<span class="we-red"></span></th>
+                  <th>处理人<span class="we-red"></span></th>
+                  <th>状态<span class="we-red"></span></th>
+                  <th>备注<span class="we-red"></span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 内容 -->
+              </tbody>
+            </table>
+          </div>
+          <div id="note" class="layui-form-item layui-form-text" style="display: none">
+            <hr class="layui-bg-orange">
+            <label class="layui-form-label">说明</label>
+            <div class="layui-input-block">
+              <textarea name="note" placeholder="不通过时必须填写" class="layui-textarea"></textarea>
+            </div>
+          </div>
+          <div id="rev_btn" class="layui-form-item"
+            style="text-align: center;  position: fixed; bottom: 0;left: 50%; transform: translate(-50%);">
+            <button type="button" id="passed" class="layui-btn layui-btn-sm" lay-filter="passed" lay-submit=""
+              style="display: none">通过</button>
+            <button type="button" id='failure' class="layui-btn layui-btn-sm layui-btn-warm" lay-filter="failure"
+              lay-submit="" style="display: none">不通过</button>
+            <button type="button" id='close' class="layui-btn layui-btn-sm layui-btn-primary close">关闭</button>
+          </div>
+    </form>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量 
+    var logs = '';//审核日志
+    function getParent_data(obj) {
+      managerFlag = obj.managerFlag;
+      g_data = obj.data;
+      console.info(g_data);
+    }
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form', 'element', 'jquery', 'layer', 'admin'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        element = layui.element,
+        admin = layui.admin,
+        layer = layui.layer;
+      //监听折叠
+      // element.on('collapse(test)', function (data) {
+      //   //点击触发事件
+      //   layer.msg('展开状态：' + data.show);
+      // });
+      //查询详情
+      function getDetail() {
+        var datas = null;
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/couWalRecLogs/getDetails",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          async: false,
+          data: { serialNo: g_data.serialNo },
+          success: function (response) {
+            if (response.status == 1) {
+              datas = response.datas.content;
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+        console.info(datas);
+        return datas;
+      }
+
+      //图片浏览
+      // $('#rec_app_detail_form').on('click', '#remittanceReceipt', function (e) {
+      //   layer.photos({
+      //     photos: {
+      //       "data": [   //相册包含的图片，数组格式
+      //         {
+      //           "alt": e.target.alt,
+      //           "src": e.target.src, //原图地址
+      //           "thumb": e.target.src //缩略图地址
+      //         }
+      //       ]
+      //     }
+      //   });
+      // });
+
+      // 关闭弹窗
+      $('#rev_btn .close').click(function () {
+        parent.tools.func1();
+      })
+      // 通过
+      form.on('submit(passed)', function (data) {
+        // var typeName = '';
+        // //  类型：recResAmo-会员代付货款、recMerBal-商户余额 
+        // if (content.type == 'recResAmo') {
+        //   typeName = '会员代付货款';
+        // } else if (content.type == 'recMerBal') {
+        //   typeName = '商户余额';
+        // }
+        // var i = 5;
+        // var interval;
+        // var info = "充值类型【" + typeName + "】小写金额【<span style='color: #FF7B0E; font-size: 18px;'>" + toMoney(content.remittanceAmount) + "</span>】" +
+        //   "大写金额【<span style='color: #f30286; font-size: 18px;'>" + digitUppercase(content.remittanceAmount) + "</span>】确定通过审核？";
+        // layer.confirm(info, {
+        //   btn: ['确定(' + i + ')s', '取消'], //按钮
+        //   // skin: 'layui-layer-molv',
+        //   success: function (a, b) {
+        //     // $("#insert").find("[name=insert_btn]").attr("style", "display:none;");
+        //     // $(".layui-layer-btn0").attr("style", "class='layui-btn layui-btn-disabled'");
+        //     $(".layui-layer-btn0").css({ "border": "1px solid #e6e6e6", "background-color": "#FBFBFB", "color": "#C9C9C9", "cursor": "not-allowed", "opacity": "1" });
+        //     var fn = function () {
+        //       $(".layui-layer-btn0").text('确定(' + i + ')s');
+        //     };
+        //     interval = setInterval(function () {
+        //       fn();
+        //       if (i === 0) {
+        //         $(".layui-layer-btn0").css("backgroundColor", "#009688");
+        //         $(".layui-layer-btn0").css("cursor", "");
+        //         $(".layui-layer-btn0").css("color", "#fff");
+        //         $(".layui-layer-btn0").text('确定');
+        //         clearInterval(interval);
+        //       }
+        //       i--;
+        //     }, 1000);
+        //   },
+        //   end: function () {
+        //     clearInterval(interval);
+        //   }
+        // }, function () {
+        //   if (i <= 0) {
+        //     tem(2);
+        //   }
+        // }, function () {
+        //   clearInterval(interval);
+        // });
+        unite(2);
+      });
+
+      form.on('submit(failure)', function (data) {
+        var note = data.field.note;
+        if (isEmpty(note)) {
+          layer.msg('说明不能为空！');
+        } else {
+          unite(3, note);
+        }
+      });
+      //运营审核
+      var managerReview = function (datas, flag, note) {
+        var params = { serialNo: datas.serialNo, flag: flag, note: note };
+        //加载层-默认风格
+        layer.load();
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/couWalRecLogs/firstTrial",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: params,
+          success: function (response) {
+            layer.closeAll('loading');
+            if (response.status == 1) {
+              layer.msg('操作成功', { icon: 1 });
+              //关闭弹窗
+              setTimeout(function () {
+                parent.tools.func1();
+                parent.table_reload();
+              }, 1500)
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      }
+      //财务审核
+      var financialReview = function (datas, flag, note) {
+        var params = { serialNo: datas.serialNo, flag: flag, note: note };
+        //加载层-默认风格
+        layer.load();
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/couWalRecLogs/financialReview",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: params,
+          success: function (response) {
+            layer.closeAll('loading');
+            if (response.status == 1) {
+              layer.msg('操作成功', { icon: 1 });
+              //关闭弹窗
+              setTimeout(function () {
+                parent.tools.func1();
+                parent.table_reload();
+              }, 1500)
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      }
+      logs = getDetail();
+      //表单初始赋值
+      form.val('example', {
+        "serialNo": g_data.serialNo
+        , "operatorId": g_data.operatorId
+        , "createBy": g_data.createBy
+        , "amount": g_data.amount
+        , "processNode": g_data.processNode
+        , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
+      })
+      // 渲染审核日志信息
+      function logs_info() {
+        var divStr;
+        for (var key in logs) {
+          var obj = logs[key];
+          // 审核标识：1-待审核、2-通过、3-不通过
+          var flag = obj.flag;
+          var status = "";
+          if (flag == 1) {
+            status = "待审核";
+          } else if (flag == 2) {
+            status = "通过";
+          } else if (flag == 3) {
+            status = "不通过";
+          }
+          divStr += `
+                 <tr >                 
+                  <td>
+                    <div class="layui-input-inline">${G_format(obj.createDate.time, "yyyy-MM-dd hh:mm:ss")}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${obj.currentNodeName}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${obj.createBy}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${status}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${obj.note}</div>
+                  </td>                 
+
+                </tr>`
+        }
+        $('#rec_app_rev_table tbody').html(divStr);
+        form.render();
+      }
+      logs_info();
+
+      // function img() {
+      //   var url = content.remittanceReceipt;
+      //   // 银行回执
+      //   if (!isEmpty(url)) {// 判断是否有上传的图片
+      //     $("#remittanceReceipt").attr("src", url.replace("#", '')); // 渲染图片
+      //   } else {
+      //     $("#remittanceReceipt").attr("src", "../../static/images/bgImg.jpg"); // 渲染默认图片
+      //   }
+      // }
+      // //渲染汇款回执
+      // img();
+
+      // 流程节点：0-资料提交、1-运营审核、2-财务审核、200-完成、400-终止
+      var node = g_data.processNode;
+
+      // 判断管理员标识与当前申请单状态、进行按钮显示
+      if ((managerFlag == 2 && node == "1") || (managerFlag == 3 && node == "2") || (managerFlag == 1 && node == "1")) {
+        $("#rev_btn").find("#passed").show();
+        $("#rev_btn").find("#failure").show();
+        $("#note").show();
+      }
+
+      //统一入口 
+      var unite = function (flag, note) {
+        if (managerFlag == 3 && node == "2") {//财务审核
+          financialReview(g_data, flag, note);
+        } else {
+          managerReview(g_data, flag, note);
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
