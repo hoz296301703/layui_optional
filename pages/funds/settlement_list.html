@@ -51,6 +51,7 @@
 				<li id="mer_wit_btn">商户提现</li>
 				<li id="logs_btn">代付明细</li>
 				<li id="fz_btn">分账信息</li>
+				<li id="fz_logs_btn">分账日志</li>
 			</ul>
 			<div class="layui-tab-content">
 				<!--系统操作日志-->
@@ -137,18 +138,22 @@
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
 				<!----商户提现------------end----------------------->
-				<!----代付结算日志------------start----------------------->
+				<!----代付结算日志------------start------------------>
 				<div class="layui-tab-item" id="logs">
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
-				<!----代付结算日志------------end----------------------->
-				<!----分账日志------------start----------------------->
+				<!----代付结算日志------------end------------------>
+				<!----分账日志------------start------------------->
 				<div class="layui-tab-item" id="fz">
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
 				<!----分账日志------------end----------------------->
 
-
+				<!----分账详情------------start--------------------->
+				<div class="layui-tab-item" id="fz_logs">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!----分账详情------------end----------------------->
 			</div>
 		</div>
 		<script>
@@ -258,7 +263,7 @@
 					},
 					where: {
 						startDate: appendStartDate(getDay(-7)),
-						status:$('#form_sreach').find('[name=status]').val()
+						status: $('#form_sreach').find('[name=status]').val()
 					},
 					done: function (res, curr, count) {
 						//如果是异步请求数据方式，res即为你接口返回的信息。
@@ -420,7 +425,7 @@
 				};
 				//监听操作工具条
 				table.on('tool(articleList)', function (obj) {
-					var data = obj.data;					
+					var data = obj.data;
 					if (obj.event === 'detail') {// 查看详情
 						layer.open({
 							type: 2,
@@ -583,6 +588,12 @@
 				$('#fz_btn').on('click', function () {
 					var h = $(window).height() - 30;
 					$("#fz").find('iframe').attr('src', "fen_zhang_list.html").css('height', h + 'px');
+				})
+
+				// 2019-09-18 跳转至分账日志详情
+				$('#fz_logs_btn').on('click', function () {
+					var h = $(window).height() - 30;
+					$("#fz_logs").find('iframe').attr('src', "fen_zhang_logs_list.html").css('height', h + 'px');
 				})
 
 				//单击行勾选checkbox事件

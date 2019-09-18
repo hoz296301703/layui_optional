@@ -29,7 +29,6 @@
     <div class="layui-colla-item">
       <div class="weadmin-body">
         <form class="layui-form" id="manager_detail_form" lay-filter="example">
-
           <div class="layui-form-item">
             <div class="layui-inline">
               <label class="layui-form-label">流水号</label>
@@ -220,18 +219,24 @@
                 <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
               </div>
             </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">说明</label>
+              <div class="layui-input-inline">
+                <input type="text" name="remark" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
           </div>
+        </form>
       </div>
       <div class="layui-col-md6">
         <div class="layui-card">
           <div class="layui-card-header">备注</div>
           <div class="layui-card-body" id="note">
-       
+
           </div>
         </div>
       </div>
     </div>
-    </form>
   </div>
 
   <script src="../../static/js/common.js" charset="utf-8"></script>
@@ -385,7 +390,7 @@
         , "divMerUserCode4": g_data.divMerUserCode4
         , "divAmount4": g_data.divAmount4
         , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
-        // , "otherPayNotes": head.settlementMode
+        , "remark": g_data.remark
         // , "actualAmountPaid": head.actualAmountPaid
         // , "recipientName": head.recipientName
         // , "recipientCardId": head.recipientID

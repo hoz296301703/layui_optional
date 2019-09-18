@@ -74,7 +74,7 @@
             <input type="hidden" name="merchantId">
             <input type="hidden" name="merchantProfit">
             <div class="layui-form-item">
-              <div class="layui-inline">
+              <!-- <div class="layui-inline" >
                 <label class="layui-form-label">
                   <span class="we-red">*</span>商户名称
                 </label>
@@ -82,7 +82,7 @@
                   <input type="text" placeholder="请输入商户名称" name="merchantName" lay-verify="required " autocomplete="off"
                     disabled class="layui-input layui-disabled">
                 </div>
-              </div>
+              </div> -->
               <div class="layui-inline">
                 <label class="layui-form-label">
                   <span class="we-red">*</span>登录账号
@@ -92,12 +92,18 @@
                     class="layui-input">
                 </div>
               </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">结算账号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="ysPartnerNo" placeholder="请输入银盛结算账号" autocomplete="off" class="layui-input">
+                </div>
+              </div>
             </div>
 
             <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">
-                  <span class="we-red">*</span>商户简称
+                  <span class="we-red">*</span>简称
                 </label>
                 <div class="layui-input-inline">
                   <input type="text" name="companyName" placeholder="请输入商户简称" lay-verify="required" autocomplete="off"
@@ -126,7 +132,7 @@
               </div>
               <div class="layui-inline">
                 <label class="layui-form-label">
-                  <span class="we-red">*</span>业务联系人电话
+                  <span class="we-red">*</span>联系人电话
                 </label>
                 <div class="layui-input-inline">
                   <input type="text" id="L_phone" placeholder="请输入业务联系人电话" name="merchantPhone"
@@ -146,7 +152,7 @@
               </div>
               <div class="layui-inline">
                 <label class="layui-form-label">
-                  <span class="we-red">*</span>商户状态
+                  <span class="we-red">*</span>状态
                 </label>
                 <div class="layui-input-inline">
                   <select name="merchantStatus" lay-verify="required" lay-filter="aihao">
@@ -172,6 +178,7 @@
                   <input type="text" name="merchantQQ" placeholder="请输入QQ" autocomplete="off" class="layui-input">
                 </div>
               </div>
+
             </div>
             <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
               <button type="button" class="layui-btn" lay-filter="editMerhcnatInfo" lay-submit="">保存</button>
@@ -840,6 +847,7 @@
                 , "merchantProfit": 0// 默认为0
                 , "merchantEmail": datas.merchantEmail
                 , "merchantQQ": datas.merchantQQ
+                , "ysPartnerNo": datas.ysPartnerNo
               })
             }
           }
@@ -2261,7 +2269,7 @@
               layer.msg("修改成功");
               _reload_portRate();
             } else {
-              
+
               layer.alert(response.msg);
             }
           }
