@@ -57,7 +57,7 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">订单编号</label>
 					<div class="layui-input-inline">
-						<input type="text" name="orderId" placeholder="请输入流水号" class="layui-input">
+						<input type="text" name="orderId" placeholder="请输入订单编号" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
@@ -84,7 +84,7 @@
 					<div class="layui-input-inline">
 						<select name="tradingStatus" lay-verify="required" lay-search="">
 							<option value="">全部</option>
-							<option value="pending" >待处理</option>
+							<option value="pending">待处理</option>
 							<option value="process">处理中</option>
 							<option value="success">成功</option>
 							<option value="failure">失败</option>
@@ -122,6 +122,7 @@
 			<script type="text/html" id="fz_list_toolbar">
 				<div class="layui-btn-container">
 					<!-- <button class="layui-btn layui-btn-sm" lay-event="resend"><i class="layui-icon">&#xe609;</i>重发</button> -->
+					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>导出</button>				
 				</div>
 			</script>
 			<script type="text/html" id="operateTpl">
@@ -375,51 +376,74 @@
 				var checkStatus = table.checkStatus(obj.config.id);
 				var data = checkStatus.data;  //获取选中行数据
 				switch (obj.event) {
-					case 'resend':
-						var serialNo = [];
-						// console.info(data);
-						//循环多选框的数据
-						for (var i in data) {
-							//
-							var tem = data[i];
-							//遍历其中数据
-							for (var y in tem) {
-								if (y == 'head') {
-									//获取结算总流水信息中的流水号、用于后台查询所有旗下的分账明细
-									serialNo.push(tem[y].serialNo);
-								}
-							}
-						};
-						//转换格式
-						serialNo = JSON.stringify(serialNo);
-						layer.alert("是否重发？", {
+					case 'download':
+						layer.alert("下载当前查询结果", {
 							time: 0, //不自动关闭
-							btn: ["确定", "关闭"],
+							btnAlign: "c",
+							btn: ["下载", "取消"],
 							yes: function (index) {
-								layer.load(2);
-								$.ajax({
-									url: urlPrefix + "silver-web-shop/fz/resend",
-									type: "POST",
-									xhrFields: {
-										withCredentials: true
-									},
-									data: { serialNo: serialNo },
-									success: function (response) {
-										layer.closeAll("loading");
-										if (response.status == 1) {
-											layer.msg("重发成功！");
-											setTimeout(function () {
-												_reload();//重载表格
-											}, 1000);
-										} else {
-											layer.alert(response.msg);
+								//下载URL
+								var url = "silver-web-shop/fz/download?";
+
+								var startDate = $('#form_sreach').find('[name=startDate]').val();
+								var endDate = $('#form_sreach').find('[name=endDate]').val();
+								if (isEmpty(startDate) || isEmpty(endDate)) {
+									layer.alert('请选择查询时间');
+									return false;
+								}
+								//拼接开始时间
+								startDate = appendStartDate(startDate);
+								//拼接结束时间
+								endDate = appendEndDate(endDate);
+
+								url += 'startDate=' + startDate + '&endDate=' + endDate;
+								// 订单编号
+								var orderId = $('#form_sreach').find('[name=orderId]').val();
+								if (!isEmpty(orderId)) {
+									url += '&orderId=' + orderId;
+								}
+								// 参与商户一名称
+								var divMerchantName1 = $('#form_sreach').find('[name=divMerchantName1]').val();
+								if (!isEmpty(divMerchantName1)) {
+									url += '&divMerchantName1blurry=' + divMerchantName1;
+								}
+								// 参与商户一编号
+								var divMerchantCode1 = $('#form_sreach').find('[name=divMerchantCode1]').val();
+								if (!isEmpty(divMerchantCode1)) {
+									url += '&divMerchantCode1=' + divMerchantCode1;
+								}
+								// 参与商户一收款账号
+								var divMerUserCode1 = $('#form_sreach').find('[name=divMerUserCode1]').val();
+								if (!isEmpty(divMerUserCode1)) {
+									url += '&divMerUserCode1=' + divMerUserCode1;
+								}
+								// 预留手机号码
+								// var bankPhone = $('#form_sreach').find('[name=bankPhone]').val();
+								// if (!isEmpty(bankPhone)) {
+								// 	url += '&bankPhone=' + bankPhone;
+								// }
+								// 状态
+								var tradingStatus = $('#form_sreach').find('[name=tradingStatus]').val();
+								if (!isEmpty(tradingStatus)) {
+									url += '&tradingStatus=' + tradingStatus;
+								}
+								console.info(urlPrefix + url);
+								window.location.href = urlPrefix + url;
+								layer.closeAll();
+								layer.alert(
+									'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+									{
+										time: 0, //不自动关闭
+										btn: ["关闭"],
+										btnAlign: "c",
+										yes: function (index) {
+											layer.close(index);
 										}
 									}
-								});
+								);
 							}
 						});
 						break;
-
 				};
 			});
 		});

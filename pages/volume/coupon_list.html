@@ -155,10 +155,12 @@
 			</div>
 		</div>
 	</div>
-
-
-
 	</div>
+	<script type="text/html" id="statusTpl">
+		<!-- 这里的 checked 的状态只是演示 -->
+	<input type="checkbox" data-serialNo="{{d.serialNo}}" name="status" value="{{d.status}}" lay-skin="switch"
+		lay-text="启用|禁用" lay-filter="statusDemo" {{ d.status == 'enable' ? 'checked' : '' }}>
+	</script>
 	<script type="text/html" id="operateTpl">
 		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
 	<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a> -->
@@ -208,13 +210,13 @@
 						}, {
 							field: 'couponName', title: '名称', width: 120
 						}, {
-							field: 'couponValue', title: '面值', width: 100
+							field: 'couponValue', title: '面值', width: 70
 						}, {
-							field: 'couponNumber', title: '数量', width: 120
+							field: 'couponNumber', title: '数量', width: 70
 						}, {
-							field: 'quantityOfUse', title: '已用数量', width: 100
+							field: 'quantityOfUse', title: '已用数量', width: 90
 						}, {
-							field: 'quantityOfReceive', title: '剩余数量', width: 100
+							field: 'quantityOfReceive', title: '剩余数量', width: 90
 						}, {
 							field: 'couponType', title: '种类', width: 100, templet: function (item) {
 								var type = "";
@@ -249,19 +251,8 @@
 								}
 								return type;
 							}
-							// }, {
-							// 	field: 'reviewerStatus', title: '审核状态', width: 90, templet: function (item) {
-							// 		if (item.reviewerStatus == 'success') {
-							// 			return "通过";
-							// 		} else if (item.reviewerStatus == 'failure') {
-							// 			return "不通过";
-							// 		} else if (item.reviewerStatus == 'process') {
-							// 			return "审核中";
-							// 		} else if (item.reviewerStatus == 'pending') {
-							// 			return "待审核";
-							// 		}
-							// 	}
-
+						}, {
+							field: 'status', title: '状态', templet: '#statusTpl', fixed: 'right'
 							// }, {
 							// 	field: 'regPrice', title: '单价'
 							// }, {
@@ -286,7 +277,8 @@
 					limitName: 'size' //每页数据量的参数名，默认：limit
 				},
 				where: {
-					startDate: appendStartDate($('#form_sreach').find('[name=startDate]').val())
+					startDate: appendStartDate(getDay(-7))
+					// startDate: appendStartDate($('#form_sreach').find('[name=startDate]').val())
 				},
 				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
 					return {
@@ -418,6 +410,34 @@
 			// table.on('tool(articleList)', function (obj) {
 			// 	var data = obj.data;			
 			// });
+			//监听状态操作
+			form.on('switch(statusDemo)', function (obj) {
+				var status = '';
+				if (obj.value == "enable") {
+					status = 'disable';
+				} else {
+					status = 'enable';
+				}
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/coupon/update",
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					data: {
+						serialNo: $(obj.elem).attr('data-serialNo'),
+						status: status
+					},
+					success: function (response) {
+						if (response.status == 1) {
+							layer.msg('修改成功！');
+							_reload();//执行重载
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+			});
 			//跳转至钱包明细
 			$('#cou_wal_btn').on('click', function () {
 				var h = $(window).height() - 30;
