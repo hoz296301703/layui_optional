@@ -38,57 +38,68 @@
 	<form id="form_sreach" class="layui-form">
 		<div class="layui-form-item">
 			<div class="layui-inline">
+				<label class="layui-form-label">流水号</label>
+				<div class="layui-input-inline">
+					<input type="text" name="couponNo" placeholder="请输入优惠券流水号" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-inline">
 				<label class="layui-form-label">名称</label>
 				<div class="layui-input-inline">
-					<input type="text" name="operatorId" placeholder="请输入申请人名称" class="layui-input">
+					<input type="text" name="memberName" placeholder="请输入会员名称" class="layui-input">
 				</div>
 			</div>
 			<div class="layui-inline">
 				<label class="layui-form-label">编号</label>
 				<div class="layui-input-inline">
-					<input type="text" name="createBy" placeholder="请输入申请人编号" class="layui-input">
+					<input type="text" name="memberId" placeholder="请输入会员编号" class="layui-input">
 				</div>
 			</div>
-			<!-- <div class="layui-inline">
-					<label class="layui-form-label">交易流水号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="tradeNo" placeholder="请输入交易流水号" class="layui-input">
-					</div>
+
+			<div class="layui-inline">
+				<label class="layui-form-label">优惠券名称</label>
+				<div class="layui-input-inline">
+					<input type="text" name="couponName" placeholder="请输入优惠券名称" class="layui-input">
 				</div>
-				<div class="layui-inline">
+			</div>
+			<div class="layui-inline">
 					<label class="layui-form-label">订单编号</label>
 					<div class="layui-input-inline">
 						<input type="text" name="orderId" placeholder="请输入订单编号" class="layui-input">
 					</div>
-				</div> -->
-			<!-- <div class="layui-inline">
-					<label class="layui-form-label">收款方编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="sellerId" placeholder="请输入收款方编号" class="layui-input">
-					</div>
-				</div> -->
-			<!-- <div class="layui-inline">
-					<label class="layui-form-label">类型</label>
-					<div class="layui-input-inline">
-						<select name="type" lay-verify="required" lay-search="">
-							<option value="">全部</option>
-							<option value="recResAmo">会员货款充值</option>
-							<option value="recMerBal">推单服务费</option>
-						</select>
-					</div>
 				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">节点</label>
-					<div class="layui-input-inline">
-						<select name="reviewerType" lay-verify="required" lay-search="">
-							<option value="">全部</option>
-							<option value="firstTrial">运营初审</option>
-							<option value="financialAudit">财务审核</option>
-							<option value="termination">终止</option>
-							<option value="complete">完成</option>
-						</select>
-					</div>
-				</div> -->
+			<div class="layui-inline">
+				<label class="layui-form-label">使用标识</label>
+				<div class="layui-input-inline">
+					<select name="flag" lay-verify="required" lay-search="">
+						<option value="">全部</option>
+						<option value="0">未使用</option>
+						<option value="1">已使用</option>
+						<option value="2">已过期</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">区间</label>
+				<div class="layui-input-inline">
+					<select name="useLimit" lay-verify="required" lay-search="">
+						<option value="">全部</option>
+						<option value="1">全平台</option>
+						<option value="2">店铺</option>
+						<option value="3">商品</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">种类</label>
+				<div class="layui-input-inline">
+					<select name="couponType" lay-verify="required" lay-search="">
+						<option value="">全部</option>
+						<option value="1">满减</option>
+						<option value="2">无门槛</option>
+					</select>
+				</div>
+			</div>
 			<div class="layui-inline">
 				<label class="layui-form-label">日期</label>
 				<div class="layui-input-inline">
@@ -113,12 +124,12 @@
 	</script>
 	<script type="text/html" id="cou_rec_list_toolbar">
 		<div class="layui-btn-container">
-			<button type="button" class="layui-btn layui-btn-sm" lay-event="recharge"><i class="layui-icon">&#xe61f;</i>充值</button>				
+			<!-- <button type="button" class="layui-btn layui-btn-sm" lay-event="recharge"><i class="layui-icon">&#xe61f;</i>充值</button>				 -->
 		</div>
 	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
-
+	<script src="../../static/js/dateUtils.js" charset="utf-8"></script>
 
 	<script>
 		layui.extend({
@@ -149,40 +160,68 @@
 				toolbar: '#cou_rec_list_toolbar',
 				cellMinWidth: 80,
 				height: tableHeight,
-				url: urlPrefix + 'silver-web-shop/couWalRecLogs/getInfo',
+				url: urlPrefix + 'silver-web-shop/userCoupon/findInfo',
 				method: 'post',
 				cols: [
 					[
 						{
-							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
+							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '日期', width: 170, fixed: 'left', templet: function (item) {
+							field: 'createDate', title: '领取日期', fixed: 'left', width: 170, templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'createBy', title: '申请人名称', width: 120
+							field: 'couponNo', title: '优惠券流水号', width: 190
 						}, {
-							field: 'operatorId', title: '申请人编号', width: 180
+							field: 'memberName', title: '会员名称', width: 180
 						}, {
-							field: 'amount', title: '金额（元）', width: 110
+							field: 'memberId', title: '会员编号', width: 170
 						}, {
-							field: 'note', title: '说明'
+							field: 'couponName', title: '名称', width: 120
 						}, {
-							field: 'processNode', title: '节点', width: 90, templet: function (item) {
-								var node = '';
-								if (item.processNode == '1') {
-									node = '运营初审';
-								} else if (item.processNode == '2') {
-									node = '财务审核';
-								} else if (item.processNode == '200') {
-									node = '完成';
-								} else if (item.processNode == '400') {
-									node = '终止';
+							field: 'couponValue', title: '面值', width: 70
+						}, {
+
+							// 标识：0-未使用、1-已使用，2-已过期
+							field: 'flag', title: '使用标识', width: 90, templet(item) {
+								var flag = '';
+								if (item.flag == '0') {
+									flag = '未使用';
+								} else if (item.flag == '1') {
+									flag = '已使用';
+								} else if (item.flag == '2') {
+									flag = '已过期';
 								}
-								return node;
+								return flag;
 							}
 						}, {
-							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							// 使用区间：1-全平台、2-店铺、3-单个商品
+							field: 'useLimit', title: '区间', width: 90, templet(item) {
+								var limit = '';
+								if (item.useLimit == '1') {
+									limit = '全平台';
+								} else if (item.useLimit == '2') {
+									limit = '店铺';
+								} else if (item.useLimit == '3') {
+									limit = '单个商品';
+								}
+								return limit;
+							}
+						}, {
+							field: 'couponType', title: '种类', width: 100, templet: function (item) {
+								var type = "";
+								// 种类： 1-满减、2-无门槛
+								if (item.couponType == '1') {
+									type = '满减';
+								} else if (item.couponType == '2') {
+									type = '无门槛';
+								}
+								return type;
+							}
+						}, {
+							field: 'orderId', title: '订单编号', width: 70
+						}, {
+							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}
 					]
 				],
@@ -228,20 +267,34 @@
 
 			// 重载公共方法
 			var _reload = function () {
-				var operatorId = $('#form_sreach').find('[name=operatorId]');
-				var createBy = $('#form_sreach').find('[name=createBy]');
+				var couponNo = $('#form_sreach').find('[name=couponNo]');
+				var memberName = $('#form_sreach').find('[name=memberName]');
+				var memberId = $('#form_sreach').find('[name=memberId]');
+				var couponName = $('#form_sreach').find('[name=couponName]');
+				var flag = $('#form_sreach').find('[name=flag]');
+				var useLimit = $('#form_sreach').find('[name=useLimit]');
+				var couponType = $('#form_sreach').find('[name=couponType]');
+				var orderId = $('#form_sreach').find('[name=orderId]');
+
+
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/couWalRecLogs/getInfo',
+					url: urlPrefix + 'silver-web-shop/userCoupon/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						createByblurry: createBy.val(),
-						operatorId: operatorId.val(),
+						couponNo: couponNo.val(),
+						memberNameblurry: memberName.val(),
+						memberId: memberId.val(),
+						couponName: couponName.val(),
+						flag: flag.val(),
+						useLimit: useLimit.val(),
+						couponType: couponType.val(),
+						orderId: orderId.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -256,40 +309,49 @@
 			// });
 			var active = {
 				reload: function () {
-					var operatorId = $('#form_sreach').find('[name=operatorId]');
-					var createBy = $('#form_sreach').find('[name=createBy]');
+					var couponNo = $('#form_sreach').find('[name=couponNo]');
+					var memberName = $('#form_sreach').find('[name=memberName]');
+					var memberId = $('#form_sreach').find('[name=memberId]');
+					var couponName = $('#form_sreach').find('[name=couponName]');
+					var flag = $('#form_sreach').find('[name=flag]');
+					var useLimit = $('#form_sreach').find('[name=useLimit]');
+					var couponType = $('#form_sreach').find('[name=couponType]');
+					var orderId = $('#form_sreach').find('[name=orderId]');
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					startDate = appendStartDate(startDate.val());
 					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/couWalRecLogs/getInfo',
+						url: urlPrefix + 'silver-web-shop/userCoupon/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
-							createByblurry: createBy.val(),
-							operatorId: operatorId.val(),
+							couponNo: couponNo.val(),
+							memberNameblurry: memberName.val(),
+							memberId: memberId.val(),
+							couponName: couponName.val(),
+							flag: flag.val(),
+							useLimit: useLimit.val(),
+							couponType: couponType.val(),
+							orderId: orderId.val(),
 							startDate: startDate,
 							endDate: endDate
 						}
 					});
 				}
 			};
-			// 管理员标识：1-超级管理员、2-运营、3-财务
-			var flag = $('#managerName', window.top.document).attr("name");			
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
-				obj.managerFlag = flag;
 				if (obj.event === 'detail') {// 查看详情
 					wind = layer.open({
 						type: 2,
 						title: '详情',
-						area: ['100%', '100%'],//宽高
+						area: ['80%', '90%'],//宽高
 						maxmin: true,
-						content: './cou_wal_rec_detail.html',
+						content: './coupon_member_detail.html',
 						btnAlign: 'c',
 						// btn: ['关闭'],
 						success: function (layero, index) {

@@ -84,7 +84,7 @@
 					<div class="layui-input-inline">
 						<select name="tradingStatus" lay-verify="required" lay-search="">
 							<option value="">全部</option>
-							<option value="pending">待处理</option>
+							<option value="pending" selected>待处理</option>
 							<option value="process">处理中</option>
 							<option value="success">成功</option>
 							<option value="failure">失败</option>
@@ -239,10 +239,10 @@
 						"data": res.datas //解析数据列表
 					};
 				},
-				// where: {
-				// 	startDate: appendStartDate(getDay(-30)),
-				// 	settlementStatus: $('#form_sreach').find('[name=settlementStatus]').val()
-				// },
+				where: {
+					startDate: appendStartDate(getDay(-30)),
+					tradingStatus: $('#form_sreach').find('[name=tradingStatus]').val()
+				},
 				done: function (res, curr, count) {
 					//如果是异步请求数据方式，res即为你接口返回的信息。
 					//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
@@ -331,7 +331,7 @@
 					layer.open({
 						type: 2,
 						title: '分账信息',
-						area: ['100%', '100%'],
+						area: ['70%', '90%'],//宽高
 						// fixed: false, //不固定
 						maxmin: true,
 						content: './fz_details.html',

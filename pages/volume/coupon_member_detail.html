@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <form class="layui-form" id="manager_detail_form" lay-filter="example">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">流水号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="serialNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">优惠券编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="couponNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+      
+        <div class="layui-inline">
+          <label class="layui-form-label">会员名称</label>
+          <div class="layui-input-inline">
+            <input type="text" name="memberName" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">会员编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="memberId" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">优惠券名称</label>
+          <div class="layui-input-inline">
+            <input type="text" name="couponName" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">优惠券面值</label>
+          <div class="layui-input-inline">
+            <input type="text" name="couponValue" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">标识</label>
+          <div class="layui-input-inline">
+            <select name="flag" lay-filter="aihao" class="layui-disabled" disabled>
+              <option value=""></option>
+              <option value="0">未使用</option>
+              <option value="1">已使用</option>
+              <option value="2">已过期</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">使用区间</label>
+          <div class="layui-input-inline">
+            <select name="useLimit" lay-filter="aihao" class="layui-disabled" disabled>
+              <option value=""></option>
+              <option value="1">全平台</option>
+              <option value="2">店铺</option>
+              <option value="3">商品</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">种类</label>
+          <div class="layui-input-inline">
+            <select name="couponType" lay-filter="aihao" class="layui-disabled" disabled>
+              <option value=""></option>
+              <option value="1">满减</option>
+              <option value="2">无门槛</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">满减金额条件</label>
+          <div class="layui-input-inline">
+            <input type="text" name="satisfy" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">订单编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="orderId" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">生效时间</label>
+          <div class="layui-input-inline">
+            <input type="text" name="startTime" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">结束时间</label>
+          <div class="layui-input-inline">
+            <input type="text" name="endingTime" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">使用日期</label>
+          <div class="layui-input-inline">
+            <input type="text" name="timeOfUse" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">领取日期</label>
+          <div class="layui-input-inline">
+            <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- <div class="layui-form-item">
+        <label for="L_repass" class="layui-form-label">
+        </label>
+        <button class="layui-btn" lay-filter="add" lay-submit="">
+          增加
+        </button>
+      </div> -->
+  </form>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../static/js/dateUtils.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+
+
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量
+    function getParent_data(obj) {
+      g_data = obj.data;
+      console.info(g_data);
+    }
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form', 'jquery', 'layer', 'admin'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        admin = layui.admin,
+        layer = layui.layer;
+      // console.log(g_data)
+      console.info(g_data.createDate)
+      //表单初始赋值
+      form.val('example', {
+        "serialNo": g_data.serialNo
+        , "couponNo": g_data.couponNo
+        , "memberName": g_data.memberName
+        , "memberId": g_data.memberId
+        , "couponName": g_data.couponName
+        , "couponValue": g_data.couponValue
+        , "flag": g_data.flag
+        , "orderId": g_data.orderId
+        , "startTime": dateFormat(g_data.startTime)
+        , "endingTime": dateFormat(g_data.endingTime)
+        , "timeOfUse": dateFormat(g_data.timeOfUse)
+        , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
+        , "useLimit": g_data.useLimit
+        , "couponType": g_data.couponType
+        , "satisfy": g_data.satisfy
+        ,
+      })
+    });
+  </script>
+</body>
+
+</html>

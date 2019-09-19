@@ -19,7 +19,7 @@
   <style>
     /* 私有样式 */
     .layui-form-label {
-      width: 70px;
+      width: 140px;
     }
   </style>
 </head>
@@ -37,9 +37,9 @@
               </div>
             </div>
             <div class="layui-inline">
-              <label class="layui-form-label">关联流水号</label>
+              <label class="layui-form-label">订单编号</label>
               <div class="layui-input-inline">
-                <input type="text" name="setAccNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                <input type="text" name="orderId" autocomplete="off" class="layui-input layui-disabled" disabled>
               </div>
             </div>
             <div class="layui-inline">
@@ -53,10 +53,10 @@
               <div class="layui-input-inline">
                 <select name="tradingStatus" lay-filter="aihao" class="layui-disabled" disabled>
                   <option value="">全部</option>
+                  <option value="pending" selected>待处理</option>
+                  <option value="process">处理中</option>
                   <option value="success">成功</option>
                   <option value="failure">失败</option>
-                  <option value="process">处理中</option>
-                  <option value="pending">待处理</option>
                   <option value="abnormal">异常</option>
                 </select>
               </div>
@@ -359,7 +359,7 @@
       //初始赋值
       form.val('example', {
         "serialNo": g_data.serialNo
-        , "setAccNo": g_data.setAccNo
+        , "orderId": g_data.orderId
         , "masterMerchantName": g_data.masterMerchantName
         , "masterMerchantId": g_data.masterMerchantId
         , "ysPartnerNo": g_data.ysPartnerNo

@@ -26,13 +26,17 @@
 		.layui-form-label {
 			width: 70px;
 		}
+		.layui-form-pane .layui-form-label {
+			width: 150px;
+		}
+		
 
 		.layui-form-switch em {
 			width: 40px;
 		}
 
-		body {
-			overflow-y: scroll;
+		.layui-form-pane .layui-input {
+			height: 38px;
 		}
 
 		.dateClass {
@@ -123,26 +127,47 @@
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
 			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-			<!-- 结算货款明细 -->
-			<div id="getSelAmount_detail" style="display: none; text-align: center; margin-top: 20px;">
-				<form class="layui-form">
-					<div class="layui-inline" style="margin-bottom: 10px;">
-						<label class="layui-form-label">代付货款</label>
-						<div class="layui-input-inline">
-							<input disabled="" type="text" name="dai_fu" class="layui-input">
-						</div>元
+		</form>
+		<!-- 结算货款明细 -->
+		<div id="getSelAmount_detail" style="display: none; ">
+			<form class="layui-form layui-form-pane" action="" style="width: 360px;margin: 0 auto;margin-top: 20px;">
+				<div class="layui-form-item" style="margin-bottom: 10px;">
+					<label class="layui-form-label">订单数量</label>
+					<div class="layui-input-inline">
+						<input disabled="" type="text" name="order_count" class="layui-input">
 					</div>
-					<div class="layui-inline">
-						<label class="layui-form-label">订单货款</label>
-						<div class="layui-input-inline">
-							<input disabled="" type="text" name="order" class="layui-input">
-						</div>元
+				</div>
+				<div class="layui-form-item" style="margin-bottom: 10px;">
+					<label class="layui-form-label">订单货款</label>
+					<div class="layui-input-inline">
+						<input disabled="" type="text" name="order_amount" class="layui-input">
 					</div>
-				</form>
-
-			</div>
-			<script src="../../static/js/jquery.js"></script>
-			<script type="text/html" id="operateTpl">
+					<div class="layui-form-mid layui-word-aux">元</div>
+				</div>
+				<div class="layui-form-item" style="margin-bottom: 10px;">
+					<label class="layui-form-label">代付订单数</label>
+					<div class="layui-input-inline">
+						<input disabled="" type="text" name="dai_fu_order_count" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item" style="margin-bottom: 10px;">
+					<label class="layui-form-label">代付货款</label>
+					<div class="layui-input-inline">
+						<input disabled="" type="text" name="dai_fu" class="layui-input">
+					</div>
+					<div class="layui-form-mid layui-word-aux">元</div>
+				</div>
+				<div class="layui-form-item" style="margin-bottom: 10px;">
+					<label class="layui-form-label" >支付服务费合计</label>
+					<div class="layui-input-inline">
+						<input disabled="" type="text" name="payFee" class="layui-input">
+					</div>
+					<div class="layui-form-mid layui-word-aux">元</div>
+				</div>
+			</form>
+		</div>
+		<script src="../../static/js/jquery.js"></script>
+		<script type="text/html" id="operateTpl">
 			<!-- laytpl语法--start-- -->
 			{{#  				
 				var  checkSel = function (dateSign, merchantId) {
@@ -166,20 +191,20 @@
 				}
 			}}
 			{{#  if(checkSel(d.dateSign, d.merchantId)){ }}
-			<a class="layui-btn layui-btn-xs" lay-event="getSelAmount">结算货款</a>
-			{{#  } else { }}
+		<a class="layui-btn layui-btn-xs" lay-event="getSelAmount">结算货款</a>
+		{{#  } else { }}
 
-			{{#  } }}
-			<!-- laytpl语法--end-- -->
-			</script>
-			<script type="text/html" id="report_toolbar">
+		{{#  } }}
+		<!-- laytpl语法--end-- -->
+		</script>
+		<script type="text/html" id="report_toolbar">
 				<div class="layui-btn-container">						
 					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrder"><i class="layui-icon">&#xe601;</i>明细下载</button>
 					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrderAll"><i class="layui-icon">&#xe601;</i>汇总下载</button>				
 				</div>
 			</script>
-			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-			<script src="../../static/js/common.js" charset="utf-8"></script>
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<script src="../../static/js/common.js" charset="utf-8"></script>
 
 	</div>
 	<script>
@@ -385,16 +410,19 @@
 						success: function (response) {
 							if (response.status == 1) {
 								$('#getSelAmount_detail').find('[name=dai_fu]').val(response.datas.dai_fu)
-								$('#getSelAmount_detail').find('[name=order]').val(response.datas.order)
+								$('#getSelAmount_detail').find('[name=order_amount]').val(response.datas.order_amount)
+								$('#getSelAmount_detail').find('[name=dai_fu_order_count]').val(response.datas.dai_fu_order_count)
+								$('#getSelAmount_detail').find('[name=order_count]').val(response.datas.order_count)
+								$('#getSelAmount_detail').find('[name=payFee]').val(response.datas.payFee)
 								layer.open({
 									title: "结算货款明细",
 									type: 1,
 									closeBtn: 0,
 									skin: "layui-layer-rim", //加上边框
-									area: ["354px", "217px"], //宽高
+									area: ["454px", "420px"], //宽高
 									btnAlign: "c",
 									content: $("#getSelAmount_detail"),
-									btn: ["确定"],
+									btn: ["关闭"],
 									yes: function (index) {
 										$("#getSelAmount_detail").hide();
 										layer.closeAll();

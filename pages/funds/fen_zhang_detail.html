@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<!-- 2019-09-19 作废 -->
 <!--分账(日志)信息详情html-->
 
 <head>
@@ -107,7 +108,7 @@
       <h2 class="layui-colla-title">分账详情</h2>
       <div class="layui-colla-content layui-show">
         <div class="layui-form">
-          <table class="layui-hide" id="fen_zhang_detail" lay-filter="fen_zhang_detail"  lay-size="sm"></table>
+          <table class="layui-hide" id="fen_zhang_detail" lay-filter="fen_zhang_detail" lay-size="sm"></table>
           <script type="text/html" id="operateTpl_df">
             <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">明细</a>					
           </script>
@@ -145,7 +146,7 @@
       table.render({
         elem: '#fen_zhang_detail',
         cellMinWidth: 80,
-        
+
         height: 300,
         url: urlPrefix + 'silver-web-shop/fz/getInfo',
         method: 'post',
