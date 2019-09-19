@@ -25,10 +25,6 @@
 			width: 40px;
 		}
 
-		body {
-			overflow-y: scroll;
-		}
-
 		/* 私有样式 */
 		.layui-form-label {
 			width: 90px;
@@ -196,7 +192,7 @@
 				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
 				toolbar: '#goodsRecord_toolbar',
-				height: tableHeight,
+				// height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/goodsRecord/findInfo',
 				method: 'post',
 				cols: [
