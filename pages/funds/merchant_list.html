@@ -31,9 +31,14 @@
 			width: 40px;
 		}
 
-		body {
-			overflow-y: scroll;
+		.layui-form-pane .layui-form-label {
+			width: 150px;
 		}
+
+		.layui-form-pane .layui-input {
+			height: 38px;
+		}
+
 	</style>
 </head>
 
@@ -81,9 +86,72 @@
 			<script src="../../static/js/common.js" charset="utf-8"></script>
 		</form>
 		<!--  代商户提交线下加款申请弹窗 -->
-		<div id="offlineBox_pop" style="display: none;">
-			<form style="margin-top: 20px;" id="apply_form" method="post">
-				<ul class="edit-ul" id="recharge_apply_ul_insApp">
+		<div id="offlineBox_pop" style="display: none;" >
+			<form class="layui-form layui-form-pane" style="margin: 0 auto;margin-top: 20px;" action="">
+				<div class="layui-form-item">
+					<label class="layui-form-label">汇款金额</label>
+					<div class="layui-input-inline">
+						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
+							class="layui-input">
+					</div>
+					<div class="layui-form-mid layui-word-aux">汇款金额与转账回执单上的金额必须一致</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">银行汇款流水号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
+							class="layui-input">
+					</div>
+					<div class="layui-form-mid layui-word-aux">汇款流水请填写正确，避免造成充值失败</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">收款账户</label>
+					<div class="layui-input-inline">
+						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
+							class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">汇款账户名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
+							class="layui-input">
+					</div>
+					<div class="layui-form-mid layui-word-aux">汇款账户银行开户名</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">汇款账号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
+							class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">汇款开户行</label>
+					<div class="layui-input-inline">
+						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
+							class="layui-input">
+					</div>
+					<div class="layui-form-mid layui-word-aux">请务必填写用户名</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">汇款时间</label>
+					<div class="layui-input-inline">
+						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
+							class="layui-input">
+					</div>
+					<div class="layui-form-mid layui-word-aux">请务必填写用户名</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">汇款回执</label>
+					<div class="layui-upload-drag" id="test10">
+						<i class="layui-icon"></i>
+						<p>点击上传，或将文件拖拽到此处</p>
+					</div>
+
+				</div>
+
+				<!-- <ul class="edit-ul" id="recharge_apply_ul_insApp">
 					<li>
 						<span>汇款金额:</span>
 						<input id="remittanceAmount" name="remittanceAmount" class="edit-input noVal"
@@ -103,8 +171,7 @@
 							style="display: inline-block;vertical-align: text-top;margin-left: 3px;">
 							<li class="item" style="height: 35px;width: 122px;margin: 0;position: relative;
 				  line-height: 35px;">
-								<img width="100px" src="images/gs.jpg">
-								<!-- <i class="iconfont icon-youxiajiaogouxuan" style="position: absolute;right: 6px; bottom: 3px; font-size: 20px;color: #26ef10;"></i> -->
+								<img width="100px" src="images/gs.jpg">							
 							</li>
 						</ul>
 						<p style="display: none; margin-left: 160px;
@@ -141,15 +208,15 @@
 						<span>汇款回执:</span>
 						<input id="hid_upfile" class="noVal" style="margin-left:3px;display: inline-block;" name="hz"
 							onchange="wallet_module.ImgChange(event)" type="file" />
-					</li>
-					<li>
-						<span></span>
-						<div id="select_upfile"
-							style="cursor:pointer;margin-top:5px;width:280px;height:160px;background-color:#d3dbde; display:inline-block;vertical-align:top;">
-							<p style="line-height:160px;text-align:center;">上传汇款回单+</p>
-						</div>
-					</li>
-				</ul>
+					</li> -->
+				<!-- <li>
+					<span></span>
+					<div id="select_upfile"
+						style="cursor:pointer;margin-top:5px;width:280px;height:160px;background-color:#d3dbde; display:inline-block;vertical-align:top;">
+						<p style="line-height:160px;text-align:center;">上传汇款回单+</p>
+					</div>
+				</li>
+				</ul> -->
 			</form>
 		</div>
 	</div>
@@ -179,6 +246,8 @@
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
+				toolbar: '#mer_list_toolbar',
+				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
 				height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/managerWallet/getMerchantWalletInfo',
@@ -196,9 +265,9 @@
 						}, {
 							field: 'merchantId', title: '编号', width: 170
 						}, {
-							field: 'balance', title: '可用余额', width: 100
+							field: 'balance', title: '余额', width: 100
 						}, {
-							field: 'reserveAmount', title: '可结算货款', width: 100
+							field: 'reserveAmount', title: '结算货款', width: 100
 						}, {
 							field: '', title: '总货款', width: 120, templet: function (item) {
 								//商户真实订单货款+代付货款
@@ -207,7 +276,7 @@
 						}, {
 							field: 'freezingFunds', title: '冻结资金', width: 90
 						}, {
-							field: 'withdraw', title: '可提现资金'
+							field: 'withdraw', title: '提现资金'
 						}, {
 							field: 'operate', width: 200, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}
@@ -336,7 +405,7 @@
 						.siblings("p")
 						.hide();
 					layer.open({
-						title: "代商户提交线下加款申请",
+						title: "线下加款申请",
 						type: 1,
 						closeBtn: 0,
 						btnAlign: "c",
@@ -510,6 +579,14 @@
 
 					});
 					// layer.alert('编辑行：<br>' + JSON.stringify(data))
+					//拖拽上传
+					upload.render({
+						elem: '#test10'
+						, url: '/upload/'
+						, done: function (res) {
+							console.log(res)
+						}
+					});
 				}
 			});
 

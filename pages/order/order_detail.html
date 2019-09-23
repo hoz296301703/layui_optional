@@ -219,13 +219,13 @@
                   </select>
                 </div>
               </div>
-              <!-- <div class="layui-inline">
-                <label class="layui-form-label">专柜编号</label>
+               <div class="layui-inline">
+                <label class="layui-form-label">运单号</label>
                 <div class="layui-input-inline">
-                  <input type="text" name="counterId" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  <input type="text" name="waybillNo" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-              <div class="layui-inline">
+             <!-- <div class="layui-inline">
                 <label class="layui-form-label">专柜名称</label>
                 <div class="layui-input-inline">
                   <input type="text" name="counterName" autocomplete="off" class="layui-input layui-disabled" disabled>
@@ -306,8 +306,7 @@
 
 
     function getParent_data(obj) {
-      g_data = obj.data;
-      console.info(g_data);
+      g_data = obj.data;     
     }
 
     layui.extend({
@@ -374,6 +373,7 @@
         , "status": g_data.order.status
         , "orderSourceType": g_data.order.orderSourceType
         , "otherPayment": g_data.order.otherPayment
+        , "waybillNo": g_data.order.waybillNo
 
       })
 

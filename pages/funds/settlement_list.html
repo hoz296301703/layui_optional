@@ -31,9 +31,9 @@
 			width: 40px;
 		}
 
-		body {
+		/* body {
 			overflow-y: scroll;
-		}
+		} */
 
 		.layui-table-tool-temp {
 			display: flex;
@@ -80,7 +80,7 @@
 							<div class="layui-inline">
 								<label class="layui-form-label">审核状态</label>
 								<div class="layui-input-inline">
-									<select name="processNode" lay-verify="required" lay-search="">
+									<select id='processNode' name="processNode" lay-verify="required" lay-search="">
 										<option value="">全部</option>
 										<option value="1">运营审核</option>
 										<option value="2">财务审核</option>
@@ -179,6 +179,20 @@
 					elem: '#endDate'
 					, type: 'datetime'
 				});
+				//管理员账号标识
+				var flag = $('#managerName', window.parent.document).attr("name");
+				//根据不同的管理员标识选择审核节点
+				var sel = function () {
+					if (flag == 2) {//运营
+						$("#processNode").find("option[value='1']").prop("selected", true);
+					} else if (flag == 3) {//财务
+						$("#processNode").find("option[value='2']").prop("selected", true);
+					} else {//其他不选择
+
+					}
+					form.render('select');
+				}
+				sel();
 				// 动态设置表格高度
 				var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 				table.render({
@@ -264,7 +278,8 @@
 					},
 					where: {
 						startDate: appendStartDate(getDay(-7)),
-						status: $('#form_sreach').find('[name=status]').val()
+						status: $('#form_sreach').find('[name=status]').val(),
+						processNode: $('#form_sreach').find('[name=processNode]').val()
 					},
 					done: function (res, curr, count) {
 						//如果是异步请求数据方式，res即为你接口返回的信息。
@@ -450,10 +465,7 @@
 									formType: 2,
 									title: "批注",
 									yes: function (index, layero) {
-										if (
-											$('#managerName', window.parent.document).attr("name") == 2 ||
-											$('#managerName', window.parent.document).attr("name") == 1
-										) {
+										if (flag == 2 || flag == 1) {
 											_managerReview({
 												serialNo: data.serialNo,
 												status: 2, // 通过
@@ -492,10 +504,7 @@
 										) {
 											layer.alert("请填写不通过的批注！");
 										} else {
-											if (
-												$('#managerName', window.parent.document).attr("name") == 2 ||
-												$('#managerName', window.parent.document).attr("name") == 1
-											) {
+											if (flag == 2 || flag == 1) {
 												_managerReview({
 													serialNo: data.serialNo,
 													status: 3, // 不通过
@@ -525,11 +534,7 @@
 								layer.closeAll();
 							}
 						});
-						if (
-							($('#managerName', window.parent.document).attr("name") == 2 && data.processNode == "1") ||
-							($('#managerName', window.parent.document).attr("name") == 3 && data.processNode == "2") ||
-							($('#managerName', window.parent.document).attr("name") == 1 && data.processNode == "1")
-						) {
+						if ((flag == 2 && data.processNode == "1") || (flag == 3 && data.processNode == "2") || (flag == 1 && data.processNode == "1")) {
 							$("#settlement_list")
 								.siblings(".layui-layer-iframe")
 								.find(".layui-layer-btn0")
@@ -642,7 +647,6 @@
 					var checkStatus = table.checkStatus(obj.config.id);
 					var data = checkStatus.data;  //获取选中行数据
 					var enent = obj.event;
-					console.info(event);
 					switch (enent) {
 						case 'sendDf':
 							//流水号信息包
@@ -695,6 +699,9 @@
 							break;
 					};
 				});
+
+
+
 			});
 		</script>
 </body>
