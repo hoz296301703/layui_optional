@@ -29,7 +29,7 @@
         <div class="message">银盟跨境电商服务平台运营系统</div>
         <div id="darkbannerwrap"></div>
 
-        <form method="post" class="layui-form">           
+        <form method="post" class="layui-form">
             <input name="account" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
             <hr class="hr15">
             <input name="loginPassword" lay-verify="required" placeholder="密码" type="password" class="layui-input">
@@ -67,7 +67,6 @@
                 layer.load();
                 // 请求Google reCaptcha 
                 grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'managerLogin' }).then(function (token) {
-                    // document.getElementById('token').value = token;
                     // console.info(token);
                     data.field.token = token;
                     $.ajax({
@@ -75,9 +74,9 @@
                         xhrFields: {
                             withCredentials: true
                         },
-                        timeout: 10000, //超时时间设置，单位毫秒
+                        timeout: 15000, //超时时间设置，单位毫秒
                         type: "POST",
-                        cache: false,                        
+                        cache: false,
                         data: data.field,
                         success: function (response) {
                             layer.closeAll('loading');
@@ -87,10 +86,11 @@
                                 layer.alert(response.msg);
                             }
                         },
-                        error: function () {
+                        error: function (response) {
                             layer.alert(response.msg)
                         },
                         complete: function (XMLHttpRequest, status) { //请求完成后最终执行参数
+                            layer.closeAll('loading');
                             if (status == 'timeout') {//超时,status还有success,error等值的情况
                                 layer.alert("请求超时！");
                             }
@@ -98,7 +98,7 @@
                     });
                     return false;
                 });
-            }           
+            }
             //---------------------------------
         });
     </script>

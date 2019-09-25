@@ -25,6 +25,7 @@
 		.layui-form-switch em {
 			width: 40px;
 		}
+
 		/* 私有样式 */
 		.layui-form-label {
 			width: 80px;
@@ -34,6 +35,7 @@
 
 <body>
 	<div class="weadmin-body">
+
 		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 			<ul class="layui-tab-title">
 				<li class="layui-this">优惠券信息</li>
@@ -127,6 +129,7 @@
 				<!---用户信息--end----------------------->
 			</div>
 		</div>
+
 	</div>
 
 	<script type="text/html" id="statusTpl">
@@ -210,7 +213,7 @@
 								} else if (item.useLimit == '2') {
 									userLimit = '店铺';
 								} else if (item.useLimit == '3') {
-									userLimit = '单个商品';
+									userLimit = '指定商品';
 								}
 								return userLimit;
 							}
@@ -354,7 +357,7 @@
 							title: "发行",
 							skin: "layui-layer-rim", //加上边框
 							// fixed: false, //不固定
-							area: ["400px", "500px"], //宽高
+							area: ["100%", "100%"], //宽高
 							// maxmin: true,
 							// scrollbar: false,
 							// btnAlign: "c",
