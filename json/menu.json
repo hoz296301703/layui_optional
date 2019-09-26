@@ -220,6 +220,19 @@
 					"url": "./pages/system/operation_list.html"
 				}
 			]
+		},		{
+			"id": "market",
+			"name": "营销管理",
+			"icon": "&#xe6b8;",
+			"url": "",
+			"children": [
+				{
+					"id": "market_1",
+					"name": "秒杀活动",
+					"icon": "",
+					"url": "./pages/market/seckill_time_list.html"
+				}
+			]
 		}
 	
 	]

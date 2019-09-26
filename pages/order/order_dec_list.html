@@ -146,12 +146,12 @@
 									<label class="layui-form-label">接收日期</label>
 									<div class="layui-input-inline">
 										<input type="text" class="layui-input" id="startDate" name="startDate"
-											autocomplete="off" placeholder="年-月-日">
+											autocomplete="off" readonly="" placeholder="年-月-日">
 									</div>
 									    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
 									<div class="layui-input-inline">
 										<input type="text" class="layui-input" id="endDate" name="endDate"
-											autocomplete="off" placeholder="年-月-日">
+											autocomplete="off" readonly="" placeholder="年-月-日">
 									</div>
 								</div>
 							</div>
@@ -201,9 +201,11 @@
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
+				, max: 0
 			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
@@ -276,7 +278,7 @@
 								return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报成功</span>';
 							} else if (item.order_record_status == '4') {
 								return '<span style="background: #e4393c; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报失败</span>';
-							}else if(item.order_record_status == '20'){
+							} else if (item.order_record_status == '20') {
 								return '余额不足';
 							}
 						}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 115px;
+    }
+
+    .laydate-time-list>li:nth-child(2) {
+      display: none !important;
+    }
+
+    .laydate-time-list>li:nth-child(3) {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <form class="layui-form" lay-filter="example">
+      <div class="layui-form-item">
+        <label class="layui-form-label">日期</label>
+        <div class="layui-input-inline">
+          <input type="text" class="layui-input" id="startTime" name="startTime" readonly="" placeholder="yyyy年MM月dd日"
+            autocomplete="off" lay-verify="required">
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+          <input type="radio" name="flag" lay-verify="flag" value="true" title="启用">
+          <input type="radio" name="flag" lay-verify="flag" value="false" title="禁用">
+          <!-- <input type="radio" name="sex" value="禁" title="禁用" disabled=""> -->
+        </div>
+      </div>
+      <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+        <button type="button" class="layui-btn" lay-filter="add" lay-submit="">保存</button>
+      </div>
+    </form>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form', 'jquery', 'util', 'admin', 'layer', 'laydate'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        util = layui.util,
+        admin = layui.admin,
+        layer = layui.layer,
+        laydate = layui.laydate;
+      //日期时间选择器
+      laydate.render({
+        elem: '#startTime'
+        , type: 'datetime'
+        , min: 0
+        , max: 30
+        , format: 'yyyy-MM-dd HH点'
+        , trigger: 'click'
+        , calendar: true
+      });
+      //限定可选时间
+      // laydate.render({
+      //   elem: '#startTime'
+      //   , type: 'time'
+      //   , format: 'H点'
+      //   , simpleModel: true
+      //   // , min: '09'
+      //   // , max: '22'
+      //   , btns: ['clear', 'confirm']
+      // });
+      // laydate.render({
+      //   elem: '#startTime'
+      //   , type: 'time'
+      //   , format: 'HH:mm'
+      //   , btns: ['clear', 'confirm']
+      //   , ready: formatminutes
+      // });
+
+      //自定义验证规则      
+      form.verify({
+        flag: function (value, item) {
+          var $ = layui.$;
+          var verifyName = $(item).attr('name')
+            , verifyType = $(item).attr('type')
+            , formElem = $(item).parents('.layui-form')//获取当前所在的form元素，如果存在的话
+            , verifyElem = formElem.find('input[name=' + verifyName + ']')//获取需要校验的元素
+            , isTrue = verifyElem.is(':checked')//是否命中校验
+            , focusElem = verifyElem.next().find('i.layui-icon');//焦点元素
+          if (!isTrue || !value) {
+            //定位焦点
+            focusElem.css(verifyType == 'radio' ? { "color": "#FF5722" } : { "border-color": "#FF5722" });
+            //对非输入框设置焦点
+            focusElem.first().attr("tabIndex", "1").css("outline", "0").blur(function () {
+              focusElem.css(verifyType == 'radio' ? { "color": "" } : { "border-color": "" });
+            }).focus();
+            return '必填项不能为空';
+          }
+        },
+      });
+      //失去焦点时判断值为空不验证，一旦填写必须验证
+      // $('input[name="email"]').blur(function () {
+      //   //这里是失去焦点时的事件
+      //   if ($('input[name="email"]').val()) {
+      //     $('input[name="email"]').attr('lay-verify', 'email');
+      //   } else {
+      //     $('input[name="email"]').removeAttr('lay-verify');
+      //   }
+      // });
+      //新增商户
+      form.on('submit(add)', function (data) {
+        //进行补齐
+        data.field.startTime = data.field.startTime.replace('点', '') + ":00:00";
+        layer.load(2);       
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/seckillTime/insert",
+          method: 'post',
+          dataType: 'JSON',
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            layer.closeAll("loading");
+            if (response.status == 1) {
+              layer.msg('添加成功！');
+              setTimeout(function () {
+                parent.seckill_time_reload();// 添加成功调用父页面的重载方法
+              }, 1000);
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
+
+    });
+
+  </script>
+</body>
+
+</html>
