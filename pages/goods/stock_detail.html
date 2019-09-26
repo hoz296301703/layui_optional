@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 115px;
+    }
+
+    #ywxx .layui-form-label {
+      width: 120px;
+    }
+
+    #merchantCost_update .layui-form-label,
+    #merchantCost_add .layui-form-label {
+      width: 90px;
+    }
+
+    #portRate_add .layui-form-label,
+    #portRate_add .layui-form-label {
+      width: 100px;
+
+    }
+
+    /* 基本数据 */
+    .layui-form-item .layui-input-inline {
+      width: 283px;
+    }
+
+    #goodsImg img {
+      height: 80px;
+      width: 80px;
+      border: 1px solid #ddd;
+      margin-right: 4px;
+
+    }
+
+    #recordCustomsInfo .layui-form-label {
+      width: 42px;
+    }
+
+    #accordion .layui-form-label {
+      width: 146px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <!-- 详情 -->
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+      <ul class="layui-tab-title">
+        <li class="layui-this" id="info_tab">基本信息</li>
+        <li id="findMerchantRecordDetail_tab">备案信息</li>
+        <li id="getMerchantBusinessInfo_tab">审核记录</li>
+        <li id="offlineBox_detail">商品库存信息</li>
+      </ul>
+      <div class="layui-tab-content" style="height: 100px;">
+        <!-- 基本信息 -->
+        <div class="layui-tab-item layui-show">
+          <form class="layui-form" lay-filter="info">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">商品展示名称</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="spareGoodsName" autocomplete="off"
+                    class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">商品品牌</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="spareGoodsBrand" autocomplete="off"
+                    class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">规格</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="spareGoodsStyle" autocomplete="off"
+                    class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">申报计量单位</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="spareGoodsUnit" autocomplete="off"
+                    class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">原产国</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="spareGoodsOriginCountry" autocomplete="off"
+                    class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">商品货号</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="spareGoodsBarCode" autocomplete="off"
+                    class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">市场价</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="marketPrice" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">单价</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="regPrice" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline" style="width: 73%;">
+                <label class="layui-form-label">商品图片</label>
+                <div class="layui-input-inline" style="width: 73%;">
+                  <div class="layui-upload-list" id="goodsImg"></div>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">商品详情</label>
+                <div class="layui-input-inline" style=" width: 718px;">
+                  <textarea id="goodsDetai_edit" style="display: none;"></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- 备案信息 -->
+        <div class="layui-tab-item">
+          <div class="layui-form" id="record">
+            <div class="layui-collapse">
+              <div class="layui-colla-item">
+                <h2 class="layui-colla-title">备案海关信息</h2>
+                <div class="layui-colla-content layui-show">
+                  <form class="layui-form" lay-filter="recordCustomsInfo" id="recordCustomsInfo">
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label">商户</label>
+                        <div class="layui-input-inline">
+                          <input disabled type="text" name="merchantName" autocomplete="off"
+                            class="layui-input layui-disabled">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label">海关</label>
+                        <div class="layui-input-inline">
+                          <input disabled type="text" name="customsPortName" autocomplete="off"
+                            class="layui-input layui-disabled">
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="layui-colla-item">
+                <h2 class="layui-colla-title">备案商品信息</h2>
+                <div class="layui-colla-content layui-show">
+                  <form class="layui-form" lay-filter="accordion" id="accordion">
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label">企业商品自编号</label>
+                        <div class="layui-input-inline">
+                          <input disabled type="text" name="entGoodsNo" autocomplete="off"
+                            class="layui-input layui-disabled">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label">商家代码</label>
+                        <div class="layui-input-inline">
+                          <input disabled type="text" name="marCode" autocomplete="off"
+                            class="layui-input layui-disabled">
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>检验检疫商品备案编号</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="ciqGoodsNo" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>海关正式备案编号</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="cusGoodsNo" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+
+                      <div class="layui-inline">
+                        <label class="layui-form-label">账册号</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="emsNo" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label">项号</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="itemNo" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>上架名称</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="shelfGName" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>行邮税号</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="ncadCode" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>HS编码</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="hsCode" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>条形码</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="barCode" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>商品名称</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="goodsName" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>规格</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="goodsStyle" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>品牌</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="brand" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>计量单位</label>
+                        <div class="layui-input-inline">
+                          <select name="gUnit" lay-verify="required" lay-search="">
+
+                          </select>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>第一法定计量单位</label>
+                        <div class="layui-input-inline">
+                          <select name="stdUnit" lay-verify="required" lay-search="">
+
+                          </select>
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label">第二法定计量单位</label>
+                        <div class="layui-input-inline">
+                          <select name="secUnit" lay-search="">
+
+                          </select>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>单价</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="regPrice" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label">是否赠品</label>
+                        <div class="layui-input-inline">
+                          <select name="giftFlag" lay-search="">
+                            <option value="0">是</option>
+                            <option value="1">否</option>
+                          </select>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>原产国</label>
+                        <div class="layui-input-inline">
+                          <select name="originCountry" lay-verify="required" lay-search="">
+
+                          </select>
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>商品品质及说明</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="quality" autocomplete="off" lay-verify="required"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label">品质证明说明</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="qualityCertify" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>生产厂家或供应商</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="manufactory" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>净重</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="netWt" lay-verify="required" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>毛重</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="grossWt" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+
+
+                    </div>
+
+                    <div class="layui-form-item layui-form-text">
+                      <div class="layui-inline">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-inline">
+                          <textarea name="notes" placeholder="请输入备注" class="layui-textarea"></textarea>
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label">成分</label>
+                        <div class="layui-input-inline">
+                          <textarea name="ingredient" placeholder="请输入成分" class="layui-textarea"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label">超范围使用食品添加剂</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="additiveflag" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label">含有毒害物质</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="poisonflag" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label">SKU</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="SKU" autocomplete="off" class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>电子口岸(16位编号)</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="DZKN_NO" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>南沙智检备案号</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="ebEntNo" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+                      <div class="layui-inline">
+                        <label class="layui-form-label"><span class="we-red">*</span>电商企业海关备案名称</label>
+                        <div class="layui-input-inline">
+                          <input type="text" name="ebEntName" lay-verify="required" autocomplete="off"
+                            class="layui-input">
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 备案详情 -->
+        <div class="layui-tab-item">
+          <table class="layui-table" lay-size="sm" id="reNote">
+            <colgroup>
+              <col width="150">
+              <col width="150">
+              <col width="150">
+              <col width="150">
+              <col width="150">
+              <col width="150">
+              <col>
+            </colgroup>
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>商户</th>
+                <th>商品自编号</th>
+                <th>审核人</th>
+                <th>操作名称</th>
+                <th>操作状态</th>
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 商品库存信息 -->
+        <div class="layui-tab-item">
+          <form class="layui-form" lay-filter="offlineBox_detailInfo">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">商品自编号</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="entGoodsNo" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">商品名称</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="goodsName" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">市场价</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="salePrice" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">单价</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="regPrice" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">上架状态</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="sellFlag" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">库存数量</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="totalStock" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">上架数量</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="sellCount" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">成交完成数量</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="doneCount" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">待支付数量</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="paymentCount" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">已发货数量</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="shippedCount" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">入库时间</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    var g_data = '';// 全局数据变量
+    function getParent_data(obj) {
+      g_data = obj.data;
+    }
+    layui.use(['tree', 'form', 'jquery', 'util', 'admin', 'layer', 'upload', 'table', 'layedit', 'element'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        util = layui.util,
+        layedit = layui.layedit,
+        admin = layui.admin,
+        table = layui.table,
+        element = layui.element,
+        tree = layui.tree,
+        upload = layui.upload,
+        layer = layui.layer;
+   
+      // 库存审核日志
+      var _stockReviewLog_getInfo = function () {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/stockReviewLog/getInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: {
+            entGoodsNo: g_data.entGoodsNo,
+            merchantId: g_data.merchantId,
+            size: 0,
+            page: 0
+          },
+          success: function (response) {
+            if (response.status == 1) {
+              $("#getMerchantBusinessInfo_tab").attr('data-serialNo',response.datas[0].serialNo);
+              var arr = response.datas;
+              var LEN = arr.length;
+              var lis = '';
+              for (var i = 0; i < LEN; i++) {
+
+                var reviewerName = '/';
+                if (!isEmpty(arr[i].reviewerName)) {
+                  reviewerName = arr[i].reviewerName;
+                }
+                var reviewerStatus = '/';
+                if (arr[i].reviewerStatus == 'success') {
+                  reviewerStatus = '通过';
+                } else if (arr[i].reviewerStatus == 'failure') {
+                  reviewerStatus = '不通过';
+                } else if (arr[i].reviewerStatus == 'process') {
+                  reviewerStatus = '审核中';
+                } else if (arr[i].reviewerStatus == 'pending') {
+                  reviewerStatus = '待上架';
+                }
+
+                var createDate = '/';
+                if (!isEmpty(arr[i].createDate)) {
+                  createDate = G_format(arr[i].createDate.time, 'yyyy-MM-dd hh:mm:ss');
+                }
+                var note = '/';
+                if (!isEmpty(arr[i].note)) {
+                  note = arr[i].note;
+                }
+                lis += '<tr><td>' + createDate + '<td>' + arr[i].merchantName + '</td>' + '<td>' + arr[i].entGoodsNo + '</td>' + '<td>' + reviewerName + '</td>' + '<td>' + arr[i].operationName + '</td>' + '<td>' + reviewerStatus + '</td>' + '<td>' + note + '</td>' + '</tr>';
+              }
+              $("#reNote").find('tbody').html(lis);
+            } else {
+              $("#reNote").find('tbody').html('<td style="text-align:center;" colspan="8">暂无数据</td>');
+            }
+
+          }
+        });
+      };
+      _stockReviewLog_getInfo();
+      // 查询原产国
+      var _queryCountry = function () {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/country/findAllCountry",
+          type: "POST",
+          success: function (response) {
+            if (response.status == 1) {
+              var countryData = response.datas;
+              var countryOptionStr = ""; // 国家
+              countryOptionStr += '<option value="">请选择</option>';
+              for (var r = 0; r < countryData.length; r++) {
+                countryOptionStr +=
+                  '<option value="' +
+                  countryData[r].countryCode +
+                  '">' +
+                  countryData[r].countryName +
+                  "</option>";
+              }
+              $('#accordion').find('[name=originCountry]').html(countryOptionStr);
+              form.render();
+            } else {
+
+            }
+          }
+        });
+      };
+      _queryCountry();
+      // 查询计量单位
+      var _queryUnit = function () {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/metering/findAllMetering",
+          type: "POST",
+          success: function (response) {
+            if (response.status == 1) {
+              unitData = response.datas;
+              var unitOptionStr = ""; // 国家
+              unitOptionStr += '<option value="">请选择</option>';
+              for (var r = 0; r < unitData.length; r++) {
+                unitOptionStr +=
+                  '<option value="' +
+                  unitData[r].meteringCode +
+                  '">' +
+                  unitData[r].meteringName +
+                  "</option>";
+              }
+              $('#accordion').find('[name=stdUnit]').html(unitOptionStr);
+              $('#accordion').find('[name=secUnit]').html(unitOptionStr);
+              $('#accordion').find('[name=gUnit]').html(unitOptionStr);
+              form.render();
+            } else {
+
+            }
+          }
+        });
+      };
+      _queryUnit();
+
+      var _findMerchantDetail = function () {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/goodsRecord/managerGetGoodsRecordDetail",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: { entGoodsNo: g_data.entGoodsNo },
+          success: function (response) {
+            if (response.status == 1) {
+              var obj = response.datas[0];
+              var goods = obj.goods;
+              var goodsRecord = obj.goodsRecord;
+              var stock = obj.stock;
+
+              /** 基本信息 **/
+              //表单初始赋值
+              form.val('info', {
+                "spareGoodsName": goods.spareGoodsName
+                , "spareGoodsBrand": goods.spareGoodsBrand
+                , "spareGoodsStyle": goods.spareGoodsStyle
+                , "spareGoodsUnit": goods.gUnitName
+                , "spareGoodsOriginCountry": goods.spareGoodsOriginCountry
+                , "spareGoodsBarCode": goods.spareGoodsBarCode
+                , "marketPrice": goods.marketPrice
+                , "regPrice": goods.regPrice
+
+              })
+
+              // 商品主图
+              var spareGoodsImageArr = goods.spareGoodsImage.split(';');
+              var tag = "https://ym.191ec.com/img/";
+              for (var i = 0; i < spareGoodsImageArr.length; i++) {
+                if (spareGoodsImageArr.length - 1 != i) {
+                  if (goods.spareGoodsImage.indexOf(tag) != -1) {
+                    $('#goodsImg').append('<img src="' + spareGoodsImageArr[i] + '" class="layui-upload-img">');
+                  } else {
+                    // goodsImg = imgPrefix(goods.goodsMerchantId) + goods.spareGoodsImage.split(";")[0];
+                    $('#goodsImg').append('<img src="' + imgPrefix(goods.goodsMerchantId) + spareGoodsImageArr[i] + '" class="layui-upload-img">');
+                  }
+
+                }
+
+              }
+              // 商品详情
+              $('#goodsDetai_edit').html(goods.spareGoodsDetail);
+              layedit.build('goodsDetai_edit', {
+                // height: 200, //设置编辑器高度
+                tool: []
+              }); //建立编辑器
+
+              // ** 商品备案信息 ** //
+              form.val('recordCustomsInfo', {
+                "merchantName": goodsRecord.merchantName
+                , "customsPortName": goodsRecord.customsPortName + '-' + goodsRecord.customsName + '-' + goodsRecord.ciqOrgName
+              })
+
+              // 备案商品信息
+              var jsonParams = null;
+              if (!isEmpty(goods.spareParams)) {
+                jsonParams = JSON.parse(goods.spareParams);
+              } else {
+                jsonParams = {};
+              }
+
+              var accordion_entGoodsNo = '';// 商品编码
+              if (!isEmpty(jsonParams.marCode)) {
+                var index = goods.entGoodsNo.lastIndexOf("_");
+                accordion_entGoodsNo = goods.entGoodsNo.substring(0, index);
+              } else {
+                accordion_entGoodsNo = goods.entGoodsNo;
+              }
+              var accordion_marCode = '';// 商家代码
+              if (!isEmpty(jsonParams.marCode)) {
+                accordion_marCode = jsonParams.marCode;
+              }
+              var accordion_SKU = '';// SKU
+              if (!isEmpty(jsonParams.SKU)) {
+                accordion_SKU = jsonParams.SKU;
+              }
+              setTimeout(function () {
+                form.val('accordion', {
+                  "entGoodsNo": accordion_entGoodsNo
+                  , "ciqGoodsNo": goods.ciqGoodsNo
+                  , "cusGoodsNo": goods.cusGoodsNo
+                  , "emsNo": goods.emsNo
+                  , "itemNo": goods.itemNo
+                  , "shelfGName": goods.shelfGName
+                  , "ncadCode": goods.ncadCode
+                  , "hsCode": goods.hsCode
+                  , "barCode": goods.barCode
+                  , "goodsName": goods.goodsName
+                  , "goodsStyle": goods.goodsStyle
+                  , "brand": goods.brand
+                  , "gUnit": goods.gUnit
+                  , "stdUnit": goods.stdUnit
+                  , "secUnit": goods.secUnit
+                  , "regPrice": goods.regPrice
+                  , "giftFlag": goods.giftFlag
+                  , "originCountry": goods.originCountry
+                  , "quality": goods.quality
+                  , "qualityCertify": goods.qualityCertify
+                  , "manufactory": goods.manufactory
+                  , "netWt": goods.netWt
+                  , "grossWt": goods.grossWt
+                  , "additiveflag": goods.additiveflag
+                  , "notes": goods.notes
+                  , "ingredient": goods.ingredient
+                  , "poisonflag": goods.poisonflag
+                  , "marCode": accordion_marCode
+                  , "SKU": accordion_SKU
+                  , "DZKN_NO": goods.DZKNNo
+                  , "ebEntNo": goods.ebEntNo
+                  , "ebEntName": goods.ebEntName
+                })
+              }, 1000)
+
+              // ** 商品备案详情 ** //
+              // if (goods.reNote != "") {
+              //   var reNoteArr = [];
+              //   var reNoteStr = "";
+              //   reNoteArr = goods.reNote.split(";");
+
+              //   for (var i = 0; i < reNoteArr.length; i++) {
+              //     if (i != reNoteArr.length - 1) {
+              //       reNoteStr += ' <td>' + reNoteArr[i].split("#")[0] + '</td>' + ' <td>' + reNoteArr[i].split("#")[1] + '</td>';
+              //     }
+              //   }
+              //   $("#reNote").find('tbody').html(reNoteStr);
+              // } else {
+              //   $("#reNote").find('tbody').html('<td style="text-align:center;" colspan="2">暂无数据</td>');
+              // }
+              // ** 商品库存信息 ** //
+              setTimeout(function () {
+                var sellFlag = '下架'
+                if (stock.sellFlag == 1) {
+                  sellFlag = '上架'
+                }
+                form.val('offlineBox_detailInfo', {
+                  "entGoodsNo": stock.entGoodsNo
+                  , "goodsName": stock.goodsName
+                  , "salePrice": stock.salePrice
+                  , "regPrice": stock.regPrice
+                  , "sellFlag": sellFlag
+                  , "totalStock": stock.totalStock
+                  , "sellCount": stock.sellCount
+                  , "doneCount": stock.doneCount
+                  , "paymentCount": stock.paymentCount
+                  , "shippedCount": stock.shippedCount
+                  , "createDate": G_format(stock.createDate.time, 'yyyy-MM-dd hh:mm:ss')
+                })
+              }, 500)
+            }
+          }
+        });
+      };
+      _findMerchantDetail()
+
+      //图片浏览
+      $('#goodsImg').on('click', 'img', function (e) {
+        layer.photos({
+          photos: {
+            "data": [   //相册包含的图片，数组格式
+              {
+                "alt": e.target.alt,
+                "src": e.target.src, //原图地址
+                "thumb": e.target.src //缩略图地址
+              }
+            ]
+          }
+        });
+      });
+    });
+
+  </script>
+</body>
+
+</html>

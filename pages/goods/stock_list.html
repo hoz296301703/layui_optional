@@ -35,6 +35,15 @@
 		.layui-form-label {
 			width: 80px;
 		}
+
+		.layui-table-cell {
+			height: auto;
+			line-height: 80px;
+		}
+
+		th .layui-table-cell {
+			line-height: 28px;
+		}
 	</style>
 </head>
 
@@ -121,7 +130,6 @@
 	</div>
 	<script type="text/html" id="operateTpl">
 		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
-	<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a> -->
 	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
@@ -173,8 +181,9 @@
 						}, {
 							field: 'merchantId', title: '商户编号', width: 170
 						}, {
-							field: 'reMark', title: '主图', height: 180, templet: function (item) {
-								return '<div><img  src="' + splitImg(item.reMark) + '"></div>';
+							field: 'reMark', title: '主图', width: 100, templet: function (item) {
+								// return '<div><img width="80px" height="80px" src="' + splitImg(item.reMark) + '"></div>';
+								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + splitImg(item.reMark) + '"  src="' + splitImg(item.reMark) + '" width="80px" height="80px"></div>';
 							}
 						}, {
 							field: 'entGoodsNo', title: '商品编号', width: 150
@@ -350,33 +359,102 @@
 					// 	break;
 				};
 			});
+			// 审核方法
+			var _review = function (data) {
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/stockReviewLog/review",
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					data: data,
+					success: function (response) {
+						if (response.status == 1) {
+							layer.closeAll();
+							layer.msg('操作成功');
+							_reload();
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+			};
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
-				if (obj.event === 'delete') {// 删除	
-					layer.alert("是否删除海关" + data.customsName + ",国检" + data.ciqOrgName + "？", {
-						time: 0, //不自动关闭
-						btn: ["确定", "关闭"],
+				if (obj.event === 'detail') {// 查看详情
+					layer.open({
+						type: 2,
+						title: '详情',
+						area: ['100%', '100%'],
+						// fixed: false, //不固定
+						// maxmin: true,
+						content: './stock_detail.html',
+						btnAlign: 'c',
+						btn: ['通过', '不通过', '关闭'],
 						yes: function (index) {
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/customsPort/delete",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: { id: data.id },
-								success: function (response) {
-									if (response.status == 1) {
-										layer.msg("删除成功！");
-										_reload();//重载表格
+							layer.prompt({
+								value: '',
+								formType: 2,
+								title: '批注',
+								yes: function (index, layero) {
+									_review({
+										serialNo: $("[src='./stock_detail.html']").contents().find("#getMerchantBusinessInfo_tab").attr('data-serialNo'),
+										status: 'success',
+										note: $.trim($(layero).find('textarea').val()), // 批注
+									});
+
+								}
+							});
+							return false;
+
+						}, btn2: function () {
+
+							layer.prompt({
+								value: '',
+								formType: 2,
+								title: '批注',
+								yes: function (index, layero) {
+									if ($.trim($(layero).find('textarea').val()) == '') {
+										layer.alert('请填写不通过的批注！');
 									} else {
-										layer.alert(response.msg);
+										_review({
+											serialNo: $("[src='./stock_detail.html']").contents().find("#getMerchantBusinessInfo_tab").attr('data-serialNo'),
+											status: 'failure', // 不通过
+											note: $.trim($(layero).find('textarea').val()), // 批注
+										});
 									}
 								}
 							});
+							return false;
+						},
+						success: function (layero, index) {
+							if (data.reviewerStatus == 'process') {
+								$('.layui-layer-btn0,.layui-layer-btn1').show();
+							} else {
+								$('.layui-layer-btn0,.layui-layer-btn1').hide();
+							}
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传参
+							iframe.getParent_data(obj);
 						}
 					});
 				}
+			});
+			//图片浏览
+			$('#form_sreach').on('click', '[lay-id="articleList"] .checkImg img', function (e) {
+				layer.photos({
+					photos: {
+						"data": [   //相册包含的图片，数组格式
+							{
+								"alt": e.target.alt,
+								"src": e.target.src, //原图地址
+								"thumb": e.target.src //缩略图地址
+							}
+						]
+					}
+				});
 			});
 		});
 	</script>

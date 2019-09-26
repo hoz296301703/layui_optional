@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<!--新增系统公告信息html-->
+
+<head>
+	<meta charset="UTF-8">
+	<title>银盟跨境电商服务平台运营系统</title>
+	<meta name="Description" content="基于layUI数据表格操作" />
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../../static/css/font.css">
+	<link rel="stylesheet" href="../../static/css/weadmin.css">
+	<link href="../../UME/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+	<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+	<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	<style type="text/css">
+		.layui-form-switch {
+			width: 55px;
+		}
+
+		.layui-form-switch em {
+			width: 40px;
+		}
+
+		.news .layui-input,
+		.layui-select,
+		.layui-textarea {
+			height: 38px;
+		}
+
+		/* 公告详情 */
+		.newsDetail .title {
+			font-size: 26px;
+			text-align: center;
+			padding-top: 10px;
+		}
+
+		.newsDetail .date {
+			display: block;
+			width: 80%;
+			margin: 0 auto;
+			font-size: 13px;
+			color: #999;
+			border-bottom: 1px solid #ddd;
+			padding-bottom: 10px;
+			margin-bottom: 10px;
+			margin-top: 24px;
+		}
+
+		.newsDetail .content {
+			width: 80%;
+			margin: 0 auto;
+			font-size: 13px;
+			color: #000;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="weadmin-body">
+		<!-- 发布公告 -->
+		<form class="layui-form layui-form-pane news" id="updateBrokerage_pop" style="margin: 20px auto;width: 80%;">
+			<div class="layui-form-item">
+				<label class="layui-form-label">标题</label>
+				<div class="layui-input-block">
+					<input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="请输入标题"
+						class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">角色</label>
+					<div class="layui-input-block">
+						<select name="role" lay-verify="required" lay-search="">
+							<option value="">请选择</option>
+							<option value="all">全部</option>
+							<option value="merchant">商户</option>
+							<option value="member">会员</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">是否置顶</label>
+					<div class="layui-input-inline">
+						<select name="top" lay-verify="required" lay-search="">
+							<option value="">请选择</option>
+							<option value="1">是</option>
+							<option value="0">否</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<script type="text/plain" id="updateEditor" style="height:350px;"></script>
+			<div class="layui-form-item" style="margin-top: 10px;text-align: center;">
+				<div class="layui-inline">
+					<button lay-filter="add_news" type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+						lay-submit="">保存</button>
+					<button type="button" id="yl_news" class="layui-btn layui-btn-primary layui-btn-sm">预览</button>
+					<button id="close" type="button" class="layui-btn layui-btn-primary layui-btn-sm">关闭</button>
+				</div>
+			</div>
+		</form>
+
+		<!-- 公共详情 -->
+		<div class="newsDetail" id="newsDetail" style="display:none;">
+			<p class="title"></p>
+			<span class="date"></span>
+			<div class="content"></div>
+		</div>
+	</div>
+	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+	<script src="../../static/js/jquery.js" charset="utf-8"></script>
+	<script src="../../static/js/common.js" charset="utf-8"></script>
+	<script src="../../UME/third-party/template.min.js"></script>
+	<script src="../../UME/umeditor.config.js"></script>
+	<script src="../../UME/umeditor.js"></script>
+	</div>
+	<script>
+		layui.extend({
+			admin: '{/}../../static/js/admin'
+		});
+		var news_editor = UM.getEditor("updateEditor", {
+			initialFrameWidth: '100%',
+			zIndex: 10,
+			// toolbars: [
+			// 	['fullscreen', 'source', 'undo', 'redo', 'bold']
+			// ],
+			// autoHeightEnabled: true,
+			// autoFloatEnabled: true
+		});
+
+		layui.use(['table', 'jquery', 'form', 'admin', 'tree'], function () {
+			var table = layui.table,
+				$ = layui.jquery,
+				form = layui.form,
+				tree = layui.tree,
+				admin = layui.admin;
+
+
+
+
+			form.on('submit(add_news)', function (data) { // 发布公告
+				var sign = true;
+				if ($("#updateEditor").text().trim() == "") {
+					sign = false;
+					layer.msg('公告内容不能为空！', { icon: 5 }, function () {
+
+					});
+				}
+				var datas = {
+					title: $("#updateBrokerage_pop")
+						.find("[name=title]")
+						.val(),
+					role: $("#updateBrokerage_pop")
+						.find("[name=role]")
+						.val(),
+					top: $("#updateBrokerage_pop")
+						.find("[name=top]")
+						.val(),
+					content: $("#updateEditor").html()
+				};
+				if (sign) {
+
+					$.ajax({
+						url: urlPrefix + "silver-web-shop/news/publish",
+						type: "POST",
+						xhrFields: {
+							withCredentials: true
+						},
+						data: datas,
+						success: function (response) {
+							if (response.status == 1) {
+								layer.msg("发布成功~");
+								setTimeout(function () {
+									parent.customs_reload();// 添加成功调用父页面的重载方法
+								}, 800);
+							} else {
+								layer.msg(response.msg, {
+									time: 0, //不自动关闭
+									btn: ["确定"],
+									btnAlign: "c",
+									yes: function (index) {
+										layer.close(index);
+									}
+								});
+							}
+						}
+					});
+					return false;
+				}
+			});
+
+			$('#yl_news').on('click', function () { // 预览公告
+				$("#newsDetail")
+					.find(".title")
+					.html($('#updateBrokerage_pop').find('[name=title]').val());
+				$("#newsDetail")
+					.find(".date")
+					.html('0000-00-00');
+				$("#newsDetail")
+					.find(".content")
+					.html($('#updateEditor').html());
+				layer.open({
+					title: "公告详情",
+					type: 1,
+					closeBtn: 0,
+					btnAlign: "c",
+					skin: "layui-layer-rim", //加上边框
+					area: ["90%", "90%"], //宽高
+					content: $("#newsDetail"),
+					btn: ["关闭"],
+					yes: function (index) {
+						$("#newsDetail").hide();
+						layer.close(index);
+					}
+				});
+				return false;
+			});
+
+			$('#close').click(function () {
+				parent.layer.closeAll();
+			})
+		});
+	</script>
+</body>
+
+</html>

@@ -27,14 +27,36 @@
 			width: 40px;
 		}
 
-		body {
-			overflow-y: scroll;
-		}
-
-		#updateBrokerage_pop .layui-input,
+		.news .layui-input,
 		.layui-select,
 		.layui-textarea {
 			height: 38px;
+		}
+
+		/* 公告详情 */
+		.newsDetail .title {
+			font-size: 26px;
+			text-align: center;
+			padding-top: 10px;
+		}
+
+		.newsDetail .date {
+			display: block;
+			width: 80%;
+			margin: 0 auto;
+			font-size: 13px;
+			color: #999;
+			border-bottom: 1px solid #ddd;
+			padding-bottom: 10px;
+			margin-bottom: 10px;
+			margin-top: 24px;
+		}
+
+		.newsDetail .content {
+			width: 80%;
+			margin: 0 auto;
+			font-size: 13px;
+			color: #000;
 		}
 	</style>
 </head>
@@ -75,8 +97,14 @@
 			</div>
 		</script>
 		<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-		<!-- 发布公告 -->
-		<form class="layui-form layui-form-pane" id="updateBrokerage_pop"
+		<script type="text/html" id="statusTpl">
+			<!-- 这里的 checked 的状态只是演示 -->
+		<input type="checkbox" data-serialNo="{{d.serialNo}}" name="top" value="{{d.top}}" lay-skin="switch"
+			lay-text="是|否" lay-filter="statusDemo" {{ d.top > '0' ? 'checked' : '' }}>
+		</script>
+
+		<!-- 修改公告 -->
+		<form class="layui-form layui-form-pane news" id="updateBrokerage_pop_update"
 			style="display: none;margin: 20px auto;width: 80%;">
 			<div class="layui-form-item">
 				<label class="layui-form-label">标题</label>
@@ -86,7 +114,7 @@
 				</div>
 			</div>
 			<div class="layui-form-item">
-				<div class="layui-inline">
+				<div class="layui-inline" id="qq">
 					<label class="layui-form-label">角色</label>
 					<div class="layui-input-block">
 						<select name="role" lay-verify="required" lay-search="">
@@ -108,21 +136,29 @@
 					</div>
 				</div>
 			</div>
-			<script type="text/plain" id="updateEditor" style="height:350px;"></script>
+			<script type="text/plain" id="updateEditor_update" style="height:350px;"></script>
 			<div class="layui-form-item" style="margin-top: 10px;text-align: center;">
 				<div class="layui-inline">
-					<button lay-filter="add_news" type="button"
-						class="layui-btn layui-btn-normal layui-btn-sm" lay-submit="">保存</button>
-					<button type="button" class="layui-btn layui-btn-primary layui-btn-sm">预览</button>
-					<button id="close" type="button" class="layui-btn layui-btn-primary layui-btn-sm">关闭</button>
+					<button lay-filter="add_newsUpdate" type="submit" class="layui-btn layui-btn-normal layui-btn-sm"
+						lay-submit="">保存</button>
+					<button type="button" id="yl_news_update"
+						class="layui-btn layui-btn-primary layui-btn-sm">预览</button>
+					<button id="close_update" type="button" class="layui-btn layui-btn-primary layui-btn-sm">关闭</button>
 				</div>
 			</div>
 		</form>
+
+		<!-- 公共详情 -->
+		<div class="newsDetail" id="newsDetail" style="display:none;">
+			<p class="title"></p>
+			<span class="date"></span>
+			<div class="content"></div>
+		</div>
 	</div>
 	<script type="text/html" id="operateTpl">
 		<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			 -->
-	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="top">置顶</a>
-	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="detail">查看/修改</a>
+	<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="top">置顶</a> -->
+	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="update">修改</a>
 	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
 	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -137,7 +173,8 @@
 		layui.extend({
 			admin: '{/}../../static/js/admin'
 		});
-		var um2 = UM.getEditor("updateEditor", {
+
+		var news_editorUpdate = UM.getEditor("updateEditor_update", {
 			initialFrameWidth: '100%',
 			zIndex: 10,
 			// toolbars: [
@@ -183,14 +220,11 @@
 									return '全部';
 								}
 							}
-						}, {
-							field: 'top', title: '是否置顶', width: 90, templet: function (item) {
-								if (item.top > 0) {
-									return '是';
-								} else {
-									return '否';
-								}
-							}
+						},
+
+						{
+							field: 'top', width: 110, title: '是否置顶', templet: '#statusTpl',
+
 						}, {
 							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}
@@ -227,6 +261,10 @@
 					// console.log(count);
 				}
 			});
+
+			// $('#updateBrokerage_pop_update').on('keyup','#qq input', function () {
+			// 	console.log($(this).val());
+			// });
 			// 重载公共方法
 			var _reload = function () {
 				var serialNo = $('#form_sreach').find('[name=serialNo]');
@@ -279,47 +317,72 @@
 				var type = $(this).data('type');
 				active[type] ? active[type].call(this) : '';
 			});
-
+			//监听性别操作
+			form.on('switch(statusDemo)', function (obj) {
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/news/topping",
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					data: {
+						serialNo: $(obj.elem).attr('data-serialNo')
+					},
+					success: function (response) {
+						if (response.status == 1) {
+							layer.msg('修改成功！');
+							_reload();//执行重载
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+			});
 			//头工具栏事件
 			var wid_news = null;
 			table.on('toolbar(articleList)', function (obj) {
 				var checkStatus = table.checkStatus(obj.config.id);
 				switch (obj.event) {
 					case 'add':
-						wid_news = layer.open({
-							title: "发布公告",
-							type: 1,
-							closeBtn: 0,
-							btnAlign: "c",
-							skin: "layui-layer-rim", //加上边框
+
+						layer.open({
+							type: 2,
+							title: '发布公告',
 							area: ["100%", "100%"], //宽高
-							content: $("#updateBrokerage_pop")
+							fixed: false, //不固定
+							maxmin: true,
+							content: './news_list_add.html',
+							btnAlign: 'c',
+							success: function (layero, index) {
+								// console.log(obj)
+								// 获取子页面的iframe
+								var iframe = window['layui-layer-iframe' + index];
+								// 向子页面的全局函数child传参
+								// iframe.getParent_data(obj);
+							},
+							// btn1: function (index) {
+							// 	layer.close(index);
+							// }
 						});
+
 						break;
-					// case 'getCheckLength':
-					// 	var data = checkStatus.data;
-					// 	layer.msg('选中了：' + data.length + ' 个');
-					// 	break;
-					// case 'isAll':
-					// 	layer.msg(checkStatus.isAll ? '全选' : '未全选');
-					// 	break;
 				};
 			});
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
 				if (obj.event === 'delete') {// 删除	
-					layer.alert("是否删除海关" + data.customsName + ",国检" + data.ciqOrgName + "？", {
+					layer.alert("确定删除公告？", {
 						time: 0, //不自动关闭
 						btn: ["确定", "关闭"],
 						yes: function (index) {
 							$.ajax({
-								url: urlPrefix + "silver-web-shop/customsPort/delete",
+								url: urlPrefix + "silver-web-shop/news/delete",
 								type: "POST",
 								xhrFields: {
 									withCredentials: true
 								},
-								data: { id: data.id },
+								data: { serialNo: data.serialNo },
 								success: function (response) {
 									if (response.status == 1) {
 										layer.msg("删除成功！");
@@ -331,14 +394,114 @@
 							});
 						}
 					});
+				} else if (obj.event === 'update') {// 修改	
+					$("#updateBrokerage_pop_update").attr('data-serialNo', data.serialNo);
+					$("#updateBrokerage_pop_update")
+						.find("[name=title]")
+						.val(data.title);
+					if (data.top != 0) {
+						$("#updateBrokerage_pop_update")
+							.find("[name=top]")
+							.val(1);
+					} else {
+						$("#updateBrokerage_pop_update")
+							.find("[name=top]")
+							.val(0);
+					}
+					$("#updateBrokerage_pop_update")
+						.find("[name=role]")
+						.val(data.role);
+					$("#updateEditor_update").html(data.content);
+					form.render();
+					layer.open({
+						title: "修改公告",
+						type: 1,
+						closeBtn: 0,
+						btnAlign: "c",
+						skin: "layui-layer-rim", //加上边框
+						area: ["100%", "100%"], //宽高
+						content: $("#updateBrokerage_pop_update")
+					});
 				}
 			});
-			form.on('submit(add_news)', function (data) {
-				console.log(data.field);
+
+			form.on('submit(add_newsUpdate)', function (data) { // 发布公告_修改状态
+				var sign = true;
+				if ($("#updateEditor_update").text().trim() == "") {
+					sign = false;
+					layer.msg('公告内容不能为空！', { icon: 5 }, function () { });
+				}
+				var datas = {
+					title: $("#updateBrokerage_pop_update")
+						.find("[name=title]")
+						.val(),
+					role: $("#updateBrokerage_pop_update")
+						.find("[name=role]")
+						.val(),
+					top: $("#updateBrokerage_pop_update")
+						.find("[name=top]")
+						.val(),
+					content: $("#updateEditor_update").html(),
+					serialNo: $("#updateBrokerage_pop_update").attr('data-serialNo')
+				};
+				if (sign) {
+					$.ajax({
+						url: urlPrefix + "silver-web-shop/news/update",
+						type: "POST",
+						xhrFields: {
+							withCredentials: true
+						},
+						data: datas,
+						success: function (response) {
+							if (response.status == 1) {
+								layer.closeAll();
+								layer.msg("发布成功~");
+								_reload();
+							} else {
+								layer.msg(response.msg, {
+									time: 0, //不自动关闭
+									btn: ["确定"],
+									btnAlign: "c",
+									yes: function (index) {
+										layer.close(index);
+									}
+								});
+							}
+						}
+					});
+					return false;
+				}
+			});
+
+			$('#yl_news_update').on('click', function () { // 预览公告
+				$("#newsDetail")
+					.find(".title")
+					.html($('#updateBrokerage_pop_update').find('[name=title]').val());
+				$("#newsDetail")
+					.find(".date")
+					.html('0000-00-00');
+				$("#newsDetail")
+					.find(".content")
+					.html($('#updateEditor_update').html());
+				layer.open({
+					title: "公告详情",
+					type: 1,
+					closeBtn: 0,
+					btnAlign: "c",
+					skin: "layui-layer-rim", //加上边框
+					area: ["90%", "90%"], //宽高
+					content: $("#newsDetail"),
+					btn: ["关闭"],
+					yes: function (index) {
+						$("#newsDetail").hide();
+						layer.close(index);
+					}
+				});
 				return false;
 			});
-			$('#close').click(function(){
-				layer.close(wid_news);
+
+			$('#close_update').click(function () {
+				layer.closeAll();
 			})
 		});
 	</script>
