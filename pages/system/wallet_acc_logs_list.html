@@ -187,6 +187,8 @@
 							field: 'status', title: '状态', width: 90, templet: function (item) {
 								if (item.status == 'abnormal') {
 									return '异常';
+								}else if(item.status == 'normal'){
+									return '正常';
 								}
 							}
 						}, {

@@ -146,12 +146,12 @@
 									<label class="layui-form-label">接收日期</label>
 									<div class="layui-input-inline">
 										<input type="text" class="layui-input" id="startDate" name="startDate"
-											autocomplete="off" placeholder="年-月-日">
+											autocomplete="off" readonly="" placeholder="年-月-日">
 									</div>
 									    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
 									<div class="layui-input-inline">
 										<input type="text" class="layui-input" id="endDate" name="endDate"
-											autocomplete="off" placeholder="年-月-日">
+											autocomplete="off" readonly="" placeholder="年-月-日">
 									</div>
 								</div>
 							</div>
@@ -162,12 +162,14 @@
 
 							<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 							<script type="text/html" id="operateTpl">
-										<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
+								<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>		
+								<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
 							</script>
 
 							<script type="text/html" id="order_dec_list_toolbar">
 								<div class="layui-btn-container">
 									<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>导出</button>				
+
 								</div>
 							</script>
 							<script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -201,9 +203,11 @@
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
+				, max: 0
 			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
@@ -249,7 +253,7 @@
 							return toStringTime(item.orderDate);
 						}
 					}, {
-						field: 'orderSourceType', title: '类型', width: 60, fixed: 'right', templet: function (item) {
+						field: 'orderSourceType', title: '类型', width: 60, templet: function (item) {
 							//类型：online-线上订单接入、offline-线下导入、expand-推广商城下单(线上)、mall-商城下单、excelImport-表单导入
 							if (item.orderSourceType == 'online') {
 								return '线上';
@@ -276,12 +280,12 @@
 								return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报成功</span>';
 							} else if (item.order_record_status == '4') {
 								return '<span style="background: #e4393c; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报失败</span>';
-							}else if(item.order_record_status == '20'){
+							} else if (item.order_record_status == '20') {
 								return '余额不足';
 							}
 						}
 					}, {
-						field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+						field: 'operate', width: 140, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 					}]
 				],
 				// skin: 'row', //行边框风格
@@ -431,8 +435,32 @@
 						}
 					});
 					// layer.full(detail_full);// 全屏显示
-				} else if (obj.event === 'reset') {// 重置密码
+				} else if (obj.event === 'delete') {// 重置密码
+					console.info(data);
+					// var orderIdPack = JSON.stringify(data.order_id);
+					// layer.alert("确定删除移除["+data.order_id+"]订单吗？", {
 
+					// 	time: 0, //不自动关闭
+					// 	btn: ["确定", "关闭"],
+					// 	yes: function (index) {
+					// 		$.ajax({
+					// 			url: urlPrefix + "silver-web-shop/manual/remove",
+					// 			type: "POST",
+					// 			xhrFields: {
+					// 				withCredentials: true
+					// 			},
+					// 			data: { orderIdPack: orderIdPack },
+					// 			success: function (response) {
+					// 				if (response.status == 1) {
+					// 					layer.msg("删除成功！");
+					// 					_reload();//重载表格
+					// 				} else {
+					// 					layer.alert(response.msg);
+					// 				}
+					// 			}
+					// 		});
+					// 	}
+					// });
 
 				} else if (obj.event === 'edit') {// 分配权限
 

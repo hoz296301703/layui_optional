@@ -7,8 +7,8 @@ function dateFormat(datetime, fmt) {
     }
     if (isEmpty(fmt)) {
         fmt = 'yyyy-MM-dd hh:mm:ss';
-    }   
-    if (Object.prototype.toString.call(datetime) === '[object Object]') {     
+    }
+    if (Object.prototype.toString.call(datetime) === '[object Object]') {
         datetime = datetime.time;
     }
     if (parseInt(datetime) == datetime) {
@@ -34,4 +34,12 @@ function dateFormat(datetime, fmt) {
         if (new RegExp("(" + k + ")").test(fmt))
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+}
+//将yyyyMMddHHmmss转化为 yyyy-MM-dd HH:mm:ss
+function toDateFormat(value) {
+    if (isEmpty(value)) {
+        return '';
+    }
+    var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
+    return value.replace(pattern, '$1-$2-$3 $4:$5:$6');
 }

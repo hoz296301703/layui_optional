@@ -53,7 +53,7 @@
 					"url": "./pages/goods/stock_list.html"
 				}
 			]
-		},	
+		},
 		{
 			"id": "funds",
 			"name": "资金管理",
@@ -97,7 +97,8 @@
 					"name": "综合报表",
 					"icon": "",
 					"url": "./pages/report/complex_report_list.html"
-				},{
+				},
+				{
 					"id": "report_2",
 					"name": "分润报表",
 					"icon": "",
@@ -122,7 +123,7 @@
 					"name": "商品库",
 					"icon": "",
 					"url": "./pages/distribution/goods_supply_list.html"
-				},				
+				},
 				{
 					"id": "distribution_3",
 					"name": "专店信息",
@@ -136,7 +137,7 @@
 			"name": "卡券管理",
 			"icon": "&#xe723;",
 			"url": "",
-			"children": [			
+			"children": [
 				{
 					"id": "volume_1",
 					"name": "兑换券",
@@ -174,6 +175,20 @@
 					"name": "运营管理",
 					"icon": "",
 					"url": "./pages/user/manager_list.html"
+				}
+			]
+		},
+		{
+			"id": "market",
+			"name": "营销管理",
+			"icon": "&#xe6b8;",
+			"url": "",
+			"children": [
+				{
+					"id": "market_1",
+					"name": "秒杀活动",
+					"icon": "",
+					"url": "./pages/market/seckill_time_list.html"
 				}
 			]
 		},
@@ -227,6 +242,5 @@
 				}
 			]
 		}
-	
 	]
 }
