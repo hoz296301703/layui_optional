@@ -26,9 +26,9 @@
 			width: 40px;
 		}
 
-		body {
+		/* body {
 			overflow-y: scroll;
-		}
+		} */
 	</style>
 </head>
 
@@ -40,17 +40,18 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
-						<input type="text" name="managerName" placeholder="请输入管理员名称" class="layui-input">
+						<input type="text" class="layui-input" id="dateSign" name="dateSign" readonly=""
+							placeholder="yyyy-MM-dd" autocomplete="off">
 					</div>
 				</div>
 
 				<div class="layui-inline">
 					<label class="layui-form-label">状态</label>
 					<div class="layui-input-inline">
-						<select name="status" lay-verify="required" lay-search="">
+						<select name="status" lay-search="">
 							<option value="">全部</option>
-							<option value="enable">正常</option>
-							<option value="disable">禁用</option>
+							<option value="true">正常</option>
+							<option value="false">禁用</option>
 						</select>
 					</div>
 				</div>
@@ -90,8 +91,8 @@
 			laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
-				elem: '#startDate'
-
+				elem: '#dateSign'
+				, format: 'yyyy-MM-dd'
 			});
 			table.render({
 				elem: '#articleList',
@@ -220,22 +221,22 @@
 			// });
 			var active = {
 				reload: function () {
-					var managerName = $('#form_sreach').find('[name=managerName]');
-					var realName = $('#form_sreach').find('[name=realName]');
-					var managerMarks = $('#form_sreach').find('[name=managerMarks]');
-					var status = $('#form_sreach').find('[name=status]');
+					var dateSign = $('#form_sreach').find('[name=dateSign]').val();
+					dateSign = dateSign.replace('-', '').replace('-', '');
+					// var realName = $('#form_sreach').find('[name=realName]');
+					// var managerMarks = $('#form_sreach').find('[name=managerMarks]');
+					var status = $('#form_sreach').find('[name=status]').val();
 					//执行重载
-
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/seckillTime/find',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
 						where: {
-							managerNameblurry: managerName.val(),
-							realNameblurry: realName.val(),
-							managerMarks: managerMarks.val(),
-							status: status.val()
+							dateSign: dateSign,
+							// realNameblurry: realName.val(),
+							// managerMarks: managerMarks.val(),
+							flag: status
 						}
 					});
 				}
