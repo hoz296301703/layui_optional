@@ -203,18 +203,24 @@
 				},
 				{
 					"id": "system_4",
+					"name": "省市区",
+					"icon": "",
+					"url": "./pages/system/findProvinceCityArea_list.html"
+				},
+				{
+					"id": "system_5",
 					"name": "区域信息",
 					"icon": "",
 					"url": "./pages/article/list.html"
 				},
 				{
-					"id": "system_5",
+					"id": "system_6",
 					"name": "物流信息",
 					"icon": "",
 					"url": "./pages/system/logistics_list.html"
 				},
 				{
-					"id": "system_6",
+					"id": "system_7",
 					"name": "日志信息",
 					"icon": "",
 					"url": "./pages/system/operation_list.html"
