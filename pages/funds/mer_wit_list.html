@@ -31,9 +31,9 @@
 			width: 40px;
 		}
 
-		/* body {
-			overflow-y: scroll;
-		} */
+		.layui-form-pane .layui-input {
+			height: 38px;
+		}
 	</style>
 </head>
 
@@ -104,11 +104,51 @@
 			</div>
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>					
+				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="bill">账单</a>					
 			</script>
 		</form>
 	</div>
 	<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-
+	<script type="text/html" id="articleList_toolbar">
+		<div class="layui-btn-container">
+			<button class="layui-btn layui-btn-sm" lay-event="sendDf"><i class="layui-icon">&#xe609;</i>发起指令</button>
+		</div>				
+	</script>
+	<!-- 结算货款明细 -->
+	<div id="bill_body" style="display: none; ">
+		<form class="layui-form layui-form-pane" action="" style="width: 360px;margin: 0 auto;margin-top: 20px;">
+			
+			<div class="layui-form-item" style="margin-bottom: 10px;">
+				<label class="layui-form-label">分润合计</label>
+				<div class="layui-input-inline">
+					<input disabled="" type="text" name="total" class="layui-input">
+				</div>
+				<div class="layui-form-mid layui-word-aux">元</div>
+			</div>
+			
+			<div class="layui-form-item" style="margin-bottom: 10px;">
+				<label class="layui-form-label">已提现金额</label>
+				<div class="layui-input-inline">
+					<input disabled="" type="text" name="alrAmount" class="layui-input">
+				</div>
+				<div class="layui-form-mid layui-word-aux">元</div>
+			</div>
+			<div class="layui-form-item" style="margin-bottom: 10px;">
+				<label class="layui-form-label">提现金额</label>
+				<div class="layui-input-inline">
+					<input disabled="" type="text" name="wit_amount" class="layui-input">
+				</div>
+				<div class="layui-form-mid layui-word-aux">元</div>
+			</div>
+			<div class="layui-form-item" style="margin-bottom: 10px;">
+				<label class="layui-form-label">提现服务费</label>
+				<div class="layui-input-inline">
+					<input disabled="" type="text" name="wit_fee" class="layui-input">
+				</div>
+				<div class="layui-form-mid layui-word-aux">元</div>
+			</div>
+		</form>
+	</div>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	</div>
@@ -132,31 +172,34 @@
 			laydate.render({
 				elem: '#endDate'
 			});
+			//管理员账号标识
+			var flag = $('#managerName', window.top.document).attr("name");
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				toolbar: '#articleList_toolbar',
+				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
 				height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/merWitLogs/getInfo',
 				method: 'post',
 				cols: [
 					[
-						{
+						{ type: 'checkbox', fixed: 'left' }, {
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '日期', width:180,fixed: 'left', templet: function (item) {
+							field: 'createDate', title: '日期', width: 170, fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'merchantName', title: '商户名称',width:120
+							field: 'merchantName', title: '商户名称', width: 120
 						}, {
-							field: 'merchantId', title: '商户编号',width:180
+							field: 'merchantId', title: '商户编号', width: 180
 						}, {
-							field: 'serialNo', title: '流水号',width:190
+							field: 'serialNo', title: '流水号', width: 190
 						}, {
-							field: 'amount', title: '提现金额(元)',width: 120
+							field: 'amount', title: '金额(元)', width: 120
 						}, {
 							field: 'fee', title: '服务费(元)', width: 100
 						}, {
@@ -187,7 +230,7 @@
 							}
 						},
 						{
-							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', width: 160, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
 				// skin: 'row', //行边框风格
@@ -223,8 +266,12 @@
 					// console.log(count);
 				}
 			});
+			window.mer_wit_reload = function () {// 提交重载方法到全局，让子页面调用
+				layer.closeAll();
+				_reload();
+			};
 			// 重载公共方法
-			var _reload = function () {				
+			var _reload = function () {
 				var merchantName = $('#form_sreach').find('[name=merchantName]');
 				var merchantId = $('#form_sreach').find('[name=merchantId]');
 				var serialNo = $('#form_sreach').find('[name=serialNo]');
@@ -250,11 +297,12 @@
 					}
 				});
 			}
+
 			// 监听查询按钮
 			$('#form_sreach .layui-btn').on('click', function () {
-					var type = $(this).data('type');
-					active[type] ? active[type].call(this) : '';
-				});
+				var type = $(this).data('type');
+				active[type] ? active[type].call(this) : '';
+			});
 			/*
 			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
 			 * http://www.layui.com/doc/modules/form.html#render
@@ -263,7 +311,7 @@
 			// 	form.render();
 			// });
 			var active = {
-				reload: function () {					
+				reload: function () {
 					var merchantName = $('#form_sreach').find('[name=merchantName]');
 					var merchantId = $('#form_sreach').find('[name=merchantId]');
 					var serialNo = $('#form_sreach').find('[name=serialNo]');
@@ -291,6 +339,148 @@
 					});
 				}
 			};
+			var wind = null;
+			//提供一个全局参数
+			var _tools = {
+				func1: function () {
+					layer.close(wind);
+				}
+			}
+			window.tools = _tools;
+			//监听操作工具条
+			table.on('tool(articleList)', function (obj) {
+				var data = obj.data;
+				if (obj.event === 'detail') {// 查看详情
+					wind = layer.open({
+						type: 2,
+						title: '详情',
+						area: ['95%', '95%'],
+						// fixed: false, //不固定
+						maxmin: true,
+						content: './mer_wit_detail.html',
+						btnAlign: 'c',
+						// btn: ["通过", "不通过", "关闭"],
+						success: function (layero, index) {
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							obj.managerFlag = flag;
+							// 向子页面的全局函数child传参
+							iframe.getParent_data(obj);
+						}
+					});
+				} else if (obj.event == 'bill') {
+
+					layer.msg('加载中...', { time: 0, icon: 16, shade: 0.1 });
+					$.ajax({
+						url: urlPrefix + "silver-web-shop/merWitLogs/getBill",
+						type: "POST",
+						xhrFields: {
+							withCredentials: true
+						},
+						data: { serialNo: data.serialNo },
+						success: function (response) {
+							if (response.status == 1) {
+								$('#bill_body').find('[name=total]').val(response.datas.total)
+								$('#bill_body').find('[name=alrAmount]').val(response.datas.alrAmount)
+								$('#bill_body').find('[name=wit_amount]').val(data.amount)
+								$('#bill_body').find('[name=wit_fee]').val(data.fee)
+								// $('#bill_body').find('[name=payFee]').val(response.datas.payFee)
+								layer.open({
+									title: "结算货款明细",
+									type: 1,
+									closeBtn: 0,
+									skin: "layui-layer-rim", //加上边框
+									area: ["454px", "420px"], //宽高
+									btnAlign: "c",
+									content: $("#bill_body"),
+									btn: ["关闭"],
+									yes: function (index) {
+										$("#bill_body").hide();
+										layer.closeAll();
+									}
+								});
+							}
+						}
+					});
+				}
+			});
+			//单击行勾选checkbox事件
+			$(document).on("click", ".layui-table-body table.layui-table tbody tr", function () {
+				var index = $(this).attr('data-index');
+				var tableBox = $(this).parents('.layui-table-box');
+				//存在固定列
+				if (tableBox.find(".layui-table-fixed.layui-table-fixed-l").length > 0) {
+					tableDiv = tableBox.find(".layui-table-fixed.layui-table-fixed-l");
+				} else {
+					tableDiv = tableBox.find(".layui-table-body.layui-table-main");
+				}
+				var checkCell = tableDiv.find("tr[data-index=" + index + "]").find("td div.laytable-cell-checkbox div.layui-form-checkbox I");
+				if (checkCell.length > 0) {
+					checkCell.click();
+				}
+			});
+			$(document).on("click", "td div.laytable-cell-checkbox div.layui-form-checkbox", function (e) {
+				e.stopPropagation();
+			});
+			//------------------------------------------------------------------------
+
+			table.on('toolbar(articleList)', function (obj) {
+				var checkStatus = table.checkStatus(obj.config.id);
+				var data = checkStatus.data;  //获取选中行数据
+				var enent = obj.event;
+				switch (enent) {
+					case 'sendDf':
+						//流水号信息包
+						var serialNoPack = [];
+						//总金额
+						var amount = 0;
+						var fee = 0;
+						//商户名称
+						var merchantName = null;
+						//遍历流水号
+						for (var key in data) {
+							var datas = data[key];
+							serialNoPack.push(datas.serialNo);
+							merchantName = datas.merchantName;
+							amount = accAdd(amount, datas.amount);
+							fee = accAdd(fee, datas.fee);;
+						}
+						amount = accSub(amount, fee);
+						//转换格式
+						serialNoPack = JSON.stringify(serialNoPack);
+						layer.alert("确认是否为【" + merchantName + "】发起金额为【" + amount + "】结算指令？", {
+							time: 0, //不自动关闭
+							btn: ["确定", "关闭"],
+							area: ['500px', '200px'],//宽高
+							yes: function (index) {
+								//加载动画
+								layer.load(2);
+								$.ajax({
+									url: urlPrefix + "silver-web-shop/dfOrder/sendDf",
+									type: "POST",
+									xhrFields: {
+										withCredentials: true
+									},
+									data: { serialNoPack: serialNoPack },
+									success: function (response) {
+										//关闭加载动画
+										layer.closeAll("loading");
+										if (response.status == 1) {
+											layer.msg("发送成功！");
+											setTimeout(function () {
+												_reload();//重载表格
+											}, 1000);
+										} else {
+											layer.alert(response.msg);
+										}
+									}
+								});
+							}
+						});
+						break;
+				};
+			});
+
 		});
 	</script>
 </body>

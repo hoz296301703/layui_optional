@@ -138,6 +138,7 @@
 												<option value="expand">推广</option>
 												<option value="mall">商城</option>
 												<option value="excelImport">导入</option>
+												<option value="seckill">秒杀</option>
 											</select>
 										</div>
 									</div>
@@ -163,7 +164,7 @@
 							<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 							<script type="text/html" id="operateTpl">
 								<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>		
-								<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+								<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">移除</a>
 							</script>
 
 							<script type="text/html" id="order_dec_list_toolbar">
@@ -179,7 +180,7 @@
 				</div>
 			</div>
 			<!----已删除申报订单信息------------start-------------------->
-			<div class="layui-tab-item" id="delInfo">
+			<div class="layui-tab-item" id="del_order_info">
 				<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 			</div>
 			<!----已删除申报订单信息------------end---------------------->
@@ -265,6 +266,8 @@
 								return '商城';
 							} else if (item.orderSourceType == 'excelImport') {
 								return '导入';
+							} else if (item.orderSourceType == 'seckill') {
+								return '秒杀';
 							} else {
 								return '';
 							}
@@ -328,8 +331,8 @@
 				var order_id = $('#form_sreach').find('[name=order_id]');
 				var recipientName = $('#form_sreach').find('[name=recipientName]');
 				var recipientTel = $('#form_sreach').find('[name=recipientTel]');
-				var OrderDocName = $('#form_sreach').find('[name=orderDocName]');
-				var OrderDocId = $('#form_sreach').find('[name=orderDocId]');
+				var orderDocName = $('#form_sreach').find('[name=orderDocName]');
+				var orderDocId = $('#form_sreach').find('[name=orderDocId]');
 				var order_record_status = $('#form_sreach').find('[name=order_record_status]');
 				var trade_no = $('#form_sreach').find('[name=trade_no]');
 				var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
@@ -437,30 +440,56 @@
 					// layer.full(detail_full);// 全屏显示
 				} else if (obj.event === 'delete') {// 重置密码
 					console.info(data);
-					// var orderIdPack = JSON.stringify(data.order_id);
-					// layer.alert("确定删除移除["+data.order_id+"]订单吗？", {
+					layer.open({
+						id: 1,
+						type: 1,
+						title: '移除订单',
+						skin: 'layui-layer-rim',
+						area: ['450px', '450px'],//宽高
+						content: ' <div id="" class="">'
+							+ '确定删除移除[' + data.order_id + ']订单吗？</div>'
+							+ '<div class= "layui-form-item layui-form-text" id="remove_note" >'
+							+ '<label class="layui-form-label">说明</label>'
+							+ '<div class="layui-input-block">'
+							+ '<textarea name="note" placeholder="请输入内容" class="layui-textarea"></textarea>'
+							+ '</div>'
+							+ '</div>'
+						,
+						btn: ['保存', '取消'],
+						btn1: function (index, layero) {
+							//加载层-默认风格
+							layer.load();
+							var obj = [];
+							var note = $('#remove_note').find("[name=note]").val();
+							obj[0] = data.order_id;
+							console.info(obj);
+							var orderIdPack = JSON.stringify(obj);
+							$.ajax({
+								url: urlPrefix + "silver-web-shop/manual/remove",
+								type: "POST",
+								xhrFields: {
+									withCredentials: true
+								},
+								data: { orderIdPack: orderIdPack ,note:note},
+								success: function (response) {
+									layer.closeAll('loading');
+									if (response.status == 1) {
+										setTimeout(function () {
+											layer.msg("移除成功！");
+											_reload();//重载表格
+										}, 2000);
+									} else {
+										layer.alert(response.msg);
+									}
+								}
+							});
+						},
+						btn2: function (index, layero) {
+							layer.close(index);
+						}
 
-					// 	time: 0, //不自动关闭
-					// 	btn: ["确定", "关闭"],
-					// 	yes: function (index) {
-					// 		$.ajax({
-					// 			url: urlPrefix + "silver-web-shop/manual/remove",
-					// 			type: "POST",
-					// 			xhrFields: {
-					// 				withCredentials: true
-					// 			},
-					// 			data: { orderIdPack: orderIdPack },
-					// 			success: function (response) {
-					// 				if (response.status == 1) {
-					// 					layer.msg("删除成功！");
-					// 					_reload();//重载表格
-					// 				} else {
-					// 					layer.alert(response.msg);
-					// 				}
-					// 			}
-					// 		});
-					// 	}
-					// });
+					});
+
 
 				} else if (obj.event === 'edit') {// 分配权限
 
@@ -566,8 +595,9 @@
 
 			//跳转至已删除的订单信息
 			$('#del_info_btn').on('click', function () {
+				console.info('------------');
 				var h = $(window).height() - 30;
-				$("#delInfo").find('iframe').attr('src', "del_order_dec_list.html").css('height', h + 'px');
+				$("#del_order_info").find('iframe').attr('src', "old_order_dec_list.html").css('height', h + 'px');
 			})
 		});
 	</script>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<!--充值申请信息详情html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 120px;
+    }
+
+    .layui-input {
+      width: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-collapse" lay-filter="test">
+    <form class="layui-form" id="rec_app_detail_form" lay-filter="example" style="margin-top: 20px">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">流水号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="serialNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">商户名称</label>
+          <div class="layui-input-inline">
+            <input type="text" name="merchantName" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">商户编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="merchantId" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <label class="layui-form-label">金额</label>
+          <div class="layui-input-inline">
+            <input type="text" name="amount" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">服务费</label>
+          <div class="layui-input-inline">
+            <input type="text" name="fee" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">代付金额</label>
+          <div class="layui-input-inline">
+            <input type="text" name="result" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">当前节点</label>
+          <div class="layui-input-inline">
+            <select name="revStatus" lay-verify="required" lay-search="" disabled>
+              <option value="">全部</option>
+              <option value="firstTrial">运营初审</option>
+              <option value="financialAudit">财务审核</option>
+              <option value="termination">终止</option>
+              <option value="complete">完成</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">结算状态</label>
+          <div class="layui-input-inline">
+            <input type="text" name="status" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">日期</label>
+          <div class="layui-input-inline">
+            <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+          </div>
+        </div>
+      </div>
+      <hr class="layui-bg-blue">
+      <div class="layui-form">
+        <table class="layui-table" id="rec_app_rev_table" lay-size="sm">
+          <colgroup>
+            <col width="140">
+            <col width="210">
+            <col width="210">
+            <col width="210">
+            <col width="210">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>日期<span class="we-red"></span></th>
+              <th>节点<span class="we-red"></span></th>
+              <th>处理人<span class="we-red"></span></th>
+              <th>状态<span class="we-red"></span></th>
+              <th>备注<span class="we-red"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 内容 -->
+          </tbody>
+        </table>
+      </div>
+      <div id="note" class="layui-form-item layui-form-text" style="display: none">
+        <hr class="layui-bg-orange">
+        <label class="layui-form-label">说明</label>
+        <div class="layui-input-block">
+          <textarea name="note" placeholder="不通过时必须填写" class="layui-textarea"></textarea>
+        </div>
+      </div>
+      <div id="rev_btn" class="layui-form-item"
+        style="text-align: center;  position: fixed; bottom: 0;left: 50%; transform: translate(-50%);">
+        <button type="button" id="passed" class="layui-btn layui-btn-sm" lay-filter="passed" lay-submit=""
+          style="display: none">通过</button>
+        <button type="button" id='failure' class="layui-btn layui-btn-sm layui-btn-warm" lay-filter="failure"
+          lay-submit="" style="display: none">不通过</button>
+        <button type="button" id='close' class="layui-btn layui-btn-sm layui-btn-primary close">关闭</button>
+      </div>
+    </form>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量
+    var managerFlag = ''; // 管理员标识：1-超级管理员、2-运营、3-财务     
+    var content = '';//申请单信息对象
+    var logs = '';//审核日志
+    function getParent_data(obj) {
+      managerFlag = obj.managerFlag;
+      g_data = obj.data;
+     
+      layui.extend({
+        admin: '{/}../../static/js/admin'
+      });
+      layui.use(['form', 'element', 'jquery', 'layer', 'admin'], function () {
+        var form = layui.form,
+          $ = layui.jquery,
+          element = layui.element,
+          admin = layui.admin,
+          layer = layui.layer;
+        //监听折叠
+        // element.on('collapse(test)', function (data) {
+        //   //点击触发事件
+        //   layer.msg('展开状态：' + data.show);
+        // });
+
+        //查询订单详情
+        function getDetail() {
+          var datas = null;
+          $.ajax({
+            url: urlPrefix + "silver-web-shop/merWitLogs/getDetail",
+            type: "POST",
+            xhrFields: {
+              withCredentials: true
+            },
+            async: false,
+            data: { serialNo: g_data.serialNo },
+            success: function (response) {
+              if (response.status == 1) {
+                datas = response.datas;
+                content = datas.content;
+              } else {
+                layer.alert(response.msg);
+              }
+            }
+          });
+          logs = datas.log;
+          return datas;
+        }
+        getDetail();
+        //初始赋值
+        f = form.val('example', {
+          "merchantName": g_data.merchantName
+          , "merchantId": g_data.merchantId
+          , "serialNo": g_data.serialNo
+          , "amount": g_data.amount
+          , "fee": g_data.fee
+          , "result": accSub(g_data.amount, g_data.fee)
+          , "revStatus": g_data.revStatus
+          , "status": g_orderStatus(g_data.status)
+          , "createDate": G_format(g_data.createDate.time, 'yyyy-MM-dd hh:mm:ss')
+        })
+
+        // 关闭弹窗
+        $('#rev_btn .close').click(function () {
+          parent.tools.func1();
+        })
+        // 通过按钮
+        form.on('submit(passed)', function (data) {
+          var note = data.field.note;
+          layer.alert("确定通过审核吗？", {
+            time: 0, //不自动关闭
+            btnAlign: "c",
+            btn: ["确定", "取消"],
+            yes: function (index) {
+              unite(2, note);
+            }
+          });
+        });
+        //统一入口 
+        var unite = function (flag, note) {
+          if (managerFlag == 3 && reviewerType == "financialAudit") {//财务审核
+            financialReview(content, flag, note);
+          } else {
+            managerReview(content, flag, note);
+          }
+        }
+        form.on('submit(failure)', function (data) {
+          var note = data.field.note;
+          if (isEmpty(note)) {
+            layer.msg('说明不能为空！');
+          } else {
+            unite(3, note);
+          }
+        });
+        //运营审核
+        var managerReview = function (datas, flag, note) {
+          var params = { serialNo: datas.serialNo, status: flag, note: note };
+          //加载层-默认风格
+          layer.load();
+          $.ajax({
+            url: urlPrefix + "silver-web-shop/merWitLogs/opeRev",
+            type: "POST",
+            xhrFields: {
+              withCredentials: true
+            },
+            data: params,
+            success: function (response) {
+              layer.closeAll('loading');
+              if (response.status == 1) {
+                layer.msg('操作成功', { icon: 1 });
+                //关闭弹窗
+                setTimeout(function () {
+                  parent.tools.func1();
+                  parent.mer_wit_reload();
+                }, 1500)
+              } else {
+                layer.alert(response.msg);
+              }
+            }
+          });
+        }
+        //财务审核
+        var financialReview = function (datas, flag, note) {
+          var params = { serialNo: datas.serialNo, status: flag, note: note };
+          //加载层-默认风格
+          layer.load();
+          $.ajax({
+            url: urlPrefix + "silver-web-shop/merWitLogs/finRev",
+            type: "POST",
+            xhrFields: {
+              withCredentials: true
+            },
+            data: params,
+            success: function (response) {
+              layer.closeAll('loading');
+              if (response.status == 1) {
+                layer.msg('操作成功', { icon: 1 });
+                //关闭弹窗
+                setTimeout(function () {
+                  parent.tools.func1();
+                  parent.mer_wit_reload();
+                }, 1500)
+              } else {
+                layer.alert(response.msg);
+              }
+            }
+          });
+        }
+
+        // g_data = fn();
+
+        //渲染审核日志信息
+        function logs_info() {
+          var divStr;
+          for (var key in logs) {
+            var obj = logs[key];
+            // 审核标识：1-待审核、2-通过、3-不通过
+            var flag = obj.reviewerFlag;
+            var name = "";
+            if (flag == 1) {
+              name = "待审核";
+            } else if (flag == 2) {
+              name = "通过";
+            } else if (flag == 3) {
+              name = "不通过";
+            }
+            divStr += `
+                 <tr >                 
+                  <td>
+                    <div class="layui-input-inline">${G_format(obj.createDate.time, "yyyy-MM-dd hh:mm:ss")}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${obj.curNodeName}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${obj.reviewerName}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${name}</div>
+                  </td>
+                  <td>
+                    <div class="layui-input-inline">${obj.note}</div>
+                  </td>                 
+                              
+                </tr>`
+          }
+          $('#rec_app_rev_table tbody').html(divStr);
+          form.render();
+        }
+        logs_info();
+        // 审核状态：firstTrial-运营初审、financialAudit-财务审核、termination-终止、complete-完成
+        var reviewerType = content.revStatus;
+        // 判断管理员标识与当前申请单状态、进行按钮显示
+        if ((managerFlag == 2 && reviewerType == "firstTrial") || (managerFlag == 3 && reviewerType == "financialAudit") || (managerFlag == 1 && reviewerType == "firstTrial")) {
+          $("#rev_btn").find("#passed").show();
+          $("#rev_btn").find("#failure").show();
+          $("#note").show();
+        }
+      });
+    }
+
+  </script>
+</body>
+
+</html>
