@@ -81,16 +81,14 @@
 
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree'], function () {
+
+		layui.use(['table', 'jquery', 'form', 'tree'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
-				tree = layui.tree,
-				admin = layui.admin;
+				tree = layui.tree;
+			
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({

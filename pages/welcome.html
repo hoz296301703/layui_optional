@@ -384,15 +384,14 @@
 	</body>
 	<script type="text/javascript" src="../lib/layui/layui.js" charset="utf-8"></script>
 	<script type="text/javascript">
-		layui.extend({
-			admin: '{/}../static/js/admin',
-		});
-		layui.use(['jquery', 'element','util', 'admin', 'carousel'], function() {
+		// layui.extend({
+		// 	admin: '{/}../static/js/admin',
+		// });
+		layui.use(['jquery', 'element','util', 'carousel'], function() {
 			var element = layui.element,
 				$ = layui.jquery,
 				carousel = layui.carousel,
-				util = layui.util,
-				admin = layui.admin;
+				util = layui.util;
 			//建造实例
 			carousel.render({
 				elem: '.weadmin-shortcut'

@@ -69,7 +69,6 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 				return false;
 			}
 			if (sessionStorage.getItem("curMenu")) {
-			
 				$('.layui-tab-title').find('layui-this').removeClass('layui-class');
 				curMenu = JSON.parse(sessionStorage.getItem("curMenu"));
 				id = curMenu.id;
@@ -179,7 +178,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 		tabAdd: function (title, url, id) {
 			//判断当前id的元素是否存在于tab中
 			var li = $("#WeTabTip li[lay-id=" + id + "]").length;
-			//console.log(li);
+			// console.log(li);
 			if (li > 0) {
 				//tab已经存在，直接切换到指定Tab项
 				//console.log(">0");
@@ -187,6 +186,8 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 			} else {
 				//该id不存在，新增一个Tab项
 				//console.log("<0");
+					// curMenu = JSON.parse(sessionStorage.getItem("curMenu"));
+				// console.log(curMenu)
 				element.tabAdd('wenav_tab', {
 					title: title,
 					content: '<iframe tab-id="' + id + '" frameborder="0" src="' + url + '" scrolling="yes" class="weIframe"></iframe>',
@@ -357,7 +358,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 				//向iframe页的id=house的元素传值  // 参考 https://yq.aliyun.com/ziliao/133150
 				var body = layer.getChildFrame('body', index);
 				body.contents().find("#dataId").val(id);
-				console.log(id);
+				// console.log(id);
 			},
 			error: function (layero, index) {
 				alert("aaa");
@@ -366,7 +367,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 	}
 	/*弹出层+传递ID参数*/
 	window.WeAdminEdit2 = function (title, url, id, w, h) {
-		console.log(id)
+		// console.log(id)
 		if (title == null || title == '') {
 			title = false;
 		};
@@ -392,7 +393,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 				//向iframe页的id=house的元素传值  // 参考 https://yq.aliyun.com/ziliao/133150
 				var body = layer.getChildFrame('body', index);
 				body.contents().find("#dataId").val(id);
-				console.log(id);
+				// console.log(id);
 			},
 			error: function (layero, index) {
 				alert("aaa");
@@ -411,7 +412,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 	 * tab切换监听不能写字初始化加载$(function())方法内，否则不执行
 	 */
 	element.on('tab(wenav_tab)', function (data) {
-		//console.log(this); //当前Tab标题所在的原始DOM元素
+		// console.log(this); //当前Tab标题所在的原始DOM元素
 		setStorageCurMenu();
 	});
 	/*
@@ -428,7 +429,9 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 	 */
 	//本地存储记录所有打开的窗口
 	function setStorageMenu(title, url, id) {
+		
 		var menu = JSON.parse(sessionStorage.getItem('menu'));
+		// console.log(menu)
 		if (menu) {
 			var deep = false;
 			for (var i = 0; i < menu.length; i++) {
@@ -468,6 +471,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 			url: url,
 			id: id
 		}
+		// console.log(curMenu)
 		sessionStorage.setItem('curMenu', JSON.stringify(curMenu));
 	}
 	//本地存储中移除删除的元素
