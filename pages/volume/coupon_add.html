@@ -76,12 +76,14 @@
             <col width="150">
             <col width="200">
             <col width="80">
+            <col width="80">
           </colgroup>
           <thead>
             <tr>
               <th>图片</th>
               <th>商品名称</th>
               <th>编号</th>
+              <th>单价</th>
               <th>操作</th>
             </tr>
           </thead>
@@ -209,7 +211,7 @@
           <label class="layui-form-label">商品编号</label>
           <div class="layui-input-inline">
             <input type="text" name="entGoodsNo" placeholder="请输入商品自编号" class="layui-input">
-          </div>
+          </div>         
           <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
         </div>
       </div>
@@ -296,7 +298,7 @@
         field.goodsId = goodsId;
         field.startTime = appendStartDate($('#form_sreach').find('[name=startTime]').val());
         field.endingTime = appendEndDate($('#form_sreach').find('[name=endingTime]').val());
-        console.info(field);
+       
         $.ajax({
           url: urlPrefix + "silver-web-shop/coupon/publish",
           // type: "POST",
@@ -369,11 +371,13 @@
                       return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + g_imgSplit(item.reMark) + '"  src="' + g_imgSplit(item.reMark) + '" width="80px" height="80px"></div>';
                     }
                   }, {
-                    field: 'goodsName', title: '商品名称', width: 300
+                    field: 'goodsName', title: '商品名称', width: 250
                   }, {
                     field: 'merchantName', title: '商户名称', width: 134
                   }, {
-                    field: 'entGoodsNo', title: '商品自编号', width: 185
+                    field: 'regPrice', title: '单价', width: 80
+                  }, {
+                    field: 'entGoodsNo', title: '商品自编号', width: 150
                     // }, {
                     //   field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
                   }
@@ -501,7 +505,7 @@
       // }
       //------------------------------------------------------------------------
       var cache = [];
-      // 修改计费信息
+      // 选中商品信息提交
       form.on('submit(goods_save)', function (data) {
         var checkStatus = table.checkStatus('goods_list')
           , data = checkStatus.data;
@@ -515,6 +519,7 @@
 
           } else {
             obj.entGoodsNo = goodsId;
+            obj.regPrice = v.regPrice;            
             obj.goodsName = v.goodsName
             obj.goodsImage = v.reMark
             cache.push(obj);
@@ -537,6 +542,9 @@
                   <td>
                     <div class="layui-input-inline "><input type=""   value="${goods.entGoodsNo}" name="" autocomplete="off" class="layui-input layui-disabled goodsId"  disabled></div>
                   </td>                  
+                  <td>
+                    <div class="layui-input-inline "><input type=""   value="${goods.regPrice}" name="" autocomplete="off" class="layui-input layui-disabled goodsId"  disabled></div>
+                  </td>
                   <td>
                       <a class="layui-btn layui-btn-danger layui-btn-xs deleteTr">删除</a>
                   </td>

@@ -81,7 +81,7 @@
 							<select name="status" lay-verify="required" lay-search="">
 								<option value="">全部</option>
 								<option value="1">待付款</option>
-								<option value="2">已付款,待处理</option>
+								<option value="2">待处理</option>
 								<option value="10">待发货</option>
 								<option value="3">待清关</option>
 								<option value="4">快件运输中</option>
@@ -230,11 +230,11 @@
 				, type: 'datetime'
 			});
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
 				defaultToolbar: ['filter'],
 				toolbar: '#order_list_toolbar',
 				url: urlPrefix + 'silver-web-shop/order/findDatas',
@@ -270,7 +270,7 @@
 								if (item.status == '1') {
 									return '待付款';
 								} else if (item.status == '2') {
-									return '已付款,待处理';
+									return '待处理';
 								} else if (item.status == '10') {
 									return '待发货';
 								} else if (item.status == '3') {

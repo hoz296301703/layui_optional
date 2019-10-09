@@ -255,81 +255,74 @@
     //获取传递数据
     function getParent_data(obj) {
       g_data = obj.data;
-    }
+      layui.use(['form', 'element', 'jquery', 'layer'], function () {
+        var form = layui.form,
+          $ = layui.jquery,
+          element = layui.element,
+          layer = layui.layer;
+        //监听折叠
+        // element.on('collapse(test)', function (data) {
+        //   //点击触发事件
+        //   layer.msg('展开状态：' + data.show);
+        // });
 
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
-    layui.use(['form', 'element', 'jquery', 'layer', 'admin'], function () {
-      var form = layui.form,
-        $ = layui.jquery,
-        element = layui.element,
-        admin = layui.admin,
-        layer = layui.layer;
-      //监听折叠
-      // element.on('collapse(test)', function (data) {
-      //   //点击触发事件
-      //   layer.msg('展开状态：' + data.show);
-      // });
-
-
-      //查询订单申报详情
-      function getDetail(orderId) {
-        var datas = null;
-        $.ajax({
-          url: urlPrefix + "silver-web-shop/order/getManualOrderInfo",
-          type: "POST",
-          xhrFields: {
-            withCredentials: true
-          },
-          async: false,
-          data: { order_id: orderId, page: 0, size: 0 },
-          success: function (response) {
-            if (response.status == 1) {
-              datas = response.datas;
-            } else {
-              layer.alert(response.msg);
+        //查询订单申报详情
+        function getDetail(orderId) {
+          var datas = null;
+          $.ajax({
+            url: urlPrefix + "silver-web-shop/order/getManualOrderInfo",
+            type: "POST",
+            xhrFields: {
+              withCredentials: true
+            },
+            async: false,
+            data: { order_id: orderId, page: 0, size: 0 },
+            success: function (response) {
+              if (response.status == 1) {
+                datas = response.datas;
+              } else {
+                layer.alert(response.msg);
+              }
             }
-          }
-        });
-        return datas;
-      }
-      g_data = getDetail(g_data.order_id);
-      order = g_data[0].head;
-      goods = g_data[0].content;
-      //订单信息初始赋值
-      form.val('example', {
-        "entOrderNo": order.order_id
-        , "orderTotalPrice": order.orderTotalPrice
-        , "tax": order.tax
-        , "freight": order.freight
-        , "orderTotalPrice": order.FCY
-        , "otherPayNotes": order.otherPayNotes
-        , "actualAmountPaid": order.actualAmountPaid
-        , "recipientName": order.recipientName
-        , "recipientCardId": order.recipientID
-        , "recipientTel": order.recipientTel
-        , "recProvincesName": order.recipientProvincesName
-        , "recCityName": order.recipientCityName
-        , "recAreaName": order.recipientAreaName
-        , "recipientAddr": order.recipientAddr
-        , "ordererName": order.orderDocName
-        , "ordererIdCardNumber": order.orderDocId
-        , "ordererTel": order.orderDocTel
-        , "orderDate": toStringTime(order.orderDate)
-        , "order_record_status": order.order_record_status
-        , "createDate": G_format(order.create_date.time, "yyyy-MM-dd hh:mm:ss")
-        , "tradeNo": order.trade_no
-        , "otherPayment": order.otherPayment
-        // , "tax": g_data.order.tax
-        // , "freight": g_data.order.freight
-      })
-      //渲染订单商品信息
-      function orderGoods(datas) {
-        var divStr;
-        for (var key in datas) {
-          var obj = datas[key];
-          divStr += `
+          });
+          return datas;
+        }
+        g_data = getDetail(g_data.order_id);
+        order = g_data[0].head;
+        goods = g_data[0].content;
+        //订单信息初始赋值
+        form.val('example', {
+          "entOrderNo": order.order_id
+          , "orderTotalPrice": order.orderTotalPrice
+          , "tax": order.tax
+          , "freight": order.freight
+          , "orderTotalPrice": order.FCY
+          , "otherPayNotes": order.otherPayNotes
+          , "actualAmountPaid": order.actualAmountPaid
+          , "recipientName": order.recipientName
+          , "recipientCardId": order.recipientID
+          , "recipientTel": order.recipientTel
+          , "recProvincesName": order.recipientProvincesName
+          , "recCityName": order.recipientCityName
+          , "recAreaName": order.recipientAreaName
+          , "recipientAddr": order.recipientAddr
+          , "ordererName": order.orderDocName
+          , "ordererIdCardNumber": order.orderDocId
+          , "ordererTel": order.orderDocTel
+          , "orderDate": toStringTime(order.orderDate)
+          , "order_record_status": order.order_record_status
+          , "createDate": G_format(order.create_date.time, "yyyy-MM-dd hh:mm:ss")
+          , "tradeNo": order.trade_no
+          , "otherPayment": order.otherPayment
+          // , "tax": g_data.order.tax
+          // , "freight": g_data.order.freight
+        })
+        //渲染订单商品信息
+        function orderGoods(datas) {
+          var divStr;
+          for (var key in datas) {
+            var obj = datas[key];
+            divStr += `
                  <tr >
                     <td>
                     <div class="layui-input-inline"><input style="width: 140px" lay-verify="required"  value="${obj.entGoodsNo}" name="ebpEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
@@ -358,31 +351,33 @@
                     <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${obj.price}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>                 
                 </tr>`
+          }
+          $('#order_goods_table tbody').html(divStr);
+          form.render();
         }
-        $('#order_goods_table tbody').html(divStr);
-        form.render();
-      }
-      //渲染商品
-      orderGoods(goods);
+        //渲染商品
+        orderGoods(goods);
 
-      //订单申报回执信息
-      function orderDecNote(note) {
-        if (isEmpty(note)) {
-          return "";
+        //订单申报回执信息
+        function orderDecNote(note) {
+          if (isEmpty(note)) {
+            return "";
+          }
+          //切割#分隔符
+          var arr = note.split("#");
+          var divStr = "";
+          for (var i = 0; i < arr.length; i++) {
+
+            divStr += '<div class="layui-card-body" id="order_dec_note">' + arr[i] + ' </div>';
+
+          }
+          $('#order_dec_note').html(divStr);
         }
-        //切割#分隔符
-        var arr = note.split("#");
-        var divStr = "";
-        for (var i = 0; i < arr.length; i++) {
+        var note = order.order_re_note;
+        orderDecNote(note);
+      });
+    }
 
-          divStr += '<div class="layui-card-body" id="order_dec_note">' + arr[i] + ' </div>';
-
-        }
-        $('#order_dec_note').html(divStr);
-      }
-      var note = order.order_re_note;
-      orderDecNote(note);
-    });
   </script>
 </body>
 

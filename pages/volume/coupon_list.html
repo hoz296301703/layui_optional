@@ -35,7 +35,6 @@
 
 <body>
 	<div class="weadmin-body">
-
 		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 			<ul class="layui-tab-title">
 				<li class="layui-this">优惠券信息</li>
@@ -65,7 +64,7 @@
 								</div>
 							</div>
 							<div class="layui-inline">
-								<label class="layui-form-label">区间</label>
+								<label class="layui-form-label">类型</label>
 								<div class="layui-input-inline">
 									<select name="useLimit" lay-verify="required" lay-search="">
 										<option value="" hidden>全部</option>
@@ -129,9 +128,7 @@
 				<!---用户信息--end----------------------->
 			</div>
 		</div>
-
 	</div>
-
 	<script type="text/html" id="statusTpl">
 	<!-- 这里 checked 的状态 -->
 	<input type="checkbox" data-serialNo="{{d.serialNo}}" name="status" value="{{d.status}}" lay-skin="switch"
@@ -145,33 +142,30 @@
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	<script src="../../static/js/dateUtils.js" charset="utf-8"></script>
 	</div>
-	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
+	<script>	
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form', 'element', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
+				element = layui.element,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
-				, value: getDay(-7)
+				// , value: getDay(-7)
 				, isInitValue: true
 			});
 			laydate.render({
 				elem: '#endDate'
 			});
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
 				toolbar: '#coupon_list_toolbar',
 				url: urlPrefix + 'silver-web-shop/coupon/findInfo',
 				method: 'post',
@@ -252,10 +246,9 @@
 					pageName: 'page', //页码的参数名称，默认：page
 					limitName: 'size' //每页数据量的参数名，默认：limit
 				},
-				where: {
-					startDate: appendStartDate(getDay(-7))
-					// startDate: appendStartDate($('#form_sreach').find('[name=startDate]').val())
-				},
+				// where: {
+				// 	startDate: appendStartDate(getDay(-7))					
+				// },
 				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
 					return {
 						"code": res.status, //解析接口状态
@@ -413,6 +406,35 @@
 						}
 					}
 				});
+			});
+
+			//监听工具条
+			table.on('tool(articleList)', function (obj) {
+				var data = obj.data;
+				if (obj.event === 'detail') {// 查看详情
+					layer.open({
+						type: 2,
+						title: '优惠券详情',
+						area: ['100%', '100%'],
+						// fixed: false, //不固定
+						maxmin: true,
+						content: './coupon_detail.html',
+						btnAlign: 'c',
+						btn: ['关闭'],
+						success: function (layero, index) {
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传参
+							iframe.getParent_data(obj);
+						},
+						btn1: function (index) {
+							layer.close(index);
+						}
+					});
+				} else if (obj.event === 'reset') {// 重置密码
+
+				} else if (obj.event === 'edit') {// 分配权限
+				}
 			});
 			//跳转至钱包明细
 			$('#cou_wal_btn').on('click', function () {
