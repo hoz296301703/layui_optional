@@ -44,14 +44,10 @@
 
     <script type="text/javascript">
 
-        layui.extend({
-            admin: '{/}./static/js/admin'
-        });
 
-        layui.use(['jquery', 'form', 'admin'], function () {
+        layui.use(['jquery', 'form'], function () {
             var $ = layui.jquery,
-                form = layui.form
-                , admin = layui.admin;
+                form = layui.form;
 
             $(document).keydown(function (e) {
                 if (e.keyCode === 13) {

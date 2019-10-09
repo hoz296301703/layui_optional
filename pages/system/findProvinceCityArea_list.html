@@ -26,8 +26,16 @@
 			width: 40px;
 		}
 
-		body {
-			overflow-y: scroll;
+		.layui-tree-setHide>.layui-tree-entry>.layui-tree-btnGroup .layui-icon-delete {
+			display: none;
+		}
+
+		.layui-tree-setHide>.layui-tree-showLine>.layui-tree-set>.layui-tree-entry>.layui-tree-btnGroup .layui-icon-delete {
+			display: none;
+		}
+
+		.layui-tree-setHide>.layui-tree-showLine .layui-tree-lineExtend .layui-tree-entry .layui-tree-btnGroup .layui-icon-add-1 {
+			display: none;
 		}
 	</style>
 </head>
@@ -43,12 +51,163 @@
 				<div id="test9" class="demo-tree demo-tree-box">
 				</div>
 			</div>
-			<script type="text/html" id="operateTpl">
-		<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			 -->
-			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
-			</script>
-			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-			<script src="../../static/js/common.js" charset="utf-8"></script>
+		</form>
+		<!-- 修改省份 -->
+		<form class="layui-form" id="updateProvince" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">省份</label>
+					<div class="layui-input-inline">
+						<input type="text" name="recProvincesName" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">省编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="recProvincesCode" class="layui-input">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- 新增城市 -->
+		<form class="layui-form" id="addCity" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">省份</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="recProvincesName"
+							class="layui-input layui-disabled">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">省编号</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="recProvincesCode"
+							class="layui-input layui-disabled">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">城市</label>
+					<div class="layui-input-inline">
+						<input type="text" name="cityName" lay-verify="required" autocomplete="off" placeholder="请输入城市"
+							class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">城市编码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="cityCode" lay-verify="required" autocomplete="off"
+							placeholder="请输入城市编码" class="layui-input">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- 修改城市 -->
+		<form class="layui-form" id="updateCity" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">省份</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="recProvincesName"
+							class="layui-input layui-disabled">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">省编号</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="recProvincesCode"
+							class="layui-input layui-disabled">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">城市</label>
+					<div class="layui-input-inline">
+						<input type="text" name="cityName" lay-verify="required" autocomplete="off" placeholder="请输入城市"
+							class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">城市编码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="cityCode" lay-verify="required" autocomplete="off"
+							placeholder="请输入城市编码" class="layui-input">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- 新增区域 -->
+		<form class="layui-form" id="addRecArea" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">城市</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="recCityName" class="layui-input layui-disabled">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">城市编码</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="cityCode" class="layui-input layui-disabled">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">区域</label>
+					<div class="layui-input-inline">
+						<input type="text" name="areaName" lay-verify="required" autocomplete="off" placeholder="请输入城市"
+							class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">区域编码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="areaCode" lay-verify="required" autocomplete="off"
+							placeholder="请输入城市编码" class="layui-input">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- 修改区域 -->
+		<form class="layui-form" id="updateArea" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">城市</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="recCityName" class="layui-input layui-disabled">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">城市编码</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="cityCode" class="layui-input layui-disabled">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">区域</label>
+					<div class="layui-input-inline">
+						<input type="text" name="areaName" lay-verify="required" autocomplete="off" placeholder="请输入城市"
+							class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">区域编码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="areaCode" lay-verify="required" autocomplete="off"
+							placeholder="请输入城市编码" class="layui-input">
+					</div>
+				</div>
+			</div>
+		</form>
+		</script>
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<script src="../../static/js/common.js" charset="utf-8"></script>
 
 	</div>
 	<script>
@@ -64,161 +223,22 @@
 				admin = layui.admin;
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
-			table.render({
-				elem: '#articleList',
-				cellMinWidth: 80,
-				height: tableHeight,
-				toolbar: '#customsList_toolbar',
-				url: urlPrefix + 'silver-web-shop/customsPort/getInfo',
-				method: 'post',
-				cols: [
-					[
-						{
-							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
-						}, {
-							field: 'createDate', width: 160, title: '日期', fixed: 'left', templet: function (item) {
-								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
-							}
-						}, {
-							field: 'province', title: '省份', width: 80
-						}, {
-							field: 'city', title: '城市', width: 80
-						}, {
-							field: 'customsPortName', title: '口岸', width: 120
-						}, {
-							field: 'customsName', title: '海关名称'
-						}, {
-							field: 'customsCode', title: '海关编号', width: 100
-						}, {
-							field: 'ciqOrgName', title: '国检机构名称'
-						}, {
-							field: 'ciqOrgCode', title: '国检机构编号', width: 120
-						}, {
-							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
-						}
-					]
-				],
-				// skin: 'row', //行边框风格
-				event: true,
-				page: true,
-				response: {
-					statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
-				},
-				request: {
-					pageName: 'page', //页码的参数名称，默认：page
-					limitName: 'size' //每页数据量的参数名，默认：limit
-				},
+			var render = function () {
 
-				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-					return {
-						"code": res.status, //解析接口状态
-						"msg": res.msg, //解析提示文本
-						"count": res.totalCount, //解析数据长度
-						"data": res.datas //解析数据列表
-					};
-				},
-				done: function (res, curr, count) {
-					//如果是异步请求数据方式，res即为你接口返回的信息。
-					//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-					// console.log(res);
-
-					// //得到当前页码
-					// console.log(curr);
-
-					// //得到数据总量
-					// console.log(count);
-				}
-			});
-			// 重载公共方法
-			var _reload = function () {
-				var customsName = $('#form_sreach').find('[name=customsName]');
-				var customsCode = $('#form_sreach').find('[name=customsCode]');
-				var ciqOrgName = $('#form_sreach').find('[name=ciqOrgName]');
-				var ciqOrgCode = $('#form_sreach').find('[name=ciqOrgCode]');
-				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/customsPort/getInfo',
-					page: {
-						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
-					},
-					where: {
-						customsNameblurry: customsName.val(),
-						customsCode: customsName.val(),
-						ciqOrgNameblurry: customsName.val(),
-						ciqOrgCode: customsName.val()
-					}
-				});
 			}
+
+
 			window.customs_reload = function () {// 提交重载方法到全局，让子页面调用
 				layer.closeAll();
 				_reload();
 			};
-			/*
-			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
-			 * http://www.layui.com/doc/modules/form.html#render
-			 * */
-			// $(function () {
-			// 	form.render();
-			// });
-			var active = {
-				reload: function () {
-					var customsName = $('#form_sreach').find('[name=customsName]');
-					var customsCode = $('#form_sreach').find('[name=customsCode]');
-					var ciqOrgName = $('#form_sreach').find('[name=ciqOrgName]');
-					var ciqOrgCode = $('#form_sreach').find('[name=ciqOrgCode]');
-					//执行重载
-					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/customsPort/getInfo',
-						page: {
-							curr: 1 //重新从第 1 页开始
-						},
-						where: {
-							customsNameblurry: customsName.val(),
-							customsCode: customsCode.val(),
-							ciqOrgNameblurry: ciqOrgName.val(),
-							ciqOrgCode: ciqOrgCode.val()
-						}
-					});
-				}
-			};
+
 			// 监听查询按钮
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');
 				active[type] ? active[type].call(this) : '';
 			});
 
-			//头工具栏事件
-			table.on('toolbar(articleList)', function (obj) {
-				var checkStatus = table.checkStatus(obj.config.id);
-				switch (obj.event) {
-					case 'add':
-						layer.open({
-							title: "添加",
-							type: 2,
-							skin: "layui-layer-rim", //加上边框
-							area: ["710px", "510px"], //宽高
-							scrollbar: false,
-							// btnAlign: "c",
-							// btn: ["保存", "关闭"],
-							content: './customs_add.html',
-							// yes: function (index) {
-
-							// }
-							// , btn2: function () {
-
-							// }, cancel: function () {
-
-							// }
-						});
-						break;
-					// case 'getCheckLength':
-					// 	var data = checkStatus.data;
-					// 	layer.msg('选中了：' + data.length + ' 个');
-					// 	break;
-					// case 'isAll':
-					// 	layer.msg(checkStatus.isAll ? '全选' : '未全选');
-					// 	break;
-				};
-			});
 
 			function getDatas() {
 				var datas = null;
@@ -258,13 +278,14 @@
 					//省编号
 					var provinceCode = key.split('_')[1];
 					result.push({
-						title: provincename, id: provinceCode, children: []
+						addr: 1, title: provincename, id: provinceCode, children: []
 					});
 
 					let cityindex = 0;// 市下标 
 					for (let key2 in datas[key]) {// 市
 
 						result[provinceindex].children.push({
+							addr: 2,
 							title: key2,
 							id: key2.split('_')[1],
 							children: []
@@ -272,6 +293,7 @@
 
 						for (let key3 in datas[key][key2]) {// 区
 							result[provinceindex].children[cityindex].children.push({
+								addr: 3,
 								title: datas[key][key2][key3] + '_' + key3,
 								id: key3
 							})
@@ -325,34 +347,367 @@
 			// 		, id: 3001
 			// 	}]
 			// }]
-			//开启节点操作图标
-			tree.render({
-				elem: '#test9'
-				, data: tem()
-				, edit: ['add', 'update', 'del'] //操作节点的图标
-				, click: function (obj) {
-					// console.log(obj)
-					// layer.msg(JSON.stringify(obj.data));
-				}, operate: function (obj) {
-					var type = obj.type; //得到操作类型：add、edit、del
-					var data = obj.data; //得到当前节点的数据
-					var elem = obj.elem; //得到当前节点元素
+			var render = function () {
+				//开启节点操作图标
+				tree.render({
+					elem: '#test9'
+					, data: tem()
+					, customOperate: true
+					, edit: ['add', 'update', 'del'] //操作节点的图标
+					, click: function (obj) {
+						// layer.msg(JSON.stringify(obj.data));
+					}, operate: function (obj) {
+						var type = obj.type; //得到操作类型：add、edit、del
+						var data = obj.data; //得到当前节点的数据
+						var elem = obj.elem; //得到当前节点元素
 
-					//Ajax 操作
-					var id = data.id; //得到节点索引
-					if (type === 'add') { //增加节点
-						//返回 key 值
-						console.log(obj)
-						console.log('新增')
-					} else if (type === 'update') { //修改节点
-						console.log(obj)
-						console.log(elem.find('.layui-tree-txt').html()); //得到修改后的内容
-					} else if (type === 'del') { //删除节点
-						console.log(obj)
-						console.log('删除')
-					};
-				}
-			});
+						//Ajax 操作
+						var id = data.id; //得到节点索引
+						if (type === 'add') { //增加节点
+							if (data.addr == 1) {// 新增城市
+								$('#addCity').find('[name=areaName]').val('');
+								$('#addCity').find('[name=areaCode]').val('');
+								$("#addCity").find('[name=recProvincesName]').val(data.title.split('_')[0])
+								$("#addCity").find('[name=recProvincesCode]').val(data.title.split('_')[1])
+								layer.open({
+									title: "新增城市",
+									type: 1,
+									closeBtn: 0,
+									btnAlign: "c",
+									skin: "layui-layer-rim", //加上边框
+									area: ["577px", "251px"], //宽高
+									content: $("#addCity"),
+									btn: ["保存", "关闭"],
+									yes: function (index) {
+										var sign = true;
+										$.each($("#addCity").find("[name]"), function (i, item) {
+											if (isEmpty($(item).val())) {
+												sign = false;
+												layer.alert('请填写新增的城市信息');
+												return false;
+											}
+										});
+										if (sign) {
+											layer.load();
+											var datas = {
+												provinceCode: data.title.split('_')[1],
+												cityName: $('#addCity').find('[name=cityName]').val(),
+												cityCode: $('#addCity').find('[name=cityCode]').val()
+											}
+											$.ajax({
+												url: urlPrefix + "silver-web-shop/provinceCityArea/insertCity",
+												type: "POST",
+												xhrFields: {
+													withCredentials: true
+												},
+												data: datas,
+												success: function (response) {
+													if (response.status == 1) {
+														layer.closeAll();
+														layer.msg('添加成功', function () {
+															//关闭后的操作
+															$("#addCity").hide();
+															layer.closeAll();
+															render();
+														});
+													} else {
+														layer.alert(response.msg)
+													}
+
+												},
+												error: function () {
+													layer.closeAll('loading');
+													layer.msg(response.msg);
+												}
+											});
+										}
+
+									},
+									btn2: function () {
+										$("#addCity").hide();
+									}
+								});
+							} else if (data.addr == 2) {// 新增区
+								$('#addRecArea').find('[name=areaName]').val('');
+								$('#addRecArea').find('[name=areaCode]').val('');
+								$("#addRecArea").find('[name=recCityName]').val(data.title.split('_')[0])
+								$("#addRecArea").find('[name=cityCode]').val(data.title.split('_')[1])
+								layer.open({
+									title: "新增区域",
+									type: 1,
+									closeBtn: 0,
+									btnAlign: "c",
+									skin: "layui-layer-rim", //加上边框
+									area: ["577px", "251px"], //宽高
+									content: $("#addRecArea"),
+									btn: ["保存", "关闭"],
+									yes: function (index) {
+
+										var sign = true;
+										$.each($("#addRecArea").find("[name]"), function (i, item) {
+											if (isEmpty($(item).val())) {
+												sign = false;
+												layer.alert('请填写新增的区域信息');
+												return false;
+											}
+										});
+										if (sign) {
+											layer.load();
+											var datas = {
+												cityCode: $('#addRecArea').find('[name=cityCode]').val(),
+												areaName: $('#addRecArea').find('[name=areaName]').val(),
+												areaCode: $('#addRecArea').find('[name=areaCode]').val()
+											}
+											$.ajax({
+												url: urlPrefix + "silver-web-shop/provinceCityArea/insertArea",
+												type: "POST",
+												xhrFields: {
+													withCredentials: true
+												},
+												data: datas,
+												success: function (response) {
+													layer.closeAll();
+													if (response.status == 1) {
+														layer.msg('添加成功', function () {
+															$("#addRecArea").hide();
+															layer.closeAll();
+															render();
+														});
+
+													} else {
+														layer.alert(response.msg)
+													}
+
+												},
+												error: function () {
+													layer.closeAll('loading');
+													layer.msg(response.msg);
+												}
+											});
+										}
+									},
+									btn2: function () {
+										$("#addRecArea").hide();
+									}
+								});
+							}
+						} else if (type === 'update') { //修改节点
+
+							if (data.addr == 1) {// 修改省
+								$("#updateProvince").find('[name=recProvincesName]').val(data.title.split('_')[0]);
+								$("#updateProvince").find('[name=recProvincesCode]').val(data.title.split('_')[1]);
+								layer.open({
+									title: "修改省份",
+									type: 1,
+									closeBtn: 0,
+									btnAlign: "c",
+									skin: "layui-layer-rim", //加上边框
+									area: ["577px", "189px"], //宽高
+									content: $("#updateProvince"),
+									btn: ["保存", "关闭"],
+									yes: function (index) {
+										var sign = true;
+										$.each($("#updateProvince").find("[name]"), function (i, item) {
+											if (isEmpty($(item).val())) {
+												sign = false;
+												layer.alert('请填写省份信息');
+												return false;
+											}
+										});
+										if (sign) {
+											var datas = {// flag 1=省 2=城市  3=区域
+												flag: '1',
+												oldCode: data.title.split('_')[1],
+												newCode: $('#updateProvince [name=recProvincesCode]').val(),
+												name: $('#updateProvince [name=recProvincesName]').val()
+											}
+											layer.closeAll();
+											$.ajax({
+												url: urlPrefix + "silver-web-shop/provinceCityArea/editProvinceCityAreaInfo",
+												type: "POST",
+												xhrFields: {
+													withCredentials: true
+												},
+												data: datas,
+												success: function (response) {
+													if (response.status == 1) {
+														layer.msg('修改成功', function () {
+															$("#updateProvince").hide();
+															layer.closeAll();
+															render();
+														});
+													} else {
+														layer.msg(response.msg);
+													}
+												},
+												error: function () {
+													layer.msg(response.msg);
+												}
+											});
+										}
+									},
+									btn2: function () {
+										$("#addRecArea").hide();
+									}
+								});
+							} else if (data.addr == 2) {// 修改市
+								var province = $(elem).parent().siblings('.layui-tree-entry').find('.layui-tree-txt').html();// 省份
+								$("#updateCity").find('[name=recProvincesName]').val(province.split('_')[0]);
+								$("#updateCity").find('[name=recProvincesCode]').val(province.split('_')[1]);
+								$("#updateCity").find('[name=cityName]').val(data.title.split('_')[0]);
+								$("#updateCity").find('[name=cityCode]').val(data.title.split('_')[1]);
+								layer.open({
+									title: "修改城市",
+									type: 1,
+									closeBtn: 0,
+									btnAlign: "c",
+									skin: "layui-layer-rim", //加上边框
+									area: ["577px", "251px"], //宽高
+									content: $("#updateCity"),
+									btn: ["保存", "关闭"],
+									yes: function (index) {
+										var sign = true;
+										$.each($("#updateCity").find("[name]"), function (i, item) {
+											if (isEmpty($(item).val())) {
+												sign = false;
+												layer.alert('请填写城市信息');
+												return false;
+											}
+										});
+										if (sign) {
+											var datas = {// flag 1=省 2=城市  3=区域
+												flag: '2',
+												oldCode: data.title.split('_')[1],
+												newCode: $('#updateCity [name=cityCode]').val(),
+												name: $('#updateCity [name=cityName]').val(),
+												parentCode: province.split('_')[1]
+											}
+											$.ajax({
+												url: urlPrefix + "silver-web-shop/provinceCityArea/editProvinceCityAreaInfo",
+												type: "POST",
+												xhrFields: {
+													withCredentials: true
+												},
+												data: datas,
+												success: function (response) {
+													if (response.status == 1) {
+														layer.msg('修改成功', function () {
+															$("#updateCity").hide();
+															layer.closeAll();
+															render();
+														});
+													} else {
+														layer.msg(response.msg);
+													}
+												},
+												error: function () {
+													layer.msg(response.msg);
+												}
+											});
+										}
+									},
+									btn2: function () {
+										$("#addRecArea").hide();
+									}
+								});
+							} else if (data.addr == 3) {// 修改区域
+								var city = $(elem).parent().siblings('.layui-tree-entry').find('.layui-tree-txt').html();// 省份
+								$("#updateArea").find('[name=recCityName]').val(city.split('_')[0]);
+								$("#updateArea").find('[name=cityCode]').val(city.split('_')[1]);
+								$("#updateArea").find('[name=areaName]').val(data.title.split('_')[0]);
+								$("#updateArea").find('[name=areaCode]').val(data.title.split('_')[1]);
+								layer.open({
+									title: "修改区域",
+									type: 1,
+									closeBtn: 0,
+									btnAlign: "c",
+									skin: "layui-layer-rim", //加上边框
+									area: ["577px", "251px"], //宽高
+									content: $("#updateArea"),
+									btn: ["保存", "关闭"],
+									yes: function (index) {
+										var sign = true;
+										$.each($("#updateArea").find("[name]"), function (i, item) {
+											if (isEmpty($(item).val())) {
+												sign = false;
+												layer.alert('请填写城市信息');
+												return false;
+											}
+										});
+										if (sign) {
+											var datas = {// flag 1=省 2=城市  3=区域
+												flag: '3',
+												oldCode: data.title.split('_')[1],
+												newCode: $('#updateArea [name=areaCode]').val(),
+												name: $('#updateArea [name=areaName]').val(),
+												parentCode: city.split('_')[1]
+											}
+											$.ajax({
+												url: urlPrefix + "silver-web-shop/provinceCityArea/editProvinceCityAreaInfo",
+												type: "POST",
+												xhrFields: {
+													withCredentials: true
+												},
+												data: datas,
+												success: function (response) {
+													if (response.status == 1) {
+														layer.msg('修改成功', function () {
+															$("#updateArea").hide();
+															layer.closeAll();
+															render();
+														});
+													} else {
+														layer.msg(response.msg);
+													}
+												},
+												error: function () {
+													layer.msg(response.msg);
+												}
+											});
+										}
+									},
+									btn2: function () {
+										$("#addRecArea").hide();
+									}
+								});
+							}
+
+
+						} else if (type === 'del') { //删除节点
+							layer.alert('确定删除<span style="color:#e4393c;font-weight:bold;">' + data.title + '</span>吗？', {
+								time: 0 //不自动关闭
+								, btn: ['确定', '取消']
+								, yes: function (index) {
+									$.ajax({
+										url: urlPrefix + "silver-web-shop/provinceCityArea/deleteArea",
+										type: "POST",
+										xhrFields: {
+											withCredentials: true
+										},
+										data: { areaCode: data.id },
+										success: function (response) {
+											if (response.status == 1) {
+												layer.msg('删除成功', function () {
+													//关闭后的操作
+													render();
+												});
+											} else {
+												layer.alert(response.msg)
+											}
+											layer.closeAll();
+										},
+										error: function () {
+											layer.closeAll('loading');
+											layer.msg(response.msg);
+										}
+									});
+								}
+							});
+						};
+					}
+				});
+			}
+			render();
 
 		});
 	</script>
