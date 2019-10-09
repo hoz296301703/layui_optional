@@ -28,8 +28,8 @@ layui.define('jquery', function (exports) {
 				var items = [];
 				var _ul = $('<ul></ul>').addClass('nav').attr('id', 'nav');
 				$.each(menuList, function (index, val) {
-					var item = '<li id="menu' + val.id + '"><a _href="' + val.url + '"><i class="iconfont">' + val.icon +
-						'</i><cite>' + val.name +
+					var item = '<li id="menu' + val.id + '"><a _href="' + val.url + '"><i class="iconfont ' + val.icon +
+					'"></i><cite>' + val.name +
 						'</cite><i class="iconfont nav_right">&#xe697;</i></a></li>';
 
 					items.push(item);

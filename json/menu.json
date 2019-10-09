@@ -5,7 +5,7 @@
 		{
 			"id": "order",
 			"name": "订单管理",
-			"icon": "&#xe723;",
+			"icon": "icon-dingdanguanli",
 			"url": "",
 			"children": [
 				{
@@ -31,7 +31,7 @@
 		{
 			"id": "goods",
 			"name": "商品管理",
-			"icon": "&#xe723;",
+			"icon": "icon-goods",
 			"url": "",
 			"children": [
 				{
@@ -57,7 +57,7 @@
 		{
 			"id": "funds",
 			"name": "资金管理",
-			"icon": "&#xe723;",
+			"icon": "icon-zijinguanli",
 			"url": "",
 			"children": [
 				{
@@ -89,7 +89,7 @@
 		{
 			"id": "report",
 			"name": "报表管理",
-			"icon": "&#xe723;",
+			"icon": "icon-baobiao",
 			"url": "",
 			"children": [
 				{
@@ -109,7 +109,7 @@
 		{
 			"id": "user",
 			"name": "用户管理",
-			"icon": "&#xe6b8;",
+			"icon": "icon-yonghu",
 			"url": "",
 			"children": [
 				{
@@ -135,7 +135,7 @@
 		{
 			"id": "market",
 			"name": "营销管理",
-			"icon": "&#xe6b8;",
+			"icon": "icon-youhuiquan",
 			"url": "",
 			"children": [
 				{
@@ -161,7 +161,7 @@
 		{
 			"id": "system",
 			"name": "系统管理",
-			"icon": "&#xe6ce;",
+			"icon": "icon-xitong",
 			"url": "",
 			"children": [
 				{
