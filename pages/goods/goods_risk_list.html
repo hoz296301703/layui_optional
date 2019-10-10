@@ -26,8 +26,13 @@
 			width: 40px;
 		}
 
-		body {
-			overflow-y: scroll;
+		.layui-table-cell {
+			height: auto;
+			line-height: 80px;
+		}
+
+		th .layui-table-cell {
+			line-height: 28px;
 		}
 	</style>
 </head>
@@ -88,7 +93,7 @@
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree;
-			
+
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
@@ -102,9 +107,10 @@
 					[
 						{
 							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
-						}, {							
-							field: 'image', title: '主图', height: 180, templet: function (item) {
-								return '<div><img  src="' + splitImg(item.image) + '"></div>';
+						}, {
+							field: 'image', title: '主图', width: 90, templet: function (item) {
+								// return '<div><img  src="' + splitImg(item.image) + '"></div>';
+								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + splitImg(item.image) + '"  src="' + splitImg(item.image) + '" width="60px" height="60px"></div>';
 							}
 						}, {
 							field: 'hsCode', title: '商品HS编码'
@@ -280,6 +286,20 @@
 						}
 					});
 				}
+			});
+			//图片浏览
+			$('.weadmin-body').on('click', '[lay-id="articleList"] .checkImg img', function (e) {
+				layer.photos({
+					photos: {
+						"data": [   //相册包含的图片，数组格式
+							{
+								"alt": e.target.alt,
+								"src": e.target.src, //原图地址
+								"thumb": e.target.src //缩略图地址
+							}
+						]
+					}
+				});
 			});
 		});
 	</script>

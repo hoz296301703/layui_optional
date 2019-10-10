@@ -223,9 +223,9 @@
 				admin = layui.admin;
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
-			var render = function () {
+			// var render = function () {
 
-			}
+			// }
 
 
 			window.customs_reload = function () {// 提交重载方法到全局，让子页面调用
@@ -352,7 +352,7 @@
 				tree.render({
 					elem: '#test9'
 					, data: tem()
-					, customOperate: true
+					, customOperate: true// 操作节点关闭
 					, edit: ['add', 'update', 'del'] //操作节点的图标
 					, click: function (obj) {
 						// layer.msg(JSON.stringify(obj.data));
@@ -413,7 +413,7 @@
 													} else {
 														layer.alert(response.msg)
 													}
-
+addr
 												},
 												error: function () {
 													layer.closeAll('loading');
