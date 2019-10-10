@@ -159,7 +159,7 @@
 									return '运营';
 								} else if (item.managerMarks == '3') {
 									return '财务';
-								}else if (item.managerMarks == '4') {
+								} else if (item.managerMarks == '4') {
 									return '市场';
 								}
 							}
@@ -331,7 +331,7 @@
 					});
 
 				} else if (obj.event === 'edit') {// 分配权限
-					layer.load(1);
+					layer.load();
 					$('#maangerAllot').html('');
 					var _this = this;
 					$.ajax({
@@ -346,21 +346,22 @@
 							if (response.status == 1) {
 								var jsonArr = [];
 								var ii = 0;
-								$.each(response.datas, function (i, val1) {
+								$.each(response.datas, function (i, val1) {// 1级
 									jsonArr.push({ title: i, children: [] });
 									var jj = 0;
-									$.each(val1, function (j, val2) {
+									$.each(val1, function (j, val2) {// 2级
 										jsonArr[ii].children.push({ title: j, children: [] });
-										$.each(val2, function (k, val3) {
-											var checked = false;
+										$.each(val2, function (k, val3) {// 3级
+											var checkedss = false;
+											// console.log((k.split("#")[1] == 'true') + '***' +val3)
 											if (k.split("#")[1] == 'true') {
-												jsonArr[ii].checked = true;
-												jsonArr[ii].children[jj].checked = true;
-												checked = true;
+												// jsonArr[ii].checked = true;
+												// jsonArr[ii].children[jj].checked = true;
+												checkedss = true;
 											}
 											jsonArr[ii].children[jj].children.push({
 												title: val3,
-												checked: checked,
+												checked: checkedss,
 												id: k.split("#")[0]
 											});
 										});
@@ -368,6 +369,8 @@
 									});
 									ii++;
 								});
+								// console.log(JSON.stringify(jsonArr))
+								
 								//基本演示
 								tree.render({
 									elem: '#maangerAllot'
@@ -419,7 +422,6 @@
 									layer.closeAll("loading");
 									if (response.status == 1) {
 										layer.closeAll();
-										// $("#maangerAllot").html('').hide();
 										layer.msg('分配权限成功！');
 										_reload();
 									} else {
@@ -429,11 +431,7 @@
 							});
 						}
 						, btn2: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
 						}, cancel: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
 						}
 
 					});

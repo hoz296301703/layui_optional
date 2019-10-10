@@ -231,12 +231,74 @@
 					, click: function (obj) {
 						// layer.msg(JSON.stringify(obj.data));
 					}, operate: function (obj) {
-						console.log(obj)
+						// console.log(obj)
 						var type = obj.type; //得到操作类型：add、edit、del
 						var data = obj.data; //得到当前节点的数据
 						var elem = obj.elem; //得到当前节点元素
 						if (type === 'add') { //增加节点
+							$('#addLogistics').find('[name=expressCompanyCode]').val('');
+							$('#addLogistics').find('[name=expressCompanyName]').val('');
+							$("#addLogistics").find('[name=logisticsCompanyName]').val(data.title.split('_')[0])
+							$("#addLogistics").find('[name=logisticsCompanyCode]').val(data.title.split('_')[1])
+							layer.open({
+								title: "新增城市",
+								type: 1,
+								closeBtn: 0,
+								btnAlign: "c",
+								skin: "layui-layer-rim", //加上边框
+								area: ["577px", "251px"], //宽高
+								content: $("#addLogistics"),
+								btn: ["保存", "关闭"],
+								yes: function (index) {
+									var sign = true;
+									$.each($("#addLogistics").find("[name]"), function (i, item) {
+										if (isEmpty($(item).val())) {
+											sign = false;
+											layer.alert('请填写新增的城市信息');
+											return false;
+										}
+									});
+									if (sign) {
+										layer.load();
+										var datas = {
+											logisticsCompanyName: $('#addLogistics').find('[name=logisticsCompanyName]').val(),
+											logisticsCompanyCode: $('#addLogistics').find('[name=logisticsCompanyCode]').val(),
+											expressCompanyCode: $('#addLogistics').find('[name=expressCompanyCode]').val(),
+											expressCompanyName: $('#addLogistics').find('[name=expressCompanyName]').val()
+										}
+										$.ajax({
+											url: urlPrefix + "silver-web-shop/provinceCityArea/insertCity",
+											type: "POST",
+											xhrFields: {
+												withCredentials: true
+											},
+											data: datas,
+											success: function (response) {
+												if (response.status == 1) {
+													layer.closeAll();
+													layer.msg('添加成功', function () {
+														//关闭后的操作
+														$("#addCity").hide();
+														layer.closeAll();
+														render();
+													});
+												} else {
+													layer.alert(response.msg)
+												}
 
+											},
+											error: function () {
+												layer.closeAll('loading');
+												layer.msg(response.msg);
+											}
+										});
+									}
+
+								},
+								btn2: function () {
+									$("#addCity").hide();
+								}
+							});
 						} else if (type === 'update') { //修改节点
 
 						}
