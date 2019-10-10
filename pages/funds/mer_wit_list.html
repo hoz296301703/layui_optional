@@ -153,15 +153,12 @@
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+		
+		layui.use(['table', 'jquery', 'form',  'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
@@ -175,13 +172,13 @@
 			//管理员账号标识
 			var flag = $('#managerName', window.top.document).attr("name");
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				toolbar: '#articleList_toolbar',
 				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/merWitLogs/getInfo',
 				method: 'post',
 				cols: [
