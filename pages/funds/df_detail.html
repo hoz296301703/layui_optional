@@ -29,152 +29,152 @@
     <div class="layui-colla-item">
       <!-- <h2 class="layui-colla-title">代付详情</h2> -->
       <!-- <div class="layui-colla-content layui-show"> -->
-        <div class="weadmin-body">
-          <form class="layui-form" id="manager_detail_form" lay-filter="example">
+      <div class="weadmin-body">
+        <form class="layui-form" id="manager_detail_form" lay-filter="example">
 
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">流水号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="serialNo" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">流水号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="serialNo" autocomplete="off" class="layui-input layui-disabled" disabled>
               </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">关联流水号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="relSerialNo" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">关联流水号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="relSerialNo" autocomplete="off" class="layui-input layui-disabled" disabled>
               </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">商户名称</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="merchantName" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">商户名称</label>
+              <div class="layui-input-inline">
+                <input type="text" name="merchantName" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">商户编号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="merchantId" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">金额</label>
+              <div class="layui-input-inline">
+                <input type="text" name="amount" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">银行省份</label>
+              <div class="layui-input-inline">
+                <input type="text" name="province" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">银行城市</label>
+              <div class="layui-input-inline">
+                <input type="text" name="city" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">银行名称</label>
+              <div class="layui-input-inline">
+                <input type="text" name="bankName" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">银行卡号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="bankAccNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">银行账号名称</label>
+              <div class="layui-input-inline">
+                <input type="text" name="bankAccName" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">账户类型</label>
+              <div class="layui-input-inline">
+                <select name="bankCardType" lay-filter="aihao" class="layui-disabled" disabled>
+                  <option value="debit">借记卡</option>
+                  <option value="credit">信用卡</option>
+                  <option value="unit">单位结算卡</option>
+                </select>
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">银行卡类别</label>
+              <div class="layui-input-inline">
+
+                <select name="bankAccType" lay-filter="aihao" class="layui-disabled" disabled>
+                  <option value="personal">私人</option>
+                  <option value="corporate">对公</option>
+                </select>
               </div>
             </div>
 
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">商户编号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="merchantId" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">金额</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="amount" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">银行省份</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="province" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
+          </div>
+
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">预留手机号码</label>
+              <div class="layui-input-inline">
+                <input type="text" name="bankPhone" autocomplete="off" class="layui-input layui-disabled" disabled>
               </div>
             </div>
-
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">银行城市</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="city" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">银行名称</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="bankName" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">银行卡号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="bankAccNo" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-            </div>
-
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">银行账号名称</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="bankAccName" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">账户类型</label>
-                <div class="layui-input-inline">
-                  <select name="bankCardType" lay-filter="aihao" class="layui-disabled" disabled>
-                    <option value="debit">借记卡</option>
-                    <option value="credit">信用卡</option>
-                    <option value="unit">单位结算卡</option>
-                  </select>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">银行卡类别</label>
-                <div class="layui-input-inline">
-                    
-                  <select name="bankAccType" lay-filter="aihao" class="layui-disabled" disabled>
-                    <option value="personal">私人</option>
-                    <option value="corporate">对公</option>
-                  </select>
-                </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">状态</label>
+              <div class="layui-input-inline">
+                <select name="status" lay-filter="aihao" class="layui-disabled" disabled>
+                  <option value="success">成功</option>
+                  <option value="failure">失败</option>
+                  <option value="process">处理中</option>
+                  <option value="pending">待处理</option>
+                  <option value="abnormal">异常</option>
+                </select>
               </div>
 
             </div>
-
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">预留手机号码</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="bankPhone" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">状态</label>
-                <div class="layui-input-inline">
-                  <select name="status" lay-filter="aihao" class="layui-disabled" disabled>
-                    <option value="success">成功</option>
-                    <option value="failure">失败</option>
-                    <option value="process">处理中</option>
-                    <option value="pending">待处理</option>
-                    <option value="abnormal">异常</option>
-                  </select>
-                </div>
-
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">银盛受理批次号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="outBatchNo" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">银盛受理批次号</label>
+              <div class="layui-input-inline">
+                <input type="text" name="outBatchNo" autocomplete="off" class="layui-input layui-disabled" disabled>
               </div>
             </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">手续费</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="fee" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">日期</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
+          </div>
+          <div class="layui-form-item">
+            <div class="layui-inline">
+              <label class="layui-form-label">手续费</label>
+              <div class="layui-input-inline">
+                <input type="text" name="fee" autocomplete="off" class="layui-input layui-disabled" disabled>
               </div>
             </div>
-          </form>
-        </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">日期</label>
+              <div class="layui-input-inline">
+                <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
       <!-- </div> -->
 
     </div>
     <div class="layui-col-md12">
       <div class="layui-card">
         <div class="layui-card-header">说明</div>
-        <div class="layui-card-body" id = "rec_note">
+        <div class="layui-card-body" id="rec_note">
           <!-- 内容 -->
         </div>
       </div>
@@ -187,75 +187,66 @@
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
     var g_data = '';// 全局数据变量
-
-
     function getParent_data(obj) {
       g_data = obj.data;
-      console.info(g_data);
+
+
+      layui.use(['form', 'element', 'jquery', 'layer'], function () {
+        var form = layui.form,
+          $ = layui.jquery,
+          element = layui.element,
+          // admin = layui.admin,
+          layer = layui.layer;
+        //监听折叠
+        // element.on('collapse(test)', function (data) {
+        //   //点击触发事件
+        //   layer.msg('展开状态：' + data.show);
+        // });     
+        //表单初始赋值
+        form.val('example', {
+          "serialNo": g_data.serialNo
+          , "relSerialNo": g_data.relSerialNo
+          , "merchantName": g_data.merchantName
+          , "merchantId": g_data.merchantId
+          , "amount": g_data.amount
+          , "province": g_data.province
+          , "city": g_data.city
+          , "bankName": g_data.bankName
+          , "bankAccNo": g_data.bankAccNo
+          , "bankAccName": g_data.bankAccName
+          , "bankAccType": g_data.bankAccType
+          , "bankCardType": g_data.bankCardType
+          , "bankPhone": g_data.bankPhone
+          , "status": g_data.status
+          , "outBatchNo": g_data.outBatchNo
+          , "fee": g_data.fee
+          , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
+          // , "tradeNo": g_data.order.tradeNo
+          // , "counterId": g_data.order.counterId
+          // , "counterName": g_data.order.counterName
+          // , "freight": g_data.order.freight
+        })
+
+        //渲染代付回执信息
+        function renderNote(note) {
+          if (isEmpty(note)) {
+            return "";
+          }
+          //切割#分隔符
+          var arr = note.split("#");
+          var divStr = "";
+          for (var i = 0; i < arr.length; i++) {
+
+            divStr += '<div class="layui-card-body" id="rec_note">' + arr[i] + ' </div>';
+
+          }
+          $('#rec_note').html(divStr);
+        }
+        var note = g_data.note;
+        renderNote(note);
+
+      });
     }
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
-    layui.use(['form', 'element', 'jquery', 'layer', 'admin'], function () {
-      var form = layui.form,
-        $ = layui.jquery,
-        element = layui.element,
-        admin = layui.admin,
-        layer = layui.layer;
-      //监听折叠
-      // element.on('collapse(test)', function (data) {
-      //   //点击触发事件
-      //   layer.msg('展开状态：' + data.show);
-      // });     
-      //表单初始赋值
-      form.val('example', {
-        "serialNo": g_data.serialNo
-        , "relSerialNo": g_data.relSerialNo
-        , "merchantName": g_data.merchantName
-        , "merchantId": g_data.merchantId
-        , "amount": g_data.amount
-        , "province": g_data.province
-        , "city": g_data.city
-        , "bankName": g_data.bankName
-        , "bankAccNo": g_data.bankAccNo
-        , "bankAccName": g_data.bankAccName
-        , "bankAccType": g_data.bankAccType
-        , "bankCardType": g_data.bankCardType
-        , "bankPhone": g_data.bankPhone
-        , "status": g_data.status
-        , "outBatchNo": g_data.outBatchNo
-        , "fee": g_data.fee
-        , "createDate": G_format(g_data.createDate.time, "yyyy-MM-dd hh:mm:ss")
-        // , "tradeNo": g_data.order.tradeNo
-        // , "counterId": g_data.order.counterId
-        // , "counterName": g_data.order.counterName
-        // , "freight": g_data.order.freight
-      })
-
-      //渲染代付回执信息
-      function renderNote(note) {
-        if (isEmpty(note)) {
-          return "";
-        }
-        //切割#分隔符
-        var arr = note.split("#");
-        var divStr = "";
-        for (var i = 0; i < arr.length; i++) {
-
-          divStr += '<div class="layui-card-body" id="rec_note">' + arr[i] + ' </div>';
-
-        }
-        $('#rec_note').html(divStr);
-      }
-      var note = g_data.note;
-      renderNote(note);
-   
-
-
-
-
-
-    });
   </script>
 </body>
 
