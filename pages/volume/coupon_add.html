@@ -62,7 +62,7 @@
       </label>
       <div class="layui-btn-group" id='type' style="height: 38px">
         <button type="button" name="1" class="layui-btn layui-btn-sm active">全平台</button>
-        <!-- <button type="button" name="2" class="layui-btn layui-btn-primary layui-btn-sm">店铺</button> -->
+        <button type="button" name="2" class="layui-btn layui-btn-primary layui-btn-sm">指定专店</button>
         <button type="button" id='goods_btn' name="3" class="layui-btn layui-btn-primary layui-btn-sm">指定商品</button>
       </div>
     </div>
@@ -97,7 +97,16 @@
         </table>
       </div>
     </div>
+    <div id="counter" class="layui-form-item" style="display: none;">
+      <label for="L_username" class="layui-form-label">
+        <span class="we-red">*</span>专店编号
+      </label>
+      <div class="layui-input-inline">
+        <input type="text" id="L_username" placeholder="请输入专店编号" name="counterId" class="layui-input">
+      </div>
+    </div>
     <div class="layui-form-item">
+
       <label for="L_username" class="layui-form-label">
         <span class="we-red">*</span>优惠券名称
       </label>
@@ -160,21 +169,21 @@
       </div>
     </div>
 
-    
-  <div class="layui-form-item">
-    <div class="layui-inline">
-      <label class="layui-form-label">有效期</label>
-      <div class="layui-input-inline" style="width: 100px;">
-        <input type="text" name="startTime" id="startTime" placeholder="请选择日期" lay-verify="required" autocomplete="off"
-          class="layui-input">
-      </div>
-      <div class="layui-form-mid">-</div>
-      <div class="layui-input-inline" style="width: 100px;">
-        <input type="text" name="endingTime" id="endingTime" placeholder="请选择日期" lay-verify="required"
-        autocomplete="off" class="layui-input">
+
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">有效期</label>
+        <div class="layui-input-inline" style="width: 100px;">
+          <input type="text" name="startTime" id="startTime" readonly="" placeholder="请选择日期" lay-verify="required"
+            autocomplete="off" class="layui-input">
+        </div>
+        <div class="layui-form-mid">-</div>
+        <div class="layui-input-inline" style="width: 100px;">
+          <input type="text" name="endingTime" id="endingTime" readonly="" placeholder="请选择日期" lay-verify="required"
+            autocomplete="off" class="layui-input">
+        </div>
       </div>
     </div>
-  </div>
     <!-- <div class="layui-form-item">
       <label class="layui-form-label">
         <span class="we-red">*</span>有效期
@@ -211,7 +220,7 @@
           <label class="layui-form-label">商品编号</label>
           <div class="layui-input-inline">
             <input type="text" name="entGoodsNo" placeholder="请输入商品自编号" class="layui-input">
-          </div>         
+          </div>
           <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
         </div>
       </div>
@@ -226,14 +235,11 @@
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
-    layui.use(['table', 'form', 'jquery', 'util', 'admin', 'layer', 'laydate'], function () {
+    layui.use(['table', 'form', 'jquery', 'util', 'layer', 'laydate'], function () {
       var form = layui.form,
         $ = layui.jquery,
         util = layui.util,
-        admin = layui.admin,
+        // admin = layui.admin,
         layer = layui.layer,
         laydate = layui.laydate,
         table = layui.table;
@@ -241,10 +247,13 @@
       laydate.render({
         elem: '#startTime'
         , format: 'yyyy-MM-dd'
+        , min: 0
+        , trigger: 'click'
       });
       laydate.render({
         elem: '#endingTime'
         , format: 'yyyy-MM-dd'
+        , min: 0
       });
       //自定义验证规则
       form.verify({
@@ -298,7 +307,7 @@
         field.goodsId = goodsId;
         field.startTime = appendStartDate($('#form_sreach').find('[name=startTime]').val());
         field.endingTime = appendEndDate($('#form_sreach').find('[name=endingTime]').val());
-       
+
         $.ajax({
           url: urlPrefix + "silver-web-shop/coupon/publish",
           // type: "POST",
@@ -336,14 +345,24 @@
         }
       });
 
+      //优惠券点击事件监听
       $('#type').on('click', 'button', function () {
         $(this).removeClass('layui-btn-primary').siblings('button').addClass('layui-btn-primary');
         $(this).addClass('active').siblings('button').removeClass('active');
+        //获取value
         var type = $(this).attr('name');
-        if (type == '3') {
+
+        //
+        $('#goods').hide();
+        $('#counter').hide();
+        $('#counter').attr('lay-verify', '');
+        if (type == '3') {//指定商品
           $('#goods').show();
-        } else {
-          $('#goods').hide();
+        } else if (type == '2') {//指定专店
+          $('#counter').show();
+          $('#counter').attr('lay-verify', 'required');
+        } else if (type == '1') {
+
         }
       })
       var addIndex = null;
@@ -483,25 +502,25 @@
 
       //单击行勾选checkbox事件
       // var checkF = function () {
-        $(document).on("click", ".layui-table-body table.layui-table tbody tr", function () {
-          var index = $(this).attr('data-index');
-          var tableBox = $(this).parents('.layui-table-box');
-          //存在固定列
-          if (tableBox.find(".layui-table-fixed.layui-table-fixed-l").length > 0) {
-            tableDiv = tableBox.find(".layui-table-fixed.layui-table-fixed-l");
+      $(document).on("click", ".layui-table-body table.layui-table tbody tr", function () {
+        var index = $(this).attr('data-index');
+        var tableBox = $(this).parents('.layui-table-box');
+        //存在固定列
+        if (tableBox.find(".layui-table-fixed.layui-table-fixed-l").length > 0) {
+          tableDiv = tableBox.find(".layui-table-fixed.layui-table-fixed-l");
 
-          } else {
-            tableDiv = tableBox.find(".layui-table-body.layui-table-main");
-          }
-          var checkCell = tableDiv.find("tr[data-index=" + index + "]").find("td div.laytable-cell-checkbox div.layui-form-checkbox I");
+        } else {
+          tableDiv = tableBox.find(".layui-table-body.layui-table-main");
+        }
+        var checkCell = tableDiv.find("tr[data-index=" + index + "]").find("td div.laytable-cell-checkbox div.layui-form-checkbox I");
 
-          if (checkCell.length > 0) {
-            checkCell.click();
-          }
-        });
-        $(document).on("click", "td div.laytable-cell-checkbox div.layui-form-checkbox", function (e) {
-          e.stopPropagation();
-        });
+        if (checkCell.length > 0) {
+          checkCell.click();
+        }
+      });
+      $(document).on("click", "td div.laytable-cell-checkbox div.layui-form-checkbox", function (e) {
+        e.stopPropagation();
+      });
       // }
       //------------------------------------------------------------------------
       var cache = [];
@@ -519,7 +538,7 @@
 
           } else {
             obj.entGoodsNo = goodsId;
-            obj.regPrice = v.regPrice;            
+            obj.regPrice = v.regPrice;
             obj.goodsName = v.goodsName
             obj.goodsImage = v.reMark
             cache.push(obj);
@@ -555,20 +574,20 @@
       });
 
       //图片浏览
-			$('#goods_tem_table').on('click', '.checkImg', function (e) {
+      $('#goods_tem_table').on('click', '.checkImg', function (e) {
         console.info('图片预览');
-				layer.photos({
-					photos: {
-						"data": [   //相册包含的图片，数组格式
-							{
-								"alt": e.target.alt,
-								"src": e.target.src, //原图地址
-								"thumb": e.target.src //缩略图地址
-							}
-						]
-					}
-				});
-			});
+        layer.photos({
+          photos: {
+            "data": [   //相册包含的图片，数组格式
+              {
+                "alt": e.target.alt,
+                "src": e.target.src, //原图地址
+                "thumb": e.target.src //缩略图地址
+              }
+            ]
+          }
+        });
+      });
       // 删除行
       $("#goods_tem_table").on('click', '.deleteTr', function () {
         $(this).parents('tr').remove();
