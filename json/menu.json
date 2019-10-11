@@ -105,6 +105,31 @@
 					"url": "./pages/report/exp_div_report_list.html"
 				}
 			]
+		},{
+			"id": "distribution",
+			"name": "分销管理",
+			"icon": "icon-fenxiao",
+			"url": "",
+			"children": [
+				{
+					"id": "distribution_1",
+					"name": "推广商信息",
+					"icon": "",
+					"url": "./pages/distribution/pla_mer_list.html"
+				},
+				{
+					"id": "distribution_2",
+					"name": "商品库",
+					"icon": "",
+					"url": "./pages/distribution/goods_supply_list.html"
+				},				
+				{
+					"id": "distribution_3",
+					"name": "专店信息",
+					"icon": "",
+					"url": "./pages/distribution/counter_list.html"
+				}
+			]
 		},
 		{
 			"id": "user",
