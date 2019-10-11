@@ -30,7 +30,8 @@
 			width: 85px;
 		}
 
-		.layui-tree-setHide>.layui-tree-entry>.layui-tree-btnGroup .layui-icon-delete {
+		.layui-tree-setHide>.layui-tree-entry>.layui-tree-btnGroup .layui-icon-delete,
+		.layui-tree-setHide>.layui-tree-entry>.layui-tree-btnGroup .layui-icon-edit {
 			display: none;
 		}
 
@@ -80,14 +81,84 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">快递公司名称</label>
 					<div class="layui-input-inline">
-						<input type="text" name="expressCompanyCode" lay-verify="required" autocomplete="off"
+						<input type="text" name="expressCompanyName" lay-verify="required" autocomplete="off"
 							placeholder="请输入快递公司名称" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
 					<label class="layui-form-label">快递公司编码</label>
 					<div class="layui-input-inline">
+						<input type="text" name="expressCompanyCode" lay-verify="required" autocomplete="off"
+							placeholder="请输入快递公司编码" class="layui-input">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- 新增快递 -->
+		<form class="layui-form" id="addLogistics_kd" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">物流公司名称</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="logisticsCompanyName" lay-verify="required"
+							autocomplete="off" placeholder="请输入物流公司名称" class="layui-input layui-disabled">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">物流公司编码</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="logisticsCompanyCode" lay-verify="required"
+							autocomplete="off" placeholder="请输入物流公司编码" class="layui-input layui-disabled">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">快递公司名称</label>
+					<div class="layui-input-inline">
 						<input type="text" name="expressCompanyName" lay-verify="required" autocomplete="off"
+							placeholder="请输入快递公司名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">快递公司编码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="expressCompanyCode" lay-verify="required" autocomplete="off"
+							placeholder="请输入快递公司编码" class="layui-input">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- 修改物流 -->
+		<form class="layui-form" id="updateLogistics" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">物流公司名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="logisticsCompanyName" disabled="disabled" autocomplete="off"
+							class="layui-input layui-disabled">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">物流公司编码</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="logisticsCompanyCode" autocomplete="off"
+							class="layui-input layui-disabled">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">快递公司名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="expressCompanyName" lay-verify="required" autocomplete="off"
+							placeholder="请输入快递公司名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">快递公司编码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="expressCompanyCode" lay-verify="required" autocomplete="off"
 							placeholder="请输入快递公司编码" class="layui-input">
 					</div>
 				</div>
@@ -179,6 +250,30 @@
 					success: function (response) {
 						if (response.status == 1) {
 							datas = response.datas;
+							LEN = datas.length;
+							var cache = {};// 缓存有哪些物流公司
+							for (var key in datas) {// 第一次循环缓存已存在的物流
+								//获取每个对象
+								var obj = datas[key];
+								//拼接缓存key
+								var cacheKey = obj.logisticsCompanyCode + '_' + obj.logisticsCompanyName;;
+								if (!cache.hasOwnProperty(cacheKey)) {//校验物流企业是否存在					
+									cache[cacheKey] = [];
+								}
+							}
+
+							for (var k in cache) {
+								for (var i = 0; i < LEN; i++) {
+									var keyName = datas[i].logisticsCompanyCode + '_' + datas[i].logisticsCompanyName;
+									if (k == keyName) {
+										// console.log(datas[i].logisticsCompanyCode + '_' + datas[i].logisticsCompanyName)
+										cache[k].push(datas[i]);
+									}
+
+								}
+							}
+							datas = cache;
+							// console
 						} else {
 							layer.alert(response.msg);
 						}
@@ -188,39 +283,26 @@
 			}
 			function tem() {
 				var result = [];
-				var cache = {};
 				var datas = getDatas();
 				//遍历后台数据
-				for (var key in datas) {
-					//获取每个对象
-					var obj = datas[key];
-					//物流企业编号
-					var logiCode = obj.logisticsCompanyCode;
-					//物流企业名称
-					var logiName = obj.logisticsCompanyName;
-					//快递公司编号
-					var expComCode = obj.expressCompanyCode;
-					//快递公司名称
-					var expComName = obj.expressCompanyName;
-					//拼接缓存key
-					var cacheKey = logiCode + '_' + logiName;
-					if (cache.hasOwnProperty(cacheKey)) {//校验物流企业是否存在
-						var v2 = expComCode + '_' + expComName;
-						if (cache.hasOwnProperty("children")) {//校验下级是否已存在
-							var childrenObj = { addr: 2, title: v2, id: obj.id };
-							//存储子对象
-							cache["children"].push(childrenObj);
-						} else {//不存在则新建一个数组对象存入
-							cache["children"] = [{ addr: 2, title: v2, id: obj.id }];
-						}
-					} else {
-						cache = { addr: 1, title: cacheKey, id: obj.id, [cacheKey]: cacheKey };
-						result.push(cache);
+				let provinceindex = 0;// 省下标
+				for (var key in datas) {// 物流
+					result.push({
+						addr: 1, title: key, id: key.split('_')[1], children: []
+					});
+					for (let key2 in datas[key]) {// 市
+
+						result[provinceindex].children.push({
+							addr: 2,
+							title: datas[key][key2].expressCompanyCode + '_' + datas[key][key2].expressCompanyName,
+							id: datas[key][key2].expressCompanyCode,
+							serialNo: datas[key][key2].serialNo
+						})
 					}
+					provinceindex++;
 				}
 				return result;
 			}
-
 			//开启节点操作图标
 			var render = function () {
 				tree.render({
@@ -231,43 +313,43 @@
 					, click: function (obj) {
 						// layer.msg(JSON.stringify(obj.data));
 					}, operate: function (obj) {
-						// console.log(obj)
+
 						var type = obj.type; //得到操作类型：add、edit、del
 						var data = obj.data; //得到当前节点的数据
 						var elem = obj.elem; //得到当前节点元素
 						if (type === 'add') { //增加节点
-							$('#addLogistics').find('[name=expressCompanyCode]').val('');
-							$('#addLogistics').find('[name=expressCompanyName]').val('');
-							$("#addLogistics").find('[name=logisticsCompanyName]').val(data.title.split('_')[0])
-							$("#addLogistics").find('[name=logisticsCompanyCode]').val(data.title.split('_')[1])
+							$('#addLogistics_kd').find('[name=expressCompanyCode]').val('');
+							$('#addLogistics_kd').find('[name=expressCompanyName]').val('');
+							$("#addLogistics_kd").find('[name=logisticsCompanyName]').val(data.title.split('_')[1])
+							$("#addLogistics_kd").find('[name=logisticsCompanyCode]').val(data.title.split('_')[0])
 							layer.open({
-								title: "新增城市",
+								title: "新增物流",
 								type: 1,
 								closeBtn: 0,
 								btnAlign: "c",
 								skin: "layui-layer-rim", //加上边框
 								area: ["577px", "251px"], //宽高
-								content: $("#addLogistics"),
+								content: $("#addLogistics_kd"),
 								btn: ["保存", "关闭"],
 								yes: function (index) {
 									var sign = true;
-									$.each($("#addLogistics").find("[name]"), function (i, item) {
+									$.each($("#addLogistics_kd").find("[name]"), function (i, item) {
 										if (isEmpty($(item).val())) {
 											sign = false;
-											layer.alert('请填写新增的城市信息');
+											layer.alert('请填写新增的物流信息');
 											return false;
 										}
 									});
 									if (sign) {
 										layer.load();
 										var datas = {
-											logisticsCompanyName: $('#addLogistics').find('[name=logisticsCompanyName]').val(),
-											logisticsCompanyCode: $('#addLogistics').find('[name=logisticsCompanyCode]').val(),
-											expressCompanyCode: $('#addLogistics').find('[name=expressCompanyCode]').val(),
-											expressCompanyName: $('#addLogistics').find('[name=expressCompanyName]').val()
+											logisticsCompanyName: $('#addLogistics_kd').find('[name=logisticsCompanyName]').val(),
+											logisticsCompanyCode: $('#addLogistics_kd').find('[name=logisticsCompanyCode]').val(),
+											expressCompanyCode: $('#addLogistics_kd').find('[name=expressCompanyCode]').val(),
+											expressCompanyName: $('#addLogistics_kd').find('[name=expressCompanyName]').val()
 										}
 										$.ajax({
-											url: urlPrefix + "silver-web-shop/provinceCityArea/insertCity",
+											url: urlPrefix + "silver-web-shop/logistics/insertInfo",
 											type: "POST",
 											xhrFields: {
 												withCredentials: true
@@ -278,7 +360,7 @@
 													layer.closeAll();
 													layer.msg('添加成功', function () {
 														//关闭后的操作
-														$("#addCity").hide();
+														$("#addLogistics_kd").hide();
 														layer.closeAll();
 														render();
 													});
@@ -300,7 +382,71 @@
 								}
 							});
 						} else if (type === 'update') { //修改节点
+							var logisticsCompany = $(elem).parent().siblings('.layui-tree-entry').find('.layui-tree-txt').html();// 物流
+							$('#updateLogistics').find('[name=expressCompanyCode]').val(data.title.split('_')[0]);
+							$('#updateLogistics').find('[name=expressCompanyName]').val(data.title.split('_')[1]);
+							$("#updateLogistics").find('[name=logisticsCompanyName]').val(logisticsCompany.split('_')[1])
+							$("#updateLogistics").find('[name=logisticsCompanyCode]').val(logisticsCompany.split('_')[0])
+							layer.open({
+								title: "新增物流",
+								type: 1,
+								closeBtn: 0,
+								btnAlign: "c",
+								skin: "layui-layer-rim", //加上边框
+								area: ["577px", "251px"], //宽高
+								content: $("#updateLogistics"),
+								btn: ["保存", "关闭"],
+								yes: function (index) {
+									var sign = true;
+									$.each($("#updateLogistics").find("[name]"), function (i, item) {
+										if (isEmpty($(item).val())) {
+											sign = false;
+											layer.alert('请填写修改的物流信息');
+											return false;
+										}
+									});
+									if (sign) {
+										// layer.load();
+										var datas = {
+											logisticsCompanyName: $('#updateLogistics').find('[name=logisticsCompanyName]').val(),
+											logisticsCompanyCode: $('#updateLogistics').find('[name=logisticsCompanyCode]').val(),
+											expressCompanyCode: $('#updateLogistics').find('[name=expressCompanyCode]').val(),
+											expressCompanyName: $('#updateLogistics').find('[name=expressCompanyName]').val(),
+											serialNo: data.serialNo
+										}
+										$.ajax({
+											url: urlPrefix + "silver-web-shop/logistics/updateInfo",
+											type: "POST",
+											xhrFields: {
+												withCredentials: true
+											},
+											data: datas,
+											success: function (response) {
+												if (response.status == 1) {
+													layer.closeAll();
+													layer.msg('修改成功', function () {
+														//关闭后的操作
+														$("#updateLogistics").hide();
+														layer.closeAll();
+														render();
+													});
+												} else {
+													layer.alert(response.msg)
+												}
 
+											},
+											error: function () {
+												layer.closeAll('loading');
+												layer.msg(response.msg);
+											}
+										});
+									}
+
+								},
+								btn2: function () {
+									$("#addCity").hide();
+								}
+							});
 						}
 					}
 				});
