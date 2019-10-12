@@ -39,6 +39,25 @@
 			height: 38px;
 		}
 
+		.layui-form-item .layui-input-inline {
+			width: 260px;
+		}
+
+		.layui-form-pane .layui-input-block {
+			margin-left: 150px;
+		}
+
+		.layui-upload-drag {
+			width: 257px;
+			height: 110px;
+			padding: 0;
+		}
+
+		.gs {
+			height: 36px;
+			padding: 0 10px;
+			border: 1px solid #ddd;
+		}
 	</style>
 </head>
 
@@ -80,151 +99,114 @@
 
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>					
-				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="offlineRecharge">线下充值</a>					
+				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="offlineRecharge">充值</a>					
 			</script>
-			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-			<script src="../../static/js/common.js" charset="utf-8"></script>
+
 		</form>
-		<!--  代商户提交线下加款申请弹窗 -->
-		<div id="offlineBox_pop" style="display: none;" >
-			<form class="layui-form layui-form-pane" style="width:80%;margin: 0 auto;margin-top: 20px;" action="">
-				<div class="layui-form-item">
-					<label class="layui-form-label">汇款金额</label>
-					<div class="layui-input-inline">
-						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
-							class="layui-input">
-					</div>
-					<div class="layui-form-mid layui-word-aux">汇款金额与转账回执单上的金额必须一致</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">银行汇款流水号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
-							class="layui-input">
-					</div>
-					<div class="layui-form-mid layui-word-aux">汇款流水请填写正确，避免造成充值失败</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">收款账户</label>
-					<div class="layui-input-inline">
-						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
-							class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">汇款账户名称</label>
-					<div class="layui-input-inline">
-						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
-							class="layui-input">
-					</div>
-					<div class="layui-form-mid layui-word-aux">汇款账户银行开户名</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">汇款账号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
-							class="layui-input">
-					</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">汇款开户行</label>
-					<div class="layui-input-inline">
-						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
-							class="layui-input">
-					</div>
-					<div class="layui-form-mid layui-word-aux">请务必填写用户名</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">汇款时间</label>
-					<div class="layui-input-inline">
-						<input type="text" name="username" lay-verify="required" placeholder="请输入" autocomplete="off"
-							class="layui-input">
-					</div>
-					<div class="layui-form-mid layui-word-aux">请务必填写用户名</div>
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">汇款回执</label>
-					<div class="layui-upload-drag" id="test10">
-						<i class="layui-icon"></i>
-						<p>点击上传，或将文件拖拽到此处</p>
-					</div>
-
-				</div>
-
-				<!-- <ul class="edit-ul" id="recharge_apply_ul_insApp">
-					<li>
-						<span>汇款金额:</span>
-						<input id="remittanceAmount" name="remittanceAmount" class="edit-input noVal"
-							style="width:100px;" type="text">
-						<b style="color:red;">*汇款金额与转账回执单上的金额必须一致</b>
-					</li>
-					<li>
-						<span>银行汇款流水号:</span>
-						<input class="edit-input noVal" style="width:180px;" name="remittanceSerialNo"
-							placeholder=" 银行汇款流水号" type="text">
-						<b style="color:red;">*汇款流水请填写正确，避免造成充值失败</b>
-					</li>
-					<li>
-						<span>收款账户:</span>
-						<input name="beneficiaryAccountType" value="public" class="" type="hidden">
-						<ul class="" id="bankList"
-							style="display: inline-block;vertical-align: text-top;margin-left: 3px;">
-							<li class="item" style="height: 35px;width: 122px;margin: 0;position: relative;
-				  line-height: 35px;">
-								<img width="100px" src="images/gs.jpg">							
-							</li>
-						</ul>
-						<p style="display: none; margin-left: 160px;
-				color: #666;">
-							<b>收款人账户：3602062709200219758
-								<br>收款人名称：广州银盟信息科技有限公司
-								<br>收款人开户行：中国工商银行股份有限公司广州科技园支行
-							</b>
-						</p>
-
-					</li>
-
-					<li>
-						<span>汇款账户名称:</span>
-						<input class="edit-input noVal" name="remittanceName" type="text" style="width:180px;">
-						<b style="color:red;">*汇款账户银行开户名</b>
-					</li>
-					<li>
-						<span>汇款账号:</span>
-						<input class="edit-input noVal" name="remittanceAccount" type="text" style="width:276px;">
-						<b style="color:red;">*汇款账户银行账号</b>
-					</li>
-					<li>
-						<span>汇款开户行:</span>
-						<input class="edit-input noVal" name="remittanceBank" type="text" style="width:276px;">
-						<b style="color:red;">*汇款账户银行开户行名称</b>
-					</li>
-					</li>
-					<li>
-						<span>汇款时间:</span>
-						<input class="edit-input noVal" name="remittanceDate" type="date">
-					</li>
-					<li>
-						<span>汇款回执:</span>
-						<input id="hid_upfile" class="noVal" style="margin-left:3px;display: inline-block;" name="hz"
-							onchange="wallet_module.ImgChange(event)" type="file" />
-					</li> -->
-				<!-- <li>
-					<span></span>
-					<div id="select_upfile"
-						style="cursor:pointer;margin-top:5px;width:280px;height:160px;background-color:#d3dbde; display:inline-block;vertical-align:top;">
-						<p style="line-height:160px;text-align:center;">上传汇款回单+</p>
-					</div>
-				</li>
-				</ul> -->
-			</form>
-		</div>
 	</div>
+	<!--  代商户提交线下加款申请弹窗 -->
+	<form id="offlineBox_pop" lay-filter="offlineBox_pop" class="layui-form layui-form-pane"
+		style="display: none;width:80%;margin: 0 auto;margin-top: 20px;">
+		<input type="hidden" name="merchantId">
+		<div class="layui-form-item">
+			<label class="layui-form-label">汇款金额</label>
+			<div class="layui-input-inline">
+				<input type="text" name="remittanceAmount" lay-verify="required" placeholder="请输入" autocomplete="off"
+					class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux">汇款金额与转账回执单上的金额必须一致</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">银行汇款流水号</label>
+			<div class="layui-input-inline">
+				<input type="text" name="remittanceSerialNo" lay-verify="required" placeholder="请输入" autocomplete="off"
+					class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux">汇款流水请填写正确，避免造成充值失败</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">收款账户</label>
+			<div class="layui-input-inline">
+				<input type="hidden"  name="beneficiaryAccountType" value="public">
+				<img class="gs" src="../../static/images/gs.jpg">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">汇款账户名称</label>
+			<div class="layui-input-inline">
+				<input type="text" name="remittanceName" lay-verify="required" placeholder="请输入" autocomplete="off"
+					class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux">汇款账户银行开户名</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">汇款账号</label>
+			<div class="layui-input-inline">
+				<input type="text" name="remittanceAccount" lay-verify="required" placeholder="请输入" autocomplete="off"
+					class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux">汇款账户银行账号</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">汇款开户行</label>
+			<div class="layui-input-inline">
+				<input type="text" name="remittanceBank" lay-verify="required" placeholder="请输入" autocomplete="off"
+					class="layui-input">
+			</div>
+			<div class="layui-form-mid layui-word-aux">汇款账户银行开户行名称</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">汇款时间</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" lay-verify="required" id="remittanceDate" name="remittanceDate"
+					placeholder="年-月-日" autocomplete="off">
+			</div>
+
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">汇款回执</label>
+			<div class="layui-upload-drag" id="select_upfile">
+				<!-- <i class="layui-icon"></i>
+						<p>点击上传</p> -->
+			</div>
+			<input id="hid_upfile" style="display: none;" name="hz" type="file" onchange="ImgChange(event)" />
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button type="button" class="layui-btn layui-btn-normal" lay-submit=""
+					lay-filter="submit_save">立即提交</button>
+				<button id="cancel_open" type="button" class="layui-btn layui-btn-primary">取消</button>
+			</div>
+		</div>
+	</form>
+	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+	<script src="../../static/js/common.js" charset="utf-8"></script>
+	<script src="../../static/js/jquery.js" charset="utf-8"></script>
+	<script src="../../static/js/jquery.form.js" charset="utf-8"></script>
 	<script>
 		layui.extend({
 			admin: '{/}../../static/js/admin'
 		});
-
+		// 图片上存
+		var r = new FileReader();
+		var ImgChange = function (event) {
+			// console.log(event)
+			if ((event.target.files[0] + "").trim() == "undefined") return;
+			var imgType = event.target.files[0].type;
+			imgType = imgType.trim();
+			if (
+				imgType != "image/jpeg" &&
+				imgType != "image/png" &&
+				imgType != "image/jpg"
+			) {
+				showNotice("请选择jpeg,png,jpg类型的图片");
+				return;
+			}
+			r.readAsDataURL(event.target.files[0]);
+			r.onload = function (e) {
+				document.getElementById('select_upfile').innerHTML = '<img  src="' + this.result + '"  width="100%" height="100%"/>';
+			};
+		};
 		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
@@ -242,6 +224,16 @@
 				elem: '#endDate'
 				, type: 'datetime'
 			});
+			//汇款时间
+			laydate.render({
+				elem: '#remittanceDate',
+				max:0
+			});
+			// 选择图片
+			$("#select_upfile").click(function () {
+				$("#hid_upfile").click();
+			});
+
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
@@ -324,7 +316,7 @@
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/manager/findAllmemberInfo',
+					url: urlPrefix + 'silver-web-shop/managerWallet/getMerchantWalletInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
@@ -336,13 +328,7 @@
 					}
 				});
 			}
-			/*
-			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
-			 * http://www.layui.com/doc/modules/form.html#render
-			 * */
-			// $(function () {
-			// 	form.render();
-			// });
+
 			var active = {
 				reload: function () {
 					var merchantName = $('#form_sreach').find('[name=merchantName]');
@@ -371,10 +357,15 @@
 				var type = $(this).data('type');
 				active[type] ? active[type].call(this) : '';
 			});
-
+			$('#cancel_open').click(function () {
+				layer.closeAll();
+				$("#offlineBox_pop")[0].reset();
+			});
 			//监听工具条
+			var g_merchantId = '';
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
+				g_merchantId = data.merchantId;
 				if (obj.event === 'detail') {// 查看详情
 					layer.open({
 						type: 2,
@@ -396,198 +387,92 @@
 						}
 					});
 				} else if (obj.event === 'offlineRecharge') {// 线下充值
-					$("#offlineBox_pop .noVal").val("");
 					$("#select_upfile").html(
-						'<p style="line-height:160px;text-align:center;">上传汇款回单+</p>'
+						'<p style="line-height:110px;text-align:center;">上传汇款回单+</p>'
 					);
-					$("#apply_form [name=merchantId]").siblings('.searchable-select').find('.searchable-select-holder').html('请选择');
-					$("#apply_form [name=beneficiaryAccountType]")
-						.siblings("p")
-						.hide();
 					layer.open({
 						title: "线下加款申请",
 						type: 1,
-						closeBtn: 0,
+						// closeBtn: 0,
 						btnAlign: "c",
 						skin: "layui-layer-rim", //加上边框
 						area: ["1000px", "600px"], //宽高
-						content: $("#offlineBox_pop"),
-						btn: ["保存", "关闭"],
-						yes: function (index) {
-							var flag = false;
-							$("#recharge_apply_ul_insApp").find(".edit-input")
-								.each(function () {
-									if (
-										$(this)
-											.val()
-											.trim() == ""
-									) {
-										console.log($(this))
-										flag = true;
-										return;
-									}
-								});
-							if (flag) {
-								layer.alert("请填写完整信息再提交");
-								return;
-							}
-							if ($("#hid_upfile").val() == "") {
-								layer.alert("请上传汇款回执凭据图片");
-								return;
-							}
-
-
-							$("#apply_form").attr('action', urlPrefix + 'silver-web-shop/offlineRecharge/insApp');
-							$("#apply_form").submit();
-						},
-						btn2: function () {
-							$("#offlineBox_pop").hide();
-						}
-					});
-
-				} else if (obj.event === 'reset') {// 重置密码
-					layer.alert("确定重置密码？", {
-						time: 0, //不自动关闭
-						btn: ["保存", "关闭"],
-						yes: function (index) {
-							$.ajax({
-								url: urlPrefix + 'silver-web-shop/managerWallet/getMerchantWalletInfo',
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: { managerId: data.managerId },
-								success: function (response) {
-									if (response.status == 1) {
-										layer.msg("重置成功！");
-										_reload();
-									} else {
-										layer.alert(response.msg);
-									}
-								}
-							});
-						}
-					});
-
-				} else if (obj.event === 'edit') {// 分配权限
-					$('#maangerAllot').html('');
-					layer.load(1);
-					var _this = this;
-					$.ajax({
-						url: urlPrefix + "silver-web-shop/authority/getUserAuthorityInfo",
-						type: "POST",
-						xhrFields: {
-							withCredentials: true
-						},
-						data: { userId: data.managerId, groupName: "manager" },
-						success: function (response) {
-
-							if (response.status == 1) {
-
-								var jsonArr = [];
-								var ii = 0;
-								$.each(response.datas, function (i, val1) {
-									jsonArr.push({ title: i, children: [] });
-									var jj = 0;
-									$.each(val1, function (j, val2) {
-										jsonArr[ii].children.push({ title: j, children: [] });
-										$.each(val2, function (k, val3) {
-											var checked = false;
-											if (k.split("#")[1] == 'true') {
-												jsonArr[ii].checked = true;
-												jsonArr[ii].children[jj].checked = true;
-												checked = true;
-											}
-											jsonArr[ii].children[jj].children.push({
-												title: val3,
-												checked: checked,
-												id: k.split("#")[0]
-											});
-										});
-										jj++;
-									});
-									ii++;
-								});
-
-								//基本演示
-								tree.render({
-									elem: '#maangerAllot'
-									, data: jsonArr
-									, check: "checkbox" //勾选风格
-									, showCheckbox: true  //是否显示复选框
-									, id: 'demoId1'
-									, checkboxName: "allot" //复选框的name属性值
-									, checkboxStyle: "" //设置复选框的样式，必须为字符串，css样式怎么写就怎么写
-									// , isJump: true //是否允许点击节点时弹出新窗口跳转
-									, click: function (obj) {
-										// var data = obj.data;  //获取当前点击的节点数据
-										// layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
-									}
-								});
-								layer.closeAll('loading');
-							} else {
-							}
-						}
-					});
-
-					//页面层
-					layer.open({
-						type: 1,
-						title: '分配权限',
-						skin: "layui-layer-rim", //加上边框
-						area: ["690px", "450px"], //宽高
-						content: $("#maangerAllot"),
-						btn: ["保存", "关闭"],
-						btnAlign: "c",
-						yes: function (index) {
-							var arr = [];
-							$.each($("#maangerAllot").find('.layui-tree-main [type=checkbox]'), function (i, item) {
-								// console.log($(item))
-								if (item.checked && item.value != "undefined") {
-
-									arr.push(item.value);
-								}
-							})
-							var allot_data = { type: 'manager', userId: data.managerId, authorityPack: JSON.stringify(arr) };
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/authority/setAuthorityInfo",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: allot_data,
-								success: function (response) {
-									layer.closeAll("loading");
-									if (response.status == 1) {
-										layer.closeAll();
-										// $("#maangerAllot").html('').hide();
-										layer.msg('分配权限成功！');
-										_reload();
-									} else {
-										layer.msg(response.msg);
-									}
-								}
-							});
-						}
-						, btn2: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
-						}, cancel: function () {
-							// layer.closeAll();
-							// $("#maangerAllot").html('').hide();
-						}
-
-					});
-					// layer.alert('编辑行：<br>' + JSON.stringify(data))
-					//拖拽上传
-					upload.render({
-						elem: '#test10'
-						, url: '/upload/'
-						, done: function (res) {
-							console.log(res)
-						}
+						content: $("#offlineBox_pop")
 					});
 				}
+				// 提交线下充值
+				form.on('submit(submit_save)', function (data) {
+					if ($("#hid_upfile").val() == "") {
+						layer.alert("请上传汇款回执凭据图片");
+						return;
+					} else {
+						layer.load();
+						$("#offlineBox_pop").find('[name=merchantId]').val(g_merchantId);
+						$("#offlineBox_pop").attr('action', urlPrefix + 'silver-web-shop/offlineRecharge/insApp');
+						$("#offlineBox_pop").submit();
+						// data.field.merchantId = g_merchantId;
+						// $.ajax({
+						// 	url: urlPrefix + "silver-web-shop/offlineRecharge/insApp",
+						// 	type: "POST",
+						// 	xhrFields: {
+						// 		withCredentials: true
+						// 	},
+						// 	data: data.field,
+						// 	success: function (response) {
+						// 		if (response.status == 1) {
+						// 			layer.closeAll();
+						// 			layer.msg("保存成功");
+						// 			_reload();
+						// 		} else {
+						// 			layer.alert(response.msg);
+						// 		}
+						// 	}
+						// });
+					}
+
+				});
+
+				// 线下充值表单提交 start //
+				$(function () {
+					var options = {
+						beforeSubmit: showRequest,
+						success: showResponse,
+						type: "POST",
+						dataType: 'json',
+						error: function (response) {
+							layer.closeAll();
+							layer.msg(response.msg, {
+								time: 0 //不自动关闭
+								, btn: ['确定']
+								, btnAlign: 'c'
+								, yes: function (index) {
+									layer.closeAll();
+								}
+							});
+						},
+						timeout: 8000
+					};
+					$("#offlineBox_pop").submit(function () {
+						$(this).ajaxSubmit(options);
+						return false;
+					});
+				});
+
+				function showRequest() {
+					// console.info($("#apply_form").serialize());
+				}
+				function showResponse(data) {
+					if (data.status == 1) {
+						layer.closeAll();
+						layer.msg("保存成功");
+						_reload();
+					} else {
+						layer.alert(data.msg);
+					}
+				}
+				// 线下充值表单提交 end //
+
+
 			});
 
 		});
