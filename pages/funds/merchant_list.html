@@ -113,6 +113,13 @@
 		style="display: none;width:80%;margin: 0 auto;margin-top: 20px;">
 		<input type="hidden" name="merchantId">
 		<div class="layui-form-item">
+			<label class="layui-form-label">收款账户</label>
+			<div class="layui-input-inline">
+				<input type="hidden" name="beneficiaryAccountType" value="public">
+				<img class="gs" src="../../static/images/gs.jpg">
+			</div>
+		</div>
+		<div class="layui-form-item">
 			<label class="layui-form-label">汇款金额</label>
 			<div class="layui-input-inline">
 				<input type="text" name="remittanceAmount" lay-verify="required" placeholder="请输入" autocomplete="off"
@@ -128,13 +135,7 @@
 			</div>
 			<div class="layui-form-mid layui-word-aux">汇款流水请填写正确，避免造成充值失败</div>
 		</div>
-		<div class="layui-form-item">
-			<label class="layui-form-label">收款账户</label>
-			<div class="layui-input-inline">
-				<input type="hidden" name="beneficiaryAccountType" value="public">
-				<img class="gs" src="../../static/images/gs.jpg">
-			</div>
-		</div>
+
 		<div class="layui-form-item">
 			<label class="layui-form-label">汇款账户名称</label>
 			<div class="layui-input-inline">
