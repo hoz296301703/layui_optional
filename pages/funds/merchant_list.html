@@ -40,6 +40,10 @@
 		}
 
 		.layui-form-item .layui-input-inline {
+			width: 150px;
+		}
+
+		#offlineBox_pop .layui-input-inline {
 			width: 260px;
 		}
 
@@ -85,7 +89,7 @@
 						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
 							placeholder="年-月-日">
 					</div>
-					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+					    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
 							placeholder="年-月-日">
@@ -127,7 +131,7 @@
 		<div class="layui-form-item">
 			<label class="layui-form-label">收款账户</label>
 			<div class="layui-input-inline">
-				<input type="hidden"  name="beneficiaryAccountType" value="public">
+				<input type="hidden" name="beneficiaryAccountType" value="public">
 				<img class="gs" src="../../static/images/gs.jpg">
 			</div>
 		</div>
@@ -227,7 +231,7 @@
 			//汇款时间
 			laydate.render({
 				elem: '#remittanceDate',
-				max:0
+				max: 0
 			});
 			// 选择图片
 			$("#select_upfile").click(function () {
