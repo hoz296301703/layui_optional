@@ -152,15 +152,15 @@
 			</div>
 		</div>
 		<script>
-			layui.extend({
-				admin: '{/}../../static/js/admin'
-			});
-			layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+			// layui.extend({
+			// 	admin: '{/}../../static/js/admin'
+			// });
+			layui.use(['table', 'jquery', 'form', 'tree', 'laydate','element'], function () {
 				var table = layui.table,
 					$ = layui.jquery,
 					form = layui.form,
 					tree = layui.tree,
-					admin = layui.admin,
+					element = layui.element,
 					laydate = layui.laydate;
 				//日期时间选择器
 				laydate.render({
@@ -172,13 +172,13 @@
 					elem: '#endDate'
 					, type: 'datetime'
 				});
-				var tableHeight = $(window).height() - $('.layui-tab-title').height() - 50 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+				// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 50 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 				table.render({
 					elem: '#articleList',
 					defaultToolbar: ['filter'],
 					toolbar: '#ope_list_toolbar',
 					cellMinWidth: 80,
-					height: tableHeight,
+					// height: tableHeight,
 					url: urlPrefix + 'silver-web-shop/opeLogs/getInfo',
 					method: 'post',
 					cols: [

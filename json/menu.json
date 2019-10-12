@@ -212,13 +212,7 @@
 					"name": "省市区",
 					"icon": "",
 					"url": "./pages/system/findProvinceCityArea_list.html"
-				},
-				{
-					"id": "system_5",
-					"name": "区域信息",
-					"icon": "",
-					"url": "./pages/article/list.html"
-				},
+				},				
 				{
 					"id": "system_6",
 					"name": "物流信息",

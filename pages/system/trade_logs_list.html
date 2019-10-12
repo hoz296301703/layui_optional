@@ -31,9 +31,9 @@
 			width: 40px;
 		}
 
-		body {
+		/* body {
 			overflow-y: scroll;
-		}
+		} */
 	</style>
 </head>
 
@@ -49,7 +49,7 @@
 			href="javascript:location.replace(location.href);" title="刷新">
 			<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
 	</div> -->
-	<div class="weadmin-body">
+	<!-- <div class="weadmin-body"> -->
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
 				<div class="layui-inline">
@@ -137,18 +137,15 @@
 			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 			<script src="../../static/js/common.js" charset="utf-8"></script>
 
-	</div>
+	<!-- </div> -->
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
+		
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form',  'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({

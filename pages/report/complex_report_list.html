@@ -129,7 +129,7 @@
 			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 		</form>
 		<!-- 结算货款明细 -->
-		<div id="getSelAmount_detail" style="display: none; ">
+		<!-- <div id="getSelAmount_detail" style="display: none; ">
 			<form class="layui-form layui-form-pane" action="" style="width: 360px;margin: 0 auto;margin-top: 20px;">
 				<div class="layui-form-item" style="margin-bottom: 10px;">
 					<label class="layui-form-label">订单数量</label>
@@ -165,38 +165,8 @@
 					<div class="layui-form-mid layui-word-aux">元</div>
 				</div>
 			</form>
-		</div>
-		<script src="../../static/js/jquery.js"></script>
-		<script type="text/html" id="operateTpl">
-			<!-- laytpl语法--start-- -->
-			{{#  				
-				var  checkSel = function (dateSign, merchantId) {
-					var flag = false;
-					var datas = {  dateSign: dateSign, merchantId: merchantId, page: 0, size: 0 };				
-					$.ajax({
-						url: urlPrefix + "silver-web-shop/dfOrder/getInfo",
-						type: "POST",
-						async: false,
-						xhrFields: {
-							withCredentials: true
-						},
-						data: datas,
-						success: function (response) {
-							if (response.status == 1) {
-								flag = true;												
-							}
-						}
-					});
-					return flag;
-				}
-			}}
-			{{#  if(checkSel(d.dateSign, d.merchantId)){ }}
-		<a class="layui-btn layui-btn-xs" lay-event="getSelAmount">结算货款</a>
-		{{#  } else { }}
-
-		{{#  } }}
-		<!-- laytpl语法--end-- -->
-		</script>
+		</div> -->
+		<script src="../../static/js/jquery.js"></script>	
 		<script type="text/html" id="report_toolbar">
 				<div class="layui-btn-container">						
 					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrder"><i class="layui-icon">&#xe601;</i>明细下载</button>
@@ -208,15 +178,13 @@
 
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+	
+		layui.use(['table', 'jquery', 'form',  'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
+				// admin = layui.admin,
 				laydate = layui.laydate;
 
 			// 日报表
@@ -240,14 +208,12 @@
 				elem: '#userDefined_endDate'
 			});
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
-
-
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
 				toolbar: '#report_toolbar',
 				url: urlPrefix + 'silver-web-shop/repLogs/getInfo',
 				method: 'post',
@@ -290,9 +256,10 @@
 							field: 'realNameTotalCount', title: '实名认证次数', width: 100, totalRow: true
 						}, {
 							field: 'realNameFee', title: '实名认证服务费(元)', width: 150, totalRow: true
-						}, {
-							field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
-						}]
+						// }, {
+						// 	field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+						}
+					]
 				],
 				// skin: 'row', //行边框风格
 				event: true,
@@ -394,44 +361,9 @@
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
-				if (obj.event == 'getSelAmount') {// 结算货款
-					layer.msg('加载中...', { time: 0, icon: 16, shade: 0.1 });
-					var data = {
-						merchantId: data.merchantId,
-						date: data.dateSign
-					}
-					$.ajax({
-						url: urlPrefix + "silver-web-shop/repLogs/getSelAmount",
-						type: "POST",
-						xhrFields: {
-							withCredentials: true
-						},
-						data: data,
-						success: function (response) {
-							if (response.status == 1) {
-								$('#getSelAmount_detail').find('[name=dai_fu]').val(response.datas.dai_fu)
-								$('#getSelAmount_detail').find('[name=order_amount]').val(response.datas.order_amount)
-								$('#getSelAmount_detail').find('[name=dai_fu_order_count]').val(response.datas.dai_fu_order_count)
-								$('#getSelAmount_detail').find('[name=order_count]').val(response.datas.order_count)
-								$('#getSelAmount_detail').find('[name=payFee]').val(response.datas.payFee)
-								layer.open({
-									title: "结算货款明细",
-									type: 1,
-									closeBtn: 0,
-									skin: "layui-layer-rim", //加上边框
-									area: ["454px", "420px"], //宽高
-									btnAlign: "c",
-									content: $("#getSelAmount_detail"),
-									btn: ["关闭"],
-									yes: function (index) {
-										$("#getSelAmount_detail").hide();
-										layer.closeAll();
-									}
-								});
-							}
-						}
-					});
-				}
+				// if (obj.event == 'getSelAmount') {// 结算货款-2019-10-12 已转移至订单结算页面中
+				
+				// }
 			});
 			//头工具栏事件
 			table.on('toolbar(articleList)', function (obj) {

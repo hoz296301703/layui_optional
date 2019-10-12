@@ -206,7 +206,7 @@
 
 	</div>
 	<script>
-	
+
 		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
@@ -218,9 +218,11 @@
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
+				, max: 0
 			});
 			laydate.render({
 				elem: '#sendingDate'

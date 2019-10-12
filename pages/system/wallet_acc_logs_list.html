@@ -49,7 +49,7 @@
 			href="javascript:location.replace(location.href);" title="刷新">
 			<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
 	</div> -->
-	<div class="weadmin-body">
+	<!-- <div class="weadmin-body"> -->
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
 				<!-- <div class="layui-inline">
@@ -115,12 +115,12 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+						<input type="text" class="layui-input"  readonly="" id="startDate" name="startDate" autocomplete="off"
 							placeholder="年-月-日">
 					</div>
 					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
+						<input type="text" class="layui-input"  readonly="" id="endDate" name="endDate" autocomplete="off"
 							placeholder="年-月-日">
 					</div>
 				</div>
@@ -137,36 +137,38 @@
 			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 			<script src="../../static/js/common.js" charset="utf-8"></script>
 
-	</div>
+	<!-- </div> -->
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
+		// layui.extend({
+		// 	admin: '{/}../../static/js/admin'
+		// });
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
+				// admin = layui.admin,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
-				, type: 'datetime'
+				// , type: 'datetime'
+				, max: 0
 			});
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				toolbar: '#articleList_toolbar',
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/sysAccLogs/getInfo',
 				method: 'post',
 				cols: [
@@ -187,7 +189,7 @@
 							field: 'status', title: '状态', width: 90, templet: function (item) {
 								if (item.status == 'abnormal') {
 									return '异常';
-								}else if(item.status == 'normal'){
+								} else if (item.status == 'normal') {
 									return '正常';
 								}
 							}
