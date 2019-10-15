@@ -118,7 +118,7 @@
             分类
           </li>
           <li class="item">
-            <a class="active"  href="javascript:;" id="type" name="">全部</a>
+            <a class="active" href="javascript:;" id="type" name="">全部</a>
           </li>
           <li class="item">
             <a href="javascript:;" name="5">购物</a>
@@ -154,8 +154,8 @@
               <input type="text" name="targetName" placeholder="请输入对方名称" class="layui-input">
             </div>
             <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
-            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="download" style="float: right;"><em
-                class="layui-icon">&#xe601;</em>下载查询结果</button>
+            <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" id="download"
+              style="float: right;"><em class="layui-icon">&#xe601;</em>下载查询结果</button>
           </li>
         </ul>
       </form>
@@ -207,10 +207,11 @@
         elem: '#startDate'
         , value: getDay(-30)
         , isInitValue: true
+        , max: 0
       });
       laydate.render({
         elem: '#endDate'
-        , value: getDay(0)
+        , value: getDay(0), max: 0
       });
       // 动态设置表格高度
       table.render({

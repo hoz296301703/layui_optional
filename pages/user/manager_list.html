@@ -24,10 +24,10 @@
 		.layui-form-switch em {
 			width: 40px;
 		}
-
+/* 
 		body {
 			overflow-y: scroll;
-		}
+		} */
 	</style>
 </head>
 
@@ -114,24 +114,25 @@
 		<!-- <script src="manager_list.js" type="text/javascript" charset="utf-8"></script> -->
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
+		// layui.extend({
+		// 	admin: '{/}../../static/js/admin'
+		// });
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree'], function () {
+		layui.use(['table', 'jquery', 'form',  'tree'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
-				tree = layui.tree,
-				admin = layui.admin;
+				tree = layui.tree
+				// ,admin = layui.admin
+				;
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				toolbar: '#manager_list_toolbar',
 				cellMinWidth: 80,
 
-				height: tableHeight,
+				// height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/manager/findAllManagerInfo',
 				method: 'post',
 				cols: [
@@ -369,7 +370,7 @@
 									});
 									ii++;
 								});
-								// console.log(JSON.stringify(jsonArr))
+								// console.log(jsonArr)
 								
 								//基本演示
 								tree.render({
@@ -393,7 +394,7 @@
 					});
 
 					//页面层
-					layer.open({
+					layer.open({						
 						type: 1,
 						title: '分配权限',
 						skin: "layui-layer-rim", //加上边框

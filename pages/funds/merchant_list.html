@@ -120,6 +120,12 @@
 			</div>
 		</div>
 		<div class="layui-form-item">
+			<label class="layui-form-label">商户名称</label>
+			<div class="layui-input-inline">
+				<input type="text" name="merchantName" autocomplete="off" class="layui-input layui-disabled" disabled>
+			</div>
+		</div>
+		<div class="layui-form-item">
 			<label class="layui-form-label">汇款金额</label>
 			<div class="layui-input-inline">
 				<input type="text" name="remittanceAmount" lay-verify="required" placeholder="请输入" autocomplete="off"
@@ -240,13 +246,13 @@
 			});
 
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				toolbar: '#mer_list_toolbar',
 				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/managerWallet/getMerchantWalletInfo',
 				method: 'post',
 				cols: [
@@ -366,11 +372,15 @@
 				layer.closeAll();
 				$("#offlineBox_pop")[0].reset();
 			});
-			//监听工具条
+
+
 			var g_merchantId = '';
+			var g_merchantName = '';
+			//监听工具条
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
 				g_merchantId = data.merchantId;
+				g_merchantName = data.merchantName;
 				if (obj.event === 'detail') {// 查看详情
 					layer.open({
 						type: 2,
@@ -395,6 +405,7 @@
 					$("#select_upfile").html(
 						'<p style="line-height:110px;text-align:center;">上传汇款回单+</p>'
 					);
+					$("#offlineBox_pop").find('[name=merchantName]').val(g_merchantName);		
 					layer.open({
 						title: "线下加款申请",
 						type: 1,
@@ -412,7 +423,8 @@
 						return;
 					} else {
 						layer.load();
-						$("#offlineBox_pop").find('[name=merchantId]').val(g_merchantId);
+						$("#offlineBox_pop").find('[name=merchantId]').val(g_merchantId);				
+
 						$("#offlineBox_pop").attr('action', urlPrefix + 'silver-web-shop/offlineRecharge/insApp');
 						$("#offlineBox_pop").submit();
 						// data.field.merchantId = g_merchantId;

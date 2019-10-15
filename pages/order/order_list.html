@@ -195,6 +195,7 @@
 					{{#  } }}
 				{{#  } }}
 				<!-- laytpl语法---END--- -->			
+				<a  class="layui-btn layui-btn-xs layui-btn-danger"  lay-event="confirm_order">确认订单</a>		
 		</script>
 		<script type="text/html" id="order_list_toolbar">
 			<div class="layui-btn-container">
@@ -305,7 +306,7 @@
 							}
 
 						}, {
-							field: 'operate', width: 150, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', width: 200, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
 				// skin: 'row', //行边框风格
@@ -438,7 +439,7 @@
 							layer.close(index);
 						}
 					});
-				} else if (obj.event === 'insert_logi_btn') {// 
+				} else if (obj.event === 'insert_logi_btn') {// 添加物流
 					// console.info(data);
 					$("#insert_logi").find("[name]").val("");// 初始化内容    
 					//表单初始赋值
@@ -453,8 +454,46 @@
 						area: ["300px", "400px"], //宽高
 						content: $("#insert_logi")
 					});
-				} else if (obj.event === 'edit') {// 分配权限
-
+				} else if (obj.event === 'confirm_order') {// 确认订单
+					layer.open({
+						title: "确认订单",
+						type: 1,
+						skin: "layui-layer-rim", //加上边框
+						area: ["500px", "170px"], //宽高
+						content:
+							'<div  id="confirm_order" class="layui-form-item" style="padding-top: 15px;">'
+							+ '<label class="layui-form-label">说明</label>'
+							+ '<div class="layui-input-block">'
+							+ ' <input type="text" name="note" lay-verify="required" placeholder="请输入备注说明" autocomplete="off" class="layui-input">'
+							+ '</div>'
+							+ '</div>'
+						,
+						// content: $("#insert_logi")
+						btn: ['提交', '关闭'],
+						btn1: function (index) {
+							layer.load(2);
+							var note = $("#confirm_order").find("[name=note]").val();
+							var params =  {orderId : data.orderId, note:  note  }
+							$.ajax({
+								url: urlPrefix + "silver-web-shop/order/manualPro",
+								type: "POST",
+								xhrFields: {
+									withCredentials: true
+								},
+								data: params,
+								success: function (response) {
+									layer.closeAll("loading");
+									if (response.status == 1) {
+										layer.close();
+										layer.msg("操作成功");
+										_reload();
+									} else {
+										layer.alert(response.msg);
+									}
+								}
+							});
+						}
+					});
 				}
 			});
 			// 添加物流信息

@@ -58,6 +58,7 @@
 			<ul class="layui-tab-title">
 				<li class="layui-this">订单结算</li>
 				<li id="mer_wit_btn">商户提现</li>
+				<li id="cou_btn">优惠券结算</li>
 				<li id="logs_btn">代付明细</li>
 				<!-- 2019-09-19 暂时关闭，使用分账日志 -->
 				<!-- <li id="fz_btn">分账信息</li> -->
@@ -189,25 +190,31 @@
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
 				<!----商户提现------------end----------------------->
+				<!----订单优惠券------------start--------------------->
+				<div class="layui-tab-item" id="cou_order">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!----订单优惠券------------end----------------------->
 				<!----代付结算日志------------start------------------>
 				<div class="layui-tab-item" id="logs">
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
 				<!----代付结算日志------------end------------------>
+
 				<!----分账日志------------start------------------->
 				<!-- <div class="layui-tab-item" id="fz">
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div> -->
 				<!----分账日志------------end----------------------->
-
 				<!----分账详情------------start--------------------->
 				<div class="layui-tab-item" id="fz_logs">
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
 				<!----分账详情------------end----------------------->
+
 			</div>
 		</div>
-		<script>	
+		<script>
 			layui.use(['table', 'jquery', 'form', 'element', 'tree', 'laydate'], function () {
 				var table = layui.table,
 					$ = layui.jquery,
@@ -683,6 +690,14 @@
 					var h = $(window).height() - 30;
 					$("#fz_logs").find('iframe').attr('src', "fen_zhang_logs_list.html").css('height', h + 'px');
 				})
+				//跳转至订单优惠券货款结算
+				$('#cou_btn').on('click', function () {
+					console.info('--------------');
+					var h = $(window).height() - 30;
+					$("#cou_order").find('iframe').attr('src', "coupon_set_list.html").css('height', h + 'px');
+				})
+
+
 
 				//单击行勾选checkbox事件
 				$(document).on("click", ".layui-table-body table.layui-table tbody tr", function () {
@@ -705,7 +720,7 @@
 				//------------------------------------------------------------------------
 
 				//获取1116账户余额
-				function getConAccBal() {
+				var getConAccBal = function () {
 					$.ajax({
 						url: urlPrefix + "silver-web-shop/dfOrder/getConAccBal",
 						type: "POST",
@@ -742,9 +757,7 @@
 								var datas = data[key];
 								serialNoPack.push(datas.serialNo);
 								merchantName = datas.merchantName;
-								// console.info(datas);
 								amount = accAdd(amount, datas.amount);
-								// console.info(amount);
 							}
 							//转换格式
 							serialNoPack = JSON.stringify(serialNoPack);
