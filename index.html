@@ -123,6 +123,27 @@
 			var $ = layui.jquery,
 				admin = layui.admin,
 				menu = layui.menu;
+			// 验证是否登录
+			function checkMerchantLogin() {
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/manager/checkManagerLogin",
+					xhrFields: {
+						withCredentials: true
+					},
+					type: "post",
+					contentType: "text/plain",
+					dataType: "json",
+					success: function (response) {
+						if (response.status != 1) {
+							window.location = "login.html";
+						}
+					},
+					error: function (response) { }
+				});
+			}
+			setInterval(function () {
+				checkMerchantLogin();
+			}, 960000);
 			$(function () {
 				$.ajax({// 请求是否登录
 					url: urlPrefix + "silver-web-shop/manager/checkManagerLogin",
