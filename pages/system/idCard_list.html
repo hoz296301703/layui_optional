@@ -92,15 +92,15 @@
   <script src="../../static/js/common.js" charset="utf-8"></script>
 
   <script type="text/javascript">
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
-    layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+    // layui.extend({
+    //   admin: '{/}../../static/js/admin'
+    // });
+    layui.use(['table', 'jquery', 'form','tree', 'laydate'], function () {
       var table = layui.table,
         $ = layui.jquery,
         form = layui.form,
         tree = layui.tree,
-        admin = layui.admin,
+        // admin = layui.admin,
         laydate = layui.laydate;
       //日期时间选择器
       laydate.render({
@@ -115,7 +115,8 @@
       table.render({
         elem: '#articleList',
         cellMinWidth: 80,
-        height: 450,
+        // height: 450,
+        defaultToolbar: ['filter'],
         url: urlPrefix + 'silver-web-shop/idCard/getAllIdCard',
         method: 'post',
         cols: [
