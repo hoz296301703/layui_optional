@@ -182,9 +182,7 @@
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
+
     var g_data = '';// 全局数据变量
     //
     var head = '';
@@ -195,28 +193,29 @@
       console.info(g_data);
     }
 
-    layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+    layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
       var table = layui.table,
         $ = layui.jquery,
         form = layui.form,
         tree = layui.tree,
-        admin = layui.admin,
         laydate = layui.laydate;
       //日期时间选择器
       laydate.render({
         elem: '#startDate'
         , value: getDay(-30)
         , isInitValue: true
+        , max: 0
       });
       laydate.render({
         elem: '#endDate'
         , value: getDay(0)
+        , max: 0
       });
       // 动态设置表格高度
       table.render({
         elem: '#mer_wal_List',
         cellMinWidth: 80,
-        height: 350,
+        // height: 350,
         url: urlPrefix + 'silver-web-shop/couWal/find',
         method: 'post',
         cols: [

@@ -167,14 +167,12 @@
       g_data = obj.data;
       console.info(g_data);
     }
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
-    layui.use(['form', 'element', 'jquery', 'layer', 'admin'], function () {
+  
+    layui.use(['form', 'element', 'jquery', 'layer'], function () {
       var form = layui.form,
         $ = layui.jquery,
         element = layui.element,
-        admin = layui.admin,
+        // admin = layui.admin,
         layer = layui.layer;
       //监听折叠
       // element.on('collapse(test)', function (data) {

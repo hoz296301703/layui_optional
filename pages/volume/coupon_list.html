@@ -69,8 +69,8 @@
 									<select name="useLimit" lay-verify="required" lay-search="">
 										<option value="" hidden>全部</option>
 										<option value="1">全平台</option>
-										<option value="2">店铺</option>
-										<option value="3">单个商品</option>
+										<option value="2">指定专店</option>
+										<option value="3">指定商品</option>
 									</select>
 								</div>
 							</div>
@@ -156,15 +156,18 @@
 				elem: '#startDate'
 				// , value: getDay(-7)
 				, isInitValue: true
+				,max:0
 			});
 			laydate.render({
 				elem: '#endDate'
+				,max:0
 			});
 			// 动态设置表格高度
 			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				cellMinWidth: 80,
+				defaultToolbar: ['filter'],
 				// height: tableHeight,
 				toolbar: '#coupon_list_toolbar',
 				url: urlPrefix + 'silver-web-shop/coupon/findInfo',
@@ -184,7 +187,7 @@
 						}, {
 							field: 'couponNumber', title: '总数', width: 70
 						}, {
-							field: 'quantityOfReceive', title: '未领取数量', width: 90
+							field: 'quantityOfReceive', title: '未领取数量', width: 100
 						}, {
 							field: 'quantityOfUse', title: '已用数量', width: 90
 						}, {
@@ -205,7 +208,7 @@
 								if (item.useLimit == '1') {
 									userLimit = '全平台';
 								} else if (item.useLimit == '2') {
-									userLimit = '店铺';
+									userLimit = '指定专店';
 								} else if (item.useLimit == '3') {
 									userLimit = '指定商品';
 								}
@@ -222,7 +225,7 @@
 								return type;
 							}
 						}, {
-							field: 'status', title: '状态', templet: '#statusTpl', fixed: 'right'
+							field: 'status', title: '状态', templet: '#statusTpl',width: 100, fixed: 'right'
 							// }, {
 							// 	field: 'regPrice', title: '单价'
 							// }, {
@@ -352,7 +355,7 @@
 							// fixed: false, //不固定
 							area: ["100%", "100%"], //宽高
 							// maxmin: true,
-							// scrollbar: false,
+							scrollbar: false,
 							// btnAlign: "c",
 							// btn: ["保存", "关闭"],
 							content: './coupon_add.html',
@@ -438,17 +441,17 @@
 			});
 			//跳转至钱包明细
 			$('#cou_wal_btn').on('click', function () {
-				var h = $(window).height() - 30;
+				var h = $(window).height() - 80;
 				$("#cou_wal_Details").find('iframe').attr('src', "cou_wal_detail.html").css('height', h + 'px');
 			})
 			//跳转至充值信息
 			$('#recharge_btn').on('click', function () {
-				var h = $(window).height() - 30;
+				var h = $(window).height() - 80;
 				$("#recharge_info").find('iframe').attr('src', "cou_rec_list.html").css('height', h + 'px');
 			})
 			//跳转至用户信息
 			$('#member_btn').on('click', function () {
-				var h = $(window).height() - 30;
+				var h = $(window).height() - 80;
 				$("#member_info").find('iframe').attr('src', "coupom_member_list.html").css('height', h + 'px');
 			})
 

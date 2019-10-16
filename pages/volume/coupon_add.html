@@ -55,7 +55,7 @@
 
 <body>
   <form id="form_sreach" class="layui-form layui-form-pane" action=""
-    style="margin: 0 auto; width: 50%; margin-top: 20px;">
+    style="margin: 0 auto; width: 50%; margin-top: 10px;">
     <div class="layui-form-item">
       <label class="layui-form-label">
         <span class="we-red">*</span>类型
@@ -69,6 +69,7 @@
     <div id="goods" style="display: none">
       <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" id="goods_add"><i
           class="layui-icon">&#xe61f;</i>添加</button>
+      <!-- ==选中商品信息==start== -->
       <div class="layui-form">
         <table class="layui-table" id="goods_tem_table">
           <colgroup>
@@ -89,7 +90,7 @@
           </thead>
           <tbody>
             <tr>
-              <td colspan='4' style="text-align: center;">暂无数据！</td>
+              <td colspan='5' style="text-align: center;">暂无数据！</td>
             </tr>
             <!-- 动态渲染 -->
             <!-- <div class="layui-none">暂无数据！</div> -->
@@ -97,6 +98,7 @@
         </table>
       </div>
     </div>
+    <!-- ==选中商品信息==end==  -->
     <div id="counter" class="layui-form-item" style="display: none;">
       <label class="layui-form-label">
         <span class="we-red">*</span>专店编号
@@ -111,8 +113,8 @@
         <span class="we-red">*</span>优惠券名称
       </label>
       <div class="layui-input-inline">
-        <input type="text" placeholder="请输入优惠券的名称" name="couponName" lay-verify="required"
-          autocomplete="off" class="layui-input">
+        <input type="text" placeholder="请输入优惠券的名称" name="couponName" lay-verify="required" autocomplete="off"
+          class="layui-input">
       </div>
     </div>
 
@@ -121,8 +123,8 @@
         <span class="we-red">*</span>介绍
       </label>
       <div class="layui-input-inline">
-        <input type="text" placeholder="请输入优惠券的描述" name="detailInfo" lay-verify="required"
-          autocomplete="off" class="layui-input">
+        <input type="text" placeholder="请输入优惠券的描述" name="detailInfo" lay-verify="required" autocomplete="off"
+          class="layui-input">
       </div>
     </div>
     <div class="layui-form-item">
@@ -168,8 +170,6 @@
           class="layui-input" lay-verify="required|number">
       </div>
     </div>
-
-
     <div class="layui-form-item">
       <div class="layui-inline">
         <label class="layui-form-label">有效期</label>
@@ -205,7 +205,6 @@
     </div>
   </form>
 
-  
   <div>
     <form class="layui-form vice" lay-filter="goods_add_form" id="goods_add_form"
       style="display: none;margin-top: 10px;width: 100%;">

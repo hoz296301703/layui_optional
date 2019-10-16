@@ -63,11 +63,11 @@
 				</div>
 			</div>
 			<div class="layui-inline">
-					<label class="layui-form-label">订单编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="orderId" placeholder="请输入订单编号" class="layui-input">
-					</div>
+				<label class="layui-form-label">订单编号</label>
+				<div class="layui-input-inline">
+					<input type="text" name="orderId" placeholder="请输入订单编号" class="layui-input">
 				</div>
+			</div>
 			<div class="layui-inline">
 				<label class="layui-form-label">使用标识</label>
 				<div class="layui-input-inline">
@@ -148,10 +148,12 @@
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
 				, type: 'datetime'
+				, max: 0
 			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);

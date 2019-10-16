@@ -78,14 +78,12 @@
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
-    layui.use(['form', 'jquery', 'util', 'admin', 'layer', 'laydate'], function () {
+ 
+    layui.use(['form', 'jquery', 'util',  'layer', 'laydate'], function () {
       var form = layui.form,
         $ = layui.jquery,
         util = layui.util,
-        admin = layui.admin,
+        // admin = layui.admin,
         layer = layui.layer,
         laydate = layui.laydate;
       //日期时间选择器
