@@ -57,7 +57,7 @@
   <form id="form_sreach" class="layui-form layui-form-pane" action=""
     style="margin: 0 auto; width: 50%; margin-top: 20px;">
     <div class="layui-form-item">
-      <label for="L_username" class="layui-form-label">
+      <label class="layui-form-label">
         <span class="we-red">*</span>类型
       </label>
       <div class="layui-btn-group" id='type' style="height: 38px">
@@ -98,30 +98,30 @@
       </div>
     </div>
     <div id="counter" class="layui-form-item" style="display: none;">
-      <label for="L_username" class="layui-form-label">
+      <label class="layui-form-label">
         <span class="we-red">*</span>专店编号
       </label>
       <div class="layui-input-inline">
-        <input type="text" id="L_username" placeholder="请输入专店编号" name="counterId" class="layui-input">
+        <input type="text" id="counter_input" placeholder="请输入专店编号" name="counterId" class="layui-input">
       </div>
     </div>
     <div class="layui-form-item">
 
-      <label for="L_username" class="layui-form-label">
+      <label class="layui-form-label">
         <span class="we-red">*</span>优惠券名称
       </label>
       <div class="layui-input-inline">
-        <input type="text" id="L_username" placeholder="请输入优惠券的名称" name="couponName" lay-verify="required"
+        <input type="text" placeholder="请输入优惠券的名称" name="couponName" lay-verify="required"
           autocomplete="off" class="layui-input">
       </div>
     </div>
 
     <div class="layui-form-item">
-      <label for="L_username" class="layui-form-label">
+      <label class="layui-form-label">
         <span class="we-red">*</span>介绍
       </label>
       <div class="layui-input-inline">
-        <input type="text" id="L_username" placeholder="请输入优惠券的描述" name="detailInfo" lay-verify="required"
+        <input type="text" placeholder="请输入优惠券的描述" name="detailInfo" lay-verify="required"
           autocomplete="off" class="layui-input">
       </div>
     </div>
@@ -135,7 +135,7 @@
       </div>
     </div>
     <div class="layui-form-item">
-      <label for="L_username" class="layui-form-label">
+      <label class="layui-form-label">
         <span class="we-red">*</span>条件
       </label>
       <input type="radio" name="couponType" lay-verify="couponType" value="1" title="满减">
@@ -204,6 +204,8 @@
       <button type="button" class="layui-btn" lay-filter="publish" lay-submit="">发行</button>
     </div>
   </form>
+
+  
   <div>
     <form class="layui-form vice" lay-filter="goods_add_form" id="goods_add_form"
       style="display: none;margin-top: 10px;width: 100%;">
@@ -355,12 +357,12 @@
         //
         $('#goods').hide();
         $('#counter').hide();
-        $('#counter').attr('lay-verify', '');
+        $('#counter_input').attr('lay-verify', '');
         if (type == '3') {//指定商品
           $('#goods').show();
         } else if (type == '2') {//指定专店
           $('#counter').show();
-          $('#counter').attr('lay-verify', 'required');
+          $('#counter_input').attr('lay-verify', 'required');
         } else if (type == '1') {
 
         }
