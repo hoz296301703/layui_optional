@@ -63,7 +63,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 			if (sessionStorage.getItem("menu")) {
 				menu = JSON.parse(sessionStorage.getItem("menu"));
 				for (var i = 0; i < menu.length; i++) {
-					tab.tabAdd(menu[i].title, menu[i].url, menu[i].id);
+					tab.tabAdd(menu[i].title , menu[i].url, menu[i].id);
 				}
 			} else {
 				return false;
@@ -156,11 +156,15 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 			var url = $(this).children('a').attr('_href');
 			var title = $(this).find('cite').html();
 			var index = $('.left-nav #nav li').index($(this));
-
+			var key = 1;
 			for (var i = 0; i < $('.weIframe').length; i++) {
 				if ($('.weIframe').eq(i).attr('tab-id') == $(this).attr('id')) {
 					tab.tabChange($(this).attr('id'));
 					event.stopPropagation();
+					if (!$('#tabName').find('[lay-id=' + $(this).attr('id') + ']').attr('data-bit')) {
+						$('[tab-id=' + $(this).attr('id') + ']').attr('src', url);// 刷新当前Iframe
+					}
+					$('#tabName').find('[lay-id=' + $(this).attr('id') + ']').attr('data-bit', key);
 					return;
 				}
 			};
@@ -186,7 +190,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 			} else {
 				//该id不存在，新增一个Tab项
 				//console.log("<0");
-					// curMenu = JSON.parse(sessionStorage.getItem("curMenu"));
+				// curMenu = JSON.parse(sessionStorage.getItem("curMenu"));
 				// console.log(curMenu)
 				element.tabAdd('wenav_tab', {
 					title: title,
@@ -429,7 +433,7 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 	 */
 	//本地存储记录所有打开的窗口
 	function setStorageMenu(title, url, id) {
-		
+
 		var menu = JSON.parse(sessionStorage.getItem('menu'));
 		// console.log(menu)
 		if (menu) {
@@ -512,20 +516,20 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 	 * */
 	window.reloadTab = function (which) {
 		var menuId = $(which).attr('lay-id');// 菜单id
-		var parents_this = $('#' + menuId).parents('li');// 当前li
+		var parents_this = $('#' + menuId).parents('li');// 当前左侧导航栏li
+		// 是否展开左侧导航栏
+		if ($(parents_this).hasClass('open')) {// 是
 
-		if ($(parents_this).hasClass('open')) {
-		
-		} else {
-			$(parents_this).addClass('open');
-			$(parents_this).children('a').find('.nav_right').html('&#xe6a6;');
-			$(parents_this).children('.sub-menu').stop().slideDown();
-			$(parents_this).siblings().children('.sub-menu').stop().slideUp();
-			$(parents_this).siblings().find('.nav_right').html('&#xe697;');
-			$(parents_this).siblings().removeClass('open');
+		} else {// 否
+			$(parents_this).addClass('open');// 打开左侧导航栏
+			$(parents_this).children('a').find('.nav_right').html('&#xe6a6;');// 改变图标
+			$(parents_this).children('.sub-menu').stop().slideDown();// 展开
+			$(parents_this).siblings().children('.sub-menu').stop().slideUp();// 其他兄弟元素收起来
+			$(parents_this).siblings().find('.nav_right').html('&#xe697;');// 其他兄弟元素改图标
+			$(parents_this).siblings().removeClass('open');// 其他兄弟元素去掉打开class
 		}
 
-		$('#nav').find('.sub-menu li').removeClass('layui-this');// 清空选择的
+		$('#nav').find('.sub-menu li').removeClass('layui-this');// 清空其他元素选择的
 		$('#' + menuId).addClass('layui-this');// 设置当前的为选中
 		var len = $('.layui-tab-title').children('li').length;
 		var layId = $(which).attr('lay-id');
