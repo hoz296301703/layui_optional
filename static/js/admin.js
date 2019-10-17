@@ -72,9 +72,17 @@ layui.define(['jquery', 'form', 'layer', 'element'], function (exports) {
 				$('.layui-tab-title').find('layui-this').removeClass('layui-class');
 				curMenu = JSON.parse(sessionStorage.getItem("curMenu"));
 				id = curMenu.id;
+			
+				$('#' + id).parents('.sub-menu').stop().slideDown();
 				if (id) { //因为默认桌面首页不存在lay-id,所以要对此判断
 					$('.layui-tab-title li[lay-id="' + id + '"]').addClass('layui-this');
 					tab.tabChange(id);
+					setTimeout(function(){
+						$('#nav').find('#' + id).addClass('layui-this');
+						$('#nav').find('#' + id).parents('.sub-menu').siblings('a').find('.nav_right').html('&#xe6a6;');
+						$('#nav').find('#' + id).parents('.sub-menu').stop().slideDown();
+					},600)
+
 				} else {
 					$(".layui-tab-title li").eq(0).addClass('layui-this'); //未生效
 					$('.layui-tab-content iframe').eq(0).parent().addClass('layui-show');
