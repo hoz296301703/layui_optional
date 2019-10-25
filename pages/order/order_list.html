@@ -239,13 +239,14 @@
 				toolbar: '#order_list_toolbar',
 				url: urlPrefix + 'silver-web-shop/order/findDatas',
 				method: 'post',
+				// totalRow: true, //开启合计行
 				// even:true,
 				cols: [
 					[
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '订单日期', width: 170, fixed: 'left', templet: function (item) {
+							field: 'createDate', title: '订单日期', width: 170, fixed: 'left', totalRowText: '合计', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
@@ -342,6 +343,7 @@
 					// console.log(count);
 				}
 			});
+
 			// 重载公共方法
 			var _reload = function () {
 				var entOrderNo = $('#form_sreach').find('[name=entOrderNo]');
@@ -473,7 +475,7 @@
 						btn1: function (index) {
 							layer.load(2);
 							var note = $("#confirm_order").find("[name=note]").val();
-							var params =  {orderId : data.orderId, note:  note  }
+							var params = { orderId: data.orderId, note: note }
 							$.ajax({
 								url: urlPrefix + "silver-web-shop/order/manualPro",
 								type: "POST",

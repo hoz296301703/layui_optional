@@ -26,10 +26,11 @@
 		.layui-form-label {
 			width: 70px;
 		}
+
 		.layui-form-pane .layui-form-label {
 			width: 150px;
 		}
-		
+
 
 		.layui-form-switch em {
 			width: 40px;
@@ -166,7 +167,7 @@
 				</div>
 			</form>
 		</div> -->
-		<script src="../../static/js/jquery.js"></script>	
+		<script src="../../static/js/jquery.js"></script>
 		<script type="text/html" id="report_toolbar">
 				<div class="layui-btn-container">						
 					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrder"><i class="layui-icon">&#xe601;</i>明细下载</button>
@@ -178,8 +179,8 @@
 
 	</div>
 	<script>
-	
-		layui.use(['table', 'jquery', 'form',  'tree', 'laydate'], function () {
+
+		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
@@ -217,7 +218,7 @@
 				toolbar: '#report_toolbar',
 				url: urlPrefix + 'silver-web-shop/repLogs/getInfo',
 				method: 'post',
-				// totalRow: true,
+				totalRow: true,
 				cols: [
 					[
 						{
@@ -235,29 +236,29 @@
 						}, {
 							field: 'merchantId', width: 180, title: '商户编号',
 						}, {
-							field: 'orderDecTotalCount', title: '订单数量', width: 90, totalRow: true
+							field: 'orderDecTotalCount', title: '订单数量', width: 90,
 						},
 						{
-							field: 'orderDecTotalAmount', title: '订单总金额(元)', width: 125, totalRow: true
+							field: 'orderDecTotalAmount', title: '订单总金额(元)', width: 125,
 						}, {
-							field: 'orderDecFee', title: '订单申报服务费(元)', width: 150, totalRow: true
+							field: 'orderDecFee', title: '订单申报服务费(元)', width: 150,
 						}, {
-							field: 'payDecTotalCount', title: '支付单数量', width: 100, totalRow: true
+							field: 'payDecTotalCount', title: '支付单数量', width: 100,
 						},
 						{
-							field: 'payDecTotalAmount', title: '支付单总金额(元)', width: 150, totalRow: true
+							field: 'payDecTotalAmount', title: '支付单总金额(元)', width: 150,
 						}, {
-							field: 'payDecFee', title: '支付单申报服务费(元)', width: 150, totalRow: true
+							field: 'payDecFee', title: '支付单申报服务费(元)', width: 150,
 						}, {
-							field: 'payRate', title: '支付服务费率(%)', width: 150, totalRow: true
+							field: 'payRate', title: '支付服务费率(%)', width: 150,
 						}, {
-							field: 'payFee', title: '支付服务费(元)', width: 125, totalRow: true
+							field: 'payFee', title: '支付服务费(元)', width: 125,
 						}, {
-							field: 'realNameTotalCount', title: '实名认证次数', width: 100, totalRow: true
+							field: 'realNameTotalCount', title: '实名认证次数', width: 100,
 						}, {
-							field: 'realNameFee', title: '实名认证服务费(元)', width: 150, totalRow: true
-						// }, {
-						// 	field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'realNameFee', title: '实名认证服务费(元)', width: 150,
+							// }, {
+							// 	field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}
 					]
 				],
@@ -282,9 +283,14 @@
 				where: {
 					startDate: get_newDate_D().replace("-", "").replace("-", ""),
 					type: $('#dateClass').find('.active').attr('data-type')
+				}, done: function (res, curr, count) {
+					// 自定义赋值-合计
+					$(".layui-table-total div:eq(2)").html(5555);
+					$(".layui-table-total div:eq(3)").html(5555);
+					$(".layui-table-total div:eq(4)").html(5555);
+					$(".layui-table-total div:eq(5)").html(5555);
 				}
 			});
-
 			var active = {
 				reload: function () {
 					var startDate = '';
@@ -362,7 +368,7 @@
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
 				// if (obj.event == 'getSelAmount') {// 结算货款-2019-10-12 已转移至订单结算页面中
-				
+
 				// }
 			});
 			//头工具栏事件
