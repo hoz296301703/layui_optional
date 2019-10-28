@@ -671,33 +671,30 @@
 
 				//跳转至日志
 				$('#logs_btn').on('click', function () {
-					var h = $(window).height() - 30;
+					var h = $(window).height() - 80;
 					$("#logs").find('iframe').attr('src', "df_logs_list.html").css('height', h + 'px');
 				})
 				//跳转至商户提现
 				$('#mer_wit_btn').on('click', function () {
-					var h = $(window).height() - 30;
+					var h = $(window).height() - 80;
 					$("#mer_wit").find('iframe').attr('src', "mer_wit_list.html").css('height', h + 'px');
 				})
 				//跳转至分账
 				$('#fz_btn').on('click', function () {
-					var h = $(window).height() - 30;
+					var h = $(window).height() - 80;
 					$("#fz").find('iframe').attr('src', "fen_zhang_list.html").css('height', h + 'px');
 				})
 
 				// 2019-09-18 跳转至分账日志详情
 				$('#fz_logs_btn').on('click', function () {
-					var h = $(window).height() - 30;
+					var h = $(window).height() - 80;
 					$("#fz_logs").find('iframe').attr('src', "fen_zhang_logs_list.html").css('height', h + 'px');
 				})
 				//跳转至订单优惠券货款结算
 				$('#cou_btn').on('click', function () {
-					console.info('--------------');
-					var h = $(window).height() - 30;
+					var h = $(window).height() - 80;
 					$("#cou_order").find('iframe').attr('src', "coupon_set_list.html").css('height', h + 'px');
 				})
-
-
 
 				//单击行勾选checkbox事件
 				$(document).on("click", ".layui-table-body table.layui-table tbody tr", function () {

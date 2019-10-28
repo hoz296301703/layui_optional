@@ -164,20 +164,17 @@
 			};
 			// 重载公共方法
 			var _reload = function () {
-				var managerName = $('#form_sreach').find('[name=managerName]');
-				var realName = $('#form_sreach').find('[name=realName]');
-				var managerMarks = $('#form_sreach').find('[name=managerMarks]');
-				var status = $('#form_sreach').find('[name=status]');
+				var dateSign = $('#form_sreach').find('[name=dateSign]').val();
+				dateSign = dateSign.replace('-', '').replace('-', '');
+				var status = $('#form_sreach').find('[name=status]').val();
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/seckillTime/find',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
 					where: {
-						managerNameblurry: managerName.val(),
-						realNameblurry: realName.val(),
-						managerMarks: managerMarks.val(),
-						status: status.val()
+						dateSign: dateSign,
+						flag: status
 					}
 				});
 			}
@@ -190,7 +187,6 @@
 				} else {
 					flag = 'true';
 				}
-				console.info(flag);
 				$.ajax({
 					url: urlPrefix + "silver-web-shop/seckillTime/update",
 					type: "POST",
@@ -223,8 +219,6 @@
 				reload: function () {
 					var dateSign = $('#form_sreach').find('[name=dateSign]').val();
 					dateSign = dateSign.replace('-', '').replace('-', '');
-					// var realName = $('#form_sreach').find('[name=realName]');
-					// var managerMarks = $('#form_sreach').find('[name=managerMarks]');
 					var status = $('#form_sreach').find('[name=status]').val();
 					//执行重载
 					table.reload('articleList', {
@@ -234,8 +228,6 @@
 						},
 						where: {
 							dateSign: dateSign,
-							// realNameblurry: realName.val(),
-							// managerMarks: managerMarks.val(),
 							flag: status
 						}
 					});

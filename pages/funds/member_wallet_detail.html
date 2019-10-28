@@ -85,7 +85,8 @@
       <form class="layui-form" id="form_details" lay-filter="example">
         <ul id="memberNameItem" class="clearfix memberNameItem"
           style="line-height: 20px;overflow: hidden; border-bottom: 1px dashed #ddd;     font-weight: bold;">
-          <li class="item" style="line-height: 20px; overflow: hidden; border-bottom: 1px dashed #ddd; padding-bottom: 10px; padding-top: 10px;">
+          <li class="item"
+            style="line-height: 20px; overflow: hidden; border-bottom: 1px dashed #ddd; padding-bottom: 10px; padding-top: 10px;">
             会员名称<cite id="g-memberName"></cite></li>
         </ul>
 
@@ -118,7 +119,7 @@
             分类
           </li>
           <li class="item">
-            <a class="active" href="javascript:;" id="type" name="0">全部</a>
+            <a class="active" href="javascript:;" id="type" name="">全部</a>
           </li>
           <li class="item">
             <a href="javascript:;" name="5">购物</a>
@@ -137,6 +138,9 @@
           </li>
           <li class="item">
             <a href="javascript:;" name="6">线上</a>
+          </li>
+          <li class="item">
+            <a href="javascript:;" name="10">转账</a>
           </li>
         </ul>
         <ul id="serchUl" class="clearfix" style="line-height: 28px;padding-bottom: 10px;">
@@ -175,14 +179,12 @@
     <script type="text/html" id="operateTpl_df">
             <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">明细</a>					
           </script>
-  </div> 
-  
+  </div>
+
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
+
     var g_data = '';// 全局数据变量
     //
     var head = '';
@@ -193,24 +195,23 @@
       // console.info(g_data);
     }
 
-    layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+    layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
       var table = layui.table,
         $ = layui.jquery,
         form = layui.form,
         tree = layui.tree,
-        admin = layui.admin,
         laydate = layui.laydate;
       //日期时间选择器
       laydate.render({
         elem: '#startDate'
         , value: getDay(-30)
         , isInitValue: true
-        ,max:0
+        , max: 0
       });
       laydate.render({
         elem: '#endDate'
         , value: getDay(0)
-        ,max:0
+        , max: 0
       });
       // 动态设置表格高度
       table.render({
@@ -311,7 +312,7 @@
         },
         where: {
           memberId: g_data.memberId,
-          type: 0,
+          // type: 0,
           startDate: appendStartDate(getDay(-30)),
           endDate: appendEndDate(getDay(0))
         }
@@ -386,13 +387,14 @@
 
       var active = {
         reload: function () {
-          console.info('------------------aaaaaaaa');
+          var type = null;
           //访问合计
           // total();
           var startDate = $('#form_details').find('[name=startDate]').val();
           var endDate = $('#form_details').find('[name=endDate]').val();
           //类型
-          var type = $('#typeItem').find('.active').attr('name');
+          type = $('#typeItem').find('.active').attr('name');
+       
           //订单编号
           var orderId = $('#form_details').find('[name=orderId]').val();
           var serialName = $('#form_details').find('[name=serialName]').val();
@@ -523,7 +525,7 @@
           }
         });
       })
- 
+
       $('#g-memberName').html(g_data.memberName)
     });
   </script>

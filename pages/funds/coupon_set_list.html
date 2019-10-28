@@ -159,8 +159,9 @@
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
-				, value: getDay(-7)
+				// , value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
@@ -175,54 +176,72 @@
 				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
 				// height: tableHeight,
-				url: urlPrefix + 'silver-web-shop/merWitLogs/getInfo',
+				url: urlPrefix + 'silver-web-shop/couOrderSet/find',
 				method: 'post',
 				cols: [
 					[
 						{ type: 'checkbox', fixed: 'left' }, {
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '日期', width: 170, fixed: 'left', templet: function (item) {
-								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
+							field: 'dateSign', title: '订单日期', width: 105, fixed: 'left', templet(item) {
+								return toStringDay(item.head.dateSign);
 							}
 						}, {
-							field: 'merchantName', title: '商户名称', width: 120
+							field: 'merchantName', title: '商户名称', width: 170, templet(item) {
+								return item.head.merchantName;
+							}
 						}, {
-							field: 'merchantId', title: '商户编号', width: 180
+							field: 'merchantId', title: '商户编号', width: 180, templet(item) {
+								return item.head.merchantId;
+							}
 						}, {
-							field: 'serialNo', title: '流水号', width: 190
+							field: 'count', title: '数量', width: 60, templet(item) {
+								return item.head.count;
+							}
 						}, {
-							field: 'amount', title: '金额(元)', width: 120
+							field: 'amount', title: '金额(元)', width: 90, templet(item) {
+								return item.head.amount;
+							}
 						}, {
-							field: 'fee', title: '服务费(元)', width: 100
+							field: 'fee', title: '服务费(元)', width: 100, templet(item) {
+								return item.head.fee;
+							}
 						}, {
-							// 审核状态：firstTrial-运营初审、financialAudit-财务审核、termination-终止、complete-完成
-							field: 'revStatus', title: '审核状态', width: 90, templet: function (item) {
-								if (item.revStatus == 'firstTrial') {
+							field: 'amount', title: '回款金额(元)', width: 110, templet(item) {
+								return accSub(item.head.amount, item.head.fee);
+							}
+						}, {
+							// 流程节点：1-运营审核、2-财务审核、200-完成、400-终止
+							field: 'processNode', title: '审核状态', width: 90, templet: function (item) {
+
+								if (item.head.processNode == '1') {
 									return '运营初审';
-								} else if (item.revStatus == 'financialAudit') {
+								} else if (item.head.processNode == '2') {
 									return '财务审核';
-								} else if (item.revStatus == 'termination') {
+								} else if (item.head.processNode == '400') {
 									return '终止';
-								} else if (item.revStatus == 'complete') {
+								} else if (item.head.processNode == '200') {
 									return '完成';
 								}
 							}
 						}, {
-							field: 'status', title: '结算状态', width: 120, templet: function (item) {
+							field: 'status', title: '结算状态', width: 90, templet: function (item) {
 								// 交易状态：success-交易成功、failure-交易关闭、process-处理中、pending-待处理
-								if (item.status == 'success') {
+								if (item.head.status == 'success') {
 									return '成功';
-								} else if (item.status == 'failure') {
-									return '关闭';
-								} else if (item.status == 'process') {
+								} else if (item.head.status == 'failure') {
+									return '失败';
+								} else if (item.head.status == 'process') {
 									return '处理中';
-								} else if (item.status == 'pending') {
+								} else if (item.head.status == 'pending') {
 									return '待处理';
 								}
 							}
-						},
-						{
+						}, {
+							field: 'serialNo', title: '流水号', width: 190, templet(item) {
+								return item.head.serialNo;
+							}
+						}, {
 							field: 'operate', width: 160, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
@@ -245,7 +264,7 @@
 					};
 				},
 				where: {
-					startDate: appendStartDate(getDay(-7))
+					// startDate: appendStartDate(getDay(-7))
 				},
 				done: function (res, curr, count) {
 					//如果是异步请求数据方式，res即为你接口返回的信息。
@@ -275,7 +294,7 @@
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/merWitLogs/getInfo',
+					url: urlPrefix + 'silver-web-shop/couOrderSet/find',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
@@ -316,7 +335,7 @@
 					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/merWitLogs/getInfo',
+						url: urlPrefix + 'silver-web-shop/couOrderSet/find',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
@@ -339,6 +358,10 @@
 					layer.close(wind);
 				}
 			}
+			window.cou_set_reload = function () {// 提交重载方法到全局，让子页面调用
+				layer.closeAll();
+				_reload();
+			};
 			window.tools = _tools;
 			//监听操作工具条
 			table.on('tool(articleList)', function (obj) {
@@ -350,7 +373,7 @@
 						area: ['95%', '95%'],
 						// fixed: false, //不固定
 						maxmin: true,
-						content: './mer_wit_detail.html',
+						content: './coupon_set_detail.html',
 						btnAlign: 'c',
 						// btn: ["通过", "不通过", "关闭"],
 						success: function (layero, index) {
@@ -473,7 +496,6 @@
 						break;
 				};
 			});
-			console.info("2222222222222");
 		});
 	</script>
 </body>

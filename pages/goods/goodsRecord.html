@@ -308,7 +308,7 @@
 					limitName: 'size' //每页数据量的参数名，默认：limit
 				},
 				where: {
-					// startDate: appendStartDate(getDay(-7))
+					startDate: appendStartDate(getDay(-7))
 				},
 				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
 					if (res.status == 1) {
