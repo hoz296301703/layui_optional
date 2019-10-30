@@ -105,7 +105,8 @@
 					"url": "./pages/report/exp_div_report_list.html"
 				}
 			]
-		},{
+		},
+		{
 			"id": "distribution",
 			"name": "分销管理",
 			"icon": "icon-fenxiao",
@@ -122,7 +123,7 @@
 					"name": "商品库",
 					"icon": "",
 					"url": "./pages/distribution/goods_supply_list.html"
-				},				
+				},
 				{
 					"id": "distribution_3",
 					"name": "专店信息",
@@ -212,7 +213,7 @@
 					"name": "省市区",
 					"icon": "",
 					"url": "./pages/system/findProvinceCityArea_list.html"
-				},				
+				},
 				{
 					"id": "system_6",
 					"name": "物流信息",
@@ -224,6 +225,20 @@
 					"name": "日志信息",
 					"icon": "",
 					"url": "./pages/system/operation_list.html"
+				}
+			]
+		},
+		{
+			"id": "downCenter",
+			"name": "下载中心",
+			"icon": "icon-youhuiquan",
+			"url": "",
+			"children": [
+				{
+					"id": "downCenter_1",
+					"name": "下载列表",
+					"icon": "",
+					"url": "./pages/downCenter/down_center_list.html"
 				}
 			]
 		}
