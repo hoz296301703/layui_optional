@@ -119,17 +119,20 @@
 
 	</div>
 	<script type="text/html" id="operateTpl">
-		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
-	<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a> -->
+		{{# if( d.status == 1 ){  }}
+		<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="down">下载</a>
+		{{#  } }}
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
 	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	</div>
 	<script>
-		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form', 'tree', 'laydate', 'element'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
+				element = layui.element,
 				tree = layui.tree,
 				laydate = layui.laydate;
 			//日期时间选择器
@@ -159,11 +162,22 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'activationCode', title: '文件名称', width: 120
+							field: 'fileName', title: '文件名称', width: 200
 						}, {
-							field: 'name', title: '文件大小', width: 100
+							field: 'size', title: '文件大小', width: 100, templet: function (item) {
+								return getFileSize(item.size)
+							}
 						}, {
-							field: 'phone', title: '进度', width: 120
+							field: 'completionNumber', title: '进度', width: 120, templet: function (item) {
+								if (item.status == 0) {
+									return '完成';
+								} else {
+									return `<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="down_${item.serialNo}">
+												<div class="layui-progress-bar" lay-percent="0%"></div>
+											</div>`;
+								}
+
+							}
 						}, {
 							// 	field: 'provinceName', title: '省', width: 90
 							// }, {
@@ -339,6 +353,7 @@
 			});
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
+
 				var data = obj.data;
 				if (obj.event === 'delete') {// 删除	
 					layer.alert("是否删除海关" + data.customsName + ",国检" + data.ciqOrgName + "？", {
@@ -363,6 +378,23 @@
 							});
 						}
 					});
+				} else if (obj.event === 'down') {
+					var othis = $(this);
+					var DISABLED = 'layui-btn-disabled';
+					if (othis.hasClass(DISABLED)) return;
+
+					//模拟loading
+					var n = 0, timer = setInterval(function () {
+						n = n + Math.random() * 30 | 0;
+						if (n > 100) {
+							n = 100;
+							clearInterval(timer);
+							othis.removeClass(DISABLED);
+						}
+						element.progress('down_' + obj.data.serialNo, n + '%');
+					}, 300 + Math.random() * 1000);
+
+					othis.addClass(DISABLED);
 				}
 			});
 		});

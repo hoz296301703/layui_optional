@@ -369,4 +369,47 @@ function toMoney(num) {
     return num = null;
   }
 }
+// 根据文件字节数返回文件大小的方法
+function getFileSize(fileByte) {
+  var fileSizeByte = fileByte;
+  var fileSizeMsg = "";
+  if (fileSizeByte < 1048576) fileSizeMsg = (fileSizeByte / 1024).toFixed(2) + "KB";
+  else if (fileSizeByte == 1048576) fileSizeMsg = "1MB";
+  else if (fileSizeByte > 1048576 && fileSizeByte < 1073741824) fileSizeMsg = (fileSizeByte / (1024 * 1024)).toFixed(2) + "MB";
+  else if (fileSizeByte > 1048576 && fileSizeByte == 1073741824) fileSizeMsg = "1GB";
+  else if (fileSizeByte > 1073741824 && fileSizeByte < 1099511627776) fileSizeMsg = (fileSizeByte / (1024 * 1024 * 1024)).toFixed(2) + "GB";
+  else fileSizeMsg = "文件超过1TB";
+  return fileSizeMsg;
+}
 
+// $(document).on('mouseover','.layui-input',function(){
+//   console.log(544)
+// })
+// 1-1、创建一个function，用来兼容IE8以下浏览器添加事件
+// function addEvent(el, type, fun) {
+//   if (el.addEventListener) {
+//     el.addEventListener(type, fun, false);
+//   } else if (el.attachEvent()) {
+//     el.attachEvent('on' + type, fun, false);
+//   } else {
+//     return false;
+//   }
+// }
+// // 1-2、使用JS创建对象，调用上面的方法
+
+// function append() {
+//   var add = document.querySelector("#add");
+//   add.addEventListener('click', function () {
+//     var body = document.querySelector("body");
+//     var btn = document.createElement('button');
+//     btn.type = 'button';
+//     btn.innerHTML = "确定";
+//     btn.setAttribute('class', 'btnClick');
+//     body.appendChild(btn);
+//     addEvent(btn, 'click', function () {
+//       console.log(this.className);
+//     });
+//   });
+
+// }
+// append();
