@@ -193,20 +193,24 @@
 				elem: '#startDate_D_input'
 				, value: get_newDate_D()
 				, isInitValue: true
+				, max: 0
 			});
 			// 月报表
 			laydate.render({
 				elem: '#startDate_M_input'
 				, type: 'month'
+				, max: 0
 				// , value: get_newDate_M()
 				// , isInitValue: true
 			});
 			// 自定义报表
 			laydate.render({
 				elem: '#userDefined_startDate'
+				, max: 0
 			});
 			laydate.render({
 				elem: '#userDefined_endDate'
+				, max: 0
 			});
 			// 动态设置表格高度
 			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
@@ -218,7 +222,7 @@
 				toolbar: '#report_toolbar',
 				url: urlPrefix + 'silver-web-shop/repLogs/getInfo',
 				method: 'post',
-				totalRow: true,
+				// totalRow: true,
 				cols: [
 					[
 						{
@@ -285,10 +289,10 @@
 					type: $('#dateClass').find('.active').attr('data-type')
 				}, done: function (res, curr, count) {
 					// 自定义赋值-合计
-					$(".layui-table-total div:eq(2)").html(5555);
-					$(".layui-table-total div:eq(3)").html(5555);
-					$(".layui-table-total div:eq(4)").html(5555);
-					$(".layui-table-total div:eq(5)").html(5555);
+					// $(".layui-table-total div:eq(2)").html(5555);
+					// $(".layui-table-total div:eq(3)").html(5555);
+					// $(".layui-table-total div:eq(4)").html(5555);
+					// $(".layui-table-total div:eq(5)").html(5555);
 				}
 			});
 			var active = {

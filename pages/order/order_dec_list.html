@@ -54,6 +54,7 @@
 			<ul class="layui-tab-title">
 				<li class="layui-this">申报信息</li>
 				<li id="del_info_btn">删除信息</li>
+				<li id="rec_notify_btn">异步信息</li>
 			</ul>
 			<div class="layui-tab-content">
 				<div class="layui-tab-item layui-show">
@@ -178,12 +179,18 @@
 						</form>
 					</div>
 				</div>
+
+				<!----已删除申报订单信息------------start-------------------->
+				<div class="layui-tab-item" id="del_order_info">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!----已删除申报订单信息------------end---------------------->
+				<!----线上API订单接入异步回调错误信息------------start-------------------->
+				<div class="layui-tab-item" id="rec_notify_order_info">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!-----线上API订单接入异步回调错误信息------------end---------------------->
 			</div>
-			<!----已删除申报订单信息------------start-------------------->
-			<div class="layui-tab-item" id="del_order_info">
-				<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
-			</div>
-			<!----已删除申报订单信息------------end---------------------->
 		</div>
 	</div>
 
@@ -572,30 +579,35 @@
 								console.info(urlPrefix + url);
 								// window.location.href = urlPrefix + url;
 								layer.closeAll();
-								layer.alert(
-									'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
-									{
-										time: 0, //不自动关闭
-										btn: ["关闭"],
-										btnAlign: "c",
-										yes: function (index) {
-											layer.close(index);
-										}
-									}
-								);
+								layer.load();
 								$.ajax({
 									url: urlPrefix + url,
 									type: "POST",
 									xhrFields: {
 										withCredentials: true
 									},
+									timeout: 5000, //超时时间设置，单位毫秒
 									// data: { orderIdPack: orderIdPack, note: note },
 									success: function (response) {
-										// if (response.status == 1) {
+										if (response.status == 1) {
 
-										// } else {
-										// 	layer.alert(response.msg);
-										// }
+										} else {
+											layer.closeAll();
+											layer.alert(response.msg);
+										}
+									}, error: function () {//超过5秒默认判定为成功
+										layer.closeAll();
+										layer.alert(
+											'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+											{
+												time: 0, //不自动关闭
+												btn: ["关闭"],
+												btnAlign: "c",
+												yes: function (index) {
+													layer.close(index);
+												}
+											}
+										);
 									}
 								});
 								// layer.closeAll();
@@ -620,9 +632,15 @@
 
 			//跳转至已删除的订单信息
 			$('#del_info_btn').on('click', function () {
-				var h = $(window).height() - 30;
+				var h = $(window).height() - 80;
 				$("#del_order_info").find('iframe').attr('src', "old_order_dec_list.html").css('height', h + 'px');
 			})
+			//跳转至线上接入订单异步回调界面
+			$('#rec_notify_btn').on('click', function () {
+				var h = $(window).height() - 80;
+				$("#rec_notify_order_info").find('iframe').attr('src', "rec_notify_order_list.html").css('height', h + 'px');
+			})
+
 		});
 	</script>
 </body>
