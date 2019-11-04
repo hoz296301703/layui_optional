@@ -67,7 +67,7 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">条形码</label>
 					<div class="layui-input-inline">
-						<input type="text" name="code" placeholder="请输入条形码" class="layui-input">
+						<input type="text" name="barCode" placeholder="请输入条形码" class="layui-input">
 					</div>
 				</div>
 				<div class="layui-inline">
@@ -344,7 +344,7 @@
 				var merchantName = $('#form_sreach').find('[name=merchantName]');
 				var goodsName = $('#form_sreach').find('[name=goodsName]');
 				var entGoodsNo = $('#form_sreach').find('[name=entGoodsNo]');
-				var code = $('#form_sreach').find('[name=code]');
+				var barCode = $('#form_sreach').find('[name=barCode]');
 				var status = $('#form_sreach').find('[name=status]');
 				var recordFlag = $('#form_sreach').find('[name=recordFlag]');
 				var customsPort = $('#form_sreach').find('[name=customsPort]');
@@ -364,7 +364,7 @@
 						goodsMerchantNameblurry: merchantName.val(),
 						goodsNameblurry: goodsName.val(),
 						entGoodsNo: entGoodsNo.val(),
-						code: code.val(),
+						barCode: barCode.val(),
 						status: status.val(),
 						recordFlag: recordFlag.val(),
 						customsPort: customsPort.val(),
@@ -443,7 +443,7 @@
 					var merchantName = $('#form_sreach').find('[name=merchantName]');
 					var goodsName = $('#form_sreach').find('[name=goodsName]');
 					var entGoodsNo = $('#form_sreach').find('[name=entGoodsNo]');
-					var code = $('#form_sreach').find('[name=code]');
+					var barCode = $('#form_sreach').find('[name=barCode]');
 					var status = $('#form_sreach').find('[name=status]');
 					var recordFlag = $('#form_sreach').find('[name=recordFlag]');
 					var customsPort = $('#form_sreach').find('[name=customsPort]');
@@ -463,7 +463,7 @@
 							goodsMerchantNameblurry: merchantName.val(),
 							goodsNameblurry: goodsName.val(),
 							entGoodsNo: entGoodsNo.val(),
-							code: code.val(),
+							barCode: barCode.val(),
 							status: status.val(),
 							recordFlag: recordFlag.val(),
 							customsPort: customsPort.val(),
