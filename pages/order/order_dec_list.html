@@ -578,6 +578,7 @@
 								}
 								console.info(urlPrefix + url);
 								// window.location.href = urlPrefix + url;
+
 								layer.closeAll();
 								layer.load();
 								$.ajax({
@@ -587,7 +588,6 @@
 										withCredentials: true
 									},
 									timeout: 5000, //超时时间设置，单位毫秒
-									// data: { orderIdPack: orderIdPack, note: note },
 									success: function (response) {
 										if (response.status == 1) {
 
@@ -608,8 +608,8 @@
 												}
 											}
 										);
-									}
-								});
+										}
+									});
 								// layer.closeAll();
 								// layer.alert(
 								// 	'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',

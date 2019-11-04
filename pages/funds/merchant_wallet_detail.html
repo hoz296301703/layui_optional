@@ -466,7 +466,7 @@
             yes: function (index) {
               //下载URL
               var url = "silver-web-shop/merchantWalletLog/download?merchantWalletId=" + g_data.walletId;
-
+              
               var startDate = $('#form_sreach').find('[name=startDate]').val();
               var endDate = $('#form_sreach').find('[name=endDate]').val();
               if (isEmpty(startDate) || isEmpty(endDate)) {
@@ -500,6 +500,7 @@
                 url += '&type=' + type;
               }
               window.location.href = urlPrefix + url;
+              // window.location.href = 'https://120.132.118.214:8080/' + url;
               layer.closeAll();
               layer.alert(
                 '<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',

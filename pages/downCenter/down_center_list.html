@@ -169,17 +169,34 @@
 							}
 						}, {
 							field: 'completionNumber', title: '进度', width: 120, templet: function (item) {
-								if (item.status == 0) {
-									return '完成';
-								} else {
-									return `<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="down_${item.serialNo}">
-												<div class="layui-progress-bar" lay-percent="0%"></div>
-											</div>`;
-								}
 
+								var serialNo = item.serialNo;
+								var status = item.status;
+								var timeOut = null;
+								//如果状态0则需要持续查询后台、更新进度条
+								if (status == '0') {
+									// timeOut = setInterval(update(serialNo), 1000);
+									update(serialNo);
+									
+									return `<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="down_${item.serialNo}">
+													<div class="layui-progress-bar" lay-percent="0%"></div>
+												</div>`;
+								} else if (status == '1') {
+									// clearInterval(timeOut);
+									return '完成';
+								}
 							}
+
 						}, {
-							// 	field: 'provinceName', title: '省', width: 90
+							// 	field: 'status', title: '状态', width: 90, templet: function (item) {
+							// 		var status = '';
+							// 		if (item.status == '0') {
+							// 			status = '下载中';
+							// 		} else if (item.status == '1') {
+							// 			status = '完成';
+							// 		}
+							// 		return status;
+							// 	}
 							// }, {
 							// 	field: 'cityName', title: '市', width: 90
 							// }, {
@@ -253,6 +270,34 @@
 					// console.log(count);
 				}
 			});
+			var update = function (serialNo) {
+				console.info('------------1111-------');
+				var result = {};
+				$.ajax({
+					url: urlPrefix + 'silver-web-shop/downCenter/find',
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					data: { serialNo: serialNo },
+					success: function (response) {
+						if (response.status == 1) {
+							console.info(response.datas);
+							//状态等于0 继续调用
+							if (response.datas[0].status == '0') {
+								console.info('---二次调用--');
+								//更新进度条
+
+								//缓冲3秒再次查询
+								update(serialNo);
+							}
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+			}
+
 			// 重载公共方法
 			var _reload = function () {
 				var name = $('#form_sreach').find('[name=name]');
