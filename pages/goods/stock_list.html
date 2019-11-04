@@ -49,7 +49,7 @@
 
 <body>
 	<div class="weadmin-body">
-		<form id="form_sreach" class="layui-form">
+		<form id="form_sreach" class="layui-form" lay-filter="example">
 			<div class="layui-form-item">
 				<div class="layui-inline">
 					<label class="layui-form-label">仓库名称</label>
@@ -157,6 +157,10 @@
 				elem: '#endDate'
 
 			});
+			form.val('example', {
+				"reviewerStatus": "process"
+			
+			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
@@ -234,7 +238,8 @@
 					limitName: 'size' //每页数据量的参数名，默认：limit
 				},
 				where: {
-					startDate: appendStartDate(getDay(-7))
+					startDate: appendStartDate(getDay(-7)),
+					reviewerStatus: 'process'
 				},
 				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
 					return {
