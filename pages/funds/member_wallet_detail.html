@@ -192,342 +192,342 @@
     //获取传递数据
     function getParent_data(obj) {
       g_data = obj.data;
-      // console.info(g_data);
-    }
 
-    layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
-      var table = layui.table,
-        $ = layui.jquery,
-        form = layui.form,
-        tree = layui.tree,
-        laydate = layui.laydate;
-      //日期时间选择器
-      laydate.render({
-        elem: '#startDate'
-        , value: getDay(-30)
-        , isInitValue: true
-        , max: 0
-      });
-      laydate.render({
-        elem: '#endDate'
-        , value: getDay(0)
-        , max: 0
-      });
-      // 动态设置表格高度
-      table.render({
-        elem: '#mem_wal_List',
-        cellMinWidth: 80,
-        // height: 350,
-        url: urlPrefix + 'silver-web-shop/memberWalletLog/findInfo',
-        method: 'post',
-        cols: [
-          [
-            {
-              field: 'zizeng', width: 50, title: '序号', fixed: 'left', type: 'numbers'
-            }, {
-              field: 'careateDate', title: '创建日期', width: 170, templet: function (item) {
-                return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
-              }
-            }, {
-              field: 'type', title: '分类', width: 80, templet: function (item) {
-                // 类型:1-佣金、2-充值、3-提现、4-缴费、5-购物、6-线上、10-转账
-                if (item.type == '1') {
-                  return '佣金';
-                } else if (item.type == '2') {
-                  return '充值';
-                } else if (item.type == '3') {
-                  return '提现';
-                } else if (item.type == '4') {
-                  return '缴费';
-                } else if (item.type == '5') {
-                  return '购物';
-                } else if (item.type == '6') {
-                  return '线上';
-                } else if (item.type == '10') {
-                  return '转账';
-                } else {
-                  return '';
-                }
-              }
-            }, {
-              field: 'serialName', title: '交易名称', width: 140
-            }, {
-              // field: 'serialNo', title: '流水号', width: 110
-              // }, {
-              field: 'orderId', title: '订单编号', width: 170
-            }, {
-              field: 'amount', title: '收入(元)', width: 90, templet: function (item) {
-                if (item.flag == 'in') {
-                  return '<span style="font-size: 16px; font-weight: 400; color: #000;">' + item.amount + '</span>';
-                } else {
-                  return '\\';
-                }
-              }
-            }, {
-              field: 'amount', title: '支出(元)', width: 90, templet: function (item) {
-                if (item.flag == 'out') {
-                  return '<span style="font-size: 16px; font-weight: 400; color: #000;">' + item.amount + '</span>';
-                } else {
-                  return '\\';
-                }
-              }
-            }, {
-              field: 'afterChangeBalance', title: '账号余额（元）', width: 130, templet: function (item) {
-                return '<span style="font-size: 16px; font-weight: 400; color: #000;">' + item.afterChangeBalance + '</span>';
-              }
-            }, {
-              field: 'targetName', title: '对方', width: 140,
-            }, {
-              field: 'status', title: '状态', fixed: 'right', templet: function (item) {
-                if (item.status == 'success') {
-                  return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">成功</span>';
-                } else if (item.status == 'failure') {
-                  return '<span style="background: #ea2626; padding: 2px 3px;color: #fff;border-radius: 3px ;">失败</span>';
-                } else if (item.status == 'process') {
-                  return '处理中';
-                } else if (item.status == 'pending') {
-                  return '待处理';
-                }
-              }
-            }, {
-              field: 'operate', title: '操作', toolbar: '#operateTpl_df', fixed: 'right'
-            }]
-        ],
-        event: true,
-        page: true,
-        response: {
-          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
-        },
-        request: {
-          pageName: 'page', //页码的参数名称，默认：page
-          limitName: 'size', //每页数据量的参数名，默认：limit
-        },
-        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-          return {
-            "code": res.status, //解析接口状态
-            "msg": res.msg, //解析提示文本
-            "count": res.totalCount, //解析数据长度
-            "data": res.datas //解析数据列表
-          };
-        },
-        where: {
-          memberId: g_data.memberId,
-          // type: 0,
-          startDate: appendStartDate(getDay(-30)),
-          endDate: appendEndDate(getDay(0))
-        }
-      });
-      // 监听查询按钮
-      $('#form_details .layui-btn').on('click', function () {
-        var type = $(this).data('type');
-        active[type] ? active[type].call(this) : '';
-      });
 
-      //监听工具条
-      table.on('tool(fen_zhang_detail)', function (obj) {
-        var data = obj.data;
-        // console.info(data);
-        if (obj.event === 'detail') {// 查看详情
-          layer.open({
-            type: 2,
-            title: '分账明细',
-            area: ['60%', '80%'],
-            maxmin: true,
-            content: './fz_details.html',
-            btnAlign: 'c',
-            btn: ['关闭'],
-            success: function (layero, index) {
-              // 获取子页面的iframe
-              var iframe = window['layui-layer-iframe' + index];
-              // 向子页面的全局函数child传参
-              iframe.getParent_data(obj);
-            },
-            btn1: function (index) {
-              layer.close(index);
-            }
-          });
-        }
-      });
-
-      //日期选中
-      $('#dateItem .item').on('click', 'a', function () {
-        var type = $(this).attr('name');
-        var startDate = null;
-        var endDate = getDay(0);
-        if (type == 'today') {//今天
-          startDate = getDay(0);
-          endDate = getDay(0);
-        } else if (type == 'oneMonth') {//一个月
-          startDate = getDay(-30);
-        } else if (type == 'threeMonth') {//三个月
-          startDate = getDay(-90);
-        }
+      layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
+        var table = layui.table,
+          $ = layui.jquery,
+          form = layui.form,
+          tree = layui.tree,
+          laydate = layui.laydate;
+        //日期时间选择器
         laydate.render({
           elem: '#startDate'
-          , value: startDate
+          , value: getDay(-30)
           , isInitValue: true
+          , max: 0
         });
         laydate.render({
           elem: '#endDate'
-          , value: endDate
+          , value: getDay(0)
+          , max: 0
         });
-        //渲染选中
-        $(this).addClass('active').parents('.item').siblings('.item').find('a').removeClass('active');
-      })
-
-      // 点击类型筛选
-      $('#typeItem .item').on('click', 'a', function () {
-        $(this).addClass('active').parents('.item').siblings('.item').find('a').removeClass('active');
-      })
-      //监听折叠
-      // element.on('collapse(test)', function (data) {
-      //   //点击触发事件
-      //   layer.msg('展开状态：' + data.show);
-      // });
-
-      var active = {
-        reload: function () {
-          var type = null;
-          //访问合计
-          // total();
-          var startDate = $('#form_details').find('[name=startDate]').val();
-          var endDate = $('#form_details').find('[name=endDate]').val();
-          //类型
-          type = $('#typeItem').find('.active').attr('name');
-       
-          //订单编号
-          var orderId = $('#form_details').find('[name=orderId]').val();
-          var serialName = $('#form_details').find('[name=serialName]').val();
-          var targetName = $('#form_details').find('[name=targetName]').val();
-          startDate = appendStartDate(startDate);
-          endDate = appendEndDate(endDate);
-          //执行重载					
-          table.reload('mem_wal_List', {
-            url: urlPrefix + 'silver-web-shop/memberWalletLog/findInfo',
-            page: {
-              curr: 1 //重新从第 1 页开始
-            },
-            where: {
-              type: type,
-              orderId: orderId,
-              serialName: serialName,
-              targetName: targetName,
-              startDate: startDate,
-              endDate: endDate
-            }
-          });
-        }
-      };
-
-      //渲染合计
-      // function total() {
-      //   //显示
-      //   $('#balance').find('.layui-icon').attr("style", "display:block");
-      //   //类型
-      //   var type = $('#typeItem').find('.active').attr('name');
-      //   //订单编号
-      //   var orderId = $('#form_details').find('[name=orderId]').val();
-      //   var serialName = $('#form_details').find('[name=serialName]').val();
-      //   var targetName = $('#form_details').find('[name=targetName]').val();
-      //   //
-      //   var startDate = $('#form_details').find('[name=startDate]').val();
-      //   if (isEmpty(startDate)) {
-      //     startDate = getDay(-30);
-      //   }
-      //   var endDate = $('#form_details').find('[name=endDate]').val();
-      //   startDate = appendStartDate(startDate);
-      //   endDate = appendEndDate(endDate);
-      //   var datas = { type: type, orderId: orderId, serialName: serialName, targetName: targetName, startDate: startDate, endDate: endDate, merchantWalletId: g_data.walletId };
-      //   for (var key in datas) {
-      //     if (isEmpty(datas[key])) {
-      //       delete datas[key]
-      //     }
-      //   }
-      //   //请求合计接口
-      //   $.ajax({
-      //     url: urlPrefix + "silver-web-shop/merchantWalletLog/getTotal",
-      //     type: "POST",
-      //     xhrFields: {
-      //       withCredentials: true
-      //     },
-      //     data: datas,
-      //     success: function (response) {
-      //       if (response.status == 1) {
-      //         //隐藏加载动画
-      //         $('#balance').find('.layui-icon').attr("style", "display:none");
-      //         // console.info();
-      //         $('#balance').find('.ft-in').html(response.datas.in);
-      //         $('#balance').find('.ft-out').html(response.datas.out);
-      //       } else {
-      //         layer.msg(response.msg);
-      //       }
-      //     }
-      //   });
-      // }
-      // //渲染统计
-      // total();
-
-      $(document).on('click', '#download', function () {
-        layer.alert("下载当前查询结果", {
-          time: 0, //不自动关闭
-          btnAlign: "c",
-          btn: ["下载", "取消"],
-          yes: function (index) {
-            //下载URL
-            var url = "silver-web-shop/merchantWalletLog/download?merchantWalletId=" + g_data.walletId;
-
-            var startDate = $('#form_details').find('[name=startDate]').val();
-            var endDate = $('#form_details').find('[name=endDate]').val();
-            if (isEmpty(startDate) || isEmpty(endDate)) {
-              layer.alert('请选择查询时间');
-              return false;
-            }
-            //拼接开始时间
-            startDate = appendStartDate(startDate);
-            //拼接结束时间
-            endDate = appendEndDate(endDate);
-
-            url += '&startDate=' + startDate + '&endDate=' + endDate;
-            //订单编号
-            var orderId = $('#form_details').find('[name=orderId]').val();
-            if (!isEmpty(orderId)) {// 商户id
-              url += '&orderId=' + orderId;
-            }
-            //交易名称
-            var serialName = $('#form_details').find('[name=serialName]').val();
-            if (!isEmpty(serialName)) {
-              url += '&serialName=' + serialName;
-            }
-            // 对方名称
-            var targetName = $('#form_details').find('[name=targetName]').val();
-            if (!isEmpty(targetName)) {
-              url += '&targetName=' + targetName;
-            }
-            // 类型
-            var type = $('#typeItem').find('.active').attr('name');
-            if (!isEmpty(type)) {
-              url += '&type=' + type;
-            }
-            // console.info(urlPrefix + url);
-            window.location.href = urlPrefix + url;
-            layer.closeAll();
-            layer.alert(
-              '<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+        // 动态设置表格高度
+        table.render({
+          elem: '#mem_wal_List',
+          cellMinWidth: 80,
+          // height: 350,
+          url: urlPrefix + 'silver-web-shop/memberWalletLog/findInfo',
+          method: 'post',
+          cols: [
+            [
               {
-                time: 0, //不自动关闭
-                btn: ["关闭"],
-                btnAlign: "c",
-                yes: function (index) {
-                  layer.close(index);
+                field: 'zizeng', width: 50, title: '序号', fixed: 'left', type: 'numbers'
+              }, {
+                field: 'careateDate', title: '创建日期', width: 170, templet: function (item) {
+                  return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
                 }
-              }
-            );
+              }, {
+                field: 'type', title: '分类', width: 80, templet: function (item) {
+                  // 类型:1-佣金、2-充值、3-提现、4-缴费、5-购物、6-线上、10-转账
+                  if (item.type == '1') {
+                    return '佣金';
+                  } else if (item.type == '2') {
+                    return '充值';
+                  } else if (item.type == '3') {
+                    return '提现';
+                  } else if (item.type == '4') {
+                    return '缴费';
+                  } else if (item.type == '5') {
+                    return '购物';
+                  } else if (item.type == '6') {
+                    return '线上';
+                  } else if (item.type == '10') {
+                    return '转账';
+                  } else {
+                    return '';
+                  }
+                }
+              }, {
+                field: 'serialName', title: '交易名称', width: 140
+              }, {
+                // field: 'serialNo', title: '流水号', width: 110
+                // }, {
+                field: 'orderId', title: '订单编号', width: 170
+              }, {
+                field: 'amount', title: '收入(元)', width: 90, templet: function (item) {
+                  if (item.flag == 'in') {
+                    return '<span style="font-size: 16px; font-weight: 400; color: #000;">' + item.amount + '</span>';
+                  } else {
+                    return '\\';
+                  }
+                }
+              }, {
+                field: 'amount', title: '支出(元)', width: 90, templet: function (item) {
+                  if (item.flag == 'out') {
+                    return '<span style="font-size: 16px; font-weight: 400; color: #000;">' + item.amount + '</span>';
+                  } else {
+                    return '\\';
+                  }
+                }
+              }, {
+                field: 'afterChangeBalance', title: '账号余额（元）', width: 130, templet: function (item) {
+                  return '<span style="font-size: 16px; font-weight: 400; color: #000;">' + item.afterChangeBalance + '</span>';
+                }
+              }, {
+                field: 'targetName', title: '对方', width: 140,
+              }, {
+                field: 'status', title: '状态', fixed: 'right', templet: function (item) {
+                  if (item.status == 'success') {
+                    return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">成功</span>';
+                  } else if (item.status == 'failure') {
+                    return '<span style="background: #ea2626; padding: 2px 3px;color: #fff;border-radius: 3px ;">失败</span>';
+                  } else if (item.status == 'process') {
+                    return '处理中';
+                  } else if (item.status == 'pending') {
+                    return '待处理';
+                  }
+                }
+              }, {
+                field: 'operate', title: '操作', toolbar: '#operateTpl_df', fixed: 'right'
+              }]
+          ],
+          event: true,
+          page: true,
+          response: {
+            statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+          },
+          request: {
+            pageName: 'page', //页码的参数名称，默认：page
+            limitName: 'size', //每页数据量的参数名，默认：limit
+          },
+          parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+            return {
+              "code": res.status, //解析接口状态
+              "msg": res.msg, //解析提示文本
+              "count": res.totalCount, //解析数据长度
+              "data": res.datas //解析数据列表
+            };
+          },
+          where: {
+            memberId: g_data.memberId,
+            // type: 0,
+            startDate: appendStartDate(getDay(-30)),
+            endDate: appendEndDate(getDay(0))
           }
         });
-      })
+        // 监听查询按钮
+        $('#form_details .layui-btn').on('click', function () {
+          var type = $(this).data('type');
+          active[type] ? active[type].call(this) : '';
+        });
 
-      $('#g-memberName').html(g_data.memberName)
-    });
+        //监听工具条
+        table.on('tool(fen_zhang_detail)', function (obj) {
+          var data = obj.data;
+          // console.info(data);
+          if (obj.event === 'detail') {// 查看详情
+            layer.open({
+              type: 2,
+              title: '分账明细',
+              area: ['60%', '80%'],
+              maxmin: true,
+              content: './fz_details.html',
+              btnAlign: 'c',
+              btn: ['关闭'],
+              success: function (layero, index) {
+                // 获取子页面的iframe
+                var iframe = window['layui-layer-iframe' + index];
+                // 向子页面的全局函数child传参
+                iframe.getParent_data(obj);
+              },
+              btn1: function (index) {
+                layer.close(index);
+              }
+            });
+          }
+        });
+
+        //日期选中
+        $('#dateItem .item').on('click', 'a', function () {
+          var type = $(this).attr('name');
+          var startDate = null;
+          var endDate = getDay(0);
+          if (type == 'today') {//今天
+            startDate = getDay(0);
+            endDate = getDay(0);
+          } else if (type == 'oneMonth') {//一个月
+            startDate = getDay(-30);
+          } else if (type == 'threeMonth') {//三个月
+            startDate = getDay(-90);
+          }
+          laydate.render({
+            elem: '#startDate'
+            , value: startDate
+            , isInitValue: true
+          });
+          laydate.render({
+            elem: '#endDate'
+            , value: endDate
+          });
+          //渲染选中
+          $(this).addClass('active').parents('.item').siblings('.item').find('a').removeClass('active');
+        })
+
+        // 点击类型筛选
+        $('#typeItem .item').on('click', 'a', function () {
+          $(this).addClass('active').parents('.item').siblings('.item').find('a').removeClass('active');
+        })
+        //监听折叠
+        // element.on('collapse(test)', function (data) {
+        //   //点击触发事件
+        //   layer.msg('展开状态：' + data.show);
+        // });
+
+        var active = {
+          reload: function () {
+            var type = null;
+            //访问合计
+            // total();
+            var startDate = $('#form_details').find('[name=startDate]').val();
+            var endDate = $('#form_details').find('[name=endDate]').val();
+            //类型
+            type = $('#typeItem').find('.active').attr('name');
+
+            //订单编号
+            var orderId = $('#form_details').find('[name=orderId]').val();
+            var serialName = $('#form_details').find('[name=serialName]').val();
+            var targetName = $('#form_details').find('[name=targetName]').val();
+            startDate = appendStartDate(startDate);
+            endDate = appendEndDate(endDate);
+            //执行重载					
+            table.reload('mem_wal_List', {
+              url: urlPrefix + 'silver-web-shop/memberWalletLog/findInfo',
+              page: {
+                curr: 1 //重新从第 1 页开始
+              },
+              where: {
+                type: type,
+                orderId: orderId,
+                serialName: serialName,
+                targetName: targetName,
+                startDate: startDate,
+                endDate: endDate
+              }
+            });
+          }
+        };
+
+        //渲染合计
+        // function total() {
+        //   //显示
+        //   $('#balance').find('.layui-icon').attr("style", "display:block");
+        //   //类型
+        //   var type = $('#typeItem').find('.active').attr('name');
+        //   //订单编号
+        //   var orderId = $('#form_details').find('[name=orderId]').val();
+        //   var serialName = $('#form_details').find('[name=serialName]').val();
+        //   var targetName = $('#form_details').find('[name=targetName]').val();
+        //   //
+        //   var startDate = $('#form_details').find('[name=startDate]').val();
+        //   if (isEmpty(startDate)) {
+        //     startDate = getDay(-30);
+        //   }
+        //   var endDate = $('#form_details').find('[name=endDate]').val();
+        //   startDate = appendStartDate(startDate);
+        //   endDate = appendEndDate(endDate);
+        //   var datas = { type: type, orderId: orderId, serialName: serialName, targetName: targetName, startDate: startDate, endDate: endDate, merchantWalletId: g_data.walletId };
+        //   for (var key in datas) {
+        //     if (isEmpty(datas[key])) {
+        //       delete datas[key]
+        //     }
+        //   }
+        //   //请求合计接口
+        //   $.ajax({
+        //     url: urlPrefix + "silver-web-shop/merchantWalletLog/getTotal",
+        //     type: "POST",
+        //     xhrFields: {
+        //       withCredentials: true
+        //     },
+        //     data: datas,
+        //     success: function (response) {
+        //       if (response.status == 1) {
+        //         //隐藏加载动画
+        //         $('#balance').find('.layui-icon').attr("style", "display:none");
+        //         // console.info();
+        //         $('#balance').find('.ft-in').html(response.datas.in);
+        //         $('#balance').find('.ft-out').html(response.datas.out);
+        //       } else {
+        //         layer.msg(response.msg);
+        //       }
+        //     }
+        //   });
+        // }
+        // //渲染统计
+        // total();
+
+        $(document).on('click', '#download', function () {
+          layer.alert("下载当前查询结果", {
+            time: 0, //不自动关闭
+            btnAlign: "c",
+            btn: ["下载", "取消"],
+            yes: function (index) {
+              //下载URL
+              var url = "silver-web-shop/merchantWalletLog/download?merchantWalletId=" + g_data.walletId;
+
+              var startDate = $('#form_details').find('[name=startDate]').val();
+              var endDate = $('#form_details').find('[name=endDate]').val();
+              if (isEmpty(startDate) || isEmpty(endDate)) {
+                layer.alert('请选择查询时间');
+                return false;
+              }
+              //拼接开始时间
+              startDate = appendStartDate(startDate);
+              //拼接结束时间
+              endDate = appendEndDate(endDate);
+
+              url += '&startDate=' + startDate + '&endDate=' + endDate;
+              //订单编号
+              var orderId = $('#form_details').find('[name=orderId]').val();
+              if (!isEmpty(orderId)) {// 商户id
+                url += '&orderId=' + orderId;
+              }
+              //交易名称
+              var serialName = $('#form_details').find('[name=serialName]').val();
+              if (!isEmpty(serialName)) {
+                url += '&serialName=' + serialName;
+              }
+              // 对方名称
+              var targetName = $('#form_details').find('[name=targetName]').val();
+              if (!isEmpty(targetName)) {
+                url += '&targetName=' + targetName;
+              }
+              // 类型
+              var type = $('#typeItem').find('.active').attr('name');
+              if (!isEmpty(type)) {
+                url += '&type=' + type;
+              }
+              // console.info(urlPrefix + url);
+              window.location.href = urlPrefix + url;
+              layer.closeAll();
+              layer.alert(
+                '<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+                {
+                  time: 0, //不自动关闭
+                  btn: ["关闭"],
+                  btnAlign: "c",
+                  yes: function (index) {
+                    layer.close(index);
+                  }
+                }
+              );
+            }
+          });
+        })
+
+        $('#g-memberName').html(g_data.memberName)
+      });
+    }
   </script>
 </body>
 
