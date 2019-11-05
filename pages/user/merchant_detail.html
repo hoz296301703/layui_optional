@@ -153,6 +153,22 @@
               </div>
               <div class="layui-inline">
                 <label class="layui-form-label">
+                  <span class="we-red">*</span>商户等级
+                </label>
+                <div class="layui-input-inline">
+                  <select name="merchantLevel" lay-verify="required" lay-filter="aihao">
+                    <option value="0">普通商户</option>
+                    <option value="1">vip商户</option>
+                    <option value="100">白金商户</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
                   <span class="we-red">*</span>状态
                 </label>
                 <div class="layui-input-inline">
@@ -164,22 +180,22 @@
                   </select>
                 </div>
               </div>
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">电子邮箱</label>
                 <div class="layui-input-inline">
                   <input type="text" name="merchantEmail" placeholder="请输入电子邮箱" autocomplete="off" class="layui-input">
                 </div>
               </div>
+
+
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">QQ</label>
                 <div class="layui-input-inline">
                   <input type="text" name="merchantQQ" placeholder="请输入QQ" autocomplete="off" class="layui-input">
                 </div>
               </div>
-
             </div>
             <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
               <button type="button" class="layui-btn" lay-filter="editMerhcnatInfo" lay-submit="">保存</button>
@@ -845,6 +861,7 @@
                 , "merchantIdCard": datas.merchantIdCard
                 , "merchantPhone": datas.merchantPhone
                 , "merchantAddress": datas.merchantAddress
+                , "merchantLevel": datas.merchantLevel
                 , "merchantStatus": datas.merchantStatus
                 , "merchantProfit": 0// 默认为0
                 , "merchantEmail": datas.merchantEmail
