@@ -113,6 +113,7 @@
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
+
 			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 	</div>
 	</form>
@@ -121,8 +122,8 @@
 	<script type="text/html" id="operateTpl">
 		{{# if( d.status == 1 ){  }}
 		<a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="down">下载</a>
-		{{#  } }}
 		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+		{{#  } }}
 	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
@@ -144,6 +145,42 @@
 			laydate.render({
 				elem: '#endDate', max: 0
 			});
+			var update = function (serialNo) {
+				var progress = '';
+				$.ajax({
+					url: urlPrefix + 'silver-web-shop/downCenter/find',
+					type: "POST",
+					xhrFields: {
+						withCredentials: true
+					},
+					async: false,
+					data: { serialNo: serialNo },
+					success: function (response) {
+						// return '完成';
+						if (response.status == 1) {
+							// return '完成';
+							//状态等于0 继续调用
+							if (response.datas[0].status == '0') {
+								//更新进度条
+								//缓冲5秒再次查询
+								setTimeout(function () {
+									update(serialNo);
+								}, 3000);
+								progress = `<div id="id_${serialNo}"><div class="layui-progress layui-progress-big" lay-showPercent="yes">
+											<div class="layui-progress-bar" lay-percent="${((response.datas[0].completionNumber / response.datas[0].total) * 100).toFixed(0)}%" style="width:${((response.datas[0].completionNumber / response.datas[0].total) * 100).toFixed(0)}%;"><span class="layui-progress-text">${((response.datas[0].completionNumber / response.datas[0].total) * 100).toFixed(0)}%</span></div>
+										</div></div>`;
+								$('[lay-id=articleList]').find('#id_' + serialNo + '').html(progress)
+							} else if (response.datas[0].status == '1') {
+								progress = '<div id="id_' + serialNo + '">完成</div>';
+								$('[lay-id=articleList]').find('#id_' + serialNo + '').html(progress)
+								_reload();
+							}
+						}
+					}
+				});
+				return progress;
+
+			}
 			// 动态设置表格高度
 			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
@@ -162,28 +199,22 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'fileName', title: '文件名称', width: 200
+							field: 'fileName', title: '文件名称'
 						}, {
 							field: 'size', title: '文件大小', width: 100, templet: function (item) {
 								return getFileSize(item.size)
 							}
 						}, {
 							field: 'completionNumber', title: '进度', width: 120, templet: function (item) {
-
-								var serialNo = item.serialNo;
-								var status = item.status;
-								var timeOut = null;
 								//如果状态0则需要持续查询后台、更新进度条
-								if (status == '0') {
-									// timeOut = setInterval(update(serialNo), 1000);
-									update(serialNo);
-									
-									return `<div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="down_${item.serialNo}">
-													<div class="layui-progress-bar" lay-percent="0%"></div>
-												</div>`;
-								} else if (status == '1') {
-									// clearInterval(timeOut);
-									return '完成';
+
+								if (item.status == '0') {
+									update(item.serialNo);
+									return `<div id="id_${item.serialNo}"><div class="layui-progress layui-progress-big" lay-showPercent="yes">
+											<div class="layui-progress-bar" lay-percent="0%" style="width:0%;"></div>
+										</div></div>`;
+								} else if (item.status == '1') {
+									return '<div id="id_' + item.serialNo + '">完成</div>';
 								}
 							}
 
@@ -270,33 +301,7 @@
 					// console.log(count);
 				}
 			});
-			var update = function (serialNo) {
-				console.info('------------1111-------');
-				var result = {};
-				$.ajax({
-					url: urlPrefix + 'silver-web-shop/downCenter/find',
-					type: "POST",
-					xhrFields: {
-						withCredentials: true
-					},
-					data: { serialNo: serialNo },
-					success: function (response) {
-						if (response.status == 1) {
-							console.info(response.datas);
-							//状态等于0 继续调用
-							if (response.datas[0].status == '0') {
-								console.info('---二次调用--');
-								//更新进度条
 
-								//缓冲3秒再次查询
-								update(serialNo);
-							}
-						} else {
-							layer.alert(response.msg);
-						}
-					}
-				});
-			}
 
 			// 重载公共方法
 			var _reload = function () {
@@ -425,21 +430,9 @@
 					});
 				} else if (obj.event === 'down') {
 					var othis = $(this);
-					var DISABLED = 'layui-btn-disabled';
-					if (othis.hasClass(DISABLED)) return;
+				
 
-					//模拟loading
-					var n = 0, timer = setInterval(function () {
-						n = n + Math.random() * 30 | 0;
-						if (n > 100) {
-							n = 100;
-							clearInterval(timer);
-							othis.removeClass(DISABLED);
-						}
-						element.progress('down_' + obj.data.serialNo, n + '%');
-					}, 300 + Math.random() * 1000);
-
-					othis.addClass(DISABLED);
+				
 				}
 			});
 		});
