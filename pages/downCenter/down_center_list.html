@@ -41,7 +41,7 @@
 	<div class="weadmin-body">
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
-				<div class="layui-inline">
+				<!-- <div class="layui-inline">
 					<label class="layui-form-label">姓名</label>
 					<div class="layui-input-inline">
 						<input type="text" name="name" placeholder="请输入姓名" class="layui-input">
@@ -58,7 +58,7 @@
 					<div class="layui-input-inline">
 						<input type="text" name="address" placeholder="请输入详细地址" class="layui-input">
 					</div>
-				</div>
+				</div> -->
 
 				<!-- <div class="layui-inline">
 					<label class="layui-form-label">商品编号</label>
@@ -173,7 +173,9 @@
 							} else if (response.datas[0].status == '1') {
 								progress = '<div id="id_' + serialNo + '">完成</div>';
 								$('[lay-id=articleList]').find('#id_' + serialNo + '').html(progress)
-								_reload();
+								setTimeout(function () {
+									_reload();
+								}, 400);
 							}
 						}
 					}
