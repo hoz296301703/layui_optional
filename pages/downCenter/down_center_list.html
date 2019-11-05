@@ -205,7 +205,7 @@
 								return getFileSize(item.size)
 							}
 						}, {
-							field: 'completionNumber', title: '进度', width: 120, templet: function (item) {
+							field: 'completionNumber', title: '进度', templet: function (item) {
 								//如果状态0则需要持续查询后台、更新进度条
 
 								if (item.status == '0') {
@@ -430,9 +430,11 @@
 					});
 				} else if (obj.event === 'down') {
 					var othis = $(this);
-				
+					var url = "silver-web-shop/downCenter/down?serialNo=" + data.serialNo;
+					console.info(data.serialNo);
 
-				
+					// $('#form_sreach').find('[name=serial]').val();
+					window.location.href = urlPrefix + url;
 				}
 			});
 		});
