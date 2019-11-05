@@ -231,7 +231,7 @@
 		{
 			"id": "downCenter",
 			"name": "下载中心",
-			"icon": "icon-youhuiquan",
+			"icon": "icon-xiazai",
 			"url": "",
 			"children": [
 				{
