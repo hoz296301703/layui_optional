@@ -393,12 +393,12 @@
             </div>
 
             <div class="layui-form-item">
-              <label class="layui-form-label">收费类型</label>
+              <label class="layui-form-label">计算类型</label>
               <div class="layui-input-block">
                 <select id="tollType" name="tollType" lay-filter='tollType' lay-verify="required">
                   <option value="">请选择</option>
-                  <option value="pen">按每笔收费</option>
-                  <option value="rate">按费率收费</option>
+                  <option value="pen">每笔</option>
+                  <option value="rate">比例</option>
                 </select>
               </div>
             </div>
@@ -465,7 +465,7 @@
             </div>
 
             <div class="layui-form-item">
-              <label class="layui-form-label">收费类型</label>
+              <label class="layui-form-label">计算类型</label>
               <div class="layui-input-block">
                 <select id="tollType_update" name="tollType" lay-filter='tollType_update'
                   lay-verify="required"></select>
@@ -1470,15 +1470,15 @@
                 }
               }
             }, {
-              field: 'tollType', width: 100, title: '	收费类型', templet: function (item) {
+              field: 'tollType', width: 100, title: '计算类型', templet: function (item) {
                 if (item.tollType == 'pen') {
-                  return '按笔计算';
+                  return '每笔';
                 } else if (item.tollType == 'rate') {
-                  return '按比例计算';
+                  return '比例';
                 }
               }
             }, {
-              field: 'serviceCharge', width: 100, title: '服务费', templet: function (item) {
+              field: 'serviceCharge', width: 100, title: '费率', templet: function (item) {
                 if (item.tollType == 'pen') {
                   return item.serviceCharge + "元/笔";
                 } else if (item.tollType == 'rate') {
@@ -1669,14 +1669,14 @@
         $("#serviceCharge_rateVal,#serviceCharge_penVal,#backCoverFlag_val").val("");
         if (data.value == "paymentServiceCharge") {
           $("#tollType").html(
-            '<option value="">请选择</option><option value="rate">按费率收费</option>'
+            '<option value="">请选择</option><option value="rate">比例</option>'
           );
           $("#backCoverFlag_li,#backCoverFee_li").hide();// 隐藏是否封底
           $("#backCoverFee_li").find('input').removeAttr('lay-verify').removeAttr('name');// 支付服务费没有封底手续费
           $("#backCoverFlag_li").find('select').removeAttr('lay-verify').removeAttr('name');// 支付服务费没有封底手续费
         } else {
           $("#tollType").html(
-            '<option value="">请选择</option><option value="pen">按每笔收费</option><option value="rate">按费率收费</option>'
+            '<option value="">请选择</option><option value="pen">每笔</option><option value="rate">比例</option>'
           );
           $("#backCoverFlag_val").find('input').attr('name', 'backCoverFlag').attr('lay-verify', 'required').val("");
           $("#backCoverFlag_li").show();
@@ -1692,7 +1692,7 @@
             data.backCoverFlag = 'false';
           }
           if (data.costType == "paymentServiceCharge") {// 等于支付手续费时   
-            $("#tollType_update").html('<option value="">请选择</option><option value="rate">按费率收费</option>');
+            $("#tollType_update").html('<option value="">请选择</option><option value="rate">比例</option>');
             $(
               "#backCoverFlag_li_update,#backCoverFee_li_update,#serviceCharge_pen_update"
             ).hide();// 按费率收费隐藏
@@ -1703,7 +1703,7 @@
           } else {// 不等于支付手续费时
 
             $("#tollType_update").html(
-              '<option value="">请选择</option><option value="pen">按每笔收费</option><option value="rate">按费率收费</option>'
+              '<option value="">请选择</option><option value="pen">每笔</option><option value="rate">比例</option>'
             );
             $("#backCoverFlag_li_update").show();
             // 是否封底
