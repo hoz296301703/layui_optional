@@ -62,8 +62,7 @@
                 //加载层-默认风格
                 layer.load();
                 // 请求Google reCaptcha 
-                grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'managerLogin' }).then(function (token) {
-                    // console.info(token);
+                grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'manager_login' }).then(function (token) {
                     data.field.token = token;
                     $.ajax({
                         url: urlPrefix + "silver-web-shop/manager/login",

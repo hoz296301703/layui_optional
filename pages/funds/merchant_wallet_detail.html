@@ -458,15 +458,15 @@
         //渲染统计
         total();
 
-        $(document).on('click', '#download', function () {
+        $(document).on('click', '#download', function () {       
           layer.alert("下载当前查询结果", {
             time: 0, //不自动关闭
             btnAlign: "c",
             btn: ["下载", "取消"],
             yes: function (index) {
               //下载URL
-              var url = "silver-web-shop/merchantWalletLog/download?merchantWalletId=" + g_data.walletId;
-              
+              // var url = "silver-web-shop/merchantWalletLog/download?merchantWalletId=" + g_data.walletId;
+              var url = "silver-web-shop/merchantWalletLog/export?merchantWalletId=" + g_data.walletId;
               var startDate = $('#form_sreach').find('[name=startDate]').val();
               var endDate = $('#form_sreach').find('[name=endDate]').val();
               if (isEmpty(startDate) || isEmpty(endDate)) {
@@ -499,20 +499,52 @@
               if (!isEmpty(type)) {
                 url += '&type=' + type;
               }
-              window.location.href = urlPrefix + url;
-              // window.location.href = 'https://120.132.118.214:8080/' + url;
               layer.closeAll();
-              layer.alert(
-                '<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
-                {
-                  time: 0, //不自动关闭
-                  btn: ["关闭"],
-                  btnAlign: "c",
-                  yes: function (index) {
-                    layer.close(index);
+              layer.load();
+              $.ajax({
+                url: urlPrefix + url,
+                type: "POST",
+                xhrFields: {
+                  withCredentials: true
+                },
+                timeout: 3000, //超时时间设置，单位毫秒
+                success: function (response) {
+                  if (response.status == 1) {
+                    layer.closeAll();
+                    layer.alert(
+                      '<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请前往下载中心查看进度',
+                      {
+                        time: 0, //不自动关闭
+                        btn: ["前往下载中心", '关闭'],
+                        btnAlign: "c",
+                        yes: function (index) {                       
+                          $('#menudownCenter_1', top.window.parent.document).click();
+                        }, btn1: function () {
+                          layer.close(index);
+                        }
+                      }
+                    );
+                  } else {
+                    layer.closeAll();
+                    layer.alert(response.msg);
                   }
+                }, error: function () {//超过5秒默认判定为成功
+                  layer.closeAll();
+                  layer.alert(
+                    '<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请前往下载中心查看进度',
+                    {
+                      time: 0, //不自动关闭
+                      btn: ["前往下载中心", '关闭'],
+                      btnAlign: "c",
+                      yes: function (index) {
+                        $('#menudownCenter_1', top.window.parent.document).click();
+                      }, btn1: function () {
+                        layer.close(index);
+                      }
+                    }
+                  );
                 }
-              );
+              });
             }
           });
         })
