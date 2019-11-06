@@ -591,7 +591,20 @@
 									timeout: 3000, //超时时间设置，单位毫秒
 									success: function (response) {
 										if (response.status == 1) {
-
+											layer.closeAll();
+											layer.alert(
+												'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请前往下载中心查看进度',
+												{
+													time: 0, //不自动关闭
+													btn: ["前往下载中心", '关闭'],
+													btnAlign: "c",
+													yes: function (index) {
+														$('#menudownCenter_1', parent.document).click();
+													}, btn1: function () {
+														layer.close(index);
+													}
+												}
+											);
 										} else {
 											layer.closeAll();
 											layer.alert(response.msg);
