@@ -31,9 +31,6 @@
         <ul class="layui-tab-title">
           <li class="layui-this">订单详情</li>
           <li id="waybillNo_detail">物流详情</li>
-          <!-- <li>权限分配</li>
-            <li>商品管理</li>
-            <li>订单管理</li> -->
         </ul>
         <div class="layui-tab-content">
           <div class="layui-tab-item layui-show">
@@ -105,7 +102,6 @@
                 </div>
               </div>
               <div class="layui-form-item">
-
                 <div class="layui-inline">
                   <label class="layui-form-label">收货人电话</label>
                   <div class="layui-input-inline">
@@ -131,7 +127,6 @@
               </div>
 
               <div class="layui-form-item">
-
                 <div class="layui-inline">
                   <label class="layui-form-label">区县</label>
                   <div class="layui-input-inline">
@@ -170,20 +165,13 @@
                   </div>
                 </div>
                 <div class="layui-inline">
-                  <label class="layui-form-label">订单日期</label>
-                  <div class="layui-input-inline">
-                    <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
-                  </div>
-                </div>
-              </div>
-              <div class="layui-form-item">
-
-                <div class="layui-inline">
                   <label class="layui-form-label">交易流水号</label>
                   <div class="layui-input-inline">
                     <input type="text" name="tradeNo" autocomplete="off" class="layui-input layui-disabled" disabled>
                   </div>
                 </div>
+              </div>
+              <div class="layui-form-item">
                 <div class="layui-inline">
                   <label class="layui-form-label">专柜编号</label>
                   <div class="layui-input-inline">
@@ -197,8 +185,6 @@
                       disabled>
                   </div>
                 </div>
-              </div>
-              <div class="layui-form-item">
                 <div class="layui-inline">
                   <label class="layui-form-label">状态</label>
                   <div class="layui-input-inline">
@@ -215,6 +201,8 @@
                     </select>
                   </div>
                 </div>
+              </div>
+              <div class="layui-form-item">
                 <div class="layui-inline">
                   <label class="layui-form-label">来源</label>
                   <div class="layui-input-inline">
@@ -229,112 +217,132 @@
                   </div>
                 </div>
                 <div class="layui-inline">
-                  <label class="layui-form-label">运单号</label>
+                  <label class="layui-form-label">创建日期</label>
                   <div class="layui-input-inline">
-                    <input type="text" name="waybillNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                    <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
                   </div>
                 </div>
-                <!-- <div class="layui-inline">
-                          <label class="layui-form-label">专柜名称</label>
-                          <div class="layui-input-inline">
-                            <input type="text" name="counterName" autocomplete="off" class="layui-input layui-disabled" disabled>
-                          </div>
-                        </div>
-                      </div> -->
+                <div class="layui-inline">
+                  <label class="layui-form-label">付款时间</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="payDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="layui-form-item">
+
+                <div class="layui-inline">
+                  <label class="layui-form-label">发货时间</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="sendingDate" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">成交时间</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="completeDate" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+              </div>
             </form>
-          </div>
-          <div class="layui-colla-item">
-            <h2 class="layui-colla-title">商品详情</h2>
-            <div class="layui-colla-content ">
-              <div class="layui-form">
-                <table class="layui-table" id="order_goods_table" lay-size="sm">
-                  <colgroup>
-                    <col width="140">
-                    <col width="210">
-                    <col width="210">
-                    <col width="210">
-                    <col width="210">
-                    <col>
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th>图片<span class="we-red"></span></th>
-                      <th>名称<span class="we-red"></span></th>
-                      <th>编号<span class="we-red"></span></th>
-                      <th>数量<span class="we-red"></span></th>
-                      <th>单价<span class="we-red"></span></th>
-                      <th>税费<span class="we-red"></span></th>
-                      <th>合计<span class="we-red"></span></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
+            <div class="layui-colla-item">
+              <h2 class="layui-colla-title">商品详情</h2>
+              <div class="layui-colla-content ">
+                <div class="layui-form">
+                  <table class="layui-table" id="order_goods_table" lay-size="sm">
+                    <colgroup>
+                      <col width="140">
+                      <col width="210">
+                      <col width="210">
+                      <col width="210">
+                      <col width="210">
+                      <col>
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>图片<span class="we-red"></span></th>
+                        <th>名称<span class="we-red"></span></th>
+                        <th>编号<span class="we-red"></span></th>
+                        <th>数量<span class="we-red"></span></th>
+                        <th>单价<span class="we-red"></span></th>
+                        <th>税费<span class="we-red"></span></th>
+                        <th>合计<span class="we-red"></span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="layui-colla-item" id="order_div" style="display: none">
+              <h2 class="layui-colla-title">分润详情</h2>
+              <div class="layui-colla-content ">
+                <div class="layui-form">
+                  <table class="layui-table" id="order_div_table">
+                    <colgroup>
+                      <!-- <col width="180">
+                            <col width="180">
+                            <col width="180"> -->
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>商户名称<span class="we-red"></span></th>
+                        <th>商户编号<span class="we-red"></span></th>
+                        <th>分润金额(元)<span class="we-red"></span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
-          <div class="layui-colla-item" id="order_div" style="display: none">
-            <h2 class="layui-colla-title">分润详情</h2>
-            <div class="layui-colla-content ">
-              <div class="layui-form">
-                <table class="layui-table" id="order_div_table">
-                  <colgroup>
-                    <!-- <col width="180">
-                    <col width="180">
-                    <col width="180"> -->
-                  </colgroup>
-                  <thead>
-                    <tr>
-                      <th>商户名称<span class="we-red"></span></th>
-                      <th>商户编号<span class="we-red"></span></th>
-                      <th>分润金额(元)<span class="we-red"></span></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
-              </div>
+          <div class="layui-tab-item">
+            <div class="weadmin-nav" style="margin-bottom: 10px;">
+              <span class="layui-breadcrumb">
+                <a>物流企业：<cite id="logisticsCompanyName"></cite></a>
+                <a>快递公司：<cite id="exp_com_name"></cite></a>
+                <a>运单号码：<cite id="waybillNo"></cite></a>
+                <!-- <a>发货时间：<cite id="sendingDate"></cite></a> -->
+              </span>
             </div>
+            <ul class="layui-timeline" id="order_traces">
+              <li class="layui-timeline-item">
+                <i class="layui-icon layui-timeline-axis"></i>
+                <div class="layui-timeline-content layui-text">
+                  <div class="layui-timeline-title">暂无物流轨迹！</div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="layui-tab-item">
-          <div class="weadmin-nav" style="margin-bottom: 10px;">
-            <span class="layui-breadcrumb">
-              <a>运单号码：<cite id="waybillNo"></cite></a>
-              <a>快递公司：<cite id="exp_com_name"></cite></a>
-            </span>
-          </div>
-          <ul class="layui-timeline" id="order_traces">
-            <li class="layui-timeline-item">
-              <i class="layui-icon layui-timeline-axis"></i>
-              <div class="layui-timeline-content layui-text">
-                <div class="layui-timeline-title">暂无物流轨迹！</div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <!--  <div class="layui-tab-item">内容3</div>
+      </div>
+
+    </div>
+
+    <!--  <div class="layui-tab-item">内容3</div>
             <div class="layui-tab-item">内容4</div>
             <div class="layui-tab-item">内容5</div> -->
-      </div>
-    </div>
+  </div>
+  </div>
   </div>
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
-
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
     var g_data = '';// 全局数据变量
+    var pay = '';
     function getParent_data(obj) {
       g_data = obj.data;
+
       //暂未解决异步加载问题，故而放入此方法内进行加载
-      layui.use(['form', 'element', 'jquery', 'layer', 'admin'], function () {
+      layui.use(['form', 'element', 'jquery', 'layer'], function () {
         var form = layui.form,
           $ = layui.jquery,
           element = layui.element,
-          admin = layui.admin,
           layer = layui.layer;
         //监听折叠
         // element.on('collapse(test)', function (data) {
@@ -364,7 +372,6 @@
         }
         g_data = getDetail(g_data.entOrderNo);
 
-
         //表单初始赋值
         form.val('example', {
           "entOrderNo": g_data.order.entOrderNo
@@ -392,6 +399,7 @@
           , "orderSourceType": g_data.order.orderSourceType
           , "otherPayment": g_data.order.otherPayment
           , "waybillNo": g_data.order.waybillNo
+          , "completeDate": g_data.order.completeDate == null ? '' : G_format(g_data.order.completeDate.time, "yyyy-MM-dd hh:mm:ss")
         })
 
         //渲染订单商品信息
@@ -430,7 +438,6 @@
           $('#order_goods_table tbody').html(divStr);
           form.render();
         }
-
 
         // 查询订单分润
         var _orderDiv = function (data) {
@@ -551,6 +558,7 @@
 
         //查询订单物流详情
         function getTraces(waybillNo) {
+          layer.load();
           var datas = null;
           var expComName = null;
           $.ajax({
@@ -559,9 +567,10 @@
             xhrFields: {
               withCredentials: true
             },
-            async: true,
+            // async: true,
             data: { waybillNo: waybillNo },
             success: function (response) {
+              layer.closeAll();
               if (response.status == 1) {
                 datas = response.datas;
                 //表单字符串
@@ -591,10 +600,73 @@
           });
           return datas;
         }
+
+        //物流信息
+        var logi = null;
+        //点击物流详情事件
         $('#waybillNo_detail').click(function () {
           getTraces(g_data.order.waybillNo);
+          //渲染物流企业名称、发货日期
+          $('#logisticsCompanyName').html(logi.logisticsCompanyName);
+          form.render();
         })
 
+        //获取订单物流信息
+        var getLogi = function (orderId) {
+          var datas = null;
+          $.ajax({
+            url: urlPrefix + "silver-web-shop/orderLogi/getInfo",
+            type: "POST",
+            xhrFields: {
+              withCredentials: true
+            },
+            async: false,
+            data: { orderId: orderId },
+            success: function (response) {
+              if (response.status == 1) {
+                datas = response.datas;
+              }
+            }
+          });
+          return datas;
+        }
+        //查询支付单信息
+        var getPay = function (orderId) {
+          var datas = null;
+          $.ajax({
+            url: urlPrefix + "silver-web-shop/payment/managerGetMpayInfo",
+            type: "POST",
+            xhrFields: {
+              withCredentials: true
+            },
+            async: false,
+            data: { morder_id: orderId, page: 1, size: 20 },
+            success: function (response) {
+              if (response.status == 1) {
+                datas = response.datas;
+              }
+            }
+          });
+          return datas;
+        }
+        //支付单信息
+        var pay = '';
+        //当交易流水号不为空时进行支付单查询
+        if (!isEmpty(g_data.order.tradeNo)) {
+          var orderId = g_data.order.entOrderNo;
+          var pay = getPay(orderId);
+          var sendingDate = null;
+          var r = getLogi(orderId);
+          if (!isEmpty(r)) {
+            logi = r[0];
+            sendingDate = logi.sendingDate;
+          }
+          //二次渲染
+          form.val('example', {
+            "payDate": pay == null ? '' : G_format(pay[0].pay_time.time, "yyyy-MM-dd hh:mm:ss")
+            , "sendingDate": sendingDate == null ? '' : G_format(sendingDate.time, "yyyy-MM-dd hh:mm:ss")
+          });
+        }
       });
     }
   </script>

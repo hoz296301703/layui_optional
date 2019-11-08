@@ -190,15 +190,17 @@
 				{{#  if(d.waybillNo == ''){ }}<!--首先判断运单号为空-->
 				<!--并且订单状态为待发货、待清关、运输中，其中任意一种-->
 				<!--订单状态：1-待付款、2-已付款,待商家处理、10-待发货、 3-待清关、4-快件运输中、5-快件已签收、200-交易成功、400-交易关闭 -->	
-				{{# if( d.status == 2 ||d.status == 3 || d.status == 4 || d.status== 10){  }}
+					{{# if( d.status == 2 ||d.status == 3 || d.status == 4 || d.status== 10){  }}
 					<a  class="layui-btn layui-btn-xs"  lay-event="insert_logi_btn">录入物流</a>		
 					{{#  } }}
-				{{#  } }}
-				{{#  if( d.status == 2 ||d.status == 3 || d.status == 4 || d.status== 10){ }}
+				{{#  } }}				
+					<!-- laytpl语法---END--- -->			
+				{{#  if((d.status == 200 || d.status == 400)){ }}
+				
+				{{#  }else{ }}
+				<a  class="layui-btn layui-btn-xs layui-btn-danger"  lay-event="confirm_order">确认订单</a>
 
 				{{#  } }}
-				<!-- laytpl语法---END--- -->			
-				<a  class="layui-btn layui-btn-xs layui-btn-danger"  lay-event="confirm_order">确认订单</a>		
 		</script>
 		<script type="text/html" id="order_list_toolbar">
 			<div class="layui-btn-container">
@@ -249,19 +251,19 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '订单日期', width: 170, fixed: 'left', totalRowText: '合计', templet: function (item) {
+							field: 'createDate', title: '订单日期', width: 160, fixed: 'left', totalRowText: '合计', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'merchantName', title: '商户名称', width: 170
+							field: 'merchantName', title: '商户名称', width: 190
 						}, {
 							field: 'merchantId', title: '商户编号', width: 180
 						}, {
-							field: 'entOrderNo', title: '订单号', width: 190
+							field: 'entOrderNo', title: '订单号', width: 200
 						}, {
 							field: 'actualAmountPaid', title: '支付金额', width: 100
 						}, {
-							field: 'waybillNo', title: '运单号', width: 140
+							field: 'waybillNo', title: '运单号', width: 160
 						},
 						// {
 						// 	field: 'tax', title: '税款', width: 60
@@ -269,7 +271,7 @@
 						// 	field: 'freight', title: '运费', width: 60
 						// }, 
 						{
-							field: 'status', title: '状态', width: 130, templet: function (item) {
+							field: 'status', title: '状态', width: 100, templet: function (item) {
 								//	订单状态：1-待付款、2-已付款,待商家处理、10-待发货、 3-待清关、4-快件运输中、5-快件已签收、200-交易成功、400-交易关闭
 								if (item.status == '1') {
 									return '待付款';

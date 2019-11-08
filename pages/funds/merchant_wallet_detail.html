@@ -307,7 +307,8 @@
             };
           },
           where: {
-            merchantId: g_data.merchantId
+            merchantId: g_data.merchantId,
+            startDate: appendStartDate(getDay(-30))
           }
         });
 
@@ -458,7 +459,7 @@
         //渲染统计
         total();
 
-        $(document).on('click', '#download', function () {       
+        $(document).on('click', '#download', function () {
           layer.alert("下载当前查询结果", {
             time: 0, //不自动关闭
             btnAlign: "c",
@@ -517,7 +518,7 @@
                         time: 0, //不自动关闭
                         btn: ["前往下载中心", '关闭'],
                         btnAlign: "c",
-                        yes: function (index) {                       
+                        yes: function (index) {
                           $('#menudownCenter_1', top.window.parent.document).click();
                         }, btn1: function () {
                           layer.close(index);
