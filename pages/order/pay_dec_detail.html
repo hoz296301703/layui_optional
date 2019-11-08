@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<!--支付单申报信息详情html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 98px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layui-collapse" lay-filter="test">
+    <div class="layui-colla-item">
+      <h2 class="layui-colla-title">支付单详情</h2>
+      <div class="layui-colla-content layui-show">
+        <div class="weadmin-body">
+          <form class="layui-form" id="manager_detail_form" lay-filter="example">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">商户名称</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="create_by" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">商户编号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="merchant_no" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">订单编号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="morder_id" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">交易流水号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="trade_no" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">金额</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="pay_amount" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">支付人姓名</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="payer_name" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">支付人证件类型</label>
+                <div class="layui-input-inline">
+
+                  <select name="payer_document_type" lay-filter="aihao" class="layui-disabled" disabled>
+                    <option value="01">身份证</option>
+                    <option value="02">护照</option>
+                    <option value="03">其他</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">支付人证件号码</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="payer_document_number" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">支付人手机号</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="payer_phone_number" autocomplete="off" class="layui-input layui-disabled"
+                    disabled>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <div class="layui-inline">
+                  <label class="layui-form-label">申报状态</label>
+                  <div class="layui-input-inline">
+                    <select name="pay_record_status" lay-filter="aihao" class="layui-disabled" disabled>
+                      <option value="1">未申报</option>
+                      <option value="2">申报中</option>
+                      <option value="10">申报中</option>
+                      <option value="3">申报成功</option>
+                      <option value="4">申报失败</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="layui-inline">
+                  <label class="layui-form-label">付款时间</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="pay_time" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">口岸</label>
+                  <div class="layui-input-inline">
+                    <select name="eport" lay-filter="aihao" class="layui-disabled" disabled>
+                      <option value="1">电子口岸</option>
+                      <option value="2">广东智检</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="layui-form-item">
+
+                <div class="layui-inline">
+                  <label class="layui-form-label">海关关区</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="customsCode" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">国检机构</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="ciqOrgCode" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">第三方标识</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="thirdPartyId" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="layui-form-item">
+
+
+                <div class="layui-inline">
+                  <label class="layui-form-label">回调状态</label>
+                  <div class="layui-input-inline">
+                    <select name="resendStatus" lay-filter="aihao" class="layui-disabled" disabled>
+                      <option value="">待回调</option>
+                      <option value="success">成功</option>
+                      <option value="false">失败</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">申报服务费</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="declareCost" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">电商平台编码</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="ebpEntNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+              </div>
+              <div class="layui-form-item">
+
+                <div class="layui-inline">
+                  <label class="layui-form-label">电商平台名称</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="ebpEntName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">智检电商平台编码</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="zjEbpEntNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">支付海关备案编码</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="ebpPayNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">支付海关备案名称</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="ebpPayName" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">创建日期</label>
+                    <div class="layui-input-inline">
+                      <input type="text" name="create_date" autocomplete="off" class="layui-input layui-disabled" disabled>
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="layui-colla-item">
+        <h2 class="layui-colla-title">申报详情</h2>
+        <div class="layui-colla-content ">
+          <div style="padding: 20px; background-color: #F2F2F2;">
+            <div class="layui-row layui-col-space15">
+              <div class="layui-col-md12">
+                <div class="layui-card" id="pay_dec_note">
+                  <!--申报内容-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量
+    //
+    var order = '';
+    var goods = '';
+    //获取传递数据
+    function getParent_data(obj) {
+      g_data = obj.data;
+      console.info(g_data);
+      layui.use(['form', 'element', 'jquery', 'layer'], function () {
+        var form = layui.form,
+          $ = layui.jquery,
+          element = layui.element,
+          layer = layui.layer;
+        //监听折叠
+        // element.on('collapse(test)', function (data) {
+        //   //点击触发事件
+        //   layer.msg('展开状态：' + data.show);
+        // });
+
+        //查询订单申报详情
+        // function getDetail(orderId) {
+        //   var datas = null;
+        //   $.ajax({
+        //     url: urlPrefix + "silver-web-shop/order/getManualOrderInfo",
+        //     type: "POST",
+        //     xhrFields: {
+        //       withCredentials: true
+        //     },
+        //     async: false,
+        //     data: { order_id: orderId, page: 0, size: 0 },
+        //     success: function (response) {
+        //       if (response.status == 1) {
+        //         datas = response.datas;
+        //       } else {
+        //         layer.alert(response.msg);
+        //       }
+        //     }
+        //   });
+        //   return datas;
+        // }
+        // g_data = getDetail(g_data.order_id);
+        // order = g_data[0].head;
+        // goods = g_data[0].content;
+        //订单信息初始赋值
+        form.val('example', {
+          "morder_id": g_data.morder_id
+          , "trade_no": g_data.trade_no
+          , "pay_amount": g_data.pay_amount
+          , "payer_name": g_data.payer_name
+          , "payer_document_type": g_data.payer_document_type
+          , "payer_document_number": g_data.payer_document_number
+          , "payer_phone_number": g_data.payer_phone_number
+          , "pay_record_status": g_data.pay_record_status
+          , "pay_time": G_format(g_data.pay_time.time, "yyyy-MM-dd hh:mm:ss")
+          , "eport": g_data.eport
+          , "customsCode": g_data.customsCode
+          , "ciqOrgCode": g_data.ciqOrgCode
+          , "thirdPartyId": g_data.thirdPartyId
+          , "resendStatus": g_data.resendStatus
+          , "declareCost": g_data.declareCost
+          , "ebpEntNo": g_data.ebpEntNo
+          , "ebpEntName": g_data.ebpEntName
+          , "ebpPayNo": g_data.ebpPayNo
+          , "ebpPayName": g_data.ebpPayName
+          , "zjEbpEntNo": g_data.zjEbpEntNo
+          , "create_date": G_format(g_data.create_date.time, "yyyy-MM-dd hh:mm:ss")
+          , "create_by": g_data.create_by
+          , "merchant_no": g_data.merchant_no
+          // , "tax": g_data.order.tax
+          // , "freight": g_data.order.freight
+        })
+
+      
+        //申报回执信息
+        function decNote(note) {
+          if (isEmpty(note)) {
+            return "";
+          }
+          //切割#分隔符
+          var arr = note.split("#");
+          var divStr = "";
+          for (var i = 0; i < arr.length; i++) {
+            divStr += '<div class="layui-card-body" id="pay_dec_note">' + arr[i] + ' </div>';
+          }
+          $('#pay_dec_note').html(divStr);
+        }        
+        decNote(g_data.pay_re_note);
+      });
+    }
+
+  </script>
+</body>
+
+</html>
