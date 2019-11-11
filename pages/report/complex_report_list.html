@@ -254,7 +254,9 @@
 						}, {
 							field: 'payDecFee', title: '支付单申报服务费(元)', width: 150,
 						}, {
-							field: 'payRate', title: '支付服务费率(%)', width: 150,
+							field: 'payRate', title: '支付服务费率(%)', width: 150, templet: function (item) {
+								return (item.payRate * 100).toFixed(2);
+							}
 						}, {
 							field: 'payFee', title: '支付服务费(元)', width: 125,
 						}, {
