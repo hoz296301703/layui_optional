@@ -16,7 +16,15 @@
 	<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
 	<script type="text/javascript" src="./static/js/common.js" charset="utf-8"></script>
 	<!-- <script type="text/javascript" src="./static/js/jquery.js" charset="utf-8"></script> -->
+	<style>
+		#updatePW_form {
+			padding: 20px 10px 0 10px;
+		}
 
+		#updatePW_form .layui-form-label {
+			width: 70px;
+		}
+	</style>
 </head>
 
 <body>
@@ -62,6 +70,7 @@
 						<a onclick="WeAdminShow('切换帐号','./login.html')">切换帐号</a>
 					</dd> -->
 					<dd>
+						<a id="upLoginPwd" href="javascript:;">修改密码</a>
 						<a id="logout" href="javascript:;">退出</a>
 					</dd>
 				</dl>
@@ -100,6 +109,37 @@
 	<div class="footer">
 		<div class="copyright">银盟跨境电商服务平台运营系统</div>
 	</div>
+	<!-- 修改密码 -->
+	<form class="layui-form" action="" lay-filter="updatePW_form" id="updatePW_form" style="display: none;">
+		<div class="layui-form-item">
+			<label class="layui-form-label">旧密码</label>
+			<div class="layui-input-block">
+				<input type="password" lay-verify="required" name="oldLoginPassword" placeholder="请输入旧密码"
+					autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">新密码</label>
+			<div class="layui-input-block">
+				<input type="password" lay-verify="required" name="newLoginPassword" placeholder="请输入新密码"
+					autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">确认新密码</label>
+			<div class="layui-input-block">
+				<input type="password" lay-verify="required|pass2" name="newLoginPassword2" placeholder="请输入确认新密码"
+					autocomplete="off" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" lay-submit=""
+					lay-filter="updatePW">保存</button>
+				<button id="cancel" type="button" class="layui-btn layui-btn-primary layui-btn-sm">取消</button>
+			</div>
+		</div>
+	</form>
 	<script src="./static/js/jquery.js" charset="utf-8"></script>
 	<!-- 底部结束 -->
 	<script type="text/javascript">
@@ -119,10 +159,23 @@
 			admin: 'admin'
 			, menu: 'menu'
 		});
-		layui.use(['jquery', 'admin', 'menu'], function () {
+		layui.use(['jquery', 'admin', 'menu', 'form'], function () {
 			var $ = layui.jquery,
 				admin = layui.admin,
+				form = layui.form,
 				menu = layui.menu;
+			//密码验证
+			form.verify({
+				pass2: function (value) {
+					if (value != $('#updatePW_form').find('[name=newLoginPassword]').val()) {
+						return '两次密码不一致';
+					}
+				}
+				// , pass: [
+				// 	/^[\S]{6,12}$/
+				// 	, '密码必须6到12位，且不能出现空格'
+				// ]
+			});
 			// 验证是否登录
 			function checkMerchantLogin() {
 				$.ajax({
@@ -196,6 +249,53 @@
 						}
 					});
 				});
+				$("#upLoginPwd").click(function () {// 修改密码
+					layer.open({
+						title: '修改登录密码',
+						type: 1,
+						skin: "layui-layer-rim", //加上边框
+						area: ["375px", "264px"], //宽高
+						content: $("#updatePW_form")
+					});
+				});
+				//监听提交
+				form.on('submit(updatePW)', function (data) {
+					layer.load();
+					$.ajax({
+						url: urlPrefix + "silver-web-shop/manager/upLoginPwd",
+						xhrFields: {
+							withCredentials: true
+						},
+						data: data.field,
+						type: "post",
+						success: function (response) {
+							layer.closeAll(); //疯狂模式，关闭所有层
+							if (response.status == 1) {
+								layer.alert('修改成功！请重新登录！', { closeBtn: 0 }, function () {
+									$.ajax({
+										url: urlPrefix + "silver-web-shop/merchant/logout",
+										xhrFields: {
+											withCredentials: true
+										},
+										type: "post",
+										success: function (response) {
+											if (response.status == 1) {
+												window.location.href = "login.html";
+											}
+										}
+									});
+								});
+
+							} else {
+								layer.alert(response.msg);
+							}
+						}
+					});
+				});
+				$('#cancel').click(function(){
+					$("#updatePW_form").hide();
+					layer.closeAll(); //疯狂模式，关闭所有层
+				})
 			});
 		});
 
