@@ -31,10 +31,6 @@
 			width: 40px;
 		}
 
-		body {
-			overflow-y: scroll;
-		}
-
 		.dateClass {
 			float: left;
 			margin-right: 6px;
@@ -144,42 +140,39 @@
 				<!-- laytpl语法--end-- -->
 			</script>
 			<script type="text/html" id="report_toolbar">
-				<!-- <div class="layui-btn-container">						
-					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrder"><i class="layui-icon">&#xe601;</i>明细下载</button>
-					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downManualOrderAll"><i class="layui-icon">&#xe601;</i>汇总下载</button>				
-				</div> -->
+				<div class="layui-btn-container">						
+					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>下载</button>					
+				</div>
 			</script>
 		</form>
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 		<script src="../../static/js/common.js" charset="utf-8"></script>
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+
+		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
 				, value: getDay(-30)
-				, isInitValue: true
+				, isInitValue: true,
+				max: 0
 			});
 			laydate.render({
-				elem: '#endDate'
+				elem: '#endDate', max: 0
 			});
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
-				// defaultToolbar: ['filter'],
+				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
 				toolbar: '#report_toolbar',
 				url: urlPrefix + 'silver-web-shop/repLogs/getPlaDiv',
 				method: 'post',
@@ -256,7 +249,6 @@
 					};
 				},
 				where: {
-					// startDate: appendStartDate($('#form_sreach').find('[name=startDate]').val())
 					startDate: appendStartDate(getDay(-30))
 				}
 			});
@@ -317,7 +309,7 @@
 
 				var data = obj.data;
 				var event = obj.event;
-				if (event == 'one_detail') {// 结算货款
+				if (event == 'one_detail') {// 一级推广商分润明细
 
 					layer.open({
 						type: 2,
@@ -337,39 +329,6 @@
 							layer.close(index);
 						}
 					});
-					// var data = {
-					// 	merchantId: data.merchantId,
-					// 	date: data.dateSign
-					// }
-					// $.ajax({
-					// 	url: urlPrefix + "silver-web-shop/repLogs/getSelAmount",
-					// 	type: "POST",
-					// 	async: false,
-					// 	xhrFields: {
-					// 		withCredentials: true
-					// 	},
-					// 	data: data,
-					// 	success: function (response) {
-					// 		if (response.status == 1) {
-					// 			$('#getSelAmount_detail').find('[name=dai_fu]').val(response.datas.dai_fu)
-					// 			$('#getSelAmount_detail').find('[name=order]').val(response.datas.order)
-					// 		}
-					// 	}
-					// });
-					// layer.open({
-					// 	title: "结算货款明细",
-					// 	type: 1,
-					// 	closeBtn: 0,
-					// 	skin: "layui-layer-rim", //加上边框
-					// 	area: ["354px", "217px"], //宽高
-					// 	btnAlign: "c",
-					// 	content: $("#getSelAmount_detail"),
-					// 	btn: ["确定"],
-					// 	yes: function (index) {
-					// 		$("#getSelAmount_detail").hide();
-					// 		layer.closeAll();
-					// 	}
-					// });
 				} else if (event == "details") {
 					layer.open({
 						type: 2,
@@ -395,54 +354,64 @@
 			table.on('toolbar(articleList)', function (obj) {
 				// var checkStatus = table.checkStatus(obj.config.id);
 				switch (obj.event) {
-					case 'downManualOrderAll':
-
+					case 'download':
 						layer.alert("下载查询结果", {
 							time: 0, //不自动关闭
 							btnAlign: "c",
 							btn: ["下载", "取消"],
 							yes: function (index) {
-
-								var url = "silver-web-shop/repLogs/downLogs?displayType=collect";
-
-								if (!isEmpty($('#form_sreach').find('[name=merchantId]').val())) {// 商户id
-									url += '&merchantId=' + $('#form_sreach').find('[name=merchantId]').val();
+								var nameType = $("#nameType input[name=nameType]:checked").val();
+								var url = "silver-web-shop/repLogs/downloadPlaDiv?nameType=" + nameType;
+								var merchantId = $('#form_sreach').find('[name=merchantId]').val();
+								if (!isEmpty(merchantId)) {// 商户id
+									url += '&merchantId=' + merchantId;
 								}
-
-								if (!isEmpty($('#form_sreach').find('[name=merchantName]').val())) {// 商户名称
-									url += '&merchantNameblurry=' + $('#form_sreach').find('[name=merchantName]').val();
+								var merchantName = $('#form_sreach').find('[name=merchantName]').val();
+								if (!isEmpty()) {// 商户名称
+									url += '&merchantName=' + merchantName;
 								}
+								// var startDate = '';
+								// var endDate = '';
+								// if ($('#dateClass').find('.active').attr('data-type') == 'day') {// 天
+								// 	startDate = $('#startDate_D').find('[name=startDate_D]').val();
+								// 	if (isEmpty(startDate)) {
+								// 		layer.alert('请选择查询时间');
+								// 		return false;
+								// 	}
+								// 	startDate = startDate.replace("-", "").replace("-", "");
+								// 	url += '&type=day' + '&startDate=' + startDate;
+								// } else if ($('#dateClass').find('.active').attr('data-type') == 'customized') {// 自定义
+								// 	startDate = $('#userDefined').find('[name=userDefined_startDate]').val();
+								// 	endDate = $('#userDefined').find('[name=userDefined_endDate]').val();
+								// 	if (isEmpty(startDate) || isEmpty(endDate)) {
+								// 		layer.alert('请选择查询时间');
+								// 		return false;
+								// 	}
 
-								var startDate = '';
-								var endDate = '';
-								if ($('#dateClass').find('.active').attr('data-type') == 'day') {// 天
-									startDate = $('#startDate_D').find('[name=startDate_D]').val();
-									if (isEmpty(startDate)) {
-										layer.alert('请选择查询时间');
-										return false;
-									}
-									startDate = startDate.replace("-", "").replace("-", "");
-									url += '&type=day' + '&startDate=' + startDate;
-								} else if ($('#dateClass').find('.active').attr('data-type') == 'customized') {// 自定义
-									startDate = $('#userDefined').find('[name=userDefined_startDate]').val();
-									endDate = $('#userDefined').find('[name=userDefined_endDate]').val();
-									if (isEmpty(startDate) || isEmpty(endDate)) {
-										layer.alert('请选择查询时间');
-										return false;
-									}
-
-									startDate = startDate.replace("-", "").replace("-", "");
-									endDate = endDate.replace("-", "").replace("-", "");
-									url += '&type=customized' + '&startDate=' + startDate + '&endDate=' + endDate;
-								} else if ($('#dateClass').find('.active').attr('data-type') == 'month') {// 月
-									startDate = $('#startDate_M').find('[name=startDate_M]').val();
-									if (isEmpty(startDate)) {
-										layer.alert('请选择查询时间');
-										return false;
-									}
-									startDate = startDate.replace("-", "").replace("-", "");
-									url += '&type=month' + '&startDate=' + startDate;
+								// 	startDate = startDate.replace("-", "").replace("-", "");
+								// 	endDate = endDate.replace("-", "").replace("-", "");
+								// 	url += '&type=customized' + '&startDate=' + startDate + '&endDate=' + endDate;
+								// } else if ($('#dateClass').find('.active').attr('data-type') == 'month') {// 月
+								// 	startDate = $('#startDate_M').find('[name=startDate_M]').val();
+								// 	if (isEmpty(startDate)) {
+								// 		layer.alert('请选择查询时间');
+								// 		return false;
+								// 	}
+								// 	startDate = startDate.replace("-", "").replace("-", "");
+								// 	url += '&type=month' + '&startDate=' + startDate;
+								// }
+								startDate = $('#form_sreach').find('[name=startDate]').val();
+								endDate = $('#form_sreach').find('[name=endDate]').val();
+								if (isEmpty(startDate) || isEmpty(endDate)) {
+									layer.alert('请选择查询时间');
+									return false;
 								}
+								//拼接开始时间
+								startDate = appendStartDate(startDate);
+								//拼接结束时间
+								endDate = appendEndDate(endDate);
+								url += '&startDate=' + startDate + '&endDate=' + endDate;
+								console.info(url);
 								window.location.href = urlPrefix + url;
 								layer.closeAll();
 								layer.alert(
@@ -456,82 +425,49 @@
 										}
 									}
 								);
-
 							}
 						});
-
 						break;
 					case 'downManualOrder':
-
-						layer.alert("下载查询结果", {
-							time: 0, //不自动关闭
-							btnAlign: "c",
-							btn: ["下载", "取消"],
-							yes: function (index) {
-
-								var url = "silver-web-shop/repLogs/downLogs?";
-
-								if (!isEmpty($('#form_sreach').find('[name=merchantId]').val())) {// 商户id
-									url += '&merchantId=' + $('#form_sreach').find('[name=merchantId]').val();
-								}
-
-								if (!isEmpty($('#form_sreach').find('[name=merchantName]').val())) {// 商户名称
-									url += '&merchantNameblurry=' + $('#form_sreach').find('[name=merchantName]').val();
-								}
-
-								var startDate = '';
-								var endDate = '';
-								if ($('#dateClass').find('.active').attr('data-type') == 'day') {// 天
-									startDate = $('#startDate_D').find('[name=startDate_D]').val();
-									if (isEmpty(startDate)) {
-										layer.alert('请选择查询时间');
-										return false;
-									}
-									startDate = startDate.replace("-", "").replace("-", "");
-									url += '&type=day' + '&startDate=' + startDate;
-								} else if ($('#dateClass').find('.active').attr('data-type') == 'customized') {// 自定义
-									startDate = $('#userDefined').find('[name=userDefined_startDate]').val();
-									endDate = $('#userDefined').find('[name=userDefined_endDate]').val();
-									if (isEmpty(startDate) || isEmpty(endDate)) {
-										layer.alert('请选择查询时间');
-										return false;
-									}
-
-									startDate = startDate.replace("-", "").replace("-", "");
-									endDate = endDate.replace("-", "").replace("-", "");
-									url += '&type=customized' + '&startDate=' + startDate + '&endDate=' + endDate;
-								} else if ($('#dateClass').find('.active').attr('data-type') == 'month') {// 月
-									startDate = $('#startDate_M').find('[name=startDate_M]').val();
-									if (isEmpty(startDate)) {
-										layer.alert('请选择查询时间');
-										return false;
-									}
-									startDate = startDate.replace("-", "").replace("-", "");
-									url += '&type=month' + '&startDate=' + startDate;
-								}
-								window.location.href = urlPrefix + url;
-								layer.closeAll();
-								layer.alert(
-									'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
-									{
-										time: 0, //不自动关闭
-										btn: ["关闭"],
-										btnAlign: "c",
-										yes: function (index) {
-											layer.close(index);
-										}
-									}
-								);
-
-							}
-						});
-
 						break;
-
 				};
 			});
-
-
+			// 校验日期是否跨月			
+			var isCrossMonth = function (startDate, endDate) {
+				// if (startDate == null || endDate == null) {
+				// 	popwin.info('提示', '日期不可为空');
+				// 	return false;
+				// }
+				// if (startDate == '' || endDate == '') {
+				// 	popwin.info('提示', '请输入查询日期');
+				// 	return false;
+				// }
+				var start_date = startDate + " 00:00";
+				var end_date = endDate + " 00:00";
+				start_date = new Date(start_date.replace(/-/g, "/"));
+				end_date = new Date(end_date.replace(/-/g, "/"));
+				// if (start_date > end_date) {
+				// 	popwin.info('提示', '截止日期不能小于起始日期');
+				// 	return false;
+				// }
+				// 获取num天以后的日期   
+				// var currentDate = new Date();
+				// currentDate.setDate(currentDate.getDate() + num);
+				// if (end_date > currentDate) {
+				// 	popwin.info('提示', '截止日期不能大于' + num + '天之后的日期');
+				// 	return false;
+				// }
+				// 判断是否跨月查询 
+				// if (flag == false) {
+				if (start_date.getMonth() == end_date.getMonth()) {
+					// popwin.info('提示', '该查询不支持跨月查询');
+					return true;
+				} else {
+					return false;
+				}
+				// }
+			}
+			console.info(isCrossMonth('2019-10-01', '2019-12-02'));
 		});
 	</script>
 </body>

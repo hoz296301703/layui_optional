@@ -44,6 +44,12 @@
 			height: 38px;
 		}
 
+		/*定义结算信息内input框宽度*/
+		#getSelAmount_detail .layui-input-inline {
+			width: 280px;
+		}
+
+
 		.layui-table-tool-temp {
 			display: flex;
 			justify-content: space-between;
@@ -144,7 +150,19 @@
 					<!-- 结算货款明细 -->
 					<div id="getSelAmount_detail" style="display: none; ">
 						<form class="layui-form layui-form-pane" action=""
-							style="width: 360px;margin: 0 auto;margin-top: 20px;">
+							style="width: 488px;margin: 0 auto;margin-top: 20px;">
+							<div class="layui-form-item" style="margin-bottom: 10px;">
+								<label class="layui-form-label">订单日期</label>
+								<div class="layui-input-inline">
+									<input disabled="" type="text" name="order_date" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-form-item" style="margin-bottom: 10px;">
+								<label class="layui-form-label">商户名称</label>
+								<div class="layui-input-inline">
+									<input disabled="" type="text" name="merchant_name" class="layui-input">
+								</div>
+							</div>
 							<div class="layui-form-item" style="margin-bottom: 10px;">
 								<label class="layui-form-label">订单数量</label>
 								<div class="layui-input-inline">
@@ -605,32 +623,79 @@
 								.find(".layui-layer-btn1")
 								.hide();
 						}
-					} else if (obj.event == 'download') {
-
+					} else if (obj.event == 'download') {//下载
 						layer.alert("确认是否下载【" + data.merchantName + "】日期为【" + formatTime(data.dateSign) + "】订单费用明细？", {
 							time: 0, //不自动关闭
 							btn: ["确定", "关闭"],
 							area: ['500px', '200px'],//宽高
 							yes: function (index) {
-								var url = "silver-web-shop/manualOrder/download?merchant_no=" + data.merchantId + "&dateSign=" + data.dateSign;
-								window.location.href = urlPrefix + url;
+								var url = "silver-web-shop/manualOrder/download?merchant_no=" + data.merchantId + "&dateSign=" + data.dateSign;								
 								layer.closeAll();
-								layer.alert(
-									'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span><br/>正在努力查询数据中，可能耗时较长，请耐心等待',
-									{
-										time: 0, //不自动关闭
-										btn: ["关闭"],
-										btnAlign: "c",
-										yes: function (index) {
-											layer.close(index);
+								layer.load();
+								$.ajax({
+									url: urlPrefix + url,
+									type: "POST",
+									xhrFields: {
+										withCredentials: true
+									},
+									timeout: 3000, //超时时间设置，单位毫秒
+									success: function (response) {
+										if (response.status == 1) {
+											layer.closeAll();
+											layer.alert(
+												'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请前往下载中心查看进度',
+												{
+													time: 0, //不自动关闭
+													btn: ["前往下载中心", '关闭'],
+													btnAlign: "c",
+													yes: function (index) {
+														$('#menudownCenter_1', parent.document).click();
+													}, btn1: function () {
+														layer.close(index);
+													}
+												}
+											);
+										} else {
+											layer.closeAll();
+											layer.alert(response.msg);
 										}
+									}, error: function () {//超过5秒默认判定为成功
+										layer.closeAll();
+										layer.alert(
+											'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请前往下载中心查看进度',
+											{
+												time: 0, //不自动关闭
+												btn: ["前往下载中心", '关闭'],
+												btnAlign: "c",
+												yes: function (index) {
+													$('#menudownCenter_1', parent.document).click();
+												}, btn1: function () {
+													layer.close(index);
+												}
+											}
+										);
 									}
-								);
+								});
+
+								// a
+								// window.location.href = urlPrefix + url;
+								// layer.closeAll();
+								// layer.alert(
+								// 	'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span><br/>正在努力查询数据中，可能耗时较长，请耐心等待',
+								// 	{
+								// 		time: 0, //不自动关闭
+								// 		btn: ["关闭"],
+								// 		btnAlign: "c",
+								// 		yes: function (index) {
+								// 			layer.close(index);
+								// 		}
+								// 	}
+								// );
 							}
 						});
-					} else if (obj.event == 'getSelAmount') {
+					} else if (obj.event == 'getSelAmount') {						
 						layer.msg('加载中...', { time: 0, icon: 16, shade: 0.1 });
-						var data = {
+						var params = {
 							merchantId: data.merchantId,
 							date: data.dateSign
 						}
@@ -640,9 +705,12 @@
 							xhrFields: {
 								withCredentials: true
 							},
-							data: data,
+							data: params,
 							success: function (response) {
+								layer.closeAll();
 								if (response.status == 1) {
+									$('#getSelAmount_detail').find('[name=order_date]').val(formatTime(data.dateSign))
+									$('#getSelAmount_detail').find('[name=merchant_name]').val(response.datas.merchantName)
 									$('#getSelAmount_detail').find('[name=dai_fu]').val(response.datas.dai_fu)
 									$('#getSelAmount_detail').find('[name=order_amount]').val(response.datas.order_amount)
 									$('#getSelAmount_detail').find('[name=dai_fu_order_count]').val(response.datas.dai_fu_order_count)
@@ -651,9 +719,9 @@
 									layer.open({
 										title: "结算货款明细",
 										type: 1,
-										closeBtn: 0,
+										// closeBtn: 0,
 										skin: "layui-layer-rim", //加上边框
-										area: ["454px", "420px"], //宽高
+										area: ["500px", "500px"], //宽高
 										btnAlign: "c",
 										content: $("#getSelAmount_detail"),
 										btn: ["关闭"],
@@ -662,7 +730,25 @@
 											layer.closeAll();
 										}
 									});
+								} else {
+									layer.msg(response.msg, {
+										time: 0, //不自动关闭
+										btn: ["确定"],
+										btnAlign: "c",
+										yes: function (index) {
+											layer.closeAll();
+										}
+									});
 								}
+							}, error: function (response) {
+								layer.msg(response.msg, {
+									time: 0, //不自动关闭
+									btn: ["确定"],
+									btnAlign: "c",
+									yes: function (index) {
+										layer.closeAll();
+									}
+								});
 							}
 						});
 					}

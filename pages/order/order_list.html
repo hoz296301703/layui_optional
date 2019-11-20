@@ -204,7 +204,8 @@
 		</script>
 		<script type="text/html" id="order_list_toolbar">
 			<div class="layui-btn-container">
-				<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>导出</button>				
+				<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>明细下载</button>				
+				<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="downloadExp"><i class="layui-icon">&#xe601;</i>推广明细</button>				
 			</div>
 		</script>
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -537,7 +538,6 @@
 				// var checkStatus = table.checkStatus(obj.config.id);
 				switch (obj.event) {
 					case 'download':
-
 						layer.alert("下载查询结果", {
 							time: 0, //不自动关闭
 							btnAlign: "c",
@@ -594,10 +594,83 @@
 							}
 						});
 						break;
-					case 'downManualOrder':
+					case 'downloadExp':
+						layer.alert("下载查询结果", {
+							time: 0, //不自动关闭
+							btnAlign: "c",
+							btn: ["下载", "取消"],
+							yes: function (index) {
+								var url = "silver-web-shop/order/downloadExp?";
+								var startDate = '';
+								var endDate = '';
+								startDate = $('#form_sreach').find('[name=startDate]').val();
+								endDate = $('#form_sreach').find('[name=endDate]').val();
+								if (isEmpty(startDate) || isEmpty(endDate)) {
+									layer.alert('请选择查询时间');
+									return false;
+								}
+								//拼接开始时间
+								startDate = appendStartDate(startDate);
+								//拼接结束时间
+								endDate = appendEndDate(endDate);
+								url += '&startDate=' + startDate + '&endDate=' + endDate;
+								console.info(urlPrefix + url);
+								layer.closeAll();
+								layer.load();
+								$.ajax({
+									url: urlPrefix + url,
+									type: "POST",
+									xhrFields: {
+										withCredentials: true
+									},
+									timeout: 3000, //超时时间设置，单位毫秒
+									success: function (response) {
+										if (response.status == 1) {
+											showDown();
+										} else {
+											layer.closeAll();
+											layer.alert(response.msg);
+										}
+									}, error: function () {//超过5秒默认判定为成功
+										showDown();
+									}
+								});
+								// window.location.href = urlPrefix + url;
+								// layer.closeAll();
+								// layer.alert(
+								// 	'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+								// 	{
+								// 		time: 0, //不自动关闭
+								// 		btn: ["关闭"],
+								// 		btnAlign: "c",
+								// 		yes: function (index) {
+								// 			layer.close(index);
+								// 		}
+								// 	}
+								// );
+
+							}
+						});
 						break;
 				};
 			});
+
+			var showDown = function () {
+				layer.closeAll();
+				layer.alert(
+					'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请前往下载中心查看进度',
+					{
+						time: 0, //不自动关闭
+						btn: ["前往下载中心", '关闭'],
+						btnAlign: "c",
+						yes: function (index) {
+							$('#menudownCenter_1', parent.document).click();
+						}, btn1: function () {
+							layer.close(index);
+						}
+					}
+				);
+			}
 		});
 	</script>
 </body>
