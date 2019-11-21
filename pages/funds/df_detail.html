@@ -190,7 +190,6 @@
     function getParent_data(obj) {
       g_data = obj.data;
 
-
       layui.use(['form', 'element', 'jquery', 'layer'], function () {
         var form = layui.form,
           $ = layui.jquery,
@@ -236,15 +235,12 @@
           var arr = note.split("#");
           var divStr = "";
           for (var i = 0; i < arr.length; i++) {
-
             divStr += '<div class="layui-card-body" id="rec_note">' + arr[i] + ' </div>';
-
           }
           $('#rec_note').html(divStr);
         }
         var note = g_data.note;
         renderNote(note);
-
       });
     }
   </script>
