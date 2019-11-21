@@ -131,6 +131,11 @@
 	<script type="text/html" id="operateTpl">
 		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
 	</script>
+	<script type="text/html" id="goodsRecord_toolbar">
+		<div class="layui-btn-container">				
+			<button type='button' class="layui-btn layui-btn-sm" lay-event="getCheckData">下架</button>		
+		</div>
+	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 
@@ -159,7 +164,7 @@
 			});
 			form.val('example', {
 				"reviewerStatus": "process"
-			
+
 			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
@@ -167,11 +172,12 @@
 				elem: '#articleList',
 				cellMinWidth: 80,
 				height: tableHeight,
-				toolbar: '#customsList_toolbar',
+				toolbar: '#goodsRecord_toolbar',
 				url: urlPrefix + 'silver-web-shop/stock/findInfo',
 				method: 'post',
 				cols: [
 					[
+						{ type: 'checkbox', fixed: 'left' },
 						{
 							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
@@ -330,39 +336,7 @@
 				active[type] ? active[type].call(this) : '';
 			});
 
-			//头工具栏事件
-			table.on('toolbar(articleList)', function (obj) {
-				var checkStatus = table.checkStatus(obj.config.id);
-				switch (obj.event) {
-					case 'add':
-						layer.open({
-							title: "添加",
-							type: 2,
-							skin: "layui-layer-rim", //加上边框
-							area: ["710px", "510px"], //宽高
-							scrollbar: false,
-							// btnAlign: "c",
-							// btn: ["保存", "关闭"],
-							content: './customs_add.html',
-							// yes: function (index) {
 
-							// }
-							// , btn2: function () {
-
-							// }, cancel: function () {
-
-							// }
-						});
-						break;
-					// case 'getCheckLength':
-					// 	var data = checkStatus.data;
-					// 	layer.msg('选中了：' + data.length + ' 个');
-					// 	break;
-					// case 'isAll':
-					// 	layer.msg(checkStatus.isAll ? '全选' : '未全选');
-					// 	break;
-				};
-			});
 			// 审核方法
 			var _review = function (data) {
 				$.ajax({
@@ -383,6 +357,68 @@
 					}
 				});
 			};
+			//头工具栏事件
+			table.on('toolbar(articleList)', function (obj) {
+				var checkStatus = table.checkStatus(obj.config.id);
+
+				switch (obj.event) {
+					case 'getCheckData':
+						var data = checkStatus.data;
+						var len = data.length;
+						if (data.length == 0) {
+							layer.alert("请选择要下架的商品！");
+							return;
+						} else {
+							layer.alert('确定下架商品？', {
+								time: 0 //不自动关闭
+								, btn: ['保存', '取消']
+								, yes: function (index) {
+									layer.prompt({
+										value: '',
+										formType: 2,
+										title: '批注',
+										yes: function (index, layero) {
+											if ($.trim($(layero).find('textarea').val()) == '') {
+												layer.alert('请填写下架的原因！');
+											} else {
+												var arr = [];
+												for (var i = 0; i < len; i++) {
+													arr.push(
+														data[i].entGoodsNo,
+													);
+												}
+												$.ajax({
+													url: urlPrefix + "silver-web-shop/stock/managerStopSale",
+													type: "POST",
+													xhrFields: {
+														withCredentials: true
+													},
+													data: {
+														note: $.trim($(layero).find('textarea').val()),
+														goodsIdPack: JSON.stringify(arr)
+													},
+													success: function (response) {
+														if (response.status == 1) {
+															layer.closeAll();
+															layer.msg('下架成功');
+															_reload();
+														} else {
+															layer.alert(response.msg)
+														}
+													}
+												});
+											}
+										}
+									});
+
+								}
+							});
+
+						}
+						break;
+
+				};
+			});
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
