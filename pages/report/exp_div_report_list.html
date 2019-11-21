@@ -147,6 +147,7 @@
 		</form>
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 		<script src="../../static/js/common.js" charset="utf-8"></script>
+		<script src="../../static/js/dateUtils.js" charset="utf-8"></script>
 	</div>
 	<script>
 
@@ -401,9 +402,17 @@
 								// 	url += '&type=month' + '&startDate=' + startDate;
 								// }
 								startDate = $('#form_sreach').find('[name=startDate]').val();
+								if (isEmpty(startDate)) {
+									layer.alert('请选择开始日期');
+									return false;
+								}
 								endDate = $('#form_sreach').find('[name=endDate]').val();
-								if (isEmpty(startDate) || isEmpty(endDate)) {
-									layer.alert('请选择查询时间');
+								//结束时间为空时，默认填充为今天
+								if (isEmpty(endDate)) {
+									endDate = getDay(0);
+								}
+								if (isCrossMonth(startDate, endDate)) {
+									layer.alert('暂不支持跨月下载数据！');
 									return false;
 								}
 								//拼接开始时间
@@ -432,42 +441,8 @@
 						break;
 				};
 			});
-			// 校验日期是否跨月			
-			var isCrossMonth = function (startDate, endDate) {
-				// if (startDate == null || endDate == null) {
-				// 	popwin.info('提示', '日期不可为空');
-				// 	return false;
-				// }
-				// if (startDate == '' || endDate == '') {
-				// 	popwin.info('提示', '请输入查询日期');
-				// 	return false;
-				// }
-				var start_date = startDate + " 00:00";
-				var end_date = endDate + " 00:00";
-				start_date = new Date(start_date.replace(/-/g, "/"));
-				end_date = new Date(end_date.replace(/-/g, "/"));
-				// if (start_date > end_date) {
-				// 	popwin.info('提示', '截止日期不能小于起始日期');
-				// 	return false;
-				// }
-				// 获取num天以后的日期   
-				// var currentDate = new Date();
-				// currentDate.setDate(currentDate.getDate() + num);
-				// if (end_date > currentDate) {
-				// 	popwin.info('提示', '截止日期不能大于' + num + '天之后的日期');
-				// 	return false;
-				// }
-				// 判断是否跨月查询 
-				// if (flag == false) {
-				if (start_date.getMonth() == end_date.getMonth()) {
-					// popwin.info('提示', '该查询不支持跨月查询');
-					return true;
-				} else {
-					return false;
-				}
-				// }
-			}
-			console.info(isCrossMonth('2019-10-01', '2019-12-02'));
+			
+			console.info(isCrossMonth('2019-10-01', '2019-11-02'));
 		});
 	</script>
 </body>

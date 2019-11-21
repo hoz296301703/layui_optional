@@ -43,3 +43,40 @@ function toDateFormat(value) {
     var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
     return value.replace(pattern, '$1-$2-$3 $4:$5:$6');
 }
+
+// 校验日期是否跨月			
+var isCrossMonth = function (startDate, endDate) {
+    if (isEmpty(startDate) || isEmpty(endDate)) {
+        // popwin.info('提示', '日期不可为空');
+        return true;
+    }
+    // if (startDate == '' || endDate == '') {
+    // 	popwin.info('提示', '请输入查询日期');
+    // 	return false;
+    // }
+    var start_date = startDate + " 00:00";
+    var end_date = endDate + " 00:00";
+    start_date = new Date(start_date.replace(/-/g, "/"));
+    end_date = new Date(end_date.replace(/-/g, "/"));
+    // if (start_date > end_date) {
+    // 	popwin.info('提示', '截止日期不能小于起始日期');
+    // 	return false;
+    // }
+    // 获取num天以后的日期   
+    // var currentDate = new Date();
+    // currentDate.setDate(currentDate.getDate() + num);
+    // if (end_date > currentDate) {
+    // 	popwin.info('提示', '截止日期不能大于' + num + '天之后的日期');
+    // 	return false;
+    // }
+    // 判断是否跨月查询 
+    // if (flag == false) {
+    // if (start_date.getMonth() != end_date.getMonth()) {
+    // popwin.info('提示', '该查询不支持跨月查询');
+    // return true;
+    // } else {
+    // return false;
+    // }
+    return start_date.getMonth() != end_date.getMonth();
+    // }
+}
