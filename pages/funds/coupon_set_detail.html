@@ -57,15 +57,21 @@
         </div>
       </div>
       <div class="layui-inline">
-        <label class="layui-form-label">金额</label>
+        <label class="layui-form-label">订单金额合计</label>
         <div class="layui-input-inline">
           <input type="text" name="amount" autocomplete="off" class="layui-input layui-disabled" disabled>
         </div>
       </div>
       <div class="layui-inline">
-        <label class="layui-form-label">服务费</label>
+        <label class="layui-form-label">服务费合计</label>
         <div class="layui-input-inline">
           <input type="text" name="fee" autocomplete="off" class="layui-input layui-disabled" disabled>
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">分佣合计</label>
+        <div class="layui-input-inline">
+          <input type="text" name="divAmount" autocomplete="off" class="layui-input layui-disabled" disabled>
         </div>
       </div>
       <div class="layui-inline">
@@ -151,8 +157,9 @@
     function getParent_data(obj) {
       managerFlag = obj.managerFlag;
       g_data = obj.data;
+      console.log(g_data);
       head = g_data.head;
-      logs = g_data.logs;    
+      logs = g_data.logs;
       // 流程节点：1-运营审核、2-财务审核、200-完成、400-终止
       var node = head.processNode;
 
@@ -174,9 +181,11 @@
           , "count": head.count
           , "amount": head.amount
           , "fee": head.fee
-          , "result": accSub(head.amount, head.fee)
+          , "divAmount": head.divAmount
+          , "result": accSub(head.amount, accAdd(head.fee, head.divAmount))
           , "processNode": head.processNode
           , "status": g_orderStatus(head.status)
+
           , "createDate": G_format(head.createDate.time, 'yyyy-MM-dd hh:mm:ss')
         })
 
