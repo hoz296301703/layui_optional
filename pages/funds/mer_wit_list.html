@@ -104,7 +104,8 @@
 			</div>
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>					
-				<a class="layui-btn layui-btn layui-btn-xs layui-btn-normal" lay-event="bill">提现明细</a>					
+				<a class="layui-btn layui-btn layui-btn-xs layui-btn-normal" lay-event="bill">提现明细</a>	
+				<a class="layui-btn layui-btn layui-btn-xs " lay-event="download">下载明细</a>	
 			</script>
 		</form>
 	</div>
@@ -130,15 +131,6 @@
 				</div>
 				<div class="layui-form-mid layui-word-aux">元</div>
 			</div>
-
-			<!-- <div class="layui-form-item" style="margin-bottom: 10px;">
-				<label class="layui-form-label">已提现金额</label>
-				<div class="layui-input-inline">
-					<input disabled="" type="text" name="alrAmount" class="layui-input">
-				</div>
-				<div class="layui-form-mid layui-word-aux">元</div>
-			</div> -->
-
 			<div class="layui-form-item" style="margin-bottom: 10px;">
 				<label class="layui-form-label">钱包总额</label>
 				<div class="layui-input-inline">
@@ -200,6 +192,7 @@
 			});
 			//管理员账号标识
 			var flag = $('#managerName', window.top.document).attr("name");
+			console.log("--->>" + flag);
 			// 动态设置表格高度
 			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
@@ -257,7 +250,7 @@
 						}, {
 							field: 'serialNo', title: '流水号', width: 190
 						}, {
-							field: 'operate', width: 160, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', width: 220, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
 				// skin: 'row', //行边框风格
@@ -396,7 +389,6 @@
 						}
 					});
 				} else if (obj.event == 'bill') {
-
 					layer.msg('加载中...', { time: 0, icon: 16, shade: 0.1 });
 					$.ajax({
 						url: urlPrefix + "silver-web-shop/merWitLogs/getBill",
@@ -429,6 +421,29 @@
 									}
 								});
 							}
+						}
+					});
+				} else if (obj.event == 'download') {
+					layer.closeAll();
+					layer.load();
+					var serialNo = data.serialNo;
+					var url = "silver-web-shop/merWitLogs/downDetails?serialNo=" + serialNo;
+					$.ajax({
+						url: urlPrefix + url,
+						type: "POST",
+						xhrFields: {
+							withCredentials: true
+						},
+						timeout: 3000, //超时时间设置，单位毫秒
+						success: function (response) {
+							if (response.status == 1) {
+								downWindow();
+							} else {
+								layer.closeAll();
+								layer.alert(response.msg);
+							}
+						}, error: function () {//超过3秒默认判定为成功
+							downWindow();
 						}
 					});
 				}
@@ -509,7 +524,22 @@
 						break;
 				};
 			});
-
+			var downWindow = function () {
+				layer.closeAll();
+				layer.alert(
+					'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请前往下载中心查看进度',
+					{
+						time: 0, //不自动关闭
+						btn: ["前往下载中心", '关闭'],
+						btnAlign: "c",
+						yes: function (index) {
+							$('#menudownCenter_1', top.document).click();
+						}, btn1: function () {
+							layer.close(index);
+						}
+					}
+				);
+			}
 		});
 	</script>
 </body>
