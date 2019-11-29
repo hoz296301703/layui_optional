@@ -88,6 +88,17 @@
 					</div>
 				</div>
 				<div class="layui-inline">
+					<label class="layui-form-label">等级</label>
+					<div class="layui-input-inline">
+						<select name="merchantLevel" lay-verify="required" lay-search="">
+							<option value="">全部</option>
+							<option value="0">普通商户</option>
+							<option value="1">VIP商户</option>
+							<option value="100">白金商户</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" name="startDate" autocomplete="off" placeholder="年-月-日">
@@ -149,23 +160,15 @@
 							</select>
 						</div>
 					</div>
-
 				</div>
-
 			</form>
 		</div>
-
-
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 		<script src="../../static/js/common.js" charset="utf-8"></script>
 		<!-- <script src="manager_list.js" type="text/javascript" charset="utf-8"></script> -->
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
-
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
@@ -180,13 +183,14 @@
 				elem: '#form_sreach [name=endDate]'
 			});
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			// 初始化表格
 			table.render({
 				elem: '#merchantList',
 				cellMinWidth: 80,
 				toolbar: '#merchantList_toolbar',
-				height: tableHeight,
+				defaultToolbar: ['filter'],
+				// height: tableHeight,
 				// height: 'full-100',
 				url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
 				method: 'post',
@@ -200,15 +204,27 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'merchantName', title: '商户名称', width: 190
+							field: 'merchantName', title: '商户名称', width: 210
 						}, {
-							field: 'merchantId', title: '商户编号', width: 180
+							field: 'merchantId', title: '商户编号'
 						}, {
 							field: 'loginAccount', title: '登录帐号', width: 120
 						}, {
-							field: 'merchantPhone', title: '手机号码', width: 130
+							field: 'merchantPhone', title: '手机号码', width: 120
 						}, {
-							field: 'merchantStatus', width: 70, title: '状态', templet: function (item) {
+							field: 'merchantLevel', title: '等级', templet: function (item) {
+								var level = item.merchantLevel;
+								if (level == 0) {
+									level = '普通商户';
+								} else if (level == 1) {
+									level = 'VIP商户';
+								} else if (level == 100) {
+									level = '白金商户';
+								}
+								return level;
+							}
+						}, {
+							field: 'merchantStatus',  title: '状态', templet: function (item) {
 								if (item.merchantStatus == '1') {
 									return '启用';
 								} else if (item.merchantStatus == '2') {
@@ -217,9 +233,7 @@
 									return '审核';
 								}
 							}
-						},
-
-						{
+						}, {
 							field: 'operate', width: 220, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
@@ -264,6 +278,9 @@
 				var loginAccount = $('#form_sreach').find('[name=loginAccount]');
 				var merchantStatus = $('#form_sreach').find('[name=merchantStatus]');
 				var merchantPhone = $('#form_sreach').find('[name=merchantPhone]');
+				var merchantLevel = $('#form_sreach').find('[name=merchantLevel]');
+
+
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 
@@ -278,11 +295,41 @@
 						loginAccount: loginAccount.val(),
 						merchantStatus: merchantStatus.val(),
 						merchantPhone: merchantPhone.val(),
+						merchantLevel: merchantLevel.val(),
 						startDate: startDate.val(),
 						endDate: endDate.val()
 					}
 				});
 			}
+			var active = {
+				reload: function () {	// 搜索
+					var merchantName = $('#form_sreach').find('[name=merchantName]');
+					var merchantId = $('#form_sreach').find('[name=merchantId]');
+					var loginAccount = $('#form_sreach').find('[name=loginAccount]');
+					var merchantStatus = $('#form_sreach').find('[name=merchantStatus]');
+					var merchantPhone = $('#form_sreach').find('[name=merchantPhone]');
+					var merchantLevel = $('#form_sreach').find('[name=merchantLevel]');
+					var startDate = $('#form_sreach').find('[name=startDate]');
+					var endDate = $('#form_sreach').find('[name=endDate]');
+					// 执行重载
+					table.reload('merchantList', {
+						url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
+						page: {
+							curr: 1 //重新从第 1 页开始
+						},
+						where: {
+							merchantNameblurry: merchantName.val(),
+							merchantId: merchantId.val(),
+							loginAccount: loginAccount.val(),
+							merchantStatus: merchantStatus.val(),
+							merchantPhone: merchantPhone.val(),
+							merchantLevel: merchantLevel.val(),
+							startDate: startDate.val(),
+							endDate: endDate.val()
+						}
+					});
+				}
+			};
 			window.merchant_reload = function () {// 提交重载方法到全局，让子页面调用
 				layer.closeAll();
 				_reload();
@@ -334,7 +381,6 @@
 							layer.alert("请选择要审核的商户！");
 							return;
 						} else {
-
 							layer.open({
 								type: 1,
 								skin: "layui-layer-rim", //加上边框
@@ -415,35 +461,7 @@
 				};
 			});
 
-			var active = {
-				reload: function () {	// 搜索
-					var merchantName = $('#form_sreach').find('[name=merchantName]');
-					var merchantId = $('#form_sreach').find('[name=merchantId]');
-					var loginAccount = $('#form_sreach').find('[name=loginAccount]');
-					var merchantStatus = $('#form_sreach').find('[name=merchantStatus]');
-					var merchantPhone = $('#form_sreach').find('[name=merchantPhone]');
 
-					var startDate = $('#form_sreach').find('[name=startDate]');
-					var endDate = $('#form_sreach').find('[name=endDate]');
-					// 执行重载
-					table.reload('merchantList', {
-						url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
-						page: {
-							curr: 1 //重新从第 1 页开始
-						},
-						where: {
-							merchantNameblurry: merchantName.val(),
-							merchantId: merchantId.val(),
-							loginAccount: loginAccount.val(),
-							merchantStatus: merchantStatus.val(),
-							merchantPhone: merchantPhone.val(),
-
-							startDate: startDate.val(),
-							endDate: endDate.val()
-						}
-					});
-				}
-			};
 			// 监听查询按钮
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');

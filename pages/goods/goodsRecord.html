@@ -38,7 +38,6 @@
 		th .layui-table-cell {
 			line-height: 28px;
 		}
-		
 	</style>
 </head>
 
@@ -142,8 +141,8 @@
 					<div class="layui-input-inline">
 						<select name="managerEditGoodsRecordStatus" lay-verify="required" lay-search="">
 							<option value="">请选择</option>
-							<option value="1">备案审核通过</option>
-							<option value="3">审核不通过</option>
+							<option value="1">通过</option>
+							<option value="3">不通过</option>
 						</select>
 					</div>
 				</div>
@@ -254,15 +253,29 @@
 						// },
 						{
 							field: 'customsPortName', title: '口岸', width: 90, templet: function (item) {
-								return item.customsPortName.value;
+								var result = item.customsPortName.value;
+								if (isEmpty(result)) {
+									result = '';
+								}
+								return result;
 							}
 						}, {
 							field: 'customsName', title: '主管海关', width: 120, templet: function (item) {
-								return item.customsCode.value + '-' + item.customsName.value;
+								var result = item.customsCode.value;
+								if (isEmpty(result)) {
+									return '';
+								} else {
+									return item.customsCode.value + '-' + item.customsName.value;
+								}
 							}
 						}, {
 							field: 'ciqOrgName', title: '检验检疫机构', width: 140, templet: function (item) {
-								return item.ciqOrgCode.value + '-' + item.ciqOrgName.value;
+								var result = item.ciqOrgCode.value;
+								if (isEmpty(result)) {
+									return '';
+								} else {
+									return item.ciqOrgCode.value + '-' + item.ciqOrgName.value;
+								}
 							}
 						}, {
 							field: 'status', title: '备案状态', width: 100, templet: function (item) {
@@ -387,7 +400,6 @@
 							layer.alert("请选择要审核的商品！");
 							return;
 						} else {
-
 							layer.open({
 								type: 1,
 								skin: "layui-layer-rim", //加上边框
@@ -398,6 +410,7 @@
 									if ($("#managerAuditMerchantInfo").find('[name=managerEditGoodsRecordStatus]').val() == '') {
 										layer.alert('请选择审核结果！');
 									} else {
+										layer.load();
 										var arr = [];
 										for (var i = 0; i < len; i++) {
 											arr.push({
@@ -413,6 +426,7 @@
 											},
 											data: { goodsPack: JSON.stringify(arr) },
 											success: function (response) {
+												layer.closeAll();
 												if (response.status == 1) {
 													layer.closeAll();
 													layer.msg("审核完成！", { time: 1000 }, function () {
@@ -428,7 +442,6 @@
 							});
 						}
 						break;
-
 				};
 			});
 			/*
@@ -513,9 +526,27 @@
 						]
 					}
 				});
-			});
-	
+			});			
 
+			//单击行勾选checkbox事件
+			$(document).on("click", ".layui-table-body table.layui-table tbody tr", function () {
+				var index = $(this).attr('data-index');
+				var tableBox = $(this).parents('.layui-table-box');
+				//存在固定列
+				if (tableBox.find(".layui-table-fixed.layui-table-fixed-l").length > 0) {
+					tableDiv = tableBox.find(".layui-table-fixed.layui-table-fixed-l");
+				} else {
+					tableDiv = tableBox.find(".layui-table-body.layui-table-main");
+				}
+				var checkCell = tableDiv.find("tr[data-index=" + index + "]").find("td div.laytable-cell-checkbox div.layui-form-checkbox I");
+				if (checkCell.length > 0) {
+					checkCell.click();
+				}
+			});
+			$(document).on("click", "td div.laytable-cell-checkbox div.layui-form-checkbox", function (e) {
+				e.stopPropagation();
+			});
+			//------------------------------------------------------------------------
 
 		});
 	</script>

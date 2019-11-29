@@ -24,7 +24,8 @@
 		.layui-form-switch em {
 			width: 40px;
 		}
-/* 
+
+		/* 
 		body {
 			overflow-y: scroll;
 		} */
@@ -87,6 +88,7 @@
 										<option value="manager">管理员</option>
 										<option value="merDivRate">分润费率</option>
 										<option value="member">会员</option>
+										<option value="merPro">推广配置</option>
 									</select>
 								</div>
 							</div>
@@ -155,7 +157,7 @@
 			// layui.extend({
 			// 	admin: '{/}../../static/js/admin'
 			// });
-			layui.use(['table', 'jquery', 'form', 'tree', 'laydate','element'], function () {
+			layui.use(['table', 'jquery', 'form', 'tree', 'laydate', 'element'], function () {
 				var table = layui.table,
 					$ = layui.jquery,
 					form = layui.form,
@@ -222,8 +224,10 @@
 										return '分润费率';
 									} else if (item.module == 'member') {
 										return '会员';
-									}else if(item.module=='merCost'){
+									} else if (item.module == 'merCost') {
 										return '商户计费';
+									} else if (item.module == 'merPro'){
+										return '推广配置';
 									}
 								}
 							}, {

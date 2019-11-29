@@ -54,18 +54,19 @@
       <div class="weadmin-nav">
         <span class="layui-breadcrumb">
           <a>
-            商户：<cite id="g-merchantName"></cite></a>
+            商户名称：<cite id="g-merchantName"></cite></a>
         </span>
       </div>
-      <ul class="layui-tab-title">
+      <ul class="layui-tab-title" id="tab_tol">
         <li class="layui-this" id="info_tab">基本资料</li>
-        <li id="findMerchantRecordDetail_tab">备案信息</li>
-        <li id="getMerchantBusinessInfo_tab">企业资质</li>
-        <li id="ywxx_tab">业务信息</li>
-        <li id="merchantAllot_tab">物流信息</li>
-        <li id="merchantCost_tab">计费信息</li>
-        <li id="merchantBank_tab">银行卡信息</li>
-        <li id="portRate_tab">口岸信息</li>
+        <li class="tab_show_kj" id="findMerchantRecordDetail_tab" style="display: none;">备案信息</li>
+        <li class="tab_show_kj" id="getMerchantBusinessInfo_tab" style="display: none;">企业资质</li>
+        <li class="tab_show_kj" id="ywxx_tab" style="display: none;">业务信息</li>
+        <li class="tab_show_kj" id="merchantAllot_tab" style="display: none;">物流信息</li>
+        <li class="tab_show_kj" id="merchantCost_tab" style="display: none;">计费信息</li>
+        <li class="tab_show_kj base" id="merchantBank_tab" style="display: none;">银行卡信息</li>
+        <li class="tab_show_kj" id="portRate_tab" style="display: none;">口岸信息</li>
+        <li class="tab_show_kj tg" id="merchant_promotion_tab" style="display: none;">推广配置</li>
       </ul>
       <div class="layui-tab-content" style="height: 100px;">
         <!-- 基本信息 -->
@@ -802,32 +803,49 @@
 
           </form>
         </div>
+        <!--专店推广配置信息 -->
+        <div class="layui-tab-item">
+          <form class="layui-form" lay-filter="merchant_promotion" id="merchant_promotion">
+            <input type="hidden" name="merchantId">
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">
+                  <span class="we-red">*</span>实名类型
+                </label>
+                <div class="layui-input-inline">
+                  <select name="verType" lay-verify="required" lay-filter="aihao">
+                    <option value="">请选择</option>
+                    <option value="two">两要素</option>
+                    <option value="three">三要素</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+              <button type="button" class="layui-btn" lay-filter="up_merchant_promotion" lay-submit="">保存</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-
   </div>
+
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
     var g_data = '';// 全局数据变量
     function getParent_data(obj) {
       g_data = obj.data;
-
     }
-    layui.use(['tree', 'form', 'jquery', 'util', 'admin', 'layer', 'upload', 'table'], function () {
+    layui.use(['tree', 'form', 'jquery', 'util', 'element', 'layer', 'upload', 'table'], function () {
       var form = layui.form,
         $ = layui.jquery,
         util = layui.util,
-        admin = layui.admin,
+        element = layui.element,
         table = layui.table,
         tree = layui.tree,
         upload = layui.upload,
         layer = layui.layer;
-
-
       //自定义验证规则
       form.verify({
         pass: [/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/, '密码由6-20字母和数字组成'],
@@ -2253,7 +2271,6 @@
             , "tollType": 'pen'
             , "penFees": 0
             , "ciqOrg": data.customsPort + '-' + data.customsPortName + '-' + data.customsCode + '-' + data.customsName + '-' + data.ciqOrgCode + '-' + data.ciqOrgName
-
           })
           form.render('select');
 
@@ -2288,15 +2305,80 @@
               layer.msg("修改成功");
               _reload_portRate();
             } else {
-
               layer.alert(response.msg);
             }
           }
         });
       });
 
-    });
+      //根据对应商户等级显示商户详情标签栏
+      var showMerPro = function () {
+        var level = g_data.merchantLevel;
+        if (level == 100) {//白金商户       
+          $('#tab_tol  .base').show();
+          $('#tab_tol  .tg').show();
+        } else if (level == 1) {//vip商户
+          $('#tab_tol .tab_show_kj').show();
+        } else {//普通商户
+          $('#tab_tol .tab_show_kj').show();
+          $('#tab_tol .tg').hide();
+        }
+      }
+      showMerPro();
+      //点击推广商配置信息
+      $('#merchant_promotion_tab').click(function () {
+        findMerProInfo();
+      });
+      var findMerProInfo = function () {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merPro/find",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: { merchantId: g_data.merchantId },
+          success: function (response) {
+            if (response.status == 1) {
+              var result = response.datas[0];
+              //表单初始赋值
+              form.val('merchant_promotion', {
+                "verType": result.verType
+              })
+              form.render('select');
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      }
+      form.on('submit(up_merchant_promotion)', function (data) {
+        data.field.merchantId = g_data.merchantId;
+        layer.load(2);
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merPro/update",
+          // type: "POST",
+          method: 'post',
+          dataType: 'JSON',
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            if (response.status == 1) {
+              layer.msg('修改成功！');
+              setTimeout(function () {
+                findMerProInfo();
+              }, 1000);
+            } else {
+              layer.close();
+              layer.alert(response.msg);
+            }
+            layer.closeAll("loading");
+          }
+        });
+      });
 
+    });
   </script>
 </body>
 

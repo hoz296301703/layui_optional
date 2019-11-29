@@ -26,9 +26,9 @@
 			width: 40px;
 		}
 
-		body {
+		/* body {
 			overflow-y: scroll;
-		}
+		} */
 
 		/* 私有样式 */
 		.layui-form-label {
@@ -114,35 +114,35 @@
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 
 	</div>
-	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
+	<script>		
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form', 'element', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
+				element = layui.element,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				,max :0
 			});
 			laydate.render({
 				elem: '#endDate'
 				, type: 'datetime'
+				
 			});
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				toolbar: '#exp_mer_toolbar',
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
+				defaultToolbar: ['filter'],
 				url: urlPrefix + 'silver-web-shop/expadndMerchant/findInfo',
 				method: 'post',
 				cols: [

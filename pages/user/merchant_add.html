@@ -20,12 +20,16 @@
     .layui-form-label {
       width: 115px;
     }
+
+    #insert .layui-form-switch {
+      margin-top: 0;
+    }
   </style>
 </head>
 
 <body>
   <div class="weadmin-body">
-    <form class="layui-form" lay-filter="example">
+    <form class="layui-form" lay-filter="example" id='insert'>
       <div class="layui-form-item">
         <div class="layui-inline">
           <label for="L_username" class="layui-form-label">
@@ -114,45 +118,63 @@
             <span class="we-red">*</span>地址
           </label>
           <div class="layui-input-inline">
-            <input type="text" name="merchantAddress" placeholder="请输入地址" lay-verify="required" autocomplete="off" class="layui-input">
+            <input type="text" name="merchantAddress" placeholder="请输入地址" lay-verify="required" autocomplete="off"
+              class="layui-input">
           </div>
         </div>
         <div class="layui-inline">
           <label class="layui-form-label">
-            <span class="we-red">*</span>商户状态
+            <span class="we-red">*</span>状态
           </label>
           <div class="layui-input-inline">
             <select name="merchantStatus" lay-verify="required" lay-filter="aihao">
               <option value=""></option>
               <option value="1">启用</option>
               <option value="2">禁用</option>
-              <option value="3">审核</option>
+              <option value="3" selected>审核</option>
             </select>
           </div>
         </div>
       </div>
 
       <div class="layui-form-item">
-     
+        <div class="layui-inline">
+          <label class="layui-form-label">
+            <span class="we-red">*</span>等级
+          </label>
+          <div class="layui-input-inline">
+            <select name="merchantLevel" lay-verify="required" lay-filter="aihao">
+              <option value="0" selected>普通商户</option>
+              <option value="1">VIP商户</option>
+              <option value="100">白金商户</option>
+            </select>
+          </div>
+        </div>
         <div class="layui-inline">
           <label class="layui-form-label">电子邮箱</label>
           <div class="layui-input-inline">
             <input type="text" name="merchantEmail" placeholder="请输入电子邮箱" autocomplete="off" class="layui-input">
           </div>
         </div>
+      </div>
+
+      <div class="layui-form-item">
         <div class="layui-inline">
           <label class="layui-form-label">QQ</label>
           <div class="layui-input-inline">
             <input type="text" name="merchantQQ" placeholder="请输入QQ" autocomplete="off" class="layui-input">
           </div>
         </div>
-      </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label">是否第三方</label>
-        <div class="layui-input-block">
-          <input type="checkbox" name="thirdPartyFlag" lay-skin="switch" lay-text="是|否">
+        <div class="layui-inline">
+          <label class="layui-form-label">第三方平台</label>
+          <div class="layui-input-inline">
+            <input type="checkbox" name="thirdPartyFlag" lay-skin="switch" lay-text="是|否">
+          </div>
         </div>
       </div>
+
+
+
       <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
         <button type="button" class="layui-btn" lay-filter="add" lay-submit="">保存</button>
       </div>
