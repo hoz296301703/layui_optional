@@ -24,81 +24,88 @@
 		.layui-form-switch em {
 			width: 40px;
 		}
-
-		body {
-			overflow-y: scroll;
-		}
 	</style>
 </head>
 
 <body>
 	<div class="weadmin-body">
-		<form id="form_sreach" class="layui-form">
-			<div class="layui-form-item">
-				<div class="layui-inline">
-					<label class="layui-form-label">海关名称</label>
-					<div class="layui-input-inline">
-						<input type="text" name="customsName" placeholder="请输入海关名称" class="layui-input">
-					</div>
+		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+			<ul class="layui-tab-title">
+				<li class="layui-this">口岸信息</li>
+				<li id="gac_btn">海关关区</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<form id="form_sreach" class="layui-form">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">海关名称</label>
+								<div class="layui-input-inline">
+									<input type="text" name="customsName" placeholder="请输入海关名称" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">海关编号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="customsCode" placeholder="请输入商户编号" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">国检名称</label>
+								<div class="layui-input-inline">
+									<input type="text" name="ciqOrgName" placeholder="请输入国检机构名称" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">国检编号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="ciqOrgCode" placeholder="请输入国检机构编号" class="layui-input">
+								</div>
+							</div>
+						</div>
+						<div style="text-align: center;">
+							<button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+								data-type="reload">搜索</button>
+						</div>
+					</form>
+				<script type="text/html" id="customsList_toolbar">
+					<div class="layui-btn-container">
+						<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>添加</button>
+					</div>				
+				</script>
+				<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">海关编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="customsCode" placeholder="请输入商户编号" class="layui-input">
-					</div>
+				<!----海关关区------------start----------------------->
+				<div class="layui-tab-item" id="gac_info">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">国检名称</label>
-					<div class="layui-input-inline">
-						<input type="text" name="ciqOrgName" placeholder="请输入国检机构名称" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">国检编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="ciqOrgCode" placeholder="请输入国检机构编号" class="layui-input">
-					</div>
-				</div>
+				<!----海关关区------------end----------------------->
 			</div>
-			<div style="text-align: center;">
-				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
-			</div>
-		</form>
-		<script type="text/html" id="customsList_toolbar">
-				<div class="layui-btn-container">
-					<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>添加</button>
-				</div>
-				
-			</script>
-		<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+		</div>
 	</div>
 	<script type="text/html" id="operateTpl">
 		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
 	<a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
 	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
-
 	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
-
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
-
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree'], function () {
+		layui.use(['table', 'jquery', 'form', 'tree', 'laydate', 'element'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin;
+				element = layui.element,
+				laydate = layui.laydate;
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				cellMinWidth: 80,
-				height: tableHeight,
+				defaultToolbar: ['filter'],
+				// height: tableHeight,
 				toolbar: '#customsList_toolbar',
 				url: urlPrefix + 'silver-web-shop/customsPort/getInfo',
 				method: 'post',
@@ -240,14 +247,7 @@
 
 							// }
 						});
-						break;
-					// case 'getCheckLength':
-					// 	var data = checkStatus.data;
-					// 	layer.msg('选中了：' + data.length + ' 个');
-					// 	break;
-					// case 'isAll':
-					// 	layer.msg(checkStatus.isAll ? '全选' : '未全选');
-					// 	break;
+						break;					
 				};
 			});
 			//监听工具条
@@ -300,6 +300,12 @@
 					});
 				}
 			});
+
+			//跳转至短信日志
+			$('#gac_btn').on('click', function () {
+				var h = $(window).height() - 80;
+				$("#gac_info").find('iframe').attr('src', "gac_list.html").css('height', h + 'px');
+			})
 		});
 	</script>
 </body>
