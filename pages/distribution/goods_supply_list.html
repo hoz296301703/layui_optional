@@ -24,11 +24,6 @@
 		.layui-form-switch em {
 			width: 40px;
 		}
-
-		body {
-			overflow-y: scroll;
-		}
-
 		/* 私有样式 */
 		.layui-form-label {
 			width: 90px;
@@ -103,16 +98,12 @@
 
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form',  'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
@@ -126,11 +117,11 @@
 				, max: 0
 			});
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/goodsSupply/findInfo',
 				method: 'post',
 				cols: [

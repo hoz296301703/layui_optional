@@ -1900,20 +1900,19 @@
         var value = data.value;
         areaState.province.fn(value, 'province_update', 'city_update');
       });
+      
       var areaState = {
         province: {
           state: false,
           data: [],
           fn: function (value, pId, Cid) { // value 表示的是区域代码，及传到后台的数据
             this.state = true; // 可能以后会用到
-            var provinceCode = $('#' + id).find('[name=bankProvince]');
-
+            var provinceCode = $('#' + pId).find('[name=bankProvince]');
             if (value !== '') {
               //渲染城市select
               addSelect(Cid, getCity($('#' + pId).find('option:selected').attr('data-provincecode')), true, 'cityCode', 'cityName');
               // addCity('city', getCity($(provinceCode).find('option:selected').attr('data-provincecode')), true);
             } else {
-
               form.render("select");
             }
           }

@@ -26,10 +26,6 @@
 			width: 40px;
 		}
 
-		body {
-			overflow-y: scroll;
-		}
-
 		/* 私有样式 */
 		.layui-form-label {
 			width: 90px;
@@ -85,47 +81,37 @@
 			</div>
 			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 	</div>
-	<!-- <div class="weadmin-block demoTable">
-		<button class="layui-btn" onclick="WeAdminShow('添加用户','./customs_add.html',600,400)">
-			<em class="layui-icon">&#xe61f;</em>添加</button>
-	</div> -->
 	<script type="text/html" id="operateTpl">
-			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>			
-			<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">删除</a> -->
-		</script>
-
+			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>		
+	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
-
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
-
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
+				, max: 0
 
 			});
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/merchantCounter/findInfo',
 				method: 'post',
 				cols: [
@@ -145,13 +131,12 @@
 						}, {
 							field: 'merchantId', title: '商户编号', width: 180
 						}, {
-
 							field: 'headContent', title: '专店名称', width: 150
 						}, {
 							field: 'counterId', title: '专店编号', width: 150
 						}, {
-						// 	field: 'description', title: '专店描述', width: 250
-						// }, {
+							// 	field: 'description', title: '专店描述', width: 250
+							// }, {
 							// 	field: 'price', title: '价格', width: 80
 							// }, {
 							// 	field: 'divRate', title: '佣金比例(%)', width: 110, templet: function (item) {
@@ -162,7 +147,7 @@
 							// 		return accMul(item.divRate, item.price);
 							// 	}
 							// }, {
-							field: 'operate', title: '操作', width: 100, toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', title: '操作', width: 80, toolbar: '#operateTpl', fixed: 'right'
 						}
 					]
 				],
@@ -218,7 +203,7 @@
 						merchantNameblurry: merchantName.val(),
 						merchantId: merchantId.val(),
 						headContentblurry: headContent.val(),
-						counterId:counterId.val(),
+						counterId: counterId.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -252,7 +237,7 @@
 							merchantNameblurry: merchantName.val(),
 							merchantId: merchantId.val(),
 							headContentblurry: headContent.val(),
-							counterId:counterId.val(),
+							counterId: counterId.val(),
 							startDate: startDate,
 							endDate: endDate
 						}
@@ -263,6 +248,33 @@
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');
 				active[type] ? active[type].call(this) : '';
+			});
+
+			//监听工具条
+			table.on('tool(articleList)', function (obj) {
+				var data = obj.data;
+				if (obj.event === 'detail') {// 查看详情
+					layer.open({
+						type: 2,
+						// title: '专柜商品信息',
+						title: data.headContent + '-专店商品信息',
+						area: ['100%', '100%'],
+						// fixed: false, //不固定
+						// maxmin: true,
+						content: './counter_goods_list.html',
+						btnAlign: 'c',
+						btn: ['关闭'],
+						success: function (layero, index) {
+							// 获取子页面的iframe
+							var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传参
+							iframe.getParent_data(obj);
+						},
+						btn1: function (index) {
+							layer.close(index);
+						}
+					});
+				}
 			});
 		});
 	</script>
