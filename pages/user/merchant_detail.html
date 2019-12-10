@@ -239,19 +239,34 @@
         <!-- 业务资料(图片) -->
         <div class="layui-tab-item" id="getMerchantBusinessInfo">
           <div class="layui-upload">
-            <div class="layui-upload-list">
-              <label class="layui-form-label" style="width: 150px;">企业营业执照：</label>
-              <img width="100px" height="100px" style="border: 1px solid #ddd;" class="layui-upload-img"
-                id="merchantBusinessLicenseLink">
+            <div class="layui-upload-list" style="display: flex;align-items: center">
+              <label class="layui-form-label" style="width: 150px;">企业营业执照</label>
+              <img width="100px" height="100px" style="border: 1px solid #ddd; margin-right: 10px;"
+                class="layui-upload-img" id="merchantBusinessLicenseLink">
               <p id="merchantBusinessLicenseLinkText" style="display: inline-block;"></p>
+              <button type="button" class="layui-btn layui-btn-normal" id="businessLicenseOriginalImage"
+                style="display: none;">查看原图</button>
+            </div>
+          </div>
+
+          <div class="layui-upload">
+            <div class="layui-upload-list" style="display: flex;align-items: center">
+              <label class="layui-form-label" style="width: 150px;">特定行业经营许可证</label>
+              <img width="100px" height="100px" style="border: 1px solid #ddd;margin-right: 10px;"
+                class="layui-upload-img" id="merchantSpecificIndustryLicenseLink">
+              <p id="merchantSpecificIndustryLicenseLinkText" style="display: inline-block;"></p>
+              <button type="button" class="layui-btn layui-btn-normal" id="specificIndustryLicenseOriginalImage"
+                style="display: none;">查看原图</button>
             </div>
           </div>
           <div class="layui-upload">
-            <div class="layui-upload-list">
-              <label class="layui-form-label" style="width: 150px;">特定行业经营许可证：</label>
-              <img width="100px" height="100px" style="border: 1px solid #ddd;" class="layui-upload-img"
-                id="merchantSpecificIndustryLicenseLink">
-              <p id="merchantSpecificIndustryLicenseLinkText" style="display: inline-block;"></p>
+            <div class="layui-upload-list" style="display: flex;align-items: center">
+              <label class="layui-form-label" style="width: 150px;">食品经营许可证</label>
+              <img width="100px" height="100px" style="border: 1px solid #ddd;margin-right: 10px;"
+                class="layui-upload-img" id="foodBusinessLicenseLink">
+              <p id="foodBusinessLicenseLinkText" style="display: inline-block;"></p>
+              <button type="button" class="layui-btn layui-btn-normal" id="foodBusinessLicenseOriginalImage"
+                style="display: none;">查看原图</button>
             </div>
           </div>
         </div>
@@ -1095,7 +1110,7 @@
       // 管理员查看商户证件图
       var _getMerchantBusinessInfo = function () {
         $.ajax({
-          url: urlPrefix + "silver-web-shop/manager/getMerchantBusinessInfo",
+          url: urlPrefix + "silver-web-shop/merDetail/find",
           type: "POST",
           xhrFields: {
             withCredentials: true
@@ -1103,21 +1118,29 @@
           data: { merchantId: g_data.merchantId },
           success: function (response) {
             if (response.status == 1) {
-              var datas = response.datas[0];
+              var datas = response.datas;
               // 企业营业执照
-              if (!isEmpty(datas.merchantBusinessLicenseLink)) {// 判断是否有上传的图片
-                $("#merchantBusinessLicenseLink").attr("src", merchantImgPrefix + datas.merchantId + "/" + datas.merchantBusinessLicenseLink
-                ); // 渲染图片
-              } else {
+              if (isEmpty(datas.merchantBusinessLicenseLink)) {// 判断是否有上传的图片
                 $("#merchantBusinessLicenseLink").attr("src", "../../static/images/bgImg.jpg"); // 渲染默认图片
+              } else {
+                $("#merchantBusinessLicenseLink").attr("src", merchantImgPrefix + datas.merchantId + "/" + datas.merchantBusinessLicenseLink); // 渲染图片
+                $("#businessLicenseOriginalImage").attr('style', 'display:inline-block');
               }
               // 特定行业经营许可证
-              if (!isEmpty(datas.merchantSpecificIndustryLicenseLink)) {
+              if (isEmpty(datas.merchantSpecificIndustryLicenseLink)) {
+                $("#merchantSpecificIndustryLicenseLink").attr("src", "../../static/images/bgImg.jpg"); // 渲染默认图片
+              } else {
                 $("#merchantSpecificIndustryLicenseLink").attr(
                   "src", merchantImgPrefix + datas.merchantId + "/" + datas.merchantSpecificIndustryLicenseLink
                 ); // 渲染图片
+                $("#specificIndustryLicenseOriginalImage").attr('style', 'display:inline-block');
+              }
+              // 食品经营许可证
+              if (isEmpty(datas.foodBusinessLicenseLink)) {
+                $("#foodBusinessLicenseLink").attr("src", "../../static/images/bgImg.jpg"); // 渲染默认图片
               } else {
-                $("#merchantSpecificIndustryLicenseLink").attr("src", "../../static/images/bgImg.jpg"); // 渲染默认图片
+                $("#foodBusinessLicenseLink").attr("src", merchantImgPrefix + datas.merchantId + "/" + datas.foodBusinessLicenseLink); // 渲染图片
+                $("#foodBusinessLicenseOriginalImage").attr('style', 'display:inline-block');
               }
             } else {
               alert(response.msg);
@@ -1128,67 +1151,145 @@
       $('#getMerchantBusinessInfo_tab').click(function () {
         _getMerchantBusinessInfo();
       })
-
+      //查看营业执照原图
+      $('#businessLicenseOriginalImage').click(function () {
+        var img = $('#merchantBusinessLicenseLink')[0].src;
+        window.open(img);
+      })
+      //查看特定行业许可证
+      $('#specificIndustryLicenseOriginalImage').click(function () {
+        var img = $('#merchantSpecificIndustryLicenseLink')[0].src;
+        window.open(img);
+      })
+      //查看食品经营许可证
+      $('#foodBusinessLicenseOriginalImage').click(function () {
+        var img = $('#foodBusinessLicenseLink')[0].src;
+        window.open(img);
+      })
       //企业营业执照图片上传
-      var uploadMerchantBusinessLicenseLink = upload.render({
+      var uploadBusinessLicenseLink = upload.render({
         elem: '#merchantBusinessLicenseLink'
-        , url: urlPrefix + 'silver-web-shop/manager/editMerhcnatBusinessInfo'
-        // ,method: ''  //可选项。HTTP类型，默认post
+        , url: urlPrefix + 'silver-web-shop/merDetail/upImage'
+        // ,method: ''  //可选项。HTTP类型，默认post           
         , acceptMime: 'image/*'
         , size: 1024 * 2 //限定大小
-        , data: { merchantBusinessLicenseLink: '222' } //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+        , data: { merchantId: g_data.merchantId, type: 'business' } //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
         , before: function (obj) {
+          layer.load();
           //预读本地文件示例，不支持ie8
           obj.preview(function (index, file, result) {
             $('#merchantBusinessLicenseLink').attr('src', result); //图片链接（base64）
           });
         }
         , done: function (res) {
+          layer.closeAll('loading');
+          var id = 'merchantBusinessLicenseLinkText';
           //如果上传失败
           if (res.code > 0) {
+            retryUp(id);
             return layer.msg('上传失败');
+          } else if (res.status != '1') {
+            retryUp(id);
+            return layer.msg('上传失败');
+          } else if (res.status == '1') {
+            //上传成功
+            _getMerchantBusinessInfo();
           }
-          //上传成功
         }
         , error: function () {
-          //演示失败状态，并实现重传
-          var p = $('#merchantBusinessLicenseLinkText');
-          p.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-          p.find('.demo-reload').on('click', function () {
-            uploadMerchantBusinessLicenseLink.upload();
-          });
+          layer.closeAll('loading');
+          retryUp('merchantBusinessLicenseLinkText');
         }
       });
+      //商户营业执照上传失败，渲染重新上传
+      var retryUp = function (id) {
+        //演示失败状态，并实现重传
+        var p = $('#' + id);
+        p.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+        p.find('.demo-reload').on('click', function () {
+          if (id == 'merchantBusinessLicenseLinkText') {//营业执照
+            uploadBusinessLicenseLink.upload();
+          } else if (id == 'merchantSpecificIndustryLicenseLinkText') {//特定行业许可证
+            uploadSpecificIndustryLicenseLink.upload();
+          } else if (id == 'merchantSpecificIndustryLicenseLinkText') {//食品经营许可证
+            uploadSpecificIndustryLicenseLink.upload();
+          }
+        });
+      }
+
+      var specificIndustryId = 'merchantSpecificIndustryLicenseLinkText';
       //特定行业经营许可证
-      var uploadMerchantBusinessLicenseLink = upload.render({
+      var uploadSpecificIndustryLicenseLink = upload.render({
         elem: '#merchantSpecificIndustryLicenseLink'
-        , url: urlPrefix + 'silver-web-shop/manager/editMerhcnatBusinessInfo'
+        , url: urlPrefix + 'silver-web-shop/merDetail/upImage'
         // ,method: ''  //可选项。HTTP类型，默认post
         , acceptMime: 'image/*'
         , size: 1024 * 2 //限定大小
-        , data: { merchantBusinessLicenseLink: '222' } //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+        , data: { merchantId: g_data.merchantId, type: 'specificIndustry' } //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
         , before: function (obj) {
+          layer.load();
           //预读本地文件示例，不支持ie8
           obj.preview(function (index, file, result) {
             $('#merchantSpecificIndustryLicenseLink').attr('src', result); //图片链接（base64）
           });
         }
         , done: function (res) {
+          layer.closeAll('loading');
           //如果上传失败
           if (res.code > 0) {
+            retryUp(specificIndustryId);
             return layer.msg('上传失败');
+          } else if (res.status != '1') {
+            retryUp(specificIndustryId);
+            return layer.msg('上传失败');
+          } else if (res.status == '1') {
+            //上传成功
+            _getMerchantBusinessInfo();
           }
           //上传成功
         }
         , error: function () {
-          //演示失败状态，并实现重传
-          var p = $('#merchantSpecificIndustryLicenseLinkText');
-          p.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-          p.find('.demo-reload').on('click', function () {
-            uploadMerchantBusinessLicenseLink.upload();
-          });
+          layer.closeAll('loading');
+          retryUp(specificIndustryId);
         }
       });
+
+      var foodBusinessLicenseId = 'foodBusinessLicenseLinkText';//食品经营许可证ID
+      //食品经营许可证
+      var uploadFoodBusinessLicenseLink = upload.render({
+        elem: '#foodBusinessLicenseLink'
+        , url: urlPrefix + 'silver-web-shop/merDetail/upImage'
+        // ,method: ''  //可选项。HTTP类型，默认post
+        , acceptMime: 'image/*'
+        , size: 1024 * 2 //限定大小
+        , data: { merchantId: g_data.merchantId, type: 'foodBusinessLicense' } //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+        , before: function (obj) {
+          layer.load();
+          //预读本地文件示例，不支持ie8
+          obj.preview(function (index, file, result) {
+            $('#foodBusinessLicenseLink').attr('src', result); //图片链接（base64）
+          });
+        }
+        , done: function (res) {
+          layer.closeAll('loading');
+          //如果上传失败
+          if (res.code > 0) {
+            retryUp(foodBusinessLicenseId);
+            return layer.msg('上传失败');
+          } else if (res.status != '1') {
+            retryUp(foodBusinessLicenseId);
+            return layer.msg('上传失败');
+          } else if (res.status == '1') {
+            //上传成功
+            _getMerchantBusinessInfo();
+          }
+        }
+        , error: function () {
+          layer.closeAll('loading');
+          retryUp(foodBusinessLicenseId);
+        }
+      });
+
 
       /** 业务信息 **/
       // 管理员查看商户业务信息
@@ -1246,9 +1347,7 @@
           url: urlPrefix + url,
           type: "POST",
           dataType: 'JSON',
-          xhrFields: {
-            withCredentials: true
-          },
+          xhrFields: { withCredentials: true },
           data: data.field,
           success: function (response) {
             layer.closeAll("loading");
@@ -1900,7 +1999,7 @@
         var value = data.value;
         areaState.province.fn(value, 'province_update', 'city_update');
       });
-      
+
       var areaState = {
         province: {
           state: false,

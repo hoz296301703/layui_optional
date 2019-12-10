@@ -148,12 +148,12 @@
 									<label class="layui-form-label">接收日期</label>
 									<div class="layui-input-inline">
 										<input type="text" class="layui-input" id="startDate" name="startDate"
-											autocomplete="off" readonly="" placeholder="年-月-日">
+										readonly=""	autocomplete="off" readonly="" placeholder="年-月-日">
 									</div>
 									    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
 									<div class="layui-input-inline">
 										<input type="text" class="layui-input" id="endDate" name="endDate"
-											autocomplete="off" readonly="" placeholder="年-月-日">
+										readonly=""	autocomplete="off" readonly="" placeholder="年-月-日">
 									</div>
 								</div>
 							</div>
@@ -193,18 +193,13 @@
 			</div>
 		</div>
 	</div>
-
-
-	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+	<script>	
+		layui.use(['table', 'jquery', 'form', 'element', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
+				element = layui.element,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
@@ -445,8 +440,7 @@
 						}
 					});
 					// layer.full(detail_full);// 全屏显示
-				} else if (obj.event === 'delete') {// 重置密码
-					console.info(data);
+				} else if (obj.event === 'delete') {// 重置密码					
 					layer.open({
 						id: 1,
 						type: 1,

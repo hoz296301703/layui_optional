@@ -220,7 +220,7 @@
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var entDate = $('#form_sreach').find('[name=entDate]');
 					startDate = appendStartDate(startDate.val());
-					entDate = appendEndDate(entDate.val());
+					entDate = appendEndDate(endDate.val());
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
 						page: {
@@ -233,7 +233,7 @@
 							merchantStatus: merchantStatus.val(),
 							merchantLevel: 100,
 							startDate: startDate,
-							entDate: entDate
+							entDate: endDate
 						}
 					});
 				}
@@ -253,7 +253,7 @@
 						var startDate = $('#form_sreach').find('[name=startDate]');
 						var entDate = $('#form_sreach').find('[name=entDate]');
 						startDate = appendStartDate(startDate.val());
-						entDate = appendEndDate(entDate.val());
+						entDate = appendEndDate(endDate.val());
 						//执行重载
 						table.reload('articleList', {
 							url: urlPrefix + 'silver-web-shop/manager/findAllMerchantInfo',
@@ -267,7 +267,7 @@
 								merchantStatus: merchantStatus.val(),
 								merchantLevel: 100,
 								startDate: startDate,
-								entDate: entDate
+								entDate: endDate
 							}
 						});
 					}

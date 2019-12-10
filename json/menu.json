@@ -241,6 +241,26 @@
 					"url": "./pages/downCenter/down_center_list.html"
 				}
 			]
+		},
+		{
+			"id": "systemStatistics",
+			"name": "系统统计",
+			"icon": "icon-tongji1",
+			"url": "",
+			"children": [
+				{
+					"id": "systemStatistics_1",
+					"name": "专店首页",
+					"icon": "",
+					"url": "./pages/statistics/counter_home_list.html"
+				},
+				{
+					"id": "systemStatistics_2",
+					"name": "专柜商品",
+					"icon": "",
+					"url": "./pages/statistics/counter_goods_list.html"
+				}
+			]
 		}
 	]
 }

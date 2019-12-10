@@ -111,12 +111,12 @@
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
-							placeholder="年-月-日">
+							readonly="" placeholder="年-月-日">
 					</div>
 					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
-							placeholder="年-月-日">
+							readonly="" placeholder="年-月-日">
 					</div>
 				</div>
 			</div>
@@ -194,13 +194,13 @@
 					<a  class="layui-btn layui-btn-xs"  lay-event="insert_logi_btn">录入物流</a>		
 					{{#  } }}
 				{{#  } }}				
-					<!-- laytpl语法---END--- -->			
-				{{#  if((d.status == 200 || d.status == 400)){ }}
-				
+			
+				{{#  if((d.status == 200 || d.status == 400 || d.status == 1)){ }}
+				<!--待付款、交易成功、交易失败都不渲染按钮-->
 				{{#  }else{ }}
 				<a  class="layui-btn layui-btn-xs layui-btn-danger"  lay-event="confirm_order">确认订单</a>
-
 				{{#  } }}
+				<!-- laytpl语法---END--- -->			
 		</script>
 		<script type="text/html" id="order_list_toolbar">
 			<div class="layui-btn-container">
@@ -213,7 +213,6 @@
 
 	</div>
 	<script>
-
 		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
@@ -634,7 +633,7 @@
 									}, error: function () {//超过5秒默认判定为成功
 										showDown();
 									}
-								});								
+								});
 							}
 						});
 						break;

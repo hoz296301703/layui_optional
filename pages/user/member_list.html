@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <!-- 会员信息html-->
+
 <head>
 	<meta charset="UTF-8">
 	<title>银盟跨境电商服务平台运营系统</title>
@@ -28,10 +29,6 @@
 
 		.layui-form-switch em {
 			width: 40px;
-		}
-
-		body {
-			overflow-y: scroll;
 		}
 	</style>
 </head>
@@ -134,26 +131,23 @@
 
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
 
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
-				, type: 'datetime'
+				, max: 0
 			});
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
@@ -168,21 +162,21 @@
 						{
 							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate',width:170 , title: '注册时间',fixed: 'left', templet: function (item) {
+							field: 'createDate', width: 170, title: '注册时间', fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'memberName', title: '名称',width:150 
+							field: 'memberName', title: '名称', width: 150
 						}, {
-							field: 'loginName', title: '登录账号',width:150
+							field: 'loginName', title: '登录账号', width: 150
 						}, {
-							field: 'memberId', title: '编号',width:150
+							field: 'memberId', title: '编号', width: 150
 						}, {
 							field: 'memberIdCardName', width: 80, title: '姓名'
 						}, {
-							field: 'memberIdCard', title: '身份号码',width:175
+							field: 'memberIdCard', title: '身份号码', width: 175
 						}, {
-							field: 'memberTel', title: '手机号码',width:120
+							field: 'memberTel', title: '手机号码', width: 120
 						}, {
 							field: 'realNameFlag', title: '实名状态', width: 90, templet: function (item) {
 								if (item.realNameFlag == '2') {
@@ -263,7 +257,7 @@
 						memberTel: memberTel.val(),
 						realNameFlag: realNameFlag.val(),
 						memberFlag: memberFlag.val(),
-						memberId:memberId.val(),
+						memberId: memberId.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -290,7 +284,7 @@
 					var loginName = $('#form_sreach').find('[name=loginName]');
 					var memberId = $('#form_sreach').find('[name=memberId]');
 
-					
+
 
 
 					startDate = appendStartDate(startDate.val());
@@ -310,10 +304,10 @@
 							realNameFlag: realNameFlag.val(),
 							memberFlag: memberFlag.val(),
 							loginName: loginName.val(),
-							memberId:memberId.val(),
+							memberId: memberId.val(),
 							startDate: startDate,
 							endDate: endDate
-							
+
 						}
 					});
 				}

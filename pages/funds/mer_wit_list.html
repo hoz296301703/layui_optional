@@ -64,7 +64,7 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">审核状态</label>
 					<div class="layui-input-inline">
-						<select name="revStatus" lay-verify="required" lay-search="">
+						<select id='revStatus' name="revStatus" lay-verify="required" lay-search="">
 							<option value="">全部</option>
 							<option value="firstTrial">运营初审</option>
 							<option value="financialAudit">财务审核</option>
@@ -192,7 +192,18 @@
 			});
 			//管理员账号标识
 			var flag = $('#managerName', window.top.document).attr("name");
-			console.log("--->>" + flag);
+			//根据不同的管理员标识选择审核节点
+			var sel = function () {
+				if (flag == 2) {//运营
+					$("#revStatus").find("option[value='firstTrial']").prop("selected", true);
+				} else if (flag == 3) {//财务
+					$("#revStatus").find("option[value='financialAudit']").prop("selected", true);
+				} else {//其他不选择
+
+				}
+				form.render('select');
+			}
+			sel();
 			// 动态设置表格高度
 			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
@@ -273,6 +284,7 @@
 				},
 				where: {
 					// startDate: appendStartDate(getDay(-7))
+					revStatus: $('#form_sreach').find('[name=revStatus]').val()
 				},
 				done: function (res, curr, count) {
 					//如果是异步请求数据方式，res即为你接口返回的信息。
@@ -398,6 +410,7 @@
 						},
 						data: { serialNo: data.serialNo },
 						success: function (response) {
+							layer.closeAll();
 							if (response.status == 1) {
 								$('#bill_body').find('[name=total]').val(response.datas.total)
 								// $('#bill_body').find('[name=alrAmount]').val(response.datas.alrAmount)
@@ -417,7 +430,6 @@
 									btn: ["关闭"],
 									yes: function (index) {
 										$("#bill_body").hide();
-										layer.closeAll();
 									}
 								});
 							}
