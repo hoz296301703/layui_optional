@@ -152,7 +152,6 @@
       // 一级联动事件触发
       form.on('select(province)', function (data) {
         var value = data.value;
-        console.info('省--->>' + value);
         areaState.province.fn(value);
       });
       // 二级联动事件触发

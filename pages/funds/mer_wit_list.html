@@ -76,7 +76,7 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">结算状态</label>
 					<div class="layui-input-inline">
-						<select name="status" lay-verify="required" lay-search="">
+						<select  id='status' name="status" lay-verify="required" lay-search="">
 							<option value="">全部</option>
 							<option value="success">成功</option>
 							<option value="failure">关闭</option>
@@ -166,6 +166,13 @@
 				</div>
 				<div class="layui-form-mid layui-word-aux">元</div>
 			</div>
+			<div class="layui-form-item" style="margin-bottom: 10px;">
+				<label class="layui-form-label">代付金额</label>
+				<div class="layui-input-inline">
+					<input disabled="" type="text" name="dai_fu_amount" class="layui-input">
+				</div>
+				<div class="layui-form-mid layui-word-aux">元</div>
+			</div>
 		</form>
 	</div>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -195,9 +202,9 @@
 			//根据不同的管理员标识选择审核节点
 			var sel = function () {
 				if (flag == 2) {//运营
-					$("#revStatus").find("option[value='firstTrial']").prop("selected", true);
+					$("#status").find("option[value='pending']").prop("selected", true);
 				} else if (flag == 3) {//财务
-					$("#revStatus").find("option[value='financialAudit']").prop("selected", true);
+					$("#status").find("option[value='pending']").prop("selected", true);
 				} else {//其他不选择
 
 				}
@@ -284,7 +291,7 @@
 				},
 				where: {
 					// startDate: appendStartDate(getDay(-7))
-					revStatus: $('#form_sreach').find('[name=revStatus]').val()
+					status: $('#form_sreach').find('[name=status]').val()
 				},
 				done: function (res, curr, count) {
 					//如果是异步请求数据方式，res即为你接口返回的信息。
@@ -413,13 +420,13 @@
 							layer.closeAll();
 							if (response.status == 1) {
 								$('#bill_body').find('[name=total]').val(response.datas.total)
-								// $('#bill_body').find('[name=alrAmount]').val(response.datas.alrAmount)
 								$('#bill_body').find('[name=wit_amount]').val(data.amount)
 								$('#bill_body').find('[name=wit_fee]').val(data.fee)
 								$('#bill_body').find('[name=merchantName]').val(data.merchantName)
 								$('#bill_body').find('[name=opening_balance]').val(response.datas.opening_balance)
 								$('#bill_body').find('[name=ending_balance]').val(response.datas.ending_balance)
 								$('#bill_body').find('[name=balance]').val(response.datas.balance)
+								$('#bill_body').find('[name=dai_fu_amount]').val(response.datas.dai_fu_amount)
 								layer.open({
 									title: "提现明细",
 									type: 1,
@@ -429,6 +436,7 @@
 									content: $("#bill_body"),
 									btn: ["关闭"],
 									yes: function (index) {
+										layer.closeAll();
 										$("#bill_body").hide();
 									}
 								});
@@ -486,24 +494,14 @@
 				var enent = obj.event;
 				switch (enent) {
 					case 'sendDf':
-						//流水号信息包
-						var serialNoPack = [];
-						//总金额
-						var amount = 0;
-						var fee = 0;
-						//商户名称
-						var merchantName = null;
-						//遍历流水号
-						for (var key in data) {
-							var datas = data[key];
-							serialNoPack.push(datas.serialNo);
-							merchantName = datas.merchantName;
-							amount = accAdd(amount, datas.amount);
-							fee = accAdd(fee, datas.fee);;
-						}
-						amount = accSub(amount, fee);
-						//转换格式
-						serialNoPack = JSON.stringify(serialNoPack);
+						var entity = data[0];
+						console.info(entity);
+						var type = entity.type;
+						var amount = entity.amount;
+						var merchantName = entity.merchantName;		
+						if(type == '2'){
+							amount = accSub(amount, entity.fee);
+						}			
 						layer.alert("确认是否为【" + merchantName + "】发起金额为【" + amount + "】结算指令？", {
 							time: 0, //不自动关闭
 							btn: ["确定", "关闭"],
@@ -512,12 +510,12 @@
 								//加载动画
 								layer.load(2);
 								$.ajax({
-									url: urlPrefix + "silver-web-shop/dfOrder/sendDf",
+									url: urlPrefix + "silver-web-shop/merWitLogs/send",
 									type: "POST",
 									xhrFields: {
 										withCredentials: true
 									},
-									data: { serialNoPack: serialNoPack },
+									data: { serialNo: entity.serialNo },
 									success: function (response) {
 										//关闭加载动画
 										layer.closeAll("loading");

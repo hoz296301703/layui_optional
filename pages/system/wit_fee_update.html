@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<!-- 海关信息更新html-->
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <form class="layui-form" lay-filter="wit_fee_update" id="wit_fee_update" style="margin-top: 20px;width: 90%;">
+      <input type="hidden" name="serialNo">
+      <div class="layui-form-item">
+        <label class="layui-form-label">类型</label>
+        <div class="layui-input-block">
+          <select id="costType" name="costType" lay-filter='costType' lay-verify="required" disabled
+            class="layui-disabled">
+            <option value="">请选择</option>
+            <option value="merchant">商户</option>
+            <option value="member">会员</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">计费类型</label>
+        <div class="layui-input-block">
+          <select id="tollType" name="tollType" lay-filter='tollType' lay-verify="required" disabled class="layui-disabled>
+            <option value="">请选择</option>
+            <option value=" pen">每笔</option>
+            <option value="rate">比例</option>
+          </select>
+        </div>
+      </div>
+      <!-- 服务费 -->
+      <div class="layui-form-item" style="display: none;" id="serviceCharge_pen_update">
+        <label class="layui-form-label">服务费</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="serviceCharge_penVal_update" type="number" autocomplete="off" placeholder="请输入服务费"
+            class="layui-input" style="width: 85%;margin-right:1%">元/笔
+        </div>
+      </div>
+      <!-- 费率 -->
+      <div class="layui-form-item" style="display: none;" id="serviceCharge_rate_update">
+        <label class="layui-form-label">费率</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="serviceFee" type="number" autocomplete="off" placeholder="请输入费率" class="layui-input"
+            style="width: 85%;margin-right:1%">%
+        </div>
+      </div>
+      <div class="layui-form-item" id="backCoverFlag_li_update">
+        <label class="layui-form-label">是否封底</label>
+        <div class="layui-input-block">
+          <select lay-filter='backCoverFlag_val_update' lay-verify="required" name="backCoverFlag" disabled class="layui-disabled>
+            <option value="">请选择</option>
+            <option value=" false">否</option>
+            <option value="true">是</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="layui-form-item" style="display: none;" id="backCoverFee_li_update">
+        <label class="layui-form-label">封底服务费</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input lay-verify='number' type="number" id="backCoverFlag_val_update" name="backCoverFee" autocomplete="off"
+            placeholder="请输入封底服务费" class="layui-input" style="width: 85%;margin-right:1%">元
+        </div>
+      </div>
+      <div class="layui-form-item" style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-sm" lay-filter="update" lay-submit="">保存</button>
+        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary close_add">关闭</button>
+      </div>
+    </form>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量
+    function getParent_data(obj) {
+      g_data = obj.data;
+    }
+    layui.use(['tree', 'form', 'jquery', 'util', 'element', 'layer', 'upload', 'table'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        util = layui.util,
+        element = layui.element,
+        table = layui.table,
+        tree = layui.tree,
+        upload = layui.upload,
+        layer = layui.layer;
+      // 是否封底
+      if (g_data.backCoverFlag == "true") {
+        $("#backCoverFee_li_update").show();
+        $("#backCoverFee_li_update").find('input').attr('lay-verify', 'required').attr('name', 'backCoverFee');
+      } else {
+        $("#backCoverFee_li_update").hide();
+        $("#backCoverFee_li_update").find('input').removeAttr('name').removeAttr('lay-verify');
+      }
+      // 收费类型
+      if (g_data.tollType == "pen") {
+        $("#serviceCharge_rate_update").hide();
+        $("#serviceCharge_rate_update").find('input').removeAttr('name').removeAttr('lay-verify');
+        $("#serviceCharge_pen_update").show();
+        $("#serviceCharge_pen_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceFee');// 为按费率
+      } else {
+        $("#serviceCharge_pen_update").hide();
+        $("#serviceCharge_pen_update").find('input').removeAttr('name').removeAttr('lay-verify');
+        $("#serviceCharge_rate_update").show();
+        $("#serviceCharge_rate_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceFee');// 为按费率收费添加name属性等于serviceCharge
+        g_data.serviceFee = accMul(g_data.serviceFee, 100)
+      }
+      //表单初始赋值
+      form.val('wit_fee_update', {
+        "costType": g_data.costType
+        , "serialNo": g_data.serialNo
+        , "tollType": g_data.tollType
+        , "serviceFee": g_data.serviceFee
+        , "backCoverFlag": g_data.backCoverFlag
+        , "backCoverFee": g_data.backCoverFee
+      })
+      // 关闭新增弹窗
+      $('.close_add').click(function () {
+        parent.wit_fee_reload();// 添加成功调用父页面的重载方法
+      })
+      // 修改计费信息
+      form.on('submit(update)', function (data) {
+        layer.load();
+        if (data.field.tollType == "rate") {//比例时，进行转换
+          data.field.serviceFee = accDiv(parseFloat(data.field.serviceFee), 100);
+        }
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/witFee/update",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            layer.closeAll('loading');
+            if (response.status == 1) {
+              layer.msg("修改成功");
+              setTimeout(function () {
+                parent.wit_fee_reload();
+              }, 1000)
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -225,6 +225,12 @@
 					"name": "日志信息",
 					"icon": "",
 					"url": "./pages/system/operation_list.html"
+				},
+				{
+					"id": "system_8",
+					"name": "提现费率",
+					"icon": "",
+					"url": "./pages/system/wit_fee_list.html"
 				}
 			]
 		},

@@ -89,6 +89,7 @@
 										<option value="merDivRate">分润费率</option>
 										<option value="member">会员</option>
 										<option value="merPro">推广配置</option>
+										<option value="witFee">提现费率</option>
 									</select>
 								</div>
 							</div>
@@ -226,8 +227,10 @@
 										return '会员';
 									} else if (item.module == 'merCost') {
 										return '商户计费';
-									} else if (item.module == 'merPro'){
+									} else if (item.module == 'merPro') {
 										return '推广配置';
+									} else if (item.module == 'witFee') {
+										return '提现费率';
 									}
 								}
 							}, {
