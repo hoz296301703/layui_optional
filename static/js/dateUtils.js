@@ -1,4 +1,4 @@
-
+//2019-12-12 日期工具类
 document.write('<script src="../../static/js/common.js" type="text/javascript" charset="utf-8"></script>');
 // 日期格式化 fmt => "yyyy-MM-dd hh:mm:ss"
 function dateFormat(datetime, fmt) {

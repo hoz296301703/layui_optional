@@ -172,6 +172,7 @@
     </form>
   </div>
   <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../static/js/amountUtils.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
     var g_data = '';// 全局数据变量
@@ -418,11 +419,8 @@
         }
         //渲染汇款回执
         img();
-
         // 审核状态：firstTrial-运营初审、financialAudit-财务审核、termination-终止、complete-完成
-        var reviewerType = content.reviewerType;
-        console.info('-reviewerType->' + reviewerType);
-        console.info('-managerFlag->' + managerFlag);
+        var reviewerType = content.reviewerType;  
         // 判断管理员标识与当前申请单状态、进行按钮显示
         if ((managerFlag == 2 && reviewerType == "firstTrial") || (managerFlag == 3 && reviewerType == "financialAudit") || (managerFlag == 1 && reviewerType == "firstTrial")) {
           $("#rev_btn").find("#passed").show();
