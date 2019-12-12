@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 115px;
+    }
+
+    #insert .layui-form-switch {
+      margin-top: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <form class="layui-form" lay-filter="example" id='insert'>
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label for="L_username" class="layui-form-label">
+            <span class="we-red">*</span>名称
+          </label>
+          <div class="layui-input-inline">
+            <input type="text" id="L_username" placeholder="请输入管理员名称" name="managerName" lay-verify="required"
+              autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">
+            <span class="we-red">*</span>类型
+          </label>
+          <div class="layui-input-inline">
+            <select name="managerMarks" lay-verify="required" lay-filter="aihao">
+              <option value=""></option>
+              <option value="1">超级管理员</option>
+              <option value="2" selected>运营</option>
+              <option value="3">财务</option>
+              <option value="4">市场</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">
+            <span class="we-red">*</span>密码
+          </label>
+          <div class="layui-input-inline">
+            <input type="password" id="L_pass" placeholder="请输入密码" name="loginPassword" lay-verify="required|pass"
+              autocomplete="off" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">
+            <span class="we-red">*</span>确认密码
+          </label>
+          <div class="layui-input-inline">
+            <input type="password" id="L_repass" placeholder="请输入确认密码" name="loginPassword2"
+              lay-verify="required|repass" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+      </div>
+
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">
+            <span class="we-red">*</span>真实姓名
+          </label>
+          <div class="layui-input-inline">
+            <input type="text" name="realName" placeholder="请输入真实姓名" lay-verify="required" autocomplete="off"
+              class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">
+            <span class="we-red">*</span>手机号码
+          </label>
+          <div class="layui-input-inline">
+            <input type="text" id="L_phone" placeholder="请输入手机号码" name="phone" lay-verify="required|phone"
+              autocomplete="" class="layui-input">
+          </div>
+        </div>
+      </div>
+      <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+        <button type="button" class="layui-btn" lay-filter="add" lay-submit="">保存</button>
+      </div>
+    </form>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    layui.extend({
+      admin: '{/}../../static/js/admin'
+    });
+    layui.use(['form', 'jquery', 'util', 'admin', 'layer'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        util = layui.util,
+        admin = layui.admin,
+        layer = layui.layer;
+      //自定义验证规则
+      form.verify({
+        // nikename: function (value) {
+        //   if (value.length < 5) {
+        //     return '昵称至少得5个字符啊';
+        //   }
+        // },
+        pass: [/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/, '密码由6-20字母和数字组成'],
+        repass: function (value) {
+          if ($('#L_pass').val() != $('#L_repass').val()) {
+            return '两次密码不一致';
+          }
+        }
+      });
+      //失去焦点时判断值为空不验证，一旦填写必须验证
+      // $('input[name="email"]').blur(function () {
+      //   //这里是失去焦点时的事件
+      //   if ($('input[name="email"]').val()) {
+      //     $('input[name="email"]').attr('lay-verify', 'email');
+      //   } else {
+      //     $('input[name="email"]').removeAttr('lay-verify');
+      //   }
+      // });
+      //新增管理员
+      form.on('submit(add)', function (data) {
+        layer.load(2);   
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/manager/createManager",
+          // type: "POST",
+          method: 'post',
+          dataType: 'JSON',
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            layer.closeAll("loading");
+            if (response.status == 1) {
+              layer.msg('添加成功！');
+              setTimeout(function () {
+                parent.manager_reload();// 添加成功调用父页面的重载方法
+              }, 1000);
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
+
+    });
+
+  </script>
+</body>
+
+</html>

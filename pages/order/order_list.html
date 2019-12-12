@@ -48,8 +48,6 @@
 	<div class="weadmin-body">
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
-
-
 				<div class="layui-inline">
 					<label class="layui-form-label">商户名称</label>
 					<div class="layui-input-inline">
@@ -69,11 +67,18 @@
 					</div>
 				</div>
 				<div class="layui-inline">
+					<label class="layui-form-label">专柜编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="counterId"" placeholder=" 请输入专柜编号" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
 					<label class="layui-form-label">运单号</label>
 					<div class="layui-input-inline">
 						<input type="text" name="waybillNo" placeholder="请输入运单号" class="layui-input">
 					</div>
 				</div>
+
 				<div class="layui-inline">
 					<div class="layui-inline">
 						<label class="layui-form-label">状态</label>
@@ -93,6 +98,18 @@
 					</div>
 				</div>
 				<div class="layui-inline">
+					<label class="layui-form-label">类型</label>
+					<div class="layui-input-inline">
+						<select name="type" lay-verify="required" lay-search="">
+							<option value="">全部</option>
+							<option value="normal">普通</option>
+							<option value="coupon">优惠券</option>
+							<option value="wallet">钱包</option>
+							<option value="thirdParty">第三方支付</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline">
 					<label class="layui-form-label">来源</label>
 					<div class="layui-input-inline">
 						<select name="orderSourceType" lay-verify="required" lay-search="">
@@ -106,7 +123,6 @@
 						</select>
 					</div>
 				</div>
-
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
@@ -125,7 +141,6 @@
 			</div>
 		</form>
 		<table class="layui-hide" lay-even lay-skin="nob" id="articleList" lay-filter="articleList"></table>
-
 		<!-- 录入物流信息 -->
 		<form class="layui-form" lay-filter="insert_logi" id="insert_logi"
 			style="display: none;width: 90%; margin: 20px auto;">
@@ -255,22 +270,19 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'merchantName', title: '商户名称', width: 190
+							field: 'merchantName', title: '商户名称', width: 180
 						}, {
 							field: 'merchantId', title: '商户编号', width: 180
 						}, {
-							field: 'entOrderNo', title: '订单号', width: 200
+							field: 'entOrderNo', title: '订单号', width: 185
 						}, {
 							field: 'actualAmountPaid', title: '支付金额', width: 100
 						}, {
+							field: 'counterId', title: '专柜编号', width: 180
+						}, {
 							field: 'waybillNo', title: '运单号', width: 160
-						},
-						// {
-						// 	field: 'tax', title: '税款', width: 60
-						// }, {
-						// 	field: 'freight', title: '运费', width: 60
-						// }, 
-						{
+						}, {
+
 							field: 'status', title: '状态', width: 100, templet: function (item) {
 								//	订单状态：1-待付款、2-已付款,待商家处理、10-待发货、 3-待清关、4-快件运输中、5-快件已签收、200-交易成功、400-交易关闭
 								if (item.status == '1') {
@@ -292,7 +304,21 @@
 								}
 							}
 						}, {
-							field: 'orderSourceType', width: 80, title: '来源', templet: function (item) {
+							field: 'type', title: '类型', width: 100, templet: function (item) {
+								var result = '';
+								if (item.type == 'normal') {
+									result = '普通';
+								} else if (item.type == 'coupon') {
+									result = '优惠券';
+								} else if (item.type == 'wallet') {
+									result = '钱包';
+								} else if (item.type == 'thirdParty') {
+									result = '第三方支付';
+								}
+								return result;
+							}
+						}, {
+							field: 'orderSourceType', width: 60, title: '来源', templet: function (item) {
 								// 订单录入系统类型：online-线上订单接入、offline-线下导入、expand-推广商城下单(线上)、mall-商城下单、excelImport-表单导入
 								if (item.orderSourceType == 'online') {
 									return '线上';
@@ -310,7 +336,6 @@
 									return '';
 								}
 							}
-
 						}, {
 							field: 'operate', width: 200, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
@@ -357,6 +382,8 @@
 				var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
 				var merchantId = $('#form_sreach').find('[name=merchantId]');
 				var merchantName = $('#form_sreach').find('[name=merchantName]');
+				var counterId = $('#form_sreach').find('[name=counterId]');
+				var type = $('#form_sreach').find('[name=type]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
@@ -372,7 +399,9 @@
 						orderSourceType: orderSourceType.val(),
 						merchantId: merchantId.val(),
 						merchantNameblurry: merchantName.val(),
-						waybillNo: waybillNo.val(),
+						type: type.val(),
+						counterId: counterId.val(),
+
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -393,6 +422,8 @@
 					var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
 					var merchantId = $('#form_sreach').find('[name=merchantId]');
 					var merchantName = $('#form_sreach').find('[name=merchantName]');
+					var counterId = $('#form_sreach').find('[name=counterId]');
+					var type = $('#form_sreach').find('[name=type]');
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					startDate = appendStartDate(startDate.val());
@@ -410,6 +441,8 @@
 							merchantId: merchantId.val(),
 							merchantNameblurry: merchantName.val(),
 							waybillNo: waybillNo.val(),
+							type: type.val(),
+							counterId: counterId.val(),
 							startDate: startDate,
 							endDate: endDate
 						}
@@ -542,12 +575,9 @@
 							btnAlign: "c",
 							btn: ["下载", "取消"],
 							yes: function (index) {
-
 								var url = "silver-web-shop/order/download?";
-
 								var startDate = '';
 								var endDate = '';
-
 								startDate = $('#form_sreach').find('[name=startDate]').val();
 								endDate = $('#form_sreach').find('[name=endDate]').val();
 								if (isEmpty(startDate) || isEmpty(endDate)) {
@@ -558,22 +588,27 @@
 								startDate = appendStartDate(startDate);
 								//拼接结束时间
 								endDate = appendEndDate(endDate);
-
 								url += '&startDate=' + startDate + '&endDate=' + endDate;
-
 								if (!isEmpty($('#form_sreach').find('[name=merchantId]').val())) {// 商户id
 									url += '&merchantId=' + $('#form_sreach').find('[name=merchantId]').val();
 								}
-
 								if (!isEmpty($('#form_sreach').find('[name=merchantName]').val())) {// 商户名称
 									url += '&merchantNameblurry=' + $('#form_sreach').find('[name=merchantName]').val();
 								}
-
 								if (!isEmpty($('#form_sreach').find('[name=status]').val())) {// 订单状态
 									url += '&status=' + $('#form_sreach').find('[name=status]').val();
 								}
-								if (!isEmpty($('#form_sreach').find('[name=orderSourceType]').val())) {// 订单类型
-									url += '&orderSourceType=' + $('#form_sreach').find('[name=orderSourceType]').val();
+								var orderSourceType = $('#form_sreach').find('[name=orderSourceType]').val();// 订单来源类型
+								if (!isEmpty(orderSourceType)) {
+									url += '&orderSourceType=' + orderSourceType;
+								}
+								var type = $('#form_sreach').find('[name=type]').val();// 订单类型
+								if (!isEmpty(type)) {
+									url += '&type=' + type;
+								}
+								var counterId = $('#form_sreach').find('[name=counterId]').val();// 订单来源类型
+								if (!isEmpty(counterId)) {
+									url += '&counterId=' + counterId;
 								}
 								console.info(urlPrefix + url);
 								window.location.href = urlPrefix + url;

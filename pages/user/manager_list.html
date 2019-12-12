@@ -24,10 +24,6 @@
 		.layui-form-switch em {
 			width: 40px;
 		}
-/* 
-		body {
-			overflow-y: scroll;
-		} */
 	</style>
 </head>
 
@@ -88,37 +84,38 @@
 			</form>
 		</div>
 		<script type="text/html" id="manager_list_toolbar">
-				<button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html',600,400)"><i
-					class="layui-icon">&#xe61f;</i>添加</button>
-			</div>
-		</script>
-		<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-		<!-- <script type="text/html" id="statusTpl">
+				<!-- <button class="layui-btn" onclick="WeAdminShow('添加用户','./add.html',600,400)"><i
+					class="layui-icon">&#xe61f;</i>添加</button> -->
+		<button class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon">&#xe61f;</i>添加</button>
+	</div>
+	</script>
+	<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+	<!-- <script type="text/html" id="statusTpl">
 			<input type="checkbox" name="status" lay-skin="switch" lay-text="启用|禁用" {{d.status}}>
 		</script> -->
-		<script type="text/html" id="statusTpl">
+	<script type="text/html" id="statusTpl">
 			<!-- 这里的 checked 的状态只是演示 -->
-		<input type="checkbox" data-managerId="{{d.managerId}}" name="status" value="{{d.status}}" lay-skin="switch"
-			lay-text="启用|禁用" lay-filter="statusDemo" {{ d.status == 'enable' ? 'checked' : '' }}>
-		</script>
-		<script type="text/html" id="operateTpl">
+	<input type="checkbox" data-managerId="{{d.managerId}}" name="status" value="{{d.status}}" lay-skin="switch"
+		lay-text="启用|禁用" lay-filter="statusDemo" {{ d.status == 'enable' ? 'checked' : '' }}>
+	</script>
+	<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
 				<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" onclick="WeAdminEdit2('查看','./manager_detail.html','{{d.toString()}}')">查看</a> -->
 				<a class="layui-btn layui-btn-xs" lay-event="edit">分配权限</a>
 				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置密码</a>
 		</script>
-		<!-- 权限树盒子 -->
-		<ul id="maangerAllot" style="display: none;"></ul>
-		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-		<script src="../../static/js/common.js" charset="utf-8"></script>
-		<!-- <script src="manager_list.js" type="text/javascript" charset="utf-8"></script> -->
+	<!-- 权限树盒子 -->
+	<ul id="maangerAllot" style="display: none;"></ul>
+	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+	<script src="../../static/js/common.js" charset="utf-8"></script>
+	<!-- <script src="manager_list.js" type="text/javascript" charset="utf-8"></script> -->
 	</div>
 	<script>
 		// layui.extend({
 		// 	admin: '{/}../../static/js/admin'
 		// });
 
-		layui.use(['table', 'jquery', 'form',  'tree'], function () {
+		layui.use(['table', 'jquery', 'form', 'tree'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
@@ -283,6 +280,10 @@
 				active[type] ? active[type].call(this) : '';
 			});
 
+			window.manager_reload = function () {// 提交重载方法到全局，让子页面调用
+				layer.closeAll();
+				_reload();
+			};
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
@@ -371,7 +372,7 @@
 									ii++;
 								});
 								// console.log(jsonArr)
-								
+
 								//基本演示
 								tree.render({
 									elem: '#maangerAllot'
@@ -394,7 +395,7 @@
 					});
 
 					//页面层
-					layer.open({						
+					layer.open({
 						type: 1,
 						title: '分配权限',
 						skin: "layui-layer-rim", //加上边框
@@ -439,6 +440,24 @@
 				}
 			});
 
+
+			//头工具栏事件
+			table.on('toolbar(articleList)', function (obj) {
+				var checkStatus = table.checkStatus(obj.config.id);
+				switch (obj.event) {
+					case 'add':
+						layer.open({
+							title: "添加管理员",
+							type: 2,
+							skin: "layui-layer-rim", //加上边框
+							area: ["710px", "510px"], //宽高
+							scrollbar: false,							
+							content: './manager_add.html',
+						
+						});
+						break;
+				}
+			});
 		});
 	</script>
 </body>
