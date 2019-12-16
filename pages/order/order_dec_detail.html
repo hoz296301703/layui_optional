@@ -21,6 +21,16 @@
     .layui-form-label {
       width: 98px;
     }
+
+    /*表单边距*/
+    .weadmin-body {
+      padding: 0;
+    }
+
+    .layui-colla-content{
+      padding: 10px 5px;
+    }
+
   </style>
 </head>
 
@@ -31,7 +41,6 @@
       <div class="layui-colla-content layui-show">
         <div class="weadmin-body">
           <form class="layui-form" id="manager_detail_form" lay-filter="example">
-
             <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">订单编号</label>
@@ -52,15 +61,14 @@
                   <input type="text" name="tax" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">运费</label>
                 <div class="layui-input-inline">
                   <input type="text" name="freight" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">优惠金额</label>
                 <div class="layui-input-inline">
@@ -74,9 +82,6 @@
                     disabled>
                 </div>
               </div>
-
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">实际支付金额</label>
                 <div class="layui-input-inline">
@@ -91,6 +96,9 @@
                     disabled>
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
+
               <div class="layui-inline">
                 <label class="layui-form-label">收货人身份证号</label>
                 <div class="layui-input-inline">
@@ -98,11 +106,6 @@
                     disabled>
                 </div>
               </div>
-
-
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">收货人电话</label>
                 <div class="layui-input-inline">
@@ -122,7 +125,6 @@
                   <input type="text" name="recCityName" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-
             </div>
             <div class="layui-form-item">
               <div class="layui-inline">
@@ -145,8 +147,6 @@
                   <input type="text" name="ordererName" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">下单人身份证号</label>
                 <div class="layui-input-inline">
@@ -154,6 +154,8 @@
                     disabled>
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">下单人电话</label>
                 <div class="layui-input-inline">
@@ -183,15 +185,40 @@
                   </select>
                 </div>
               </div>
+            </div>
+
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">平台接收日期</label>
                 <div class="layui-input-inline">
                   <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">海关口岸</label>
+                <div class="layui-input-inline">
+                  <select name="eport" lay-filter="aihao" class="layui-disabled" disabled>
+                    <option value="1">电子口岸</option>
+                    <option value="2">南沙智检</option>
+                    <option value="3">辽宁口岸</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">关区代码</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="customsCode" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">国检代码</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="ciqOrgCode" autocomplete="off" class="layui-input layui-disabled" disabled>
+                </div>
+              </div>
             </div>
+          </form>
         </div>
-        </form>
       </div>
     </div>
     <div class="layui-colla-item">
@@ -314,8 +341,9 @@
           , "createDate": G_format(order.create_date.time, "yyyy-MM-dd hh:mm:ss")
           , "tradeNo": order.trade_no
           , "otherPayment": order.otherPayment
-          // , "tax": g_data.order.tax
-          // , "freight": g_data.order.freight
+          , "eport": order.eport
+          , "customsCode": order.customsCode
+          , "ciqOrgCode": order.ciqOrgCode
         })
         //渲染订单商品信息
         function orderGoods(datas) {

@@ -31,9 +31,9 @@
 			width: 40px;
 		}
 
-		/* body {
-			overflow-y: scroll;
-		} */
+		.weadmin-body {
+			padding: 0;
+		}
 	</style>
 </head>
 
@@ -114,46 +114,65 @@
 									</div>
 								</div>
 								<div class="layui-inline">
-									<div class="layui-inline">
-										<label class="layui-form-label">申报状态</label>
-										<div class="layui-input-inline">
-											<select name="order_record_status" lay-verify="required" lay-search="">
-												<option value="">全部</option>
-												<option value="1">未申报</option>
-												<option value="2">申报中</option>
-												<option value="3">申报成功</option>
-												<option value="4">申报失败</option>
-												<option value="20">余额不足</option>
-											</select>
-										</div>
+									<label class="layui-form-label">申报状态</label>
+									<div class="layui-input-inline">
+										<select name="order_record_status" lay-verify="required" lay-search="">
+											<option value="">全部</option>
+											<option value="1">未申报</option>
+											<option value="2">申报中</option>
+											<option value="3">申报成功</option>
+											<option value="4">申报失败</option>
+											<option value="20">余额不足</option>
+										</select>
 									</div>
 								</div>
 								<div class="layui-inline">
-									<div class="layui-inline">
-										<label class="layui-form-label">类型</label>
-										<div class="layui-input-inline">
-											<select name="orderSourceType" lay-verify="required" lay-search="">
-												<option value="">全部</option>
-												<option value="online">线上</option>
-												<option value="offline">线下</option>
-												<option value="expand">推广</option>
-												<option value="mall">商城</option>
-												<option value="excelImport">导入</option>
-												<option value="seckill">秒杀</option>
-											</select>
-										</div>
+									<label class="layui-form-label">类型</label>
+									<div class="layui-input-inline">
+										<select name="orderSourceType" lay-verify="required" lay-search="">
+											<option value="">全部</option>
+											<option value="online">线上</option>
+											<option value="offline">线下</option>
+											<option value="expand">推广</option>
+											<option value="mall">商城</option>
+											<option value="excelImport">导入</option>
+											<option value="seckill">秒杀</option>
+										</select>
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">海关口岸</label>
+									<div class="layui-input-inline">
+										<select name="eport" lay-verify="required" lay-search="">
+											<option value="">全部</option>
+											<option value="1">电子口岸</option>
+											<option value="2">南沙智检</option>
+											<option value="3">辽宁口岸</option>
+										</select>
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">海关编码</label>
+									<div class="layui-input-inline">
+										<input type="text" name="customsCode" placeholder="请输入海关编码" class="layui-input">
+									</div>
+								</div>
+								<div class="layui-inline">
+									<label class="layui-form-label">国检编码</label>
+									<div class="layui-input-inline">
+										<input type="text" name="ciqOrgCode" placeholder="请输入国检编码" class="layui-input">
 									</div>
 								</div>
 								<div class="layui-inline">
 									<label class="layui-form-label">接收日期</label>
 									<div class="layui-input-inline">
 										<input type="text" class="layui-input" id="startDate" name="startDate"
-										readonly=""	autocomplete="off" readonly="" placeholder="年-月-日">
+											readonly="" autocomplete="off" readonly="" placeholder="年-月-日">
 									</div>
 									    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
 									<div class="layui-input-inline">
-										<input type="text" class="layui-input" id="endDate" name="endDate"
-										readonly=""	autocomplete="off" readonly="" placeholder="年-月-日">
+										<input type="text" class="layui-input" id="endDate" name="endDate" readonly=""
+											autocomplete="off" readonly="" placeholder="年-月-日">
 									</div>
 								</div>
 							</div>
@@ -161,13 +180,11 @@
 								<button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
 									data-type="reload">搜索</button>
 							</div>
-
 							<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 							<script type="text/html" id="operateTpl">
 								<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>		
 								<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">移除</a>
 							</script>
-
 							<script type="text/html" id="order_dec_list_toolbar">
 								<div class="layui-btn-container">
 									<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>明细下载</button>				
@@ -193,7 +210,7 @@
 			</div>
 		</div>
 	</div>
-	<script>	
+	<script>
 		layui.use(['table', 'jquery', 'form', 'element', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
@@ -224,9 +241,9 @@
 				method: 'post',
 				cols: [
 					[{
-						field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
+						field: 'zizeng', width: 50, title: '序号', fixed: 'left', type: 'numbers'
 					}, {
-						field: 'create_date', title: '平台接收日期', fixed: 'left', width: 170, templet: function (item) {
+						field: 'create_date', title: '平台接收日期', fixed: 'left', width: 160, templet: function (item) {
 							return G_format(item.create_date.time, "yyyy-MM-dd hh:mm:ss");
 						}
 					}, {
@@ -235,24 +252,38 @@
 						field: 'merchant_no', title: '商户编号', width: 180
 					}, {
 						field: 'order_id', title: '订单号', width: 200
-						// }, {
-						// 	field: 'FCY', title: '商品金额', width: 100
-						// }, {
-						// 	field: 'tax', title: '税费', width: 60
 					}, {
-						field: 'actualAmountPaid', title: '实际支付金额', width: 120
+						field: 'actualAmountPaid', title: '支付金额', width: 100
 					}, {
-						field: 'recipientName', title: '收货人姓名', width: 120
+						field: 'eport', title: '口岸', width: 90, templet: function (item) {
+							var port = item.eport;
+							var result = '';
+							if (port == '1') {
+								result = '电子口岸';
+							} else if (port == '2') {
+								result = '南沙智检';
+							} else if (port == '3') {
+								result = '辽宁口岸';
+							}
+							return result;
+						}
 					}, {
-						field: 'recipientTel', title: '收货人手机', width: 130
+						field: 'customsCode', title: '海关编码', width: 95
+					}, {
+						field: 'ciqOrgCode', title: '国检编码', width: 95
+					}, {
+						field: 'recipientName', title: '收货人姓名', width: 100
+					}, {
+						field: 'recipientTel', title: '收货人手机', width: 120
 					}, {
 						field: 'orderDocName', title: '下单人姓名', width: 100
 					}, {
 						field: 'orderDocId', title: '下单人身份证', width: 180
 					}, {
 						field: 'trade_no', title: '交易流水号', width: 175
+
 					}, {
-						field: 'orderDate', title: '订单日期', width: 170, templet: function (item) {
+						field: 'orderDate', title: '订单日期', width: 160, templet: function (item) {
 							return toStringTime(item.orderDate);
 						}
 					}, {
@@ -290,7 +321,7 @@
 							}
 						}
 					}, {
-						field: 'operate', width: 140, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+						field: 'operate', width: 120, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 					}]
 				],
 				// skin: 'row', //行边框风格
@@ -328,39 +359,13 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var create_by = $('#form_sreach').find('[name=create_by]');
-				var merchant_no = $('#form_sreach').find('[name=merchant_no]');
-				var order_id = $('#form_sreach').find('[name=order_id]');
-				var recipientName = $('#form_sreach').find('[name=recipientName]');
-				var recipientTel = $('#form_sreach').find('[name=recipientTel]');
-				var orderDocName = $('#form_sreach').find('[name=orderDocName]');
-				var orderDocId = $('#form_sreach').find('[name=orderDocId]');
-				var order_record_status = $('#form_sreach').find('[name=order_record_status]');
-				var trade_no = $('#form_sreach').find('[name=trade_no]');
-				var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
-				var startDate = $('#form_sreach').find('[name=startDate]');
-				var endDate = $('#form_sreach').find('[name=endDate]');
-				startDate = appendStartDate(startDate.val());
-				endDate = appendEndDate(endDate.val());
+				var datas = queryParams();
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/manualOrder/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
-					where: {
-						create_byblurry: create_by.val(),
-						merchant_no: merchant_no.val(),
-						order_id: order_id.val(),
-						recipientNameblurry: recipientName.val(),
-						recipientTel: recipientTel.val(),
-						OrderDocNameblurry: orderDocName.val(),
-						OrderDocId: orderDocId.val(),
-						trade_no: trade_no.val(),
-						order_record_status: order_record_status.val(),
-						orderSourceType: orderSourceType.val(),
-						startTime: startDate,
-						endTime: endDate
-					}
+					where: datas
 				});
 			}
 			/*
@@ -372,44 +377,55 @@
 			// });
 			var active = {
 				reload: function () {
-					var create_by = $('#form_sreach').find('[name=create_by]');
-					var merchant_no = $('#form_sreach').find('[name=merchant_no]');
-					var order_id = $('#form_sreach').find('[name=order_id]');
-					var recipientName = $('#form_sreach').find('[name=recipientName]');
-					var recipientTel = $('#form_sreach').find('[name=recipientTel]');
-					var orderDocName = $('#form_sreach').find('[name=orderDocName]');
-					var orderDocId = $('#form_sreach').find('[name=orderDocId]');
-					var order_record_status = $('#form_sreach').find('[name=order_record_status]');
-					var trade_no = $('#form_sreach').find('[name=trade_no]');
-					var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
-
-					var startDate = $('#form_sreach').find('[name=startDate]');
-					var endDate = $('#form_sreach').find('[name=endDate]');
-					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());
+					var datas = queryParams();
 					//执行重载					
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/manualOrder/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
-						where: {
-							create_byblurry: create_by.val(),
-							merchant_no: merchant_no.val(),
-							order_id: order_id.val(),
-							RecipientName: recipientName.val(),
-							RecipientTel: recipientTel.val(),
-							OrderDocNameblurry: orderDocName.val(),
-							OrderDocId: orderDocId.val(),
-							trade_no: trade_no.val(),
-							order_record_status: order_record_status.val(),
-							orderSourceType: orderSourceType.val(),
-							startTime: startDate,
-							endTime: endDate
-						}
+						where: datas
 					});
 				}
 			};
+			//查询条件
+			var queryParams = function () {
+				var create_by = $('#form_sreach').find('[name=create_by]').val();
+				var merchant_no = $('#form_sreach').find('[name=merchant_no]').val();
+				var order_id = $('#form_sreach').find('[name=order_id]').val();
+				var recipientName = $('#form_sreach').find('[name=recipientName]').val();
+				var recipientTel = $('#form_sreach').find('[name=recipientTel]').val();
+				var orderDocName = $('#form_sreach').find('[name=orderDocName]').val();
+				var orderDocId = $('#form_sreach').find('[name=orderDocId]').val();
+				var order_record_status = $('#form_sreach').find('[name=order_record_status]').val();
+				var trade_no = $('#form_sreach').find('[name=trade_no]').val();
+				var orderSourceType = $('#form_sreach').find('[name=orderSourceType]').val();
+				var eport = $('#form_sreach').find('[name=eport]').val();
+				var customsCode = $('#form_sreach').find('[name=customsCode]').val();
+				var ciqOrgCode = $('#form_sreach').find('[name=ciqOrgCode]').val();
+				var startDate = $('#form_sreach').find('[name=startDate]').val();
+				var endDate = $('#form_sreach').find('[name=endDate]').val();
+				startDate = appendStartDate(startDate);
+				endDate = appendEndDate(endDate);
+				var obj = {};
+				obj.create_byblurry = create_by;
+				obj.merchant_no = merchant_no;
+				obj.order_id = order_id;
+				obj.RecipientName = recipientName;
+				obj.RecipientTel = recipientTel;
+				obj.OrderDocNameblurry = orderDocName;
+				obj.OrderDocId = orderDocId;
+				obj.trade_no = trade_no;
+				obj.order_record_status = order_record_status;
+				obj.orderSourceType = orderSourceType;
+				obj.eport = eport;
+				obj.customsCode = customsCode;
+				obj.ciqOrgCode = ciqOrgCode;
+				obj.startTime = startDate;
+				obj.endTime = endDate;
+				return obj;
+			}
+
 			// 监听查询按钮
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');
@@ -423,7 +439,7 @@
 					var detail_full = layer.open({
 						type: 2,
 						title: '订单信息',
-						area: ['80%', '80%'],
+						area: ['100%', '100%'],
 						// fixed: false, //不固定
 						// maxmin: true,
 						content: './order_dec_detail.html',
@@ -619,7 +635,7 @@
 											}
 										);
 									}
-								});								
+								});
 							}
 						});
 						break;

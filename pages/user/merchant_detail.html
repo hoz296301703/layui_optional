@@ -954,10 +954,13 @@
               $.each(response.datas, function (i, item) {
                 var dz = ''
                 var zj = ''
+                var ln = '';
                 if (item.customsPort == 1) {
                   dz = 'selected';
                 } else if (item.customsPort == 2) {
                   zj = 'selected';
+                } else if (item.customsPort == 3) {
+                  ln = 'selected';
                 }
                 divStr += `<tr data-id="${item.id}">
                   <td>
@@ -965,6 +968,7 @@
                         <option value="">请选择</option>
                         <option value="1" ${dz}>电子口岸</option>
                         <option value="2" ${zj}>智检</option>
+                        <option value="3" ${ln}>辽宁口岸</option>
                       </select></div>
                   <td>
                     <div class="layui-input-inline"><input type="text" lay-verify="required"  value="${item.ebpEntName}" name="ebpEntName" class="layui-input"></div>
@@ -1002,6 +1006,7 @@
                         <option value="">请选择</option>
                         <option value="1">电子口岸</option>
                         <option value="2">智检</option>
+                        <option value="3">辽宁口岸</option>
                       </select></div>
                   <td>
                     <div class="layui-input-inline"><input type="text" lay-verify="required"  name="ebpEntName" class="layui-input"></div>
