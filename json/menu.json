@@ -250,7 +250,7 @@
 		},
 		{
 			"id": "systemStatistics",
-			"name": "系统统计",
+			"name": "统计管理",
 			"icon": "icon-tongji1",
 			"url": "",
 			"children": [
@@ -265,6 +265,12 @@
 					"name": "专柜商品",
 					"icon": "",
 					"url": "./pages/statistics/counter_goods_list.html"
+				},
+				{
+					"id": "systemStatistics_3",
+					"name": "会员注册",
+					"icon": "",
+					"url": "./pages/statistics/mem_reg_list.html"
 				}
 			]
 		}

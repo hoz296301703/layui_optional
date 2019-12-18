@@ -16,6 +16,9 @@
       <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+<style type="text/css">
+
+</style>
 
 <body>
   <div class="layui-tab-content">
@@ -72,12 +75,13 @@
         <div class="layui-inline">
           <label class="layui-form-label">日期</label>
           <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+            <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off" readonly=""
               placeholder="年-月-日">
           </div>
               <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
           <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" placeholder="年-月-日">
+            <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" readonly=""
+              placeholder="年-月-日">
           </div>
         </div>
       </div>
@@ -92,10 +96,8 @@
   <script src="../../static/js/common.js" charset="utf-8"></script>
 
   <script type="text/javascript">
-    // layui.extend({
-    //   admin: '{/}../../static/js/admin'
-    // });
-    layui.use(['table', 'jquery', 'form','tree', 'laydate'], function () {
+
+    layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
       var table = layui.table,
         $ = layui.jquery,
         form = layui.form,
@@ -107,34 +109,47 @@
         elem: '#startDate'
         , value: getDay(-7)
         , isInitValue: true
+        , max: 0
       });
       laydate.render({
         elem: '#endDate'
+        , max: 0
       });
-      // var tableHeight = $(window).height() - 30 - $('#form_sreach').outerHeight(true);
+
       table.render({
         elem: '#articleList',
         cellMinWidth: 80,
-        // height: 450,
         defaultToolbar: ['filter'],
         url: urlPrefix + 'silver-web-shop/idCard/getAllIdCard',
         method: 'post',
         cols: [
           [
             {
-              field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
+              field: 'zizeng', width: 45, title: '序号', fixed: 'left', type: 'numbers'
             }, {
-              field: 'createDate', width: 170, title: '日期', fixed: 'left', templet: function (item) {
+              field: 'createDate', width: 160, title: '日期', fixed: 'left', templet: function (item) {
                 return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
               }
             }, {
-              field: 'merchantName', width: 130, title: '商户名称'
+              field: 'merchantName', title: '商户名称'
             }, {
               field: 'merchantId', title: '商户编号'
             }, {
-              field: 'name', title: '姓名', width: 80
+              field: 'name', title: '姓名'
             }, {
-              field: 'idNumber', title: '身份证号码' ,width:180
+              field: 'idNumber', title: '身份证号码', width: 175
+            }, {
+              field: 'status', title: '状态', width: 80, templet: function (item) {
+                if (item.status == 'success') {
+                  return '成功';
+                } else if (item.status == 'failure') {
+                  return '失败';
+                } else if (item.status == 'wait') {
+                  return '待认证';
+                }
+              }
+            }, {
+              field: 'note', title: '结果'
             }, {
               field: 'type', title: '类型', width: 105, templet: function (item) {
                 if (item.type == '1') {
@@ -150,17 +165,7 @@
                 }
               }
             }, {
-              field: 'status', title: '状态', width: 80, templet: function (item) {
-                if (item.status == 'success') {
-                  return '成功';
-                } else if (item.status == 'failure') {
-                  return '失败';
-                } else if (item.status == 'wait') {
-                  return '待认证';
-                }
-              }
-            }, {
-              field: 'certifiedDate', title: '认证日期',width:170, templet: function (item) {
+              field: 'certifiedDate', title: '认证日期', width: 170, templet: function (item) {
                 if (isEmpty(item.certifiedDate)) {
                   //空时不操作
                   return '';
@@ -206,17 +211,13 @@
         }
       });
       // 重载公共方法
-      var _reload = function () {
-        var ipAddress = $('#form_sreach').find('[name=ipAddress]');
-        var ipAddress = $('#form_sreach').find('[name=ipAddress]');
+      var _reload = function () {       
         table.reload('articleList', {
           url: urlPrefix + 'silver-web-shop/idCard/getAllIdCard',
           page: {
             curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
           },
-          where: {
-            ipAddress: ipAddress.val()
-          }
+          where: queryParams()
         });
       }
       /*
@@ -228,39 +229,40 @@
       // });
       var active = {
         reload: function () {
-          var merchantId = $('#form_sreach').find('[name=merchantId]');
-          var merchantName = $('#form_sreach').find('[name=merchantName]');
-          var name = $('#form_sreach').find('[name=name]');
-          var idNumber = $('#form_sreach').find('[name=idNumber]');
-          var type = $('#form_sreach').find('[name=type]');
-          var status = $('#form_sreach').find('[name=status]');
-
-
-
-          var startDate = $('#form_sreach').find('[name=startDate]');
-          var endDate = $('#form_sreach').find('[name=endDate]');
-          startDate = appendStartDate(startDate.val());
-          endDate = appendEndDate(endDate.val());
+         
           //执行重载
           table.reload('articleList', {
             url: urlPrefix + 'silver-web-shop/idCard/getAllIdCard',
             page: {
               curr: 1 //重新从第 1 页开始
             },
-            where: {
-              merchantId: merchantId.val(),
-              merchantNameblurry: merchantName.val(),
-              name: name.val(),
-              idNumber: idNumber.val(),
-              type: type.val(),
-              status: status.val(),
-
-              startDate: startDate,
-              endDate: endDate
-            }
+            where: queryParams()
           });
         }
       };
+      //查询条件
+      var queryParams = function () {
+        var merchantId = $('#form_sreach').find('[name=merchantId]').val();
+        var merchantName = $('#form_sreach').find('[name=merchantName]').val();
+        var name = $('#form_sreach').find('[name=name]').val();
+        var idNumber = $('#form_sreach').find('[name=idNumber]').val();
+        var type = $('#form_sreach').find('[name=type]').val();
+        var status = $('#form_sreach').find('[name=status]').val();
+        var startDate = $('#form_sreach').find('[name=startDate]').val();
+        var endDate = $('#form_sreach').find('[name=endDate]').val();
+        startDate = appendStartDate(startDate);
+        endDate = appendEndDate(endDate);
+        var obj = {};
+        obj.nameblurry = name;
+        obj.merchantId = merchantId;
+        obj.merchantNameblurry = merchantName;
+        obj.idNumber = idNumber;
+        obj.type = type;
+        obj.status = status;      
+        obj.startDate = startDate;
+        obj.endDate = endDate;
+        return obj;
+      }
       // 监听查询按钮
       $('#form_sreach .layui-btn').on('click', function () {
         var type = $(this).data('type');
