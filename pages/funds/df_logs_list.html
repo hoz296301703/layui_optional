@@ -30,25 +30,10 @@
 		.layui-form-switch em {
 			width: 40px;
 		}
-
-		/* body {
-			overflow-y: scroll;
-		} */
 	</style>
 </head>
 
 <body>
-	<!-- <div class="weadmin-nav">
-		<span class="layui-breadcrumb">
-			<a href="">首页</a>
-			<a href="">用户管理</a>
-			<a>
-				<cite>运营管理</cite></a>
-		</span>
-		<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
-			href="javascript:location.replace(location.href);" title="刷新">
-			<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
-	</div> -->
 	<div class="weadmin-body">
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
@@ -82,24 +67,6 @@
 						<input type="text" name="bankPhone" placeholder="请输入预留手机号码" class="layui-input">
 					</div>
 				</div>
-				<!-- <div class="layui-inline">
-					<label class="layui-form-label">类型</label>
-					<div class="layui-input-inline">
-						<select name="type" lay-verify="required" lay-search="">
-							<option value="">全部</option>
-							<option value="recharge">商户余额充值</option>
-							<option value="transfer">转账</option>
-							<option value="withdraw">提现</option>
-							<option value="telephoneFeeRecharge">话费充值</option>
-							<option value="shopping">购物</option>
-							<option value="recResAmo">会员货款充值</option>
-							<option value="offRecResAmo">线下充值会员货款</option>
-							<option value="offRecMerBal">线下充值商户余额</option>
-							<option value="offline">线下订单</option>
-
-						</select>
-					</div>
-				</div> -->
 				<div class="layui-inline">
 					<label class="layui-form-label">状态</label>
 					<div class="layui-input-inline">
@@ -116,58 +83,54 @@
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
-							placeholder="年-月-日">
+							readonly="" placeholder="年-月-日">
 					</div>
 					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
-							placeholder="年-月-日">
+							readonly="" placeholder="年-月-日">
 					</div>
 				</div>
 			</div>
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
-			<table class="layui-hide" id="articleList" lay-filter="articleList_toolbar"></table>
 			<script type="text/html" id="articleList_toolbar">
-				<div class="layui-btn-container">
-					<!-- <button class="layui-btn layui-btn-sm" lay-event="sendDf"><i class="layui-icon">&#xe609;</i>发起指令</button> -->
+				<div class="layui-btn-container">					
 					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>导出</button>				
 				</div>					
 			</script>
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
 			</script>
-			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-			<script src="../../static/js/common.js" charset="utf-8"></script>
+		</form>
 	</div>
+	<table class="layui-hide" id="df_logs_list" lay-filter="articleList_toolbar"></table>
+	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+	<script src="../../static/js/common.js" charset="utf-8"></script>
 	<script>
-
-
 		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				// admin = layui.admin,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
+				, max: 0
 			});
-			// 动态设置表格高度
-			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
-				elem: '#articleList',
+				elem: '#df_logs_list',
 				toolbar: '#articleList_toolbar',
 				cellMinWidth: 80,
 				defaultToolbar: ['filter'],
-				// height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/dfOrder/findInfo',
 				method: 'post',
 				cols: [
@@ -188,8 +151,7 @@
 							field: 'amount', title: '金额(元)', width: 100
 						}, {
 							field: 'bankAccName', title: '银行开户人名称', width: 200
-						},
-						{
+						}, {
 							field: 'bankAccNo', title: '银行卡账号', width: 180
 						}, {
 							field: 'bankPhone', title: '预留手机号码', width: 120
@@ -201,7 +163,8 @@
 								} else if (item.status == 'failure') {
 									return '<span style="background: #e4393c; padding: 2px 3px;color: #fff;border-radius: 3px ;">失败</span>';
 								} else if (item.status == 'process') {
-									return '处理中';
+									return '<span style="background: #ff5722; padding: 2px 3px;color: #fff;border-radius: 3px ;">处理中</span>';
+									// return '处理中';
 								} else if (item.status == 'pending') {
 									return '待处理';
 								} else if (item.type == 'abnormal') {
@@ -285,7 +248,7 @@
 				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
 				endDate = appendEndDate(endDate.val());
-				table.reload('articleList', {
+				table.reload('df_logs_list', {
 					url: urlPrefix + 'silver-web-shop/dfOrder/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
@@ -322,7 +285,7 @@
 					startDate = appendStartDate(startDate.val());
 					endDate = appendEndDate(endDate.val());
 					//执行重载					
-					table.reload('articleList', {
+					table.reload('df_logs_list', {
 						url: urlPrefix + 'silver-web-shop/dfOrder/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
@@ -347,7 +310,7 @@
 			});
 
 			//监听工具条
-			table.on('tool(articleList)', function (obj) {
+			table.on('tool(articleList_toolbar)', function (obj) {
 				var data = obj.data;
 				if (obj.event === 'detail') {// 查看详情
 					layer.open({
@@ -355,7 +318,7 @@
 						title: '代付详情',
 						area: ['74%', '80%'],
 						// fixed: false, //不固定
-						maxmin: true,
+						// maxmin: true,
 						content: './df_detail.html',
 						btnAlign: 'c',
 						btn: ['关闭'],
@@ -370,16 +333,11 @@
 							layer.close(index);
 						}
 					});
-				} else if (obj.event === 'reset') {// 重置密码
-
 				}
 			});
 			//头工具栏事件
 			table.on('toolbar(articleList_toolbar)', function (obj) {
 				var checkStatus = table.checkStatus(obj.config.id);
-				console.log(checkStatus.data);
-				console.info(checkStatus.data[0].serialNo);
-
 				switch (obj.event) {
 					case 'download':
 						layer.alert("下载当前查询结果", {
@@ -449,7 +407,7 @@
 							}
 						});
 						break;
-					case 'sendDf':					
+					case 'sendDf':
 						var data = obj;
 						// layer.alert("确认是否为【" + merchantName + "】发起金额为【" + amount + "】结算指令？", {
 						// 	time: 0, //不自动关闭

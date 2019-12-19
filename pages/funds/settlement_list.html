@@ -49,10 +49,14 @@
 			width: 280px;
 		}
 
-
 		.layui-table-tool-temp {
 			display: flex;
 			justify-content: space-between;
+		}
+
+		/* 边距 */
+		.weadmin-body {
+			padding: 0;
 		}
 	</style>
 </head>
@@ -105,11 +109,11 @@
 									<input type="text" name="serialNo" placeholder="请输入流水号" class="layui-input">
 								</div>
 							</div>
-						
+
 							<div class="layui-inline">
 								<label class="layui-form-label">结算状态</label>
 								<div class="layui-input-inline">
-									<select name="status" lay-verify="required" lay-search="">
+									<select name="status" lay-verify="required" lay-search="" >
 										<option value="">全部</option>
 										<option value="pending" selected>待处理</option>
 										<option value="process">处理中</option>
@@ -121,12 +125,12 @@
 							<div class="layui-inline">
 								<label class="layui-form-label">日期</label>
 								<div class="layui-input-inline">
-									<input type="text" class="layui-input" id="startDate" name="startDate"
+									<input type="text" class="layui-input" id="startDate" name="startDate" readonly=""
 										autocomplete="off" placeholder="年-月-日">
 								</div>
 								    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
 								<div class="layui-input-inline">
-									<input type="text" class="layui-input" id="endDate" name="endDate"
+									<input type="text" class="layui-input" id="endDate" name="endDate" readonly=""
 										autocomplete="off" placeholder="年-月-日">
 								</div>
 							</div>
@@ -134,12 +138,13 @@
 						<div style="text-align: center;">
 							<button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
 								data-type="reload">搜索</button>
+							<!-- <button type="reset" id="btnRetSet" type="button"
+								class="layui-btn layui-btn-primary layui-btn-sm">重置</button> -->
 						</div>
 						<script type="text/html" id="operateTpl">
 							<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>	
 							<a class="layui-btn layui-btn-xs layui-btn-normal"  lay-event="getSelAmount">结算明细</a>	
-							<a class="layui-btn layui-btn-xs"  lay-event="download">下载明细</a>	
-					
+							<a class="layui-btn layui-btn-xs"  lay-event="download">下载明细</a>						
 						</script>
 						<script type="text/html" id="set_list_toolbar">
 							<div class="layui-btn-container">
@@ -281,9 +286,9 @@
 						[
 							{ type: 'checkbox', fixed: 'left' },
 							{
-								field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
+								field: 'zizeng', width: 60, title: '序号', type: 'numbers'
 							}, {
-								field: 'dateSign', title: '订单日期', width: 105, fixed: 'left', templet(item) {
+								field: 'dateSign', title: '订单日期', width: 105,  templet(item) {
 									return formatTime(item.dateSign);
 								}
 							}, {
@@ -312,15 +317,17 @@
 								// 状态：success-成功、failure-失败、process-处理中、pending-待处理
 								field: 'status', title: '结算状态', width: 90, templet: function (item) {
 									if (item.status == 'pending') {
-										return '待处理';
+										// return '待处理';
+										return '<span style="background: #1e9fff; padding: 2px 3px;color: #fff;border-radius: 3px ;">待处理</span>';
 									} else if (item.status == 'process') {
-										return '处理中';
+										return '<span style="background: #ff5722; padding: 2px 3px;color: #fff;border-radius: 3px ;">处理中</span>';
+										// return '处理中';
 									} else if (item.status == 'success') {
-										return '成功';
+										return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">成功</span>';
 									} else if (item.status == 'failure') {
-										return '失败';
+										return '<span style="background: #e4393c; padding: 2px 3px;color: #fff;border-radius: 3px ;">失败</span>';
 									} else if (item.status == 'abnormal') {
-										return '异常';
+										return '<span style="background: #e4393c; padding: 2px 3px;color: #fff;border-radius: 3px ;">异常</span>';
 									}
 								}
 							}, {
@@ -630,7 +637,7 @@
 							btn: ["确定", "关闭"],
 							area: ['500px', '200px'],//宽高
 							yes: function (index) {
-								var url = "silver-web-shop/manualOrder/download?merchant_no=" + data.merchantId + "&dateSign=" + data.dateSign;								
+								var url = "silver-web-shop/manualOrder/download?merchant_no=" + data.merchantId + "&dateSign=" + data.dateSign;
 								layer.closeAll();
 								layer.load();
 								$.ajax({
@@ -694,7 +701,7 @@
 								// );
 							}
 						});
-					} else if (obj.event == 'getSelAmount') {						
+					} else if (obj.event == 'getSelAmount') {
 						layer.msg('加载中...', { time: 0, icon: 16, shade: 0.1 });
 						var params = {
 							merchantId: data.merchantId,

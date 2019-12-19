@@ -106,22 +106,22 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
-							placeholder="年-月-日">
+						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off" readonly=''
+							placeholder="年-月-日"> 
 					</div>
 					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
+						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" readonly=''
 							placeholder="年-月-日">
 					</div>
 				</div>
 			</div>
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
+				
 			</div>
 			<script type="text/html" id="fz_list_toolbar">
 				<div class="layui-btn-container">
-					<!-- <button class="layui-btn layui-btn-sm" lay-event="resend"><i class="layui-icon">&#xe609;</i>重发</button> -->
 					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>导出</button>				
 				</div>
 			</script>
@@ -136,7 +136,7 @@
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	</div>
 	<script>
-	
+
 		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
@@ -149,9 +149,11 @@
 				elem: '#startDate'
 				, value: getDay(-30)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
+				, max: 0
 			});
 			// 动态设置表格高度
 			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
