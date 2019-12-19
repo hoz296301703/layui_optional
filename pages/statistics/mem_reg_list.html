@@ -31,108 +31,84 @@
 			width: 80px;
 		}
 
-		/* .weadmin-body {
+		.weadmin-body {
 			padding: 0;
-		} */
+		}
 	</style>
 </head>
 
 <body>
 	<div class="weadmin-body">
-		<form id="form_sreach" class="layui-form">
-			<div class="layui-form-item">
-				<div class="layui-inline">
-					<label class="layui-form-label">专店编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="counterId" placeholder="请输入专店编号" class="layui-input">
-					</div>
+		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+			<ul class="layui-tab-title">
+				<li class="layui-this">注册统计</li>
+				<li id="details_btn">注册明细</li>
+			</ul>
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<form id="form_sreach" class="layui-form">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">专店编号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="counterId" placeholder="请输入专店编号" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">商户编号</label>
+								<div class="layui-input-inline">
+									<input type="text" name="merchantId" placeholder="请输入商户编号" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">商户名称</label>
+								<div class="layui-input-inline">
+									<input type="text" name="merchantName" placeholder="请输入商户名称" class="layui-input">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">日期</label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="startDate" name="startDate"
+										autocomplete="off" readonly="" placeholder="年-月-日">
+								</div>
+								  <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="endDate" name="endDate"
+										autocomplete="off" readonly="" placeholder="年-月-日">
+								</div>
+							</div>
+						</div>
+						<div style="text-align: center;">
+							<button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+								data-type="reload">搜索</button>
+						</div>
+					</form>
+					<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">商户编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="merchantId" placeholder="请输入商户编号" class="layui-input">
-					</div>
+				<script type="text/html" id="operateTpl">
+					<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			 -->
+				<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a> -->
+				</script>
+				<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+				<script src="../../static/js/common.js" charset="utf-8"></script>
+				<!----注册明细------------start----------------------->
+				<div class="layui-tab-item" id="details_logs">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">商户名称</label>
-					<div class="layui-input-inline">
-						<input type="text" name="merchantName" placeholder="请输入商户名称" class="layui-input">
-					</div>
-				</div>
-				<!-- <div class="layui-inline">
-					<label class="layui-form-label">专柜编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="counterId" placeholder="请输入专柜编号" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">设备</label>
-					<div class="layui-input-inline">
-						<select name="device" lay-verify="required" lay-search="">
-							<option value="">全部</option>
-							<option value="wx">微信</option>
-							<option value="android">安卓</option>
-							<option value="ios">苹果</option>
-							<option value="pc">电脑端</option>
-						</select>
-					</div>
-				</div> -->
-				<!--<div class="layui-inline">
-					<label class="layui-form-label">上/下架状态</label>
-					<div class="layui-input-inline">
-						<select name="sellFlag" lay-verify="required" lay-search="">
-							<option value="" hidden>全部</option>
-							<option value="1">上架</option>
-							<option value="2">下架</option>
-						</select>
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">审核状态</label>
-					<div class="layui-input-inline">
-						<select name="reviewerStatus" lay-verify="required" lay-search="">
-							<option value="">全部</option>
-							<option value="success">通过</option>
-							<option value="failure">不通过</option>
-							<option value="process">审核中</option>
-							<option value="pending">待审核</option>
-						</select>
-					</div>
-				</div> -->
-				<div class="layui-inline">
-					<label class="layui-form-label">日期</label>
-					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
-							readonly="" placeholder="年-月-日">
-					</div>
-					  <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
-					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
-							readonly="" placeholder="年-月-日">
-					</div>
-				</div>
+				<!----注册明细------------end----------------------->
 			</div>
-			<div style="text-align: center;">
-				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
-			</div>
-		</form>
-		<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+		</div>
 	</div>
 
-	<script type="text/html" id="operateTpl">
-		<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			 -->
-	<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a> -->
-	</script>
-	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-	<script src="../../static/js/common.js" charset="utf-8"></script>
 
 	<script>
-
-		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form', 'tree', 'laydate', 'element'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
+				element = layui.element,
 				laydate = layui.laydate;
 			//日期时间选择器
 			laydate.render({
@@ -344,6 +320,12 @@
 					});
 				}
 			});
+
+			//跳转至短信日志
+			$('#details_btn').on('click', function () {
+				var h = $(window).height() - 80;
+				$("#details_logs").find('iframe').attr('src', "mem_reg_details_list.html").css('height', h + 'px');
+			})
 		});
 	</script>
 </body>

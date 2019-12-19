@@ -52,6 +52,12 @@
 					</div>
 				</div>
 				<div class="layui-inline">
+					<label class="layui-form-label">商户编号</label>
+					<div class="layui-input-inline">
+						<input type="text" name="merchantId" placeholder="请输入商户编号" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
 					<label class="layui-form-label">名称</label>
 					<div class="layui-input-inline">
 						<input type="text" name="goodsName" placeholder="请输入商品名称" class="layui-input">
@@ -117,12 +123,12 @@
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
-							placeholder="年-月-日">
+							readonly="" placeholder="年-月-日">
 					</div>
 					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
-							placeholder="年-月-日">
+							readonly="" placeholder="年-月-日">
 					</div>
 				</div>
 			</div>
@@ -136,8 +142,7 @@
 	<div style="display: none;" id="managerAuditMerchantInfo">
 		<form class="layui-form" style="display: flex; justify-content: center; margin-top: 20px;">
 			<div class="layui-form-item">
-				<div class="layui-inline">
-					<label class="layui-form-label">状态</label>
+				<div class="layui-inline"> <label class="layui-form-label">状态</label>
 					<div class="layui-input-inline">
 						<select name="managerEditGoodsRecordStatus" lay-verify="required" lay-search="">
 							<option value="">请选择</option>
@@ -146,9 +151,7 @@
 						</select>
 					</div>
 				</div>
-
 			</div>
-
 		</form>
 	</div>
 	<script type="text/html" id="operateTpl">
@@ -165,7 +168,6 @@
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 
 	<script>
-
 		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
@@ -177,13 +179,14 @@
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
-
+				, max: 0
 			});
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				defaultToolbar: ['filter'],
@@ -202,57 +205,53 @@
 								return G_formatStr(item.createDate.value);
 							}
 						}, {
-							field: 'goodsMerchantName', width: 120, title: '商户名称', templet: function (item) {
+							field: 'goodsMerchantName', title: '商户名称',  width: 220, templet: function (item) {
 								return item.goodsMerchantName.value;
+							}
+						}, {
+							field: 'merchantId', title: '商户编号', width: 180, templet: function (item) {
+								return item.goodsMerchantId.value;
 							}
 						}, {
 							field: 'spareGoodsImage', width: 90, title: '图片', templet: function (item) {
 								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + g_imgSplit(item.spareGoodsImage.value, item.goodsMerchantId.value) + '"  src="' + g_imgSplit(item.spareGoodsImage.value, item.goodsMerchantId.value) + '" width="60px" height="60px"></div>';
 							}
 						}, {
-							field: 'goodsName', title: '商品名称', width: 140, templet: function (item) {
+							field: 'goodsName', title: '商品名称', width: 300, templet: function (item) {
 								return item.goodsName.value;
 							}
 						}, {
-							field: 'barCode', title: '条形码', templet: function (item) {
+							field: 'entGoodsNo', title: '商品自编号', width: 185, templet: function (item) {
+								return item.entGoodsNo.value;
+							}						
+						}, {
+							field: 'barCode', title: '条形码', width : 140,  templet: function (item) {
 								return item.barCode.value;
 							}
 						}, {
-							field: 'entGoodsNo', title: '商品自编号', width: 120, templet: function (item) {
-								return item.entGoodsNo.value;
-							}
-						},
-						//  {
-						// 	field: 'regPrice', title: '商品价格(元)', width: 110, templet: function (item) {
-						// 		return item.regPrice.value;
-						// 	}
-						// },
-						//  {
-						// 	field: 'goodsClass', title: '商品分类', width: 120, templet: function (item) {
-
-						// 		var goodsClass = "";
-						// 		if (!isEmpty(item.spareGoodsThirdTypeName.value)) {
-						// 			goodsClass =
-						// 				item.spareGoodsFirstTypeName.value +
-						// 				"/" +
-						// 				item.spareGoodsSecondTypeName.value +
-						// 				"/" +
-						// 				item.spareGoodsThirdTypeName.value;
-						// 		} else if (!isEmpty(item.spareGoodsSecondTypeName.value)) {
-						// 			goodsClass =
-						// 				item.spareGoodsFirstTypeName.value +
-						// 				"/" +
-						// 				item.spareGoodsSecondTypeName.value;
-						// 		} else if (!isEmpty(item.spareGoodsFirstTypeName.value)) {
-						// 			goodsClass = item.spareGoodsFirstTypeName.value;
-						// 		} else {
-						// 			goodsClass = "";
-						// 		}
-						// 		return goodsClass;
-						// 	}
-						// },
-						{
-							field: 'customsPortName', title: '口岸', width: 90, templet: function (item) {
+							// 	field: 'goodsClass', title: '商品分类', width: 120, templet: function (item) {
+							// 		var goodsClass = "";
+							// 		if (!isEmpty(item.spareGoodsThirdTypeName.value)) {
+							// 			goodsClass =
+							// 				item.spareGoodsFirstTypeName.value +
+							// 				"/" +
+							// 				item.spareGoodsSecondTypeName.value +
+							// 				"/" +
+							// 				item.spareGoodsThirdTypeName.value;
+							// 		} else if (!isEmpty(item.spareGoodsSecondTypeName.value)) {
+							// 			goodsClass =
+							// 				item.spareGoodsFirstTypeName.value +
+							// 				"/" +
+							// 				item.spareGoodsSecondTypeName.value;
+							// 		} else if (!isEmpty(item.spareGoodsFirstTypeName.value)) {
+							// 			goodsClass = item.spareGoodsFirstTypeName.value;
+							// 		} else {
+							// 			goodsClass = "";
+							// 		}
+							// 		return goodsClass;
+							// 	}
+							// },{
+							field: 'customsPortName', title: '口岸', width: 120, templet: function (item) {
 								var result = item.customsPortName.value;
 								if (isEmpty(result)) {
 									result = '';
@@ -260,7 +259,7 @@
 								return result;
 							}
 						}, {
-							field: 'customsName', title: '主管海关', width: 120, templet: function (item) {
+							field: 'customsName', title: '主管海关', width: 140, templet: function (item) {
 								var result = item.customsCode.value;
 								if (isEmpty(result)) {
 									return '';
@@ -338,7 +337,6 @@
 							"count": res.totalCount //解析数据长度
 						};
 					}
-
 				},
 				done: function (res, curr, count) {
 					//如果是异步请求数据方式，res即为你接口返回的信息。
@@ -354,41 +352,63 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var merchantName = $('#form_sreach').find('[name=merchantName]');
-				var goodsName = $('#form_sreach').find('[name=goodsName]');
-				var entGoodsNo = $('#form_sreach').find('[name=entGoodsNo]');
-				var barCode = $('#form_sreach').find('[name=barCode]');
-				var status = $('#form_sreach').find('[name=status]');
-				var recordFlag = $('#form_sreach').find('[name=recordFlag]');
-				var customsPort = $('#form_sreach').find('[name=customsPort]');
-				var imageFlag = $('#form_sreach').find('[name=imageFlag]');
-				var startDate = $('#form_sreach').find('[name=startDate]');
-				var endDate = $('#form_sreach').find('[name=endDate]');
-				//拼接时间
-				startDate = appendStartDate(startDate.val());
-				endDate = appendEndDate(endDate.val());
 				//执行重载
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/goodsRecord/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()
 					},
-					where: {
-						goodsMerchantNameblurry: merchantName.val(),
-						goodsNameblurry: goodsName.val(),
-						entGoodsNo: entGoodsNo.val(),
-						barCode: barCode.val(),
-						status: status.val(),
-						recordFlag: recordFlag.val(),
-						customsPort: customsPort.val(),
-						imageFlag: imageFlag.val(),
-						startDate: startDate,
-						endDate: endDate
-					}
+					where: queryParams()
 				});
 			}
-
-
+			/*
+			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
+			 * http://www.layui.com/doc/modules/form.html#render
+			 * */
+			// $(function () {
+			// 	form.render();
+			// });
+			var active = {
+				reload: function () {
+					//执行重载
+					table.reload('articleList', {
+						url: urlPrefix + 'silver-web-shop/goodsRecord/findInfo',
+						page: {
+							curr: 1 //重新从第 1 页开始
+						},
+						where: queryParams()
+					});
+				}
+			};
+			var queryParams = function () {
+				var merchantId = $('#form_sreach').find('[name=merchantId]').val();
+				var merchantName = $('#form_sreach').find('[name=merchantName]').val();
+				var goodsName = $('#form_sreach').find('[name=goodsName]').val();
+				var entGoodsNo = $('#form_sreach').find('[name=entGoodsNo]').val();
+				var barCode = $('#form_sreach').find('[name=barCode]').val();
+				var status = $('#form_sreach').find('[name=status]').val();
+				var recordFlag = $('#form_sreach').find('[name=recordFlag]').val();
+				var customsPort = $('#form_sreach').find('[name=customsPort]').val();
+				var imageFlag = $('#form_sreach').find('[name=imageFlag]').val();
+				var startDate = $('#form_sreach').find('[name=startDate]').val();
+				var endDate = $('#form_sreach').find('[name=endDate]').val();
+				//拼接时间
+				startDate = appendStartDate(startDate);
+				endDate = appendEndDate(endDate);
+				var obj = {};
+				obj.goodsMerchantNameblurry = merchantName;
+				obj.goodsMerchantId = merchantId;
+				obj.goodsNameblurry = goodsName;
+				obj.entGoodsNo = entGoodsNo;
+				obj.barCode = barCode;
+				obj.status = status;
+				obj.recordFlag = recordFlag;
+				obj.customsPort = customsPort;
+				obj.imageFlag = imageFlag;
+				obj.startDate = startDate;
+				obj.endDate = endDate;
+				return obj;
+			}
 			//头工具栏事件
 			table.on('toolbar(articleList)', function (obj) {
 				var checkStatus = table.checkStatus(obj.config.id);
@@ -444,49 +464,7 @@
 						break;
 				};
 			});
-			/*
-			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
-			 * http://www.layui.com/doc/modules/form.html#render
-			 * */
-			// $(function () {
-			// 	form.render();
-			// });
-			var active = {
-				reload: function () {
-					var merchantName = $('#form_sreach').find('[name=merchantName]');
-					var goodsName = $('#form_sreach').find('[name=goodsName]');
-					var entGoodsNo = $('#form_sreach').find('[name=entGoodsNo]');
-					var barCode = $('#form_sreach').find('[name=barCode]');
-					var status = $('#form_sreach').find('[name=status]');
-					var recordFlag = $('#form_sreach').find('[name=recordFlag]');
-					var customsPort = $('#form_sreach').find('[name=customsPort]');
-					var imageFlag = $('#form_sreach').find('[name=imageFlag]');
-					var startDate = $('#form_sreach').find('[name=startDate]');
-					var endDate = $('#form_sreach').find('[name=endDate]');
-					//拼接时间
-					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());
-					//执行重载
-					table.reload('articleList', {
-						url: urlPrefix + 'silver-web-shop/goodsRecord/findInfo',
-						page: {
-							curr: 1 //重新从第 1 页开始
-						},
-						where: {
-							goodsMerchantNameblurry: merchantName.val(),
-							goodsNameblurry: goodsName.val(),
-							entGoodsNo: entGoodsNo.val(),
-							barCode: barCode.val(),
-							status: status.val(),
-							recordFlag: recordFlag.val(),
-							customsPort: customsPort.val(),
-							imageFlag: imageFlag.val(),
-							startDate: startDate,
-							endDate: endDate
-						}
-					});
-				}
-			};
+
 			// 监听查询按钮
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');
@@ -526,7 +504,7 @@
 						]
 					}
 				});
-			});			
+			});
 
 			//单击行勾选checkbox事件
 			$(document).on("click", ".layui-table-body table.layui-table tbody tr", function () {

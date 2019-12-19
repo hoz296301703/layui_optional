@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+  <div class="layui-tab-content">
+    <form id="form_sreach" class="layui-form">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">手机号码</label>
+          <div class="layui-input-inline">
+            <input type="text" name="memberTel" placeholder="请输入手机号码" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">注册专店</label>
+          <div class="layui-input-inline">
+            <input type="text" name="counterId" placeholder="请输入注册专店" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">归属商户</label>
+          <div class="layui-input-inline">
+            <input type="text" name="merchantName" placeholder="请输入归属商户" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">总店编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="topCounterId" placeholder="请输入总店编号" class="layui-input">
+          </div>
+        </div>
+
+        <div class="layui-inline">
+          <label class="layui-form-label">等级</label>
+          <div class="layui-input-inline">
+            <select name="merchantLevel" lay-verify="required" lay-search="">
+              <option value="">全部</option>
+              <option value="1">VIP</option>
+              <option value="100">白金</option>
+              <option value="one">一级</option>
+              <option value="two">二级</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">日期</label>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off" readonly=""
+              placeholder="年-月-日">
+          </div>
+              <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" placeholder="年-月-日"
+              readonly="">
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
+      </div>
+    </form>
+  </div>
+  <table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+
+  <script type="text/javascript">
+
+    layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
+      var table = layui.table,
+        $ = layui.jquery,
+        form = layui.form,
+        tree = layui.tree,
+        laydate = layui.laydate;
+      //日期时间选择器
+      laydate.render({
+        elem: '#startDate'
+        , value: getDay(-7)
+        , isInitValue: true
+        , max: 0
+      });
+      laydate.render({
+        elem: '#endDate'
+        , max: 0
+      });
+      // var tableHeight = $(window).height() - 30 - $('#form_sreach').outerHeight(true);
+      table.render({
+        elem: '#articleList',
+        cellMinWidth: 80,
+        // height: 450,
+        defaultToolbar: ['filter'],
+        url: urlPrefix + 'silver-web-shop/memRegSource/findDetails',
+        method: 'post',
+        cols: [
+          [
+            {
+              field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
+            }, {
+              field: 'createDate', width: 170, title: '日期', fixed: 'left', templet: function (item) {
+                return G_format(item.createDate, "yyyy-MM-dd hh:mm:ss");
+              }
+            }, {
+              field: 'memberTel', width: 130, title: '手机号码'
+            }, {
+              field: 'memberId', title: '会员编号'
+            }, {
+              field: 'counterId', title: '注册专店'
+            }, {
+              field: 'merchantName', title: '归属商户'
+            }, {
+              field: 'topCounterId', title: '总店编号'
+            }, {
+              field: 'merchantLevel', title: '等级', templet: function (item) {
+                var level = item.merchantLevel;
+                var result = '';
+                if (level == '1') {
+                  result = "VIP";
+                } else if (level == '100') {
+                  result = "白金";
+                } else if (level == 'one') {
+                  result = "一级";
+                } else if (level == 'two') {
+                  result = "二级";
+                }
+                return result;
+              }
+            }
+            // {
+            // 	field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+            // }
+          ]
+        ],
+        // skin: 'row', //行边框风格
+        event: true,
+        page: true,
+        response: {
+          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+        },
+        request: {
+          pageName: 'page', //页码的参数名称，默认：page
+          limitName: 'size' //每页数据量的参数名，默认：limit
+        },
+        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+          return {
+            "code": res.status, //解析接口状态
+            "msg": res.msg, //解析提示文本
+            "count": res.totalCount, //解析数据长度
+            "data": res.datas //解析数据列表
+          };
+        },
+        where: {
+          startDate: appendStartDate(getDay(-7))
+        },
+        done: function (res, curr, count) {
+          //如果是异步请求数据方式，res即为你接口返回的信息。
+          //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+          // console.log(res);
+          // //得到当前页码
+          // console.log(curr);
+          // //得到数据总量
+          // console.log(count);
+        }
+      });
+      // 重载公共方法
+      var _reload = function () {
+        table.reload('articleList', {
+          url: urlPrefix + 'silver-web-shop/memRegSource/findDetails',
+          page: {
+            curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+          },
+          where: queryParams()
+        });
+      }
+      /*
+       *数据表格中form表单元素是动态插入,所以需要更新渲染下
+       * http://www.layui.com/doc/modules/form.html#render
+       * */
+      // $(function () {
+      // 	form.render();
+      // });
+      var active = {
+        reload: function () {
+          //执行重载
+          table.reload('articleList', {
+            url: urlPrefix + 'silver-web-shop/memRegSource/findDetails',
+            page: {
+              curr: 1 //重新从第 1 页开始
+            },
+            where: queryParams()
+          });
+        }
+      };
+      //查询条件
+      var queryParams = function () {
+        var memberTel = $('#form_sreach').find('[name=memberTel]').val();
+        var counterId = $('#form_sreach').find('[name=counterId]').val();
+        var merchantName = $('#form_sreach').find('[name=merchantName]').val();
+
+        var topCounterId = $('#form_sreach').find('[name=topCounterId]').val();
+        var merchantLevel = $('#form_sreach').find('[name=merchantLevel]').val();
+        var startDate = $('#form_sreach').find('[name=startDate]').val();
+        var endDate = $('#form_sreach').find('[name=endDate]').val();
+        startDate = appendStartDate(startDate);
+        endDate = appendEndDate(endDate);
+        var obj = {};
+        obj.merchantNameblurry = merchantName;
+        obj.memberTel = memberTel;
+        obj.counterId = counterId;
+        obj.topCounterId = topCounterId;
+        obj.merchantLevel = merchantLevel;
+        obj.startDate = startDate;
+        obj.endDate = endDate;
+        return obj;
+      }
+      // 监听查询按钮
+      $('#form_sreach .layui-btn').on('click', function () {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+    });
+  </script>
+</body>
+
+</html>
