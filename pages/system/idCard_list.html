@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<!-- 商户实名认证记录html-->
 
 <head>
   <meta charset="UTF-8">
@@ -17,7 +18,9 @@
     <![endif]-->
 </head>
 <style type="text/css">
-
+  #update_idCard .layui-form-label {
+    width: 70px
+  }
 </style>
 
 <body>
@@ -66,8 +69,8 @@
           <div class="layui-input-inline">
             <select name="status" lay-verify="required" lay-search="">
               <option value="">全部</option>
-              <option value="success">成功</option>
-              <option value="failure">失败</option>
+              <option value="success">通过</option>
+              <option value="failure">不通过</option>
               <option value="wait">待认证</option>
             </select>
           </div>
@@ -89,14 +92,66 @@
         <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
       </div>
     </form>
+    <table class="layui-hide" id="idCard_list" lay-filter="idCard_list"></table>
+    <script type="text/html" id="operateTpl">
+      <!-- laytpl语法---START--- -->			
+				{{#  if(d.status != 'success'){ }}
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="update">修改</a>   
+        {{#  } }}
+      </script>
+    <!-- 修改身份证日志信息 -->
+    <form class="layui-form" lay-filter="update_idCard" id="update_idCard"
+      style="display: none;width: 90%; margin: 20px auto;">
+      <input id="serialNo"  name="serialNo" type="hidden" />
+      <div class="layui-form-item">
+        <label class="layui-form-label">商户名称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="merchantName" autocomplete="off" placeholder="" class="layui-input layui-disabled"
+            disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">商户编号</label>
+        <div class="layui-input-inline">
+          <input type="text" name="merchantId" autocomplete="off" placeholder="请输入运单号"
+            class="layui-input layui-disabled" lay-verify="required" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="name" autocomplete="off" class="layui-input layui-disabled" lay-verify="required"
+            disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">身份证号码</label>
+        <div class="layui-input-inline">
+          <input type="text" name="idNumber" autocomplete="off" placeholder="" class="layui-input layui-disabled"
+            disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-inline">
+          <select name="status" lay-verify="required" lay-search="">
+            <option value="success">认证通过</option>
+            <option value="failure">不通过</option>
+            <option value="wait">待认证</option>
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item" style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-sm" lay-filter="update_idCard_btn" lay-submit="">保存</button>
+        <button type="button" class="layui-btn layui-btn-sm layui-btn-primary close_update">关闭</button>
+      </div>
+      <!-- 录入物流信息 END-->
+    </form>
   </div>
-  <table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script src="../../static/js/common.js" charset="utf-8"></script>
-
   <script type="text/javascript">
-
     layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
       var table = layui.table,
         $ = layui.jquery,
@@ -117,9 +172,10 @@
       });
 
       table.render({
-        elem: '#articleList',
+        elem: '#idCard_list',
         cellMinWidth: 80,
         defaultToolbar: ['filter'],
+        toolbar: '#idCard_list_toolbar',
         url: urlPrefix + 'silver-web-shop/idCard/getAllIdCard',
         method: 'post',
         cols: [
@@ -139,11 +195,11 @@
             }, {
               field: 'idNumber', title: '身份证号码', width: 175
             }, {
-              field: 'status', title: '状态', width: 80, templet: function (item) {
+              field: 'status', title: '状态', width: 90, templet: function (item) {
                 if (item.status == 'success') {
-                  return '成功';
+                  return '认证通过';
                 } else if (item.status == 'failure') {
-                  return '失败';
+                  return '不通过';
                 } else if (item.status == 'wait') {
                   return '待认证';
                 }
@@ -167,16 +223,14 @@
             }, {
               field: 'certifiedDate', title: '认证日期', width: 170, templet: function (item) {
                 if (isEmpty(item.certifiedDate)) {
-                  //空时不操作
                   return '';
                 } else {
                   return G_format(item.certifiedDate.time, "yyyy-MM-dd hh:mm:ss");
                 }
               }
+            }, {
+              field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
             }
-            // {
-            // 	field: 'operate', width: 100, title: '操作', toolbar: '#operateTpl', fixed: 'right'
-            // }
           ]
         ],
         // skin: 'row', //行边框风格
@@ -211,8 +265,8 @@
         }
       });
       // 重载公共方法
-      var _reload = function () {       
-        table.reload('articleList', {
+      var _reload = function () {
+        table.reload('idCard_list', {
           url: urlPrefix + 'silver-web-shop/idCard/getAllIdCard',
           page: {
             curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
@@ -229,9 +283,8 @@
       // });
       var active = {
         reload: function () {
-         
           //执行重载
-          table.reload('articleList', {
+          table.reload('idCard_list', {
             url: urlPrefix + 'silver-web-shop/idCard/getAllIdCard',
             page: {
               curr: 1 //重新从第 1 页开始
@@ -258,7 +311,7 @@
         obj.merchantNameblurry = merchantName;
         obj.idNumber = idNumber;
         obj.type = type;
-        obj.status = status;      
+        obj.status = status;
         obj.startDate = startDate;
         obj.endDate = endDate;
         return obj;
@@ -267,6 +320,58 @@
       $('#form_sreach .layui-btn').on('click', function () {
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
+      });
+
+      // 关闭新增弹窗
+      $('.close_update').click(function () {
+        layer.close(update_windows);
+      })
+      var update_windows = null;
+      //监听工具条
+      table.on('tool(idCard_list)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'update') {// 更新  
+          //表单初始赋值
+          form.val('update_idCard', {
+            "merchantName": data.merchantName,
+            "serialNo": data.serialNo,
+            "merchantId": data.merchantId,
+            "name": data.name,
+            "idNumber": data.idNumber,
+            "status": data.status
+          });
+          form.render('select');
+          update_windows = layer.open({
+            title: "更新实名认证信息",
+            type: 1,
+            skin: "layui-layer-rim", //加上边框
+            area: ["300px", "400px"], //宽高
+            content: $("#update_idCard")
+          });
+        }
+      });
+
+      // 添加物流信息
+      form.on('submit(update_idCard_btn)', function (data) {
+        layer.load(2);
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/idCard/update",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: data.field,
+          success: function (response) {
+            layer.closeAll("loading");
+            if (response.status == 1) {
+              layer.close(update_windows);
+              layer.msg("更新成功");
+              _reload();
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
       });
     });
   </script>

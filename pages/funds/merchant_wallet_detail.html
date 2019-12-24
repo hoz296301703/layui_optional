@@ -94,12 +94,12 @@
           <li class="item" style="height: 26px;line-height: 26px;font-weight: bold;">
             日期
             <div class="layui-input-inline">
-              <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+              <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off" readonly="" 
                 placeholder="年-月-日">
             </div>
             <div class="layui-input-inline" style="width: 0;line-height: 24px;margin-right: 5px;">-</div>
             <div class="layui-input-inline">
-              <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" placeholder="年-月-日">
+              <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" readonly="" placeholder="年-月-日">
             </div>
           <li class="item">
             <a name="today">今天</a>
@@ -175,10 +175,7 @@
     <script type="text/html" id="operateTpl_df">
             <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">明细</a>					
           </script>
-  </div>
-  </div>
-  </div>
-  </div>
+  </div> 
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
@@ -444,14 +441,15 @@
             },
             data: datas,
             success: function (response) {
+              //隐藏加载动画
+              $('#balance').find('.layui-icon').attr("style", "display:none");
               if (response.status == 1) {
-                //隐藏加载动画
-                $('#balance').find('.layui-icon').attr("style", "display:none");
-
                 $('#balance').find('.ft-in').html(response.datas.in);
                 $('#balance').find('.ft-out').html(response.datas.out);
               } else {
-                layer.msg(response.msg);
+                $('#balance').find('.ft-in').html('--');
+                $('#balance').find('.ft-out').html('--');
+                // layer.msg(response.msg);
               }
             }
           });
@@ -466,7 +464,6 @@
             btn: ["下载", "取消"],
             yes: function (index) {
               //下载URL
-              // var url = "silver-web-shop/merchantWalletLog/download?merchantWalletId=" + g_data.walletId;
               var url = "silver-web-shop/merchantWalletLog/export?merchantWalletId=" + g_data.walletId;
               var startDate = $('#form_sreach').find('[name=startDate]').val();
               var endDate = $('#form_sreach').find('[name=endDate]').val();
@@ -478,7 +475,6 @@
               startDate = appendStartDate(startDate);
               //拼接结束时间
               endDate = appendEndDate(endDate);
-
               url += '&startDate=' + startDate + '&endDate=' + endDate;
               //订单编号
               var orderId = $('#form_sreach').find('[name=orderId]').val();
