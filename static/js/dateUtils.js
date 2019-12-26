@@ -50,18 +50,25 @@ var isCrossMonth = function (startDate, endDate) {
         // popwin.info('提示', '日期不可为空');
         return true;
     }
-    // if (startDate == '' || endDate == '') {
-    // 	popwin.info('提示', '请输入查询日期');
-    // 	return false;
-    // }
-    var start_date = startDate + " 00:00";
-    var end_date = endDate + " 00:00";
-    start_date = new Date(start_date.replace(/-/g, "/"));
-    end_date = new Date(end_date.replace(/-/g, "/"));
-    // if (start_date > end_date) {
-    // 	popwin.info('提示', '截止日期不能小于起始日期');
-    // 	return false;
-    // }
+    var start_time = '';
+    var end_time = '';
+    if (isFormat(startDate)) {
+        start_time = startDate;
+    } else {
+        start_time = startDate + " 00:00";
+    }
+    if (isFormat(endDate)) {
+        end_time = endDate;
+    } else {
+        end_time = endDate + " 00:00";
+    }   
+    start_time = new Date(start_time.replace(/-/g, "/"));
+    end_time = new Date(end_time.replace(/-/g, "/"));
+    if (start_time > end_time) {
+        // popwin.info('提示', '截止日期不能小于起始日期');
+        console.log('截止日期不能小于起始日期');
+        return true;
+    }
     // 获取num天以后的日期   
     // var currentDate = new Date();
     // currentDate.setDate(currentDate.getDate() + num);
@@ -77,6 +84,16 @@ var isCrossMonth = function (startDate, endDate) {
     // } else {
     // return false;
     // }
-    return start_date.getMonth() != end_date.getMonth();
+    return start_time.getMonth() != end_time.getMonth();
     // }
+}
+
+//校验time是否为完整的yyyy-MM-dd HH:mm:ss
+var isFormat = function (time) {
+    if (isEmpty(time)) {
+        return false;
+    }
+    var pattern = /(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/;
+    var regExp = new RegExp(pattern);
+    return regExp.test(time);
 }

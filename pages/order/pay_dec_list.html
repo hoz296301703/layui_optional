@@ -34,7 +34,6 @@
 </head>
 
 <body>
-
 	<div class="weadmin-body">
 		<form id="form_sreach" class="layui-form">
 			<div class="layui-form-item">
@@ -79,6 +78,29 @@
 					</div>
 				</div>
 				<div class="layui-inline">
+					<label class="layui-form-label">海关口岸</label>
+					<div class="layui-input-inline">
+						<select name="eport" lay-verify="required" lay-search="">
+							<option value="">全部</option>
+							<option value="1">电子口岸</option>
+							<option value="2">南沙智检</option>
+							<option value="3">辽宁口岸</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">海关编码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="customsCode" placeholder="请输入海关编码" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">国检编码</label>
+					<div class="layui-input-inline">
+						<input type="text" name="ciqOrgCode" placeholder="请输入国检编码" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
@@ -94,16 +116,14 @@
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
-			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
-
-			<script type="text/html" id="operateTpl">
+		</form>
+	</div>
+	<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+	<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
 			</script>
-
-			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
-			<script src="../../static/js/common.js" charset="utf-8"></script>
-
-	</div>
+	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+	<script src="../../static/js/common.js" charset="utf-8"></script>
 	<script>
 		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
@@ -141,10 +161,10 @@
 								return G_format(item.create_date.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'pay_time', title: '付款日期', width: 160, templet: function (item) {
-								return G_format(item.pay_time.time, "yyyy-MM-dd hh:mm:ss");
-							}
-						}, {
+							// 	field: 'pay_time', title: '付款日期', width: 160, templet: function (item) {
+							// 		return G_format(item.pay_time.time, "yyyy-MM-dd hh:mm:ss");
+							// 	}
+							// }, {
 							field: 'create_by', title: '商户名称'
 						}, {
 							field: 'merchant_no', title: '商户编号'
@@ -152,15 +172,25 @@
 							field: 'morder_id', title: '订单号', width: 200
 						}, {
 							field: 'trade_no', title: '交易流水号', width: 180
-						},
-						// {
-						// 	field: 'freight', title: '运费', width: 60
-						// }, 
-						// {
-						// 	field: 'waybillNo', title: '运单号', width: 80
-						// }, 
-						{
+						}, {
 							field: 'pay_amount', title: '交易金额', width: 100
+						}, {
+							field: 'eport', title: '口岸', width: 90, templet: function (item) {
+								var port = item.eport;
+								var result = '';
+								if (port == '1') {
+									result = '电子口岸';
+								} else if (port == '2') {
+									result = '南沙智检';
+								} else if (port == '3') {
+									result = '辽宁口岸';
+								}
+								return result;
+							}
+						}, {
+							field: 'customsCode', title: '海关编码', width: 95
+						}, {
+							field: 'ciqOrgCode', title: '国检编码', width: 95
 						}, {
 							field: 'pay_record_status', title: '申报状态', fixed: 'right', width: 100, templet: function (item) {
 								if (item.pay_record_status == '1') {
@@ -172,15 +202,6 @@
 								} else if (item.pay_record_status == '4') {
 									return '<span style="background: #e4393c; padding: 2px 3px;color: #fff;border-radius: 3px ;">申报失败</span>';
 								}
-								// if (item.pay_record_status == '1') {
-								// 	return '未申报';
-								// } else if (item.pay_record_status == '2' || item.pay_record_status == '10') {
-								// 	return '申报中';
-								// } else if (item.pay_record_status == '3') {
-								// 	return '申报成功';
-								// } else if (item.pay_record_status == '4') {
-								// 	return '申报失败';
-								// }
 							}
 						}, {
 							field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
@@ -221,31 +242,12 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var morder_id = $('#form_sreach').find('[name=morder_id]');
-				var trade_no = $('#form_sreach').find('[name=trade_no]');
-				var create_by = $('#form_sreach').find('[name=create_by]');
-				var merchant_no = $('#form_sreach').find('[name=merchant_no]');
-				var pay_record_status = $('#form_sreach').find('[name=pay_record_status]');
-
-
-				var startDate = $('#form_sreach').find('[name=startDate]');
-				var endDate = $('#form_sreach').find('[name=endDate]');
-				startDate = appendStartDate(startDate.val());
-				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/payment/managerGetMpayInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
-					where: {
-						morder_id: morder_id.val(),
-						trade_no: trade_no.val(),
-						create_byblurry: create_by.val(),
-						merchant_no: merchant_no.val(),
-						pay_record_status: pay_record_status.val(),
-						startTime: startDate,
-						endTime: endDate
-					}
+					where: queryParams()
 				});
 			}
 			/*
@@ -257,33 +259,43 @@
 			// });
 			var active = {
 				reload: function () {
-					var morder_id = $('#form_sreach').find('[name=morder_id]');
-					var trade_no = $('#form_sreach').find('[name=trade_no]');
-					var create_by = $('#form_sreach').find('[name=create_by]');
-					var merchant_no = $('#form_sreach').find('[name=merchant_no]');
-					var pay_record_status = $('#form_sreach').find('[name=pay_record_status]');
-					var startDate = $('#form_sreach').find('[name=startDate]');
-					var endDate = $('#form_sreach').find('[name=endDate]');
-					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/payment/managerGetMpayInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
-						where: {
-							morder_id: morder_id.val(),
-							trade_no: trade_no.val(),
-							create_byblurry: create_by.val(),
-							merchant_no: merchant_no.val(),
-							pay_record_status: pay_record_status.val(),
-							startTime: startDate,
-							endTime: endDate
-						}
+						where: queryParams()
 					});
 				}
 			};
+			//查询条件
+			var queryParams = function () {
+				var morder_id = $('#form_sreach').find('[name=morder_id]').val();
+				var trade_no = $('#form_sreach').find('[name=trade_no]').val();
+				var create_by = $('#form_sreach').find('[name=create_by]').val();
+				var merchant_no = $('#form_sreach').find('[name=merchant_no]').val();
+				var pay_record_status = $('#form_sreach').find('[name=pay_record_status]').val();
+				var eport = $('#form_sreach').find('[name=eport]').val();
+				var customsCode = $('#form_sreach').find('[name=customsCode]').val();
+				var ciqOrgCode = $('#form_sreach').find('[name=ciqOrgCode]').val();
+				var startDate = $('#form_sreach').find('[name=startDate]').val();
+				var endDate = $('#form_sreach').find('[name=endDate]').val();
+				startDate = appendStartDate(startDate);
+				endDate = appendEndDate(endDate);
+				var obj = {};
+				obj.morder_id = morder_id;
+				obj.trade_no = trade_no;
+				obj.create_byblurry = create_by;
+				obj.merchant_no = merchant_no;
+				obj.pay_record_status = pay_record_status;
+				obj.startTime = startDate;
+				obj.endTime = endDate;
+				obj.eport = eport;
+				obj.customsCode = customsCode;
+				obj.ciqOrgCode = ciqOrgCode;
+				return obj;
+			}
 			// 监听查询按钮
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');

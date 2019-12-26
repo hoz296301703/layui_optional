@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<!--商户供货商品html-->
 
 <head>
 	<meta charset="UTF-8">
@@ -24,6 +25,7 @@
 		.layui-form-switch em {
 			width: 40px;
 		}
+
 		/* 私有样式 */
 		.layui-form-label {
 			width: 90px;
@@ -32,6 +34,10 @@
 		.layui-table-cell {
 			height: auto;
 			line-height: 80px;
+		}
+
+		th .layui-table-cell {
+			line-height: 28px;
 		}
 	</style>
 </head>
@@ -84,22 +90,20 @@
 			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
 		</form>
 	</div>
-	<!-- <div class="weadmin-block demoTable">
-		<button class="layui-btn" onclick="WeAdminShow('添加用户','./customs_add.html',600,400)">
-			<em class="layui-icon">&#xe61f;</em>添加</button>
-	</div> -->
 	<script type="text/html" id="operateTpl">
-			<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>			
-			<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">删除</a> -->
-		</script>
-
+		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>						
+	</script>
+	<script type="text/html" id="goods_supply_toolbar">
+		<div class="layui-btn-container">						
+			<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>下载</button>					
+		</div>
+	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
-
-	</div>
+	<script src="../../static/js/dateUtils.js" charset="utf-8"></script>
+	<script src="../../static/js/urlUtils.js" charset="utf-8"></script>
 	<script>
-
-		layui.use(['table', 'jquery', 'form',  'tree', 'laydate'], function () {
+		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
@@ -123,6 +127,8 @@
 				cellMinWidth: 80,
 				// height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/goodsSupply/findInfo',
+				toolbar: '#goods_supply_toolbar',
+				defaultToolbar: ['filter'],
 				method: 'post',
 				cols: [
 					[
@@ -194,27 +200,12 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var goodsName = $('#form_sreach').find('[name=goodsName]');
-				var goodsId = $('#form_sreach').find('[name=goodsId]');
-				var goodsMerName = $('#form_sreach').find('[name=goodsMerName]');
-				var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
-				var startDate = $('#form_sreach').find('[name=startDate]');
-				var endDate = $('#form_sreach').find('[name=endDate]');
-				startDate = appendStartDate(startDate.val());
-				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/goodsSupply/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
-					where: {
-						goodsNameblurry: goodsName.val(),
-						goodsId: goodsId.val(),
-						goodsMerId: goodsMerId.val(),
-						goodsMerNameblurry: goodsMerName.val(),
-						startDate: startDate,
-						endDate: endDate
-					}
+					where: queryParams()
 				});
 			}
 			/*
@@ -226,32 +217,36 @@
 			// });
 			var active = {
 				reload: function () {
-					var goodsName = $('#form_sreach').find('[name=goodsName]');
-					var goodsId = $('#form_sreach').find('[name=goodsId]');
-					var goodsMerName = $('#form_sreach').find('[name=goodsMerName]');
-					var goodsMerId = $('#form_sreach').find('[name=goodsMerId]');
-					var startDate = $('#form_sreach').find('[name=startDate]');
-					var endDate = $('#form_sreach').find('[name=endDate]');
-					//拼接时间
-					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());
 					//执行重载
+					appendUrl("www.baidu.com", queryParams());
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/goodsSupply/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
-						where: {
-							goodsNameblurry: goodsName.val(),
-							goodsId: goodsId.val(),
-							goodsMerId: goodsMerId.val(),
-							goodsMerNameblurry: goodsMerName.val(),
-							startDate: startDate,
-							endDate: endDate
-						}
+						where: queryParams()
 					});
 				}
 			};
+			//查询条件
+			var queryParams = function () {
+				var goodsName = $('#form_sreach').find('[name=goodsName]').val();
+				var goodsId = $('#form_sreach').find('[name=goodsId]').val();
+				var goodsMerName = $('#form_sreach').find('[name=goodsMerName]').val();
+				var goodsMerId = $('#form_sreach').find('[name=goodsMerId]').val();
+				var startDate = $('#form_sreach').find('[name=startDate]').val();
+				var endDate = $('#form_sreach').find('[name=endDate]').val();
+				startDate = appendStartDate(startDate);
+				endDate = appendEndDate(endDate);
+				var obj = {}
+				obj.goodsNameblurry = goodsName;
+				obj.goodsId = goodsId;
+				obj.goodsMerId = goodsMerId;
+				obj.goodsMerNameblurry = goodsMerName;
+				obj.startDate = startDate;
+				obj.endDate = endDate;
+				return obj;
+			}
 			// 监听查询按钮
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');
@@ -272,7 +267,55 @@
 					}
 				});
 			});
+			//头工具栏事件
+			table.on('toolbar(articleList)', function (obj) {
+				switch (obj.event) {
+					case 'download':
+						layer.alert("下载查询结果", {
+							time: 0, //不自动关闭
+							btnAlign: "c",
+							btn: ["下载", "取消"],
+							yes: function (index) {
+								var url = "silver-web-shop/goodsSupply/download?";
+								startDate = $('#form_sreach').find('[name=startDate]').val();
+								if (isEmpty(startDate)) {
+									layer.alert('请选择开始日期');
+									return false;
+								}
+								startDate = appendStartDate(startDate);//拼接开始时间
+								endDate = $('#form_sreach').find('[name=endDate]').val();
+								if (isEmpty(endDate)) {//结束时间为空时，默认填充为今天
+									endDate = getDay(0);
+								}
+								endDate = appendEndDate(endDate);//拼接结束时间							
+								// if (isCrossMonth(startDate, endDate)) {
+								// 	layer.alert('暂不支持跨月下载数据！');
+								// 	return false;
+								// }											
+								url = appendUrl(url, queryParams());
+								window.location.href = urlPrefix + url;
+								layer.closeAll();
+								layer.alert(
+									'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+									{
+										time: 0, //不自动关闭
+										btn: ["关闭"],
+										btnAlign: "c",
+										yes: function (index) {
+											layer.close(index);
+										}
+									}
+								);
+							}
+						});
+						break;
+					case 'downManualOrder':
 
+						break;
+				};
+			});
+
+		
 
 		});
 	</script>

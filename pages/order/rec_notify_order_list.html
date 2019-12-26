@@ -30,6 +30,7 @@
 		.layui-form-switch em {
 			width: 40px;
 		}
+
 		.weadmin-body {
 			padding: 0;
 		}
@@ -80,205 +81,264 @@
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
-							placeholder="年-月-日">
+							readonly="" placeholder="年-月-日">
 					</div>
 					    <div class="layui-input-inline" style="width: 0;line-height: 24px;">-</div>
 					<div class="layui-input-inline">
 						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
-							placeholder="年-月-日">
+							readonly="" placeholder="年-月-日">
 					</div>
 				</div>
 			</div>
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 			</div>
-			<table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+			<table class="layui-hide" id="rec_notify_order_list" lay-filter="rec_notify_order_list"></table>
 
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>					
 			</script>
-
+			<script type="text/html" id="rec_notify_order_toolbar">
+				<div class="layui-btn-container">						
+					<button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>下载</button>					
+				</div>
+			</script>
 			<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 			<script src="../../static/js/common.js" charset="utf-8"></script>
-
-	</div>
-	<script>
-
-		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
-			var table = layui.table,
-				$ = layui.jquery,
-				form = layui.form,
-				tree = layui.tree,
-				laydate = layui.laydate;
-			//日期时间选择器
-			laydate.render({
-				elem: '#startDate'
-				, value: getDay(-7)
-				, isInitValue: true
-				, max: 0
-			});
-			laydate.render({
-				elem: '#endDate'
-				, type: 'datetime'
-				, max: 0
-			});
-			// 动态设置表格高度
-			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
-			table.render({
-				elem: '#articleList',
-				toolbar: '#articleList_toolbar',
-				cellMinWidth: 80,
-				defaultToolbar: ['filter'],
-				// height: tableHeight,
-				url: urlPrefix + 'silver-web-shop/orderRecNotify/find',
-				method: 'post',
-				cols: [
-					[{
-						field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
-					}, {
-						field: 'createDate', title: '平台接收日期', fixed: 'left', width: 160, templet: function (item) {
-							return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
-						}
-					}, {
-						field: 'createBy', title: '商户名称', width: 200
-					}, {
-						field: 'merchantId', title: '商户编号', width: 180
-					}, {
-						field: 'orderId', title: '订单编号'
-					}, {
-						field: 'msg', title: '错误信息'
-					}, {
-						field: 'status', title: '回调状态', width: 90, templet: function (item) {
-							var result = '';
-							if (item.status == 'success') {
-								result = '成功';
-							} else if (item.status == 'failure') {
-								result = '失败';
-							}
-							return result;
-						}
-					}, {
-						field: 'count', title: '回调次数', width: 90
-					// }, {
-						// 	field: 'order_record_status', title: '申报状态', width: 90, fixed: 'right', templet: function (item) {
-						// 		//申报状态：1-未申报,2-申报中(待海关回执),3-申报成功、4-申报失败、10-申报中(待系统生成支付单)、11-订单待申报(待系统扫描申报)
-						// 		if (item.order_record_status == '1') {
-						// 			return '未申报';
-						// 		} else if (item.order_record_status == '2' || item.order_record_status == '11' || item.order_record_status == '10') {
-						// 			return '申报中';
-						// 		} else if (item.order_record_status == '3') {
-						// 			return '申报成功';
-						// 		} else if (item.order_record_status == '4') {
-						// 			return '申报失败';
-						// 		}
-						// 	}
-						// }, {
-						// field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
-					}]
-				],
-				// skin: 'row', //行边框风格
-				event: true,
-				page: true,
-				response: {
-					statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
-				},
-				request: {
-					pageName: 'page', //页码的参数名称，默认：page
-					limitName: 'size' //每页数据量的参数名，默认：limit
-				},
-				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
-					return {
-						"code": res.status, //解析接口状态
-						"msg": res.msg, //解析提示文本
-						"count": res.totalCount, //解析数据长度
-						"data": res.datas //解析数据列表
-					};
-				},
-				// where: {
-				// 	startTime: appendStartDate(getDay(-7))
-				// },
-				done: function (res, curr, count) {
-					//如果是异步请求数据方式，res即为你接口返回的信息。
-					//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-					// console.log(res);
-
-					// //得到当前页码
-					// console.log(curr);
-
-					// //得到数据总量
-					// console.log(count);
-				}
-			});
-			// 重载公共方法
-			var _reload = function () {
-				var createBy = $('#form_sreach').find('[name=createBy]');
-				var merchantId = $('#form_sreach').find('[name=merchantId]');
-				var status = $('#form_sreach').find('[name=status]');
-				var orderId = $('#form_sreach').find('[name=orderId]');
-
-				var startDate = $('#form_sreach').find('[name=startDate]');
-				var endDate = $('#form_sreach').find('[name=endDate]');
-				startDate = appendStartDate(startDate.val());
-				endDate = appendEndDate(endDate.val());
-				table.reload('articleList', {
-					url: urlPrefix + 'silver-web-shop/orderRecNotify/find',
-					page: {
-						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
-					},
-					where: {
-						createByblurry: createBy.val(),
-						merchantId: merchantId.val(),
-						status: status.val(),
-						orderId: orderId.val(),
-
-						startDate: startDate,
-						endDate: endDate
-					}
-				});
-			}
-			/*
-			 *数据表格中form表单元素是动态插入,所以需要更新渲染下
-			 * http://www.layui.com/doc/modules/form.html#render
-			 * */
-			// $(function () {
-			// 	form.render();
-			// });
-			var active = {
-				reload: function () {
-					var createBy = $('#form_sreach').find('[name=createBy]');
-					var merchantId = $('#form_sreach').find('[name=merchantId]');
-					var status = $('#form_sreach').find('[name=status]');
-					var orderId = $('#form_sreach').find('[name=orderId]');
-					var startDate = $('#form_sreach').find('[name=startDate]');
-					var endDate = $('#form_sreach').find('[name=endDate]');
-					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());
-					//执行重载					
-					table.reload('articleList', {
+			<script src="../../static/js/dateUtils.js" charset="utf-8"></script>
+			<script>
+				layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
+					var table = layui.table,
+						$ = layui.jquery,
+						form = layui.form,
+						tree = layui.tree,
+						laydate = layui.laydate;
+					//日期时间选择器
+					laydate.render({
+						elem: '#startDate'
+						, value: getDay(-7)
+						, isInitValue: true
+						, max: 0
+					});
+					laydate.render({
+						elem: '#endDate'
+						, max: 0
+					});
+					// 动态设置表格高度
+					// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+					table.render({
+						elem: '#rec_notify_order_list',
+						toolbar: '#rec_notify_order_toolbar',
+						cellMinWidth: 80,
+						defaultToolbar: ['filter'],
+						// height: tableHeight,
 						url: urlPrefix + 'silver-web-shop/orderRecNotify/find',
-						page: {
-							curr: 1 //重新从第 1 页开始
+						method: 'post',
+						cols: [
+							[{
+								field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
+							}, {
+								field: 'createDate', title: '平台接收日期', fixed: 'left', width: 160, templet: function (item) {
+									return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
+								}
+							}, {
+								field: 'createBy', title: '商户名称', width: 200
+							}, {
+								field: 'merchantId', title: '商户编号', width: 180
+							}, {
+								field: 'orderId', title: '订单编号'
+							}, {
+								field: 'name', title: '姓名'
+							}, {
+								field: 'idNumber', title: '身份证号码'
+							}, {
+								field: 'msg', title: '错误信息'
+							}, {
+								field: 'status', title: '回调状态', width: 90, templet: function (item) {
+									var result = '';
+									if (item.status == 'success') {
+										result = '成功';
+									} else if (item.status == 'failure') {
+										result = '失败';
+									}
+									return result;
+								}
+							}, {
+								field: 'count', title: '回调次数', width: 90
+								// }, {
+								// 	field: 'order_record_status', title: '申报状态', width: 90, fixed: 'right', templet: function (item) {
+								// 		//申报状态：1-未申报,2-申报中(待海关回执),3-申报成功、4-申报失败、10-申报中(待系统生成支付单)、11-订单待申报(待系统扫描申报)
+								// 		if (item.order_record_status == '1') {
+								// 			return '未申报';
+								// 		} else if (item.order_record_status == '2' || item.order_record_status == '11' || item.order_record_status == '10') {
+								// 			return '申报中';
+								// 		} else if (item.order_record_status == '3') {
+								// 			return '申报成功';
+								// 		} else if (item.order_record_status == '4') {
+								// 			return '申报失败';
+								// 		}
+								// 	}
+							}, {
+								field: 'operate', width: 80, title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							}]
+						],
+						// skin: 'row', //行边框风格
+						event: true,
+						page: true,
+						response: {
+							statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
 						},
-						where: {
-							createByblurry: createBy.val(),
-							merchantId: merchantId.val(),
-							status: status.val(),
-							orderId: orderId.val(),
+						request: {
+							pageName: 'page', //页码的参数名称，默认：page
+							limitName: 'size' //每页数据量的参数名，默认：limit
+						},
+						parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+							return {
+								"code": res.status, //解析接口状态
+								"msg": res.msg, //解析提示文本
+								"count": res.totalCount, //解析数据长度
+								"data": res.datas //解析数据列表
+							};
+						},
+						// where: {
+						// 	startTime: appendStartDate(getDay(-7))
+						// },
+						done: function (res, curr, count) {
+							//如果是异步请求数据方式，res即为你接口返回的信息。
+							//如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+							// console.log(res);
 
-							startDate: startDate,
-							endDate: endDate
+							// //得到当前页码
+							// console.log(curr);
+
+							// //得到数据总量
+							// console.log(count);
 						}
 					});
-				}
-			};
-			// 监听查询按钮
-			$('#form_sreach .layui-btn').on('click', function () {
-				var type = $(this).data('type');
-				active[type] ? active[type].call(this) : '';
-			});
+					// 重载公共方法
+					var _reload = function () {
+						var createBy = $('#form_sreach').find('[name=createBy]');
+						var merchantId = $('#form_sreach').find('[name=merchantId]');
+						var status = $('#form_sreach').find('[name=status]');
+						var orderId = $('#form_sreach').find('[name=orderId]');
 
-		});
-	</script>
+						var startDate = $('#form_sreach').find('[name=startDate]');
+						var endDate = $('#form_sreach').find('[name=endDate]');
+						startDate = appendStartDate(startDate.val());
+						endDate = appendEndDate(endDate.val());
+						table.reload('rec_notify_order_list', {
+							url: urlPrefix + 'silver-web-shop/orderRecNotify/find',
+							page: {
+								curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+							},
+							where: {
+								createByblurry: createBy.val(),
+								merchantId: merchantId.val(),
+								status: status.val(),
+								orderId: orderId.val(),
+
+								startDate: startDate,
+								endDate: endDate
+							}
+						});
+					}
+					/*
+					 *数据表格中form表单元素是动态插入,所以需要更新渲染下
+					 * http://www.layui.com/doc/modules/form.html#render
+					 * */
+					// $(function () {
+					// 	form.render();
+					// });
+					var active = {
+						reload: function () {
+							var createBy = $('#form_sreach').find('[name=createBy]');
+							var merchantId = $('#form_sreach').find('[name=merchantId]');
+							var status = $('#form_sreach').find('[name=status]');
+							var orderId = $('#form_sreach').find('[name=orderId]');
+							var startDate = $('#form_sreach').find('[name=startDate]');
+							var endDate = $('#form_sreach').find('[name=endDate]');
+							startDate = appendStartDate(startDate.val());
+							endDate = appendEndDate(endDate.val());
+							//执行重载					
+							table.reload('rec_notify_order_list', {
+								url: urlPrefix + 'silver-web-shop/orderRecNotify/find',
+								page: {
+									curr: 1 //重新从第 1 页开始
+								},
+								where: {
+									createByblurry: createBy.val(),
+									merchantId: merchantId.val(),
+									status: status.val(),
+									orderId: orderId.val(),
+
+									startDate: startDate,
+									endDate: endDate
+								}
+							});
+						}
+					};
+					// 监听查询按钮
+					$('#form_sreach .layui-btn').on('click', function () {
+						var type = $(this).data('type');
+						active[type] ? active[type].call(this) : '';
+					});
+					//头工具栏事件
+					table.on('toolbar(rec_notify_order_list)', function (obj) {
+						switch (obj.event) {
+							case 'download':
+								layer.alert("下载查询结果", {
+									time: 0, //不自动关闭
+									btnAlign: "c",
+									btn: ["下载", "取消"],
+									yes: function (index) {
+										startDate = $('#form_sreach').find('[name=startDate]').val();
+										if (isEmpty(startDate)) {
+											layer.alert('请选择开始日期');
+											return false;
+										}
+										//拼接开始时间
+										startDate = appendStartDate(startDate);
+										var url = "silver-web-shop/orderRecNotify/download?startDate=" + startDate;
+										var merchantId = $('#form_sreach').find('[name=merchantId]').val();
+										if (!isEmpty(merchantId)) {// 商户id
+											url += '&merchantId=' + merchantId;
+										}
+										endDate = $('#form_sreach').find('[name=endDate]').val();
+										if (isEmpty(endDate)) {//结束时间为空时，默认填充为今天
+											endDate = getDay(0);
+										}
+										endDate = appendEndDate(endDate);//拼接结束时间
+
+										var merchantName = $('#form_sreach').find('[name=merchantName]').val();
+										if (!isEmpty()) {// 商户名称
+											url += '&merchantName=' + merchantName;
+										}
+										// if (isCrossMonth(startDate, endDate)) {
+										// 	layer.alert('暂不支持跨月下载数据！');
+										// 	return false;
+										// }								
+										url += '&endDate=' + endDate;
+										console.info(url);
+										window.location.href = urlPrefix + url;
+										// layer.closeAll();
+										// layer.alert(
+										// 	'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
+										// 	{
+										// 		time: 0, //不自动关闭
+										// 		btn: ["关闭"],
+										// 		btnAlign: "c",
+										// 		yes: function (index) {
+										// 			layer.close(index);
+										// 		}
+										// 	}
+										// );
+									}
+								});
+								break;						
+						};
+					});
+				});
+			</script>
 </body>
 
 </html>
