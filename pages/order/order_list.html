@@ -29,7 +29,8 @@
 
 		.layui-form-switch em {
 			width: 40px;
-		}	
+		}
+
 		.layui-table tbody tr:hover,
 		.layui-table-hover {
 			background-color: #F1F5F9;
@@ -181,7 +182,7 @@
 				<label class="layui-form-label">发货时间</label>
 				<div class="layui-input-inline">
 					<input type="text" class="layui-input" id="sendingDate" name="sendingDate" autocomplete="off"
-					readonly="" placeholder="年-月-日 时-分-秒">
+						readonly="" placeholder="年-月-日 时-分-秒">
 				</div>
 			</div>
 
@@ -217,6 +218,8 @@
 		</script>
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 		<script src="../../static/js/common.js" charset="utf-8"></script>
+		<script src="../../static/js/dateUtils.js" charset="utf-8"></script>
+		<script src="../../static/js/urlUtils.js" charset="utf-8"></script>
 
 	</div>
 	<script>
@@ -368,35 +371,12 @@
 
 			// 重载公共方法
 			var _reload = function () {
-				var entOrderNo = $('#form_sreach').find('[name=entOrderNo]');
-				var waybillNo = $('#form_sreach').find('[name=waybillNo]');
-				var status = $('#form_sreach').find('[name=status]');
-				var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
-				var merchantId = $('#form_sreach').find('[name=merchantId]');
-				var merchantName = $('#form_sreach').find('[name=merchantName]');
-				var counterId = $('#form_sreach').find('[name=counterId]');
-				var type = $('#form_sreach').find('[name=type]');
-				var startDate = $('#form_sreach').find('[name=startDate]');
-				var endDate = $('#form_sreach').find('[name=endDate]');
-				startDate = appendStartDate(startDate.val());
-				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/order/findDatas',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
-					where: {
-						entOrderNo: entOrderNo.val(),
-						status: status.val(),
-						orderSourceType: orderSourceType.val(),
-						merchantId: merchantId.val(),
-						merchantNameblurry: merchantName.val(),
-						type: type.val(),
-						counterId: counterId.val(),
-
-						startDate: startDate,
-						endDate: endDate
-					}
+					where: queryParams()
 				});
 			}
 			/*
@@ -408,39 +388,41 @@
 			// });
 			var active = {
 				reload: function () {
-					var entOrderNo = $('#form_sreach').find('[name=entOrderNo]');
-					var status = $('#form_sreach').find('[name=status]');
-					var waybillNo = $('#form_sreach').find('[name=waybillNo]');
-					var orderSourceType = $('#form_sreach').find('[name=orderSourceType]');
-					var merchantId = $('#form_sreach').find('[name=merchantId]');
-					var merchantName = $('#form_sreach').find('[name=merchantName]');
-					var counterId = $('#form_sreach').find('[name=counterId]');
-					var type = $('#form_sreach').find('[name=type]');
-					var startDate = $('#form_sreach').find('[name=startDate]');
-					var endDate = $('#form_sreach').find('[name=endDate]');
-					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/order/findDatas',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
-						where: {
-							entOrderNo: entOrderNo.val(),
-							status: status.val(),
-							orderSourceType: orderSourceType.val(),
-							merchantId: merchantId.val(),
-							merchantNameblurry: merchantName.val(),
-							waybillNo: waybillNo.val(),
-							type: type.val(),
-							counterId: counterId.val(),
-							startDate: startDate,
-							endDate: endDate
-						}
+						where: queryParams()
 					});
 				}
 			};
+			//查询参数
+			var queryParams = function () {
+				var entOrderNo = $('#form_sreach').find('[name=entOrderNo]').val();
+				var status = $('#form_sreach').find('[name=status]').val();
+				var waybillNo = $('#form_sreach').find('[name=waybillNo]').val();
+				var orderSourceType = $('#form_sreach').find('[name=orderSourceType]').val();
+				var merchantId = $('#form_sreach').find('[name=merchantId]').val();
+				var merchantName = $('#form_sreach').find('[name=merchantName]').val();
+				var counterId = $('#form_sreach').find('[name=counterId]').val();
+				var type = $('#form_sreach').find('[name=type]').val();
+				var startDate = $('#form_sreach').find('[name=startDate]').val();
+				var endDate = $('#form_sreach').find('[name=endDate]').val();
+				startDate = appendStartDate(startDate);
+				endDate = appendEndDate(endDate);
+				var obj = {};
+				obj.entOrderNo = entOrderNo;
+				obj.status = status;
+				obj.orderSourceType = orderSourceType;
+				obj.merchantNameblurry = merchantName;
+				obj.waybillNo = waybillNo;
+				obj.counterId = counterId;
+				obj.startDate = startDate;
+				obj.endDate = endDate;
+				return obj;
+			}
 			// 监听查询按钮
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');
@@ -556,7 +538,6 @@
 				layer.close(insertLogi);
 			})
 
-
 			//头工具栏事件
 			table.on('toolbar(articleList)', function (obj) {
 				// var checkStatus = table.checkStatus(obj.config.id);
@@ -568,55 +549,46 @@
 							btn: ["下载", "取消"],
 							yes: function (index) {
 								var url = "silver-web-shop/order/download?";
-								var startDate = '';
-								var endDate = '';
-								startDate = $('#form_sreach').find('[name=startDate]').val();
-								endDate = $('#form_sreach').find('[name=endDate]').val();
-								if (isEmpty(startDate) || isEmpty(endDate)) {
-									layer.alert('请选择查询时间');
+								var startDate = $('#form_sreach').find('[name=startDate]').val();
+								if (isEmpty(startDate)) {
+									layer.alert('请选择开始日期');
 									return false;
 								}
-								//拼接开始时间
-								startDate = appendStartDate(startDate);
-								//拼接结束时间
-								endDate = appendEndDate(endDate);
-								url += '&startDate=' + startDate + '&endDate=' + endDate;
-								if (!isEmpty($('#form_sreach').find('[name=merchantId]').val())) {// 商户id
-									url += '&merchantId=' + $('#form_sreach').find('[name=merchantId]').val();
+								startDate = appendStartDate(startDate);//拼接开始时间
+								var endDate = $('#form_sreach').find('[name=endDate]').val();
+								if (isEmpty(endDate)) {//结束时间为空时，默认填充为今天
+									endDate = getDay(0);
 								}
-								if (!isEmpty($('#form_sreach').find('[name=merchantName]').val())) {// 商户名称
-									url += '&merchantNameblurry=' + $('#form_sreach').find('[name=merchantName]').val();
+								endDate = appendEndDate(endDate);//拼接结束时间	
+								if (isCrossMonth(startDate, endDate)) {
+									layer.alert('暂不支持跨月下载数据！');
+									return false;
 								}
-								if (!isEmpty($('#form_sreach').find('[name=status]').val())) {// 订单状态
-									url += '&status=' + $('#form_sreach').find('[name=status]').val();
-								}
-								var orderSourceType = $('#form_sreach').find('[name=orderSourceType]').val();// 订单来源类型
-								if (!isEmpty(orderSourceType)) {
-									url += '&orderSourceType=' + orderSourceType;
-								}
-								var type = $('#form_sreach').find('[name=type]').val();// 订单类型
-								if (!isEmpty(type)) {
-									url += '&type=' + type;
-								}
-								var counterId = $('#form_sreach').find('[name=counterId]').val();// 订单来源类型
-								if (!isEmpty(counterId)) {
-									url += '&counterId=' + counterId;
-								}
+								var params = queryParams();
+								params.startDate = startDate;
+								params.endDate = endDate;
+								url = appendUrl(url, params);
 								console.info(urlPrefix + url);
-								window.location.href = urlPrefix + url;
 								layer.closeAll();
-								layer.alert(
-									'<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
-									{
-										time: 0, //不自动关闭
-										btn: ["关闭"],
-										btnAlign: "c",
-										yes: function (index) {
-											layer.close(index);
+								layer.load();
+								$.ajax({
+									url: urlPrefix + url,
+									type: "POST",
+									xhrFields: {
+										withCredentials: true
+									},
+									timeout: 3000, //超时时间设置，单位毫秒
+									success: function (response) {
+										if (response.status == 1) {
+											showDown();
+										} else {
+											layer.closeAll();
+											layer.alert(response.msg);
 										}
+									}, error: function () {//超过5秒默认判定为成功
+										showDown();
 									}
-								);
-
+								});
 							}
 						});
 						break;
@@ -627,18 +599,21 @@
 							btn: ["下载", "取消"],
 							yes: function (index) {
 								var url = "silver-web-shop/order/downloadExp?";
-								var startDate = '';
-								var endDate = '';
-								startDate = $('#form_sreach').find('[name=startDate]').val();
-								endDate = $('#form_sreach').find('[name=endDate]').val();
-								if (isEmpty(startDate) || isEmpty(endDate)) {
-									layer.alert('请选择查询时间');
+								var startDate = $('#form_sreach').find('[name=startDate]').val();
+								if (isEmpty(startDate)) {
+									layer.alert('请选择开始日期');
 									return false;
 								}
-								//拼接开始时间
-								startDate = appendStartDate(startDate);
-								//拼接结束时间
-								endDate = appendEndDate(endDate);
+								startDate = appendStartDate(startDate);//拼接开始时间
+								var endDate = $('#form_sreach').find('[name=endDate]').val();
+								if (isEmpty(endDate)) {//结束时间为空时，默认填充为今天
+									endDate = getDay(0);
+								}
+								endDate = appendEndDate(endDate);//拼接结束时间	
+								if (isCrossMonth(startDate, endDate)) {
+									layer.alert('暂不支持跨月下载数据！');
+									return false;
+								}
 								url += '&startDate=' + startDate + '&endDate=' + endDate;
 								console.info(urlPrefix + url);
 								layer.closeAll();
@@ -666,7 +641,7 @@
 						break;
 				};
 			});
-
+			//统一异步下载提示框
 			var showDown = function () {
 				layer.closeAll();
 				layer.alert(
@@ -676,7 +651,7 @@
 						btn: ["前往下载中心", '关闭'],
 						btnAlign: "c",
 						yes: function (index) {
-							$('#menudownCenter_1', parent.document).click();
+							$('#menudownCenter_1', parent.document).click();//跳转下载中心
 						}, btn1: function () {
 							layer.close(index);
 						}
