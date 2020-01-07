@@ -56,6 +56,11 @@
     #accordion .layui-form-label {
       width: 146px;
     }
+
+    /*边距*/
+    .weadmin-body {
+      padding: 6px 10px;
+    }
   </style>
 </head>
 
@@ -67,7 +72,7 @@
         <li class="layui-this" id="info_tab">基本信息</li>
         <li id="findMerchantRecordDetail_tab">备案信息</li>
         <li id="getMerchantBusinessInfo_tab">审核记录</li>
-        <li id="offlineBox_detail">商品库存信息</li>
+        <!-- <li id="offlineBox_detail">商品库存信息</li> -->
       </ul>
       <div class="layui-tab-content" style="height: 100px;">
         <!-- 基本信息 -->
@@ -139,6 +144,56 @@
               </div>
             </div>
             <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">上/下架状态</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="sellFlag" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">库存数量</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="totalStock" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">上架数量</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="sellCount" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">成交完成数量</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="doneCount" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">待支付数量</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="paymentCount" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
+                <label class="layui-form-label">已发货数量</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="shippedCount" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">入库时间</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline" style="width: 73%;">
                 <label class="layui-form-label">商品图片</label>
                 <div class="layui-input-inline" style="width: 73%;">
@@ -154,9 +209,9 @@
                 </div>
               </div>
             </div>
+
           </form>
         </div>
-
         <!-- 备案信息 -->
         <div class="layui-tab-item">
           <div class="layui-form" id="record">
@@ -390,8 +445,6 @@
                             class="layui-input">
                         </div>
                       </div>
-
-
                     </div>
 
                     <div class="layui-form-item">
@@ -474,16 +527,14 @@
                         </div>
                       </div>
                     </div>
+
                   </form>
                 </div>
 
               </div>
-
             </div>
-
           </div>
         </div>
-
         <!-- 备案详情 -->
         <div class="layui-tab-item">
           <table class="layui-table" lay-size="sm" id="reNote">
@@ -511,9 +562,8 @@
             </tbody>
           </table>
         </div>
-
         <!-- 商品库存信息 -->
-        <div class="layui-tab-item">
+        <!-- <div class="layui-tab-item">
           <form class="layui-form" lay-filter="offlineBox_detailInfo">
             <div class="layui-form-item">
               <div class="layui-inline">
@@ -595,36 +645,31 @@
                   <input disabled type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled">
                 </div>
               </div>
-
             </div>
           </form>
-        </div>
+        </div> -->
       </div>
     </div>
-
   </div>
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
-    layui.extend({
-      admin: '{/}../../static/js/admin'
-    });
+
     var g_data = '';// 全局数据变量
     function getParent_data(obj) {
       g_data = obj.data;
     }
-    layui.use(['tree', 'form', 'jquery', 'util', 'admin', 'layer', 'upload', 'table', 'layedit', 'element'], function () {
+    layui.use(['tree', 'form', 'jquery', 'util', 'layer', 'upload', 'table', 'layedit', 'element'], function () {
       var form = layui.form,
         $ = layui.jquery,
         util = layui.util,
         layedit = layui.layedit,
-        admin = layui.admin,
         table = layui.table,
         element = layui.element,
         tree = layui.tree,
         upload = layui.upload,
         layer = layui.layer;
-   
+
       // 库存审核日志
       var _stockReviewLog_getInfo = function () {
         $.ajax({
@@ -641,7 +686,7 @@
           },
           success: function (response) {
             if (response.status == 1) {
-              $("#getMerchantBusinessInfo_tab").attr('data-serialNo',response.datas[0].serialNo);
+              $("#getMerchantBusinessInfo_tab").attr('data-serialNo', response.datas[0].serialNo);
               var arr = response.datas;
               var LEN = arr.length;
               var lis = '';
@@ -738,7 +783,7 @@
       };
       _queryUnit();
 
-      var _findMerchantDetail = function () {
+      var _findDetail = function () {
         $.ajax({
           url: urlPrefix + "silver-web-shop/goodsRecord/managerGetGoodsRecordDetail",
           type: "POST",
@@ -752,8 +797,11 @@
               var goods = obj.goods;
               var goodsRecord = obj.goodsRecord;
               var stock = obj.stock;
-
               /** 基本信息 **/
+              var sellFlag = '下架'
+              if (stock.sellFlag == 1) {
+                sellFlag = '上架'
+              }
               //表单初始赋值
               form.val('info', {
                 "spareGoodsName": goods.spareGoodsName
@@ -764,7 +812,13 @@
                 , "spareGoodsBarCode": goods.spareGoodsBarCode
                 , "marketPrice": goods.marketPrice
                 , "regPrice": goods.regPrice
-
+                , "sellFlag": sellFlag
+                , "totalStock": stock.totalStock
+                , "sellCount": stock.sellCount
+                , "doneCount": stock.doneCount
+                , "paymentCount": stock.paymentCount
+                , "shippedCount": stock.shippedCount
+                , "createDate": G_format(stock.createDate.time, 'yyyy-MM-dd hh:mm:ss')
               })
 
               // 商品主图
@@ -778,9 +832,7 @@
                     // goodsImg = imgPrefix(goods.goodsMerchantId) + goods.spareGoodsImage.split(";")[0];
                     $('#goodsImg').append('<img src="' + imgPrefix(goods.goodsMerchantId) + spareGoodsImageArr[i] + '" class="layui-upload-img">');
                   }
-
                 }
-
               }
               // 商品详情
               $('#goodsDetai_edit').html(goods.spareGoodsDetail);
@@ -802,7 +854,6 @@
               } else {
                 jsonParams = {};
               }
-
               var accordion_entGoodsNo = '';// 商品编码
               if (!isEmpty(jsonParams.marCode)) {
                 var index = goods.entGoodsNo.lastIndexOf("_");
@@ -854,47 +905,31 @@
                   , "ebEntName": goods.ebEntName
                 })
               }, 1000)
-
-              // ** 商品备案详情 ** //
-              // if (goods.reNote != "") {
-              //   var reNoteArr = [];
-              //   var reNoteStr = "";
-              //   reNoteArr = goods.reNote.split(";");
-
-              //   for (var i = 0; i < reNoteArr.length; i++) {
-              //     if (i != reNoteArr.length - 1) {
-              //       reNoteStr += ' <td>' + reNoteArr[i].split("#")[0] + '</td>' + ' <td>' + reNoteArr[i].split("#")[1] + '</td>';
-              //     }
-              //   }
-              //   $("#reNote").find('tbody').html(reNoteStr);
-              // } else {
-              //   $("#reNote").find('tbody').html('<td style="text-align:center;" colspan="2">暂无数据</td>');
-              // }
               // ** 商品库存信息 ** //
-              setTimeout(function () {
-                var sellFlag = '下架'
-                if (stock.sellFlag == 1) {
-                  sellFlag = '上架'
-                }
-                form.val('offlineBox_detailInfo', {
-                  "entGoodsNo": stock.entGoodsNo
-                  , "goodsName": stock.goodsName
-                  , "salePrice": stock.salePrice
-                  , "regPrice": stock.regPrice
-                  , "sellFlag": sellFlag
-                  , "totalStock": stock.totalStock
-                  , "sellCount": stock.sellCount
-                  , "doneCount": stock.doneCount
-                  , "paymentCount": stock.paymentCount
-                  , "shippedCount": stock.shippedCount
-                  , "createDate": G_format(stock.createDate.time, 'yyyy-MM-dd hh:mm:ss')
-                })
-              }, 500)
+              // setTimeout(function () {
+              //   var sellFlag = '下架'
+              //   if (stock.sellFlag == 1) {
+              //     sellFlag = '上架'
+              //   }
+              //   form.val('offlineBox_detailInfo', {
+              //     "entGoodsNo": stock.entGoodsNo
+              //     , "goodsName": stock.goodsName
+              //     , "salePrice": stock.salePrice
+              //     , "regPrice": stock.regPrice
+              //     , "sellFlag": sellFlag
+              //     , "totalStock": stock.totalStock
+              //     , "sellCount": stock.sellCount
+              //     , "doneCount": stock.doneCount
+              //     , "paymentCount": stock.paymentCount
+              //     , "shippedCount": stock.shippedCount
+              //     , "createDate": G_format(stock.createDate.time, 'yyyy-MM-dd hh:mm:ss')
+              //   })
+              // }, 500)
             }
           }
         });
       };
-      _findMerchantDetail()
+      _findDetail()
 
       //图片浏览
       $('#goodsImg').on('click', 'img', function (e) {

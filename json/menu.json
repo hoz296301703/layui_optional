@@ -1,278 +1,284 @@
 {
-	"status": 0,
-	"msg": "ok",
-	"data": [
-		{
-			"id": "order",
-			"name": "订单管理",
-			"icon": "icon-dingdanguanli",
-			"url": "",
-			"children": [
-				{
-					"id": "order_1",
-					"name": "订单信息",
-					"icon": "",
-					"url": "./pages/order/order_list.html"
-				},
-				{
-					"id": "order_2",
-					"name": "申报信息",
-					"icon": "",
-					"url": "./pages/order/order_dec_list.html"
-				},
-				{
-					"id": "order_3",
-					"name": "支付单信息",
-					"icon": "",
-					"url": "./pages/order/pay_dec_list.html"
-				}
-			]
-		},
-		{
-			"id": "goods",
-			"name": "商品管理",
-			"icon": "icon-goods",
-			"url": "",
-			"children": [
-				{
-					"id": "goods_1",
-					"name": "备案信息",
-					"icon": "",
-					"url": "./pages/goods/goodsRecord.html"
-				},
-				{
-					"id": "goods_2",
-					"name": "价格库",
-					"icon": "",
-					"url": "./pages/goods/goods_risk_list.html"
-				},
-				{
-					"id": "goods_3",
-					"name": "库存信息",
-					"icon": "",
-					"url": "./pages/goods/stock_list.html"
-				}
-			]
-		},
-		{
-			"id": "funds",
-			"name": "资金管理",
-			"icon": "icon-zijinguanli",
-			"url": "",
-			"children": [
-				{
-					"id": "funds_1",
-					"name": "商户资金",
-					"icon": "",
-					"url": "./pages/funds/merchant_list.html"
-				},
-				{
-					"id": "funds_2",
-					"name": "会员资金",
-					"icon": "",
-					"url": "./pages/funds/member_list.html"
-				},
-				{
-					"id": "funds_3",
-					"name": "充值申请",
-					"icon": "",
-					"url": "./pages/funds/rec_app_list.html"
-				},
-				{
-					"id": "funds_4",
-					"name": "结算信息",
-					"icon": "",
-					"url": "./pages/funds/settlement_list.html"
-				}
-			]
-		},
-		{
-			"id": "report",
-			"name": "报表管理",
-			"icon": "icon-baobiao",
-			"url": "",
-			"children": [
-				{
-					"id": "report_1",
-					"name": "综合报表",
-					"icon": "",
-					"url": "./pages/report/complex_report_list.html"
-				},
-				{
-					"id": "report_2",
-					"name": "分润报表",
-					"icon": "",
-					"url": "./pages/report/exp_div_report_list.html"
-				}
-			]
-		},
-		{
-			"id": "distribution",
-			"name": "分销管理",
-			"icon": "icon-fenxiao",
-			"url": "",
-			"children": [
-				{
-					"id": "distribution_1",
-					"name": "推广商信息",
-					"icon": "",
-					"url": "./pages/distribution/pla_mer_list.html"
-				},
-				{
-					"id": "distribution_2",
-					"name": "商品库",
-					"icon": "",
-					"url": "./pages/distribution/goods_supply_list.html"
-				},
-				{
-					"id": "distribution_3",
-					"name": "专店信息",
-					"icon": "",
-					"url": "./pages/distribution/counter_list.html"
-				}
-			]
-		},
-		{
-			"id": "user",
-			"name": "用户管理",
-			"icon": "icon-yonghu",
-			"url": "",
-			"children": [
-				{
-					"id": "user_1",
-					"name": "商户管理",
-					"icon": "",
-					"url": "./pages/user/merchant_list.html"
-				},
-				{
-					"id": "user_2",
-					"name": "会员管理",
-					"icon": "",
-					"url": "./pages/user/member_list.html"
-				},
-				{
-					"id": "user_3",
-					"name": "运营管理",
-					"icon": "",
-					"url": "./pages/user/manager_list.html"
-				}
-			]
-		},
-		{
-			"id": "market",
-			"name": "营销管理",
-			"icon": "icon-youhuiquan",
-			"url": "",
-			"children": [
-				{
-					"id": "market_1",
-					"name": "秒杀活动",
-					"icon": "",
-					"url": "./pages/market/seckill_time_list.html"
-				},
-				{
-					"id": "market_2",
-					"name": "兑换券",
-					"icon": "",
-					"url": "./pages/volume/gift_volume_list.html"
-				},
-				{
-					"id": "market_3",
-					"name": "优惠券",
-					"icon": "",
-					"url": "./pages/volume/coupon_list.html"
-				}
-			]
-		},
-		{
-			"id": "system",
-			"name": "系统管理",
-			"icon": "icon-xitong",
-			"url": "",
-			"children": [
-				{
-					"id": "system_1",
-					"name": "系统权限",
-					"icon": "",
-					"url": "./pages/system/authority_list.html"
-				},
-				{
-					"id": "system_2",
-					"name": "系统公告",
-					"icon": "",
-					"url": "./pages/system/news_list.html"
-				},
-				{
-					"id": "system_3",
-					"name": "海关信息",
-					"icon": "",
-					"url": "./pages/system/customs_list.html"
-				},
-				{
-					"id": "system_4",
-					"name": "省市区",
-					"icon": "",
-					"url": "./pages/system/findProvinceCityArea_list.html"
-				},
-				{
-					"id": "system_6",
-					"name": "物流信息",
-					"icon": "",
-					"url": "./pages/system/logistics_list.html"
-				},
-				{
-					"id": "system_7",
-					"name": "日志信息",
-					"icon": "",
-					"url": "./pages/system/operation_list.html"
-				},
-				{
-					"id": "system_8",
-					"name": "提现费率",
-					"icon": "",
-					"url": "./pages/system/wit_fee_list.html"
-				}
-			]
-		},
-		{
-			"id": "downCenter",
-			"name": "下载中心",
-			"icon": "icon-xiazai",
-			"url": "",
-			"children": [
-				{
-					"id": "downCenter_1",
-					"name": "下载列表",
-					"icon": "",
-					"url": "./pages/downCenter/down_center_list.html"
-				}
-			]
-		},
-		{
-			"id": "systemStatistics",
-			"name": "统计管理",
-			"icon": "icon-tongji1",
-			"url": "",
-			"children": [
-				{
-					"id": "systemStatistics_1",
-					"name": "专店首页",
-					"icon": "",
-					"url": "./pages/statistics/counter_home_list.html"
-				},
-				{
-					"id": "systemStatistics_2",
-					"name": "专柜商品",
-					"icon": "",
-					"url": "./pages/statistics/counter_goods_list.html"
-				},
-				{
-					"id": "systemStatistics_3",
-					"name": "会员注册",
-					"icon": "",
-					"url": "./pages/statistics/mem_reg_list.html"
-				}
-			]
-		}
-	]
+  "status": 0,
+  "msg": "ok",
+  "data": [
+    {
+      "id": "order",
+      "name": "订单管理",
+      "icon": "icon-dingdanguanli",
+      "url": "",
+      "children": [
+        {
+          "id": "order_1",
+          "name": "订单信息",
+          "icon": "",
+          "url": "./pages/order/order_list.html"
+        },
+        {
+          "id": "order_2",
+          "name": "申报信息",
+          "icon": "",
+          "url": "./pages/order/order_dec_list.html"
+        },
+        {
+          "id": "order_3",
+          "name": "支付单信息",
+          "icon": "",
+          "url": "./pages/order/pay_dec_list.html"
+        }
+      ]
+    },
+    {
+      "id": "goods",
+      "name": "商品管理",
+      "icon": "icon-goods",
+      "url": "",
+      "children": [
+        {
+          "id": "goods_1",
+          "name": "备案信息",
+          "icon": "",
+          "url": "./pages/goods/goodsRecord.html"
+        },
+        {
+          "id": "goods_2",
+          "name": "价格库",
+          "icon": "",
+          "url": "./pages/goods/goods_risk_list.html"
+        },
+        {
+          "id": "goods_3",
+          "name": "库存信息",
+          "icon": "",
+          "url": "./pages/goods/stock_list.html"
+        }
+      ]
+    },
+    {
+      "id": "funds",
+      "name": "资金管理",
+      "icon": "icon-zijinguanli",
+      "url": "",
+      "children": [
+        {
+          "id": "funds_1",
+          "name": "商户资金",
+          "icon": "",
+          "url": "./pages/funds/merchant_list.html"
+        },
+        {
+          "id": "funds_2",
+          "name": "会员资金",
+          "icon": "",
+          "url": "./pages/funds/member_list.html"
+        },
+        {
+          "id": "funds_3",
+          "name": "充值申请",
+          "icon": "",
+          "url": "./pages/funds/rec_app_list.html"
+        },
+        {
+          "id": "funds_4",
+          "name": "结算信息",
+          "icon": "",
+          "url": "./pages/funds/settlement_list.html"
+        }
+      ]
+    },
+    {
+      "id": "report",
+      "name": "报表管理",
+      "icon": "icon-baobiao",
+      "url": "",
+      "children": [
+        {
+          "id": "report_1",
+          "name": "综合报表",
+          "icon": "",
+          "url": "./pages/report/complex_report_list.html"
+        },
+        {
+          "id": "report_2",
+          "name": "分润报表",
+          "icon": "",
+          "url": "./pages/report/exp_div_report_list.html"
+        }
+      ]
+    },
+    {
+      "id": "distribution",
+      "name": "分销管理",
+      "icon": "icon-fenxiao",
+      "url": "",
+      "children": [
+        {
+          "id": "distribution_1",
+          "name": "推广商信息",
+          "icon": "",
+          "url": "./pages/distribution/pla_mer_list.html"
+        },
+        {
+          "id": "distribution_2",
+          "name": "商品库",
+          "icon": "",
+          "url": "./pages/distribution/goods_supply_list.html"
+        },
+        {
+          "id": "distribution_3",
+          "name": "专店信息",
+          "icon": "",
+          "url": "./pages/distribution/counter_list.html"
+        },
+        {
+          "id": "distribution_4",
+          "name": "底价商品",
+          "icon": "",
+          "url": "./pages/distribution/goods_reserve_price_list.html"
+        }
+      ]
+    },
+    {
+      "id": "user",
+      "name": "用户管理",
+      "icon": "icon-yonghu",
+      "url": "",
+      "children": [
+        {
+          "id": "user_1",
+          "name": "商户管理",
+          "icon": "",
+          "url": "./pages/user/merchant_list.html"
+        },
+        {
+          "id": "user_2",
+          "name": "会员管理",
+          "icon": "",
+          "url": "./pages/user/member_list.html"
+        },
+        {
+          "id": "user_3",
+          "name": "运营管理",
+          "icon": "",
+          "url": "./pages/user/manager_list.html"
+        }
+      ]
+    },
+    {
+      "id": "market",
+      "name": "营销管理",
+      "icon": "icon-youhuiquan",
+      "url": "",
+      "children": [
+        {
+          "id": "market_1",
+          "name": "秒杀活动",
+          "icon": "",
+          "url": "./pages/market/seckill_time_list.html"
+        },
+        {
+          "id": "market_2",
+          "name": "兑换券",
+          "icon": "",
+          "url": "./pages/volume/gift_volume_list.html"
+        },
+        {
+          "id": "market_3",
+          "name": "优惠券",
+          "icon": "",
+          "url": "./pages/volume/coupon_list.html"
+        }
+      ]
+    },
+    {
+      "id": "system",
+      "name": "系统管理",
+      "icon": "icon-xitong",
+      "url": "",
+      "children": [
+        {
+          "id": "system_1",
+          "name": "系统权限",
+          "icon": "",
+          "url": "./pages/system/authority_list.html"
+        },
+        {
+          "id": "system_2",
+          "name": "系统公告",
+          "icon": "",
+          "url": "./pages/system/news_list.html"
+        },
+        {
+          "id": "system_3",
+          "name": "海关信息",
+          "icon": "",
+          "url": "./pages/system/customs_list.html"
+        },
+        {
+          "id": "system_4",
+          "name": "省市区",
+          "icon": "",
+          "url": "./pages/system/findProvinceCityArea_list.html"
+        },
+        {
+          "id": "system_6",
+          "name": "物流信息",
+          "icon": "",
+          "url": "./pages/system/logistics_list.html"
+        },
+        {
+          "id": "system_7",
+          "name": "日志信息",
+          "icon": "",
+          "url": "./pages/system/operation_list.html"
+        },
+        {
+          "id": "system_8",
+          "name": "提现费率",
+          "icon": "",
+          "url": "./pages/system/wit_fee_list.html"
+        }
+      ]
+    },
+    {
+      "id": "downCenter",
+      "name": "下载中心",
+      "icon": "icon-xiazai",
+      "url": "",
+      "children": [
+        {
+          "id": "downCenter_1",
+          "name": "下载列表",
+          "icon": "",
+          "url": "./pages/downCenter/down_center_list.html"
+        }
+      ]
+    },
+    {
+      "id": "systemStatistics",
+      "name": "统计管理",
+      "icon": "icon-tongji1",
+      "url": "",
+      "children": [
+        {
+          "id": "systemStatistics_1",
+          "name": "专店首页",
+          "icon": "",
+          "url": "./pages/statistics/counter_home_list.html"
+        },
+        {
+          "id": "systemStatistics_2",
+          "name": "专柜商品",
+          "icon": "",
+          "url": "./pages/statistics/counter_goods_list.html"
+        },
+        {
+          "id": "systemStatistics_3",
+          "name": "会员注册",
+          "icon": "",
+          "url": "./pages/statistics/mem_reg_list.html"
+        }
+      ]
+    }
+  ]
 }

@@ -1,19 +1,19 @@
-// var urlPrefix = 'http:///192.168.1.116:8080/';
+// var urlPrefix = "http:///192.168.1.116:8080/";
 var urlPrefix = "https://ym.191ec.com/";
-// var urlPrefix = 'http://120.132.118.211:8080/';
+// var urlPrefix = "http://120.132.118.211:8080/";
 // var urlPrefix = 'http://120.132.118.214:8080/';
 
-var imgPrefix = function (id) {
+var imgPrefix = function(id) {
   var imgPrefix1 = "https://ym.191ec.com/img/merchant/";
   var imgPrefix2 = "/goods/";
 
   return imgPrefix1 + id + imgPrefix2;
 };
-var merchantImgPrefix = "https://ym.191ec.com/img/merchant/";// 图片拼接前缀
+var merchantImgPrefix = "https://ym.191ec.com/img/merchant/"; // 图片拼接前缀
 // 日期格式化 fmt => "yyyy-MM-dd hh:mm:ss"
-var G_format = function (datetime, fmt) {
+var G_format = function(datetime, fmt) {
   if (isEmpty(datetime)) {
-    return '';
+    return "";
   }
   if (parseInt(datetime) == datetime) {
     if (datetime.length == 10) {
@@ -24,35 +24,47 @@ var G_format = function (datetime, fmt) {
   }
   datetime = new Date(datetime);
   var o = {
-    "M+": datetime.getMonth() + 1,                 //月份   
-    "d+": datetime.getDate(),                    //日   
-    "h+": datetime.getHours(),                   //小时   
-    "m+": datetime.getMinutes(),                 //分   
-    "s+": datetime.getSeconds(),                 //秒   
-    "q+": Math.floor((datetime.getMonth() + 3) / 3), //季度   
-    "S": datetime.getMilliseconds()             //毫秒   
+    "M+": datetime.getMonth() + 1, //月份
+    "d+": datetime.getDate(), //日
+    "h+": datetime.getHours(), //小时
+    "m+": datetime.getMinutes(), //分
+    "s+": datetime.getSeconds(), //秒
+    "q+": Math.floor((datetime.getMonth() + 3) / 3), //季度
+    S: datetime.getMilliseconds() //毫秒
   };
   if (/(y+)/.test(fmt))
-    fmt = fmt.replace(RegExp.$1, (datetime.getFullYear() + "").substr(4 - RegExp.$1.length));
+    fmt = fmt.replace(
+      RegExp.$1,
+      (datetime.getFullYear() + "").substr(4 - RegExp.$1.length)
+    );
   for (var k in o)
     if (new RegExp("(" + k + ")").test(fmt))
-      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+      fmt = fmt.replace(
+        RegExp.$1,
+        RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
+      );
   return fmt;
-}
+};
 
-var isEmpty = function (value) {
-  return value == null || (value + "").trim() == "null" || (value + "").trim() == "" || (value + "").trim() == "undefined"
-}
+var isEmpty = function(value) {
+  return (
+    value == null ||
+    (value + "").trim() == "null" ||
+    (value + "").trim() == "" ||
+    (value + "").trim() == "undefined"
+  );
+};
 
 /**
  * 拼接默认起始时间，默认位0点
- * @param {*} value 
+ * @param {*} value
  */
 function appendStartDate(value) {
   if (isEmpty(value)) {
-    return '';
-  } else if (value.length == 10) {//10位格式时yyyy-MM-dd
-    return value + ' 00:00:00';
+    return "";
+  } else if (value.length == 10) {
+    //10位格式时yyyy-MM-dd
+    return value + " 00:00:00";
   } else {
     return value;
   }
@@ -60,19 +72,18 @@ function appendStartDate(value) {
 
 /**
  * 拼接默认结束时间，默认为23:59:59
- * @param {*} value 
+ * @param {*} value
  */
 function appendEndDate(value) {
   if (isEmpty(value)) {
-    return '';
-  } else if (value.length == 10) {//10位格式时yyyy-MM-dd
-    return value + ' 23:59:59';
+    return "";
+  } else if (value.length == 10) {
+    //10位格式时yyyy-MM-dd
+    return value + " 23:59:59";
   } else {
     return value;
   }
 }
-
-
 
 function getDay(day) {
   //Date()返回当日的日期和时间。
@@ -104,10 +115,10 @@ function accDiv(arg1, arg2) {
     r2;
   try {
     t1 = arg1.toString().split(".")[1].length;
-  } catch (e) { }
+  } catch (e) {}
   try {
     t2 = arg2.toString().split(".")[1].length;
-  } catch (e) { }
+  } catch (e) {}
   with (Math) {
     r1 = Number(arg1.toString().replace(".", ""));
     r2 = Number(arg2.toString().replace(".", ""));
@@ -116,7 +127,7 @@ function accDiv(arg1, arg2) {
 }
 
 //给Number类型增加一个div方法，调用起来更加方便。
-Number.prototype.div = function (arg) {
+Number.prototype.div = function(arg) {
   return accDiv(this, arg);
 };
 
@@ -130,10 +141,10 @@ function accMul(arg1, arg2) {
     s2 = arg2.toString();
   try {
     m += s1.split(".")[1].length;
-  } catch (e) { }
+  } catch (e) {}
   try {
     m += s2.split(".")[1].length;
-  } catch (e) { }
+  } catch (e) {}
   return (
     (Number(s1.replace(".", "")) * Number(s2.replace(".", ""))) /
     Math.pow(10, m)
@@ -141,7 +152,7 @@ function accMul(arg1, arg2) {
 }
 
 //给Number类型增加一个mul方法，调用起来更加方便。
-Number.prototype.mul = function (arg) {
+Number.prototype.mul = function(arg) {
   return accMul(arg, this);
 };
 //加法函数，用来得到精确的加法结果
@@ -165,7 +176,7 @@ function accAdd(arg1, arg2) {
 }
 
 //给Number类型增加一个add方法，调用起来更加方便。
-Number.prototype.add = function (arg) {
+Number.prototype.add = function(arg) {
   return accAdd(arg, this);
 };
 
@@ -189,9 +200,9 @@ function accSub(arg1, arg2) {
 }
 
 // 图片去;分号
-var splitImg = function (img) {
+var splitImg = function(img) {
   if (isEmpty(img)) {
-    return '';
+    return "";
   }
   var arr = img.split(";");
   return arr[0];
@@ -199,22 +210,22 @@ var splitImg = function (img) {
 
 /**
  * 将yyyyMMdd格式化成yyyy-MM-dd
- * @param {*} time 
+ * @param {*} time
  */
 function formatTime(time) {
   if (isEmpty(time)) {
-    return '';
+    return "";
   } else {
     return time.slice(0, 4) + "-" + time.slice(4, 6) + "-" + time.slice(6, 8);
   }
 }
 /**
  * yyyyMMddHHmmss转换成yyyy-MM-dd HH:mm:ss
- * @param {*} time 
+ * @param {*} time
  */
 function toStringTime(time) {
   if (isEmpty(time)) {
-    return '';
+    return "";
   }
   var pattern = /(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/;
   return time.replace(pattern, "$1-$2-$3 $4:$5:$6");
@@ -222,15 +233,15 @@ function toStringTime(time) {
 // yyyy-MM-dd
 function toStringDay(time) {
   if (isEmpty(time)) {
-    return '';
+    return "";
   }
   var pattern = /(\d{4})(\d{2})(\d{2})/;
   return time.replace(pattern, "$1-$2-$3");
 }
 
-
 // 获取当天日期
-function get_newDate_D() {// 年月日
+function get_newDate_D() {
+  // 年月日
   var lw = new Date();
   var lastY = lw.getFullYear();
   var lastM = lw.getMonth() + 1;
@@ -238,12 +249,18 @@ function get_newDate_D() {// 年月日
   // var lasthour = '00';
   // var lastminute = '00';
   // var lastsecond = '00';
-  var startDate = lastY + "-" + (lastM < 10 ? "0" + lastM : lastM) + "-" + (lastD < 10 ? "0" + lastD : lastD);
+  var startDate =
+    lastY +
+    "-" +
+    (lastM < 10 ? "0" + lastM : lastM) +
+    "-" +
+    (lastD < 10 ? "0" + lastD : lastD);
   return startDate;
 }
 
 // 获取当月
-function get_newDate_M() {// 年月日
+function get_newDate_M() {
+  // 年月日
   var lw = new Date();
   var lastY = lw.getFullYear();
   var lastM = lw.getMonth() + 1;
@@ -293,13 +310,14 @@ function G_formatStr(value) {
   return date;
 }
 // 截取图片
-var imgPrefix = function (id) {
+var imgPrefix = function(id) {
   var imgPrefix1 = "https://ym.191ec.com/img/merchant/";
   var imgPrefix2 = "/goods/";
 
   return imgPrefix1 + id + imgPrefix2;
 };
-function g_imgSplit(img, goodsMerchantId) {// 传图片与商户id
+function g_imgSplit(img, goodsMerchantId) {
+  // 传图片与商户id
   var goodsImg = "../../static/images/bgImg.jpg";
 
   if (!isEmpty(img)) {
@@ -307,9 +325,7 @@ function g_imgSplit(img, goodsMerchantId) {// 传图片与商户id
     if (img.indexOf(tag) != -1) {
       goodsImg = img.split(";")[0];
     } else {
-      goodsImg =
-        imgPrefix(goodsMerchantId) +
-        img.split(";")[0];
+      goodsImg = imgPrefix(goodsMerchantId) + img.split(";")[0];
     }
   }
   return goodsImg;
@@ -319,11 +335,15 @@ function g_imgSplit(img, goodsMerchantId) {// 传图片与商户id
 function getFileSize(fileByte) {
   var fileSizeByte = fileByte;
   var fileSizeMsg = "";
-  if (fileSizeByte < 1048576) fileSizeMsg = (fileSizeByte / 1024).toFixed(2) + "KB";
+  if (fileSizeByte < 1048576)
+    fileSizeMsg = (fileSizeByte / 1024).toFixed(2) + "KB";
   else if (fileSizeByte == 1048576) fileSizeMsg = "1MB";
-  else if (fileSizeByte > 1048576 && fileSizeByte < 1073741824) fileSizeMsg = (fileSizeByte / (1024 * 1024)).toFixed(2) + "MB";
-  else if (fileSizeByte > 1048576 && fileSizeByte == 1073741824) fileSizeMsg = "1GB";
-  else if (fileSizeByte > 1073741824 && fileSizeByte < 1099511627776) fileSizeMsg = (fileSizeByte / (1024 * 1024 * 1024)).toFixed(2) + "GB";
+  else if (fileSizeByte > 1048576 && fileSizeByte < 1073741824)
+    fileSizeMsg = (fileSizeByte / (1024 * 1024)).toFixed(2) + "MB";
+  else if (fileSizeByte > 1048576 && fileSizeByte == 1073741824)
+    fileSizeMsg = "1GB";
+  else if (fileSizeByte > 1073741824 && fileSizeByte < 1099511627776)
+    fileSizeMsg = (fileSizeByte / (1024 * 1024 * 1024)).toFixed(2) + "GB";
   else fileSizeMsg = "文件超过1TB";
   return fileSizeMsg;
 }

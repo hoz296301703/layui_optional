@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<!-- 海关信息更新html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <form class="layui-form" lay-filter="goods_reserve_price_update" id="goods_reserve_price_update"
+      style="margin-top: 10px;width: 90%;">
+      <input type="hidden" name="serialNo">
+      <div class="layui-form-item">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="goodsName" name="goodsName" autocomplete="off" class="layui-input" style="margin-right:1%">
+        </div>
+      </div>
+      <div class="layui-form-item" id="serviceCharge_pen_update">
+        <label class="layui-form-label">供货商</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="createBy" name="createBy" autocomplete=" off" class="layui-input" style="margin-right:1%">
+        </div>
+      </div>
+      <div class="layui-form-item" id="serviceCharge_pen_update">
+        <label class="layui-form-label">供货价</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="reservePrice" autocomplete="off" class="layui-input" name="reservePrice" style="margin-right:1%">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">平台利润</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="platformProfit" autocomplete="off" class="layui-input" name="platformProfit"
+            style="margin-right:1%">
+        </div>
+      </div>
+      <div class="layui-form-item" id="serviceCharge_pen_update">
+        <label class="layui-form-label">平台供货价</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="platformSupplyPrice" autocomplete="off" class="layui-input layui-disabled"
+            name="platformSupplyPrice" style="margin-right:1%" disabled>
+        </div>
+        <div class="layui-form-mid layui-word-aux">元</div>
+      </div>
+      <div class="layui-form-item" id="serviceCharge_pen_update">
+        <label class="layui-form-label">佣金</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="commission" autocomplete="off" class="layui-input" name="commission" style="margin-right:1%">
+        </div>
+      </div>
+      <div class="layui-form-item" id="serviceCharge_pen_update">
+        <label class="layui-form-label">平台零售价</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="platformRetailPrice" autocomplete="off" class="layui-input" name="platformRetailPrice"
+            style="margin-right:1%">
+        </div>
+      </div>
+    </form>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量
+    function getParent_data(obj) {
+      g_data = obj.data;
+      console.info(g_data);
+    }
+    layui.use(['tree', 'form', 'jquery', 'util', 'element', 'layer', 'upload', 'table'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        util = layui.util,
+        element = layui.element,
+        table = layui.table,
+        tree = layui.tree,
+        upload = layui.upload,
+        layer = layui.layer;
+      // // 是否封底
+      // if (g_data.backCoverFlag == "true") {
+      //   $("#backCoverFee_li_update").show();
+      //   $("#backCoverFee_li_update").find('input').attr('lay-verify', 'required').attr('name', 'backCoverFee');
+      // } else {
+      //   $("#backCoverFee_li_update").hide();
+      //   $("#backCoverFee_li_update").find('input').removeAttr('name').removeAttr('lay-verify');
+      // }
+      // // 收费类型
+      // if (g_data.tollType == "pen") {
+      //   $("#serviceCharge_rate_update").hide();
+      //   $("#serviceCharge_rate_update").find('input').removeAttr('name').removeAttr('lay-verify');
+      //   $("#serviceCharge_pen_update").show();
+      //   $("#serviceCharge_pen_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceFee');// 为按费率
+      // } else {
+      //   $("#serviceCharge_pen_update").hide();
+      //   $("#serviceCharge_pen_update").find('input').removeAttr('name').removeAttr('lay-verify');
+      //   $("#serviceCharge_rate_update").show();
+      //   $("#serviceCharge_rate_update").find('input').attr('lay-verify', 'required').attr('name', 'serviceFee');// 为按费率收费添加name属性等于serviceCharge
+      //   g_data.serviceFee = accMul(g_data.serviceFee, 100)
+      // }
+      //表单初始赋值
+      form.val('goods_reserve_price_update', {
+        "serialNo": g_data.serialNo
+        , "reservePrice": g_data.reservePrice
+        , "goodsName": g_data.goodsName
+        , "createBy": g_data.createBy
+        // , "serviceFee": g_data.serviceFee
+        // , "backCoverFlag": g_data.backCoverFlag
+        // , "backCoverFee": g_data.backCoverFee
+      })
+      $("#platformProfit").on("input", function (e) {//监听平台利润输入值
+        var profit = e.delegateTarget.value;
+        if (profit <= 0) {
+          // layui.info("利润错误！~");
+        }
+        //获取input输入的值
+        // console.log(profit);
+        form.val('goods_reserve_price_update', {
+          "platformSupplyPrice": accAdd(profit, g_data.reservePrice)
+        })
+        // $('#platformProfit').html(profit);
+        // form.render();
+      });
+
+      // 关闭新增弹窗
+      // $('.close_add').click(function () {
+      //   parent.wit_fee_reload();// 添加成功调用父页面的重载方法
+      // })
+      // // 修改计费信息
+      // form.on('submit(update)', function (data) {
+      //   layer.load();
+      //   if (data.field.tollType == "rate") {//比例时，进行转换
+      //     data.field.serviceFee = accDiv(parseFloat(data.field.serviceFee), 100);
+      //   }
+      //   $.ajax({
+      //     url: urlPrefix + "silver-web-shop/witFee/update",
+      //     type: "POST",
+      //     xhrFields: {
+      //       withCredentials: true
+      //     },
+      //     data: data.field,
+      //     success: function (response) {
+      //       layer.closeAll('loading');
+      //       if (response.status == 1) {
+      //         layer.msg("修改成功");
+      //         setTimeout(function () {
+      //           parent.wit_fee_reload();
+      //         }, 1000)
+      //       } else {
+      //         layer.alert(response.msg);
+      //       }
+      //     }
+      //   });
+      // });
+    });
+  </script>
+</body>
+
+</html>
