@@ -72,7 +72,6 @@
         <li class="layui-this" id="info_tab">基本信息</li>
         <li id="findMerchantRecordDetail_tab">备案信息</li>
         <li id="getMerchantBusinessInfo_tab">审核记录</li>
-        <!-- <li id="offlineBox_detail">商品库存信息</li> -->
       </ul>
       <div class="layui-tab-content" style="height: 100px;">
         <!-- 基本信息 -->
@@ -80,12 +79,20 @@
           <form class="layui-form" lay-filter="info">
             <div class="layui-form-item">
               <div class="layui-inline">
+                <label class="layui-form-label">商品自编号</label>
+                <div class="layui-input-inline">
+                  <input disabled type="text" name="entGoodsNo" autocomplete="off" class="layui-input layui-disabled">
+                </div>
+              </div>
+              <div class="layui-inline">
                 <label class="layui-form-label">商品展示名称</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="spareGoodsName" autocomplete="off"
                     class="layui-input layui-disabled">
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">商品品牌</label>
                 <div class="layui-input-inline">
@@ -93,9 +100,6 @@
                     class="layui-input layui-disabled">
                 </div>
               </div>
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">规格</label>
                 <div class="layui-input-inline">
@@ -103,16 +107,16 @@
                     class="layui-input layui-disabled">
                 </div>
               </div>
+            </div>
+
+            <div class="layui-form-item">
               <div class="layui-inline">
-                <label class="layui-form-label">申报计量单位</label>
+                <label class="layui-form-label">计量单位</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="spareGoodsUnit" autocomplete="off"
                     class="layui-input layui-disabled">
                 </div>
               </div>
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">原产国</label>
                 <div class="layui-input-inline">
@@ -120,72 +124,76 @@
                     class="layui-input layui-disabled">
                 </div>
               </div>
+            </div>
+
+            <div class="layui-form-item">
               <div class="layui-inline">
-                <label class="layui-form-label">商品货号</label>
+                <label class="layui-form-label">条形码</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="spareGoodsBarCode" autocomplete="off"
                     class="layui-input layui-disabled">
                 </div>
               </div>
-            </div>
-
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">市场价</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="marketPrice" autocomplete="off" class="layui-input layui-disabled">
                 </div>
               </div>
+            </div>
+
+            <div class="layui-form-item">
+
               <div class="layui-inline">
                 <label class="layui-form-label">单价</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="regPrice" autocomplete="off" class="layui-input layui-disabled">
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">上/下架状态</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="sellFlag" autocomplete="off" class="layui-input layui-disabled">
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">库存数量</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="totalStock" autocomplete="off" class="layui-input layui-disabled">
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">上架数量</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="sellCount" autocomplete="off" class="layui-input layui-disabled">
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
+
               <div class="layui-inline">
-                <label class="layui-form-label">成交完成数量</label>
+                <label class="layui-form-label">完成数量</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="doneCount" autocomplete="off" class="layui-input layui-disabled">
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">待支付数量</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="paymentCount" autocomplete="off" class="layui-input layui-disabled">
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
+
               <div class="layui-inline">
                 <label class="layui-form-label">已发货数量</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="shippedCount" autocomplete="off" class="layui-input layui-disabled">
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">入库时间</label>
                 <div class="layui-input-inline">
@@ -535,7 +543,7 @@
             </div>
           </div>
         </div>
-        <!-- 备案详情 -->
+        <!-- 审核记录 -->
         <div class="layui-tab-item">
           <table class="layui-table" lay-size="sm" id="reNote">
             <colgroup>
@@ -558,8 +566,6 @@
                 <th>备注</th>
               </tr>
             </thead>
-            <tbody>
-            </tbody>
           </table>
         </div>
         <!-- 商品库存信息 -->
@@ -691,7 +697,6 @@
               var LEN = arr.length;
               var lis = '';
               for (var i = 0; i < LEN; i++) {
-
                 var reviewerName = '/';
                 if (!isEmpty(arr[i].reviewerName)) {
                   reviewerName = arr[i].reviewerName;
@@ -706,7 +711,6 @@
                 } else if (arr[i].reviewerStatus == 'pending') {
                   reviewerStatus = '待上架';
                 }
-
                 var createDate = '/';
                 if (!isEmpty(arr[i].createDate)) {
                   createDate = G_format(arr[i].createDate.time, 'yyyy-MM-dd hh:mm:ss');
@@ -721,7 +725,6 @@
             } else {
               $("#reNote").find('tbody').html('<td style="text-align:center;" colspan="8">暂无数据</td>');
             }
-
           }
         });
       };
@@ -794,10 +797,10 @@
           success: function (response) {
             if (response.status == 1) {
               var obj = response.datas[0];
+              /** 基本信息 **/
               var goods = obj.goods;
               var goodsRecord = obj.goodsRecord;
               var stock = obj.stock;
-              /** 基本信息 **/
               var sellFlag = '下架'
               if (stock.sellFlag == 1) {
                 sellFlag = '上架'
@@ -806,6 +809,7 @@
               form.val('info', {
                 "spareGoodsName": goods.spareGoodsName
                 , "spareGoodsBrand": goods.spareGoodsBrand
+                , "entGoodsNo": goods.entGoodsNo
                 , "spareGoodsStyle": goods.spareGoodsStyle
                 , "spareGoodsUnit": goods.gUnitName
                 , "spareGoodsOriginCountry": goods.spareGoodsOriginCountry
@@ -905,26 +909,6 @@
                   , "ebEntName": goods.ebEntName
                 })
               }, 1000)
-              // ** 商品库存信息 ** //
-              // setTimeout(function () {
-              //   var sellFlag = '下架'
-              //   if (stock.sellFlag == 1) {
-              //     sellFlag = '上架'
-              //   }
-              //   form.val('offlineBox_detailInfo', {
-              //     "entGoodsNo": stock.entGoodsNo
-              //     , "goodsName": stock.goodsName
-              //     , "salePrice": stock.salePrice
-              //     , "regPrice": stock.regPrice
-              //     , "sellFlag": sellFlag
-              //     , "totalStock": stock.totalStock
-              //     , "sellCount": stock.sellCount
-              //     , "doneCount": stock.doneCount
-              //     , "paymentCount": stock.paymentCount
-              //     , "shippedCount": stock.shippedCount
-              //     , "createDate": G_format(stock.createDate.time, 'yyyy-MM-dd hh:mm:ss')
-              //   })
-              // }, 500)
             }
           }
         });

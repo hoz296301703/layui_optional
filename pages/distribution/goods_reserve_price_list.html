@@ -70,7 +70,16 @@
             <input type="text" name="goodsMerId" placeholder="请输入供货商编号" class="layui-input" />
           </div>
         </div>
-
+        <div class="layui-inline">
+          <label class="layui-form-label">标识</label>
+          <div class="layui-input-inline">
+            <select name="flag" lay-verify="required" lay-search="">
+              <option value="">全部</option>
+              <option value="0">正常</option>
+              <option value="1">停止</option>
+            </select>
+          </div>
+        </div>
         <div class="layui-inline">
           <label class="layui-form-label">日期</label>
           <div class="layui-input-inline">
@@ -102,11 +111,10 @@
       	<!-- <button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>下载</button> -->
       </div>
     </script>
-  <script type="text/html" id="flagTpl">
-      		<!-- 这里的 checked 的状态只是演示 -->
+  <!-- <script type="text/html" id="flagTpl">
   <input type="checkbox" data-serialNo="{{d.serialNo}}" name="flag" value="{{d.flag}}" lay-skin="switch"
-    lay-text="启用|禁用" lay-filter="upFlag" {{ d.flag == '0' ? 'checked' : '' }}>
-  </script>
+    lay-text="正常|停止" lay-filter="upFlag" {{ d.flag == '1' ? 'checked' : '' }}>
+  </script> -->
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../static/js/dateUtils.js" charset="utf-8"></script>
@@ -142,83 +150,44 @@
         cols: [
           [
             {
-              field: "zizeng",
-              width: 40,
-              title: "序号",
-              fixed: "left",
-              type: "numbers"
-            },
-            {
-              field: "createDate",
-              width: 160,
-              title: "日期",
-              fixed: "left",
-              templet: function (item) {
+              field: "zizeng", width: 40, title: "序号", fixed: "left", type: "numbers"
+            }, {
+              field: "createDate", width: 160, title: "日期", fixed: "left", templet: function (item) {
                 return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
               }
-            },
-            {
-              field: "goodsImage",
-              width: 90,
-              title: "图片",
-              templet: function (item) {
-                return (
-                  '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' +
-                  item.goodsName +
-                  '"  src="' +
-                  splitImg(item.goodsImage) +
-                  '" width="60px" height="60px"></div>'
+            }, {
+              field: "goodsImage", width: 90, title: "图片", templet: function (item) {
+                return ('<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + item.goodsName + '"  src="' +
+                  splitImg(item.goodsImage) + '" width="60px" height="60px"></div>'
                 );
               }
-            },
-            {
-              field: "goodsName",
-              title: "商品名称"
-            },
-            {
-              field: "goodsId",
-              title: "商品自编号"
-            },
-            {
-              field: "createBy",
-              title: "供货商"
-            },
-            {
-              field: "merchantId",
-              title: "供货商编号"
-            },
-            {
-              field: "reservePrice",
-              title: "底价",
-              width: 80
-            },
-            {
-              field: "platformProfit",
-              title: "平台利润",
-              width: 110
-            },
-            {
-              field: "commission",
-              title: "佣金",
-              width: 100
-            },
-            {
-              field: "platformRetailPrice",
-              title: "平台零售价",
-              width: 100
-            },
-            {
-              field: "flag",
-              title: "售卖标识",
-              width: 100,
-              templet: "#flagTpl"
-            },
-            {
-              field: "operate",
-              title: "操作",
-              width: 130,
-              toolbar: "#operateTpl",
-              fixed: "right"
+            }, {
+              field: "goodsName", title: "商品名称"
+            }, {
+              field: "goodsId", title: "商品自编号", width: 160
+            }, {
+              field: "createBy", title: "供货商"
+            }, {
+              field: "merchantId", title: "供货商编号", width: 175
+            }, {
+              field: "reservePrice", title: "底价", width: 80
+            }, {
+              field: "platformProfit", title: "平台利润", width: 90
+            }, {
+              field: "commission", title: "佣金", width: 80
+            }, {
+              field: "platformRetailPrice", title: "平台零售价", width: 100
+            }, {
+              field: "flag", title: "售卖标识", width: 100, templet: function (item) {
+                var flag = item.flag;
+                if (flag == 0) {
+                  return '停止';
+                } else if (flag == 1) {
+                  return '正常';
+                }
+              }
+            }, {
+              field: "operate", title: "操作", width: 130, toolbar: "#operateTpl", fixed: "right"
             }
           ]
         ],
@@ -259,9 +228,7 @@
         table.reload("goods_reserve_price_list", {
           url: urlPrefix + "silver-web-shop/goodsResPrice/find",
           page: {
-            curr: $(".layui-laypage-em")
-              .next()
-              .html() //重新从第 1 页开始
+            curr: $(".layui-laypage-em").next().html() //重新从第 1 页开始
           },
           where: queryParams()
         });
@@ -274,8 +241,7 @@
       // 	form.render();
       // });
       var active = {
-        reload: function () {
-          //执行重载
+        reload: function () { //执行重载
           table.reload("goods_reserve_price_list", {
             url: urlPrefix + "silver-web-shop/goodsResPrice/find",
             page: {
@@ -287,30 +253,20 @@
       };
       //查询条件
       var queryParams = function () {
-        var goodsName = $("#form_sreach")
-          .find("[name=goodsName]")
-          .val();
-        var goodsId = $("#form_sreach")
-          .find("[name=goodsId]")
-          .val();
-        var goodsMerName = $("#form_sreach")
-          .find("[name=goodsMerName]")
-          .val();
-        var goodsMerId = $("#form_sreach")
-          .find("[name=goodsMerId]")
-          .val();
-        var startDate = $("#form_sreach")
-          .find("[name=startDate]")
-          .val();
-        var endDate = $("#form_sreach")
-          .find("[name=endDate]")
-          .val();
+        var goodsName = $("#form_sreach").find("[name=goodsName]").val();
+        var goodsId = $("#form_sreach").find("[name=goodsId]").val();
+        var goodsMerName = $("#form_sreach").find("[name=goodsMerName]").val();
+        var goodsMerId = $("#form_sreach").find("[name=goodsMerId]").val();
+        var flag = $("#form_sreach").find("[name=flag]").val();
+        var startDate = $("#form_sreach").find("[name=startDate]").val();
+        var endDate = $("#form_sreach").find("[name=endDate]").val();
         startDate = appendStartDate(startDate);
         endDate = appendEndDate(endDate);
         var obj = {};
         obj.goodsNameblurry = goodsName;
         obj.goodsId = goodsId;
         obj.goodsMerId = goodsMerId;
+        obj.flag = flag;
         obj.goodsMerNameblurry = goodsMerName;
         obj.startDate = startDate;
         obj.endDate = endDate;
@@ -321,6 +277,13 @@
         var type = $(this).data("type");
         active[type] ? active[type].call(this) : "";
       });
+      window.goods_reserve_price_reload = function (flag) {// 提交重载方法到全局，让子页面调用
+        layer.closeAll();
+        console.log(flag)
+        if (flag) {
+          _reload();
+        }
+      };
 
       //图片浏览
       $("#form_sreach").on(
@@ -341,67 +304,15 @@
           });
         }
       );
-      //头工具栏事件
-      table.on("toolbar(goods_reserve_price_list)", function (obj) {
-        switch (obj.event) {
-          case "download":
-            layer.alert("下载查询结果", {
-              time: 0, //不自动关闭
-              btnAlign: "c",
-              btn: ["下载", "取消"],
-              yes: function (index) {
-                var url = "silver-web-shop/goodsSupply/download?";
-                startDate = $("#form_sreach")
-                  .find("[name=startDate]")
-                  .val();
-                if (isEmpty(startDate)) {
-                  layer.alert("请选择开始日期");
-                  return false;
-                }
-                startDate = appendStartDate(startDate); //拼接开始时间
-                endDate = $("#form_sreach")
-                  .find("[name=endDate]")
-                  .val();
-                if (isEmpty(endDate)) {
-                  //结束时间为空时，默认填充为今天
-                  endDate = getDay(0);
-                }
-                endDate = appendEndDate(endDate); //拼接结束时间
-                // if (isCrossMonth(startDate, endDate)) {
-                // 	layer.alert('暂不支持跨月下载数据！');
-                // 	return false;
-                // }
-                url = appendUrl(url, queryParams());
-                window.location.href = urlPrefix + url;
-                layer.closeAll();
-                layer.alert(
-                  '<span style="color:#e4393c;font-weight:bold;font-size:18px;text-align: center;">请稍后</span>正在努力查询数据中，可能耗时较长，请耐心等待',
-                  {
-                    time: 0, //不自动关闭
-                    btn: ["关闭"],
-                    btnAlign: "c",
-                    yes: function (index) {
-                      layer.close(index);
-                    }
-                  }
-                );
-              }
-            });
-            break;
-          case "downManualOrder":
-            break;
-        }
-      });
-
       //监听工具条
       table.on('tool(goods_reserve_price_list)', function (obj) {
         var data = obj.data;
         if (obj.event === 'update') {// 					
           layer.open({
             type: 2,
-            title: '修改信息',
+            title: '更新信息',
             skin: "layui-layer-rim", //加上边框
-            area: ["600px", "510px"], //宽高						
+            area: ["535px", "600px"], //宽高						
             content: './goods_reserve_price_update.html',
             success: function (layero, index) {
               // 获取子页面的iframe
@@ -413,28 +324,6 @@
         }
       });
 
-      form.on("switch(upFlag)", function (obj) {
-        console.info("-----" + $(obj.elem).attr("data-serialNo"));
-        // $.ajax({
-        //   url: urlPrefix + "silver-web-shop/manager/updateStatus",
-        //   type: "POST",
-        //   xhrFields: {
-        //     withCredentials: true
-        //   },
-        //   data: {
-        //     serialNo: $(obj.elem).attr("data-serialNo"),
-        //     flag: flag
-        //   },
-        //   success: function(response) {
-        //     if (response.status == 1) {
-        //       layer.msg("修改成功！");
-        //       _reload(); //执行重载
-        //     } else {
-        //       layer.alert(response.msg);
-        //     }
-        //   }
-        // });
-      });
     });
   </script>
 </body>
