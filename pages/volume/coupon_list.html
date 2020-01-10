@@ -30,6 +30,10 @@
 		.layui-form-label {
 			width: 80px;
 		}
+
+		.weadmin-body {
+			padding: 0;
+		}
 	</style>
 </head>
 
@@ -129,21 +133,27 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/html" id="operateTpl">
+		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
+		<!-- laytpl语法---START--- -->			
+		{{#  if(isEmpty(d.remark)){ }}
+		<a  class="layui-btn layui-btn-xs layui-btn-danger"  lay-event="set_promotion_code">生成推荐码</a>
+		{{#  }else{ }}
+		{{#  } }}
+		<!-- laytpl语法---END--- -->			
+</script>
 	<script type="text/html" id="statusTpl">
 	<!-- 这里 checked 的状态 -->
 	<input type="checkbox" data-serialNo="{{d.serialNo}}" name="status" value="{{d.status}}" lay-skin="switch"
 		lay-text="启用|禁用" lay-filter="statusDemo" {{ d.status == 'enable' ? 'checked' : '' }}>
 	</script>
 	<script type="text/html" id="operateTpl">
-		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			
-	<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a> -->
+		<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>		
 	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	<script src="../../static/js/dateUtils.js" charset="utf-8"></script>
-	</div>
-	<script>	
-
+	<script>
 		layui.use(['table', 'jquery', 'form', 'element', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
@@ -154,13 +164,12 @@
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
-				// , value: getDay(-7)
 				, isInitValue: true
-				,max:0
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
-				,max:0
+				, max: 0
 			});
 			// 动态设置表格高度
 			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
@@ -181,7 +190,7 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'couponName', title: '名称', width: 120
+							field: 'couponName', title: '名称'
 						}, {
 							field: 'couponValue', title: '面值', width: 70
 						}, {
@@ -225,7 +234,7 @@
 								return type;
 							}
 						}, {
-							field: 'status', title: '状态', templet: '#statusTpl',width: 100, fixed: 'right'
+							field: 'status', title: '状态', templet: '#statusTpl', width: 100, fixed: 'right'
 							// }, {
 							// 	field: 'regPrice', title: '单价'
 							// }, {
@@ -235,7 +244,7 @@
 							// }, {
 							// 	field: 'doneCount', title: '完成数量', width: 90
 						}, {
-							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', title: '操作', width: 155, toolbar: '#operateTpl', fixed: 'right'
 						}
 					]
 				],
@@ -434,8 +443,37 @@
 							layer.close(index);
 						}
 					});
-				} else if (obj.event === 'reset') {// 重置密码
-
+				} else if (obj.event === 'set_promotion_code') {// 生成推广码
+					//询问框
+					layer.confirm('是否确定生成推广码？', {
+						btn: ['确定', '关闭'] //按钮
+					}, function () {
+						layer.load(2);
+						$.ajax({
+							url: urlPrefix + "silver-web-shop/coupon/setPromotionCode",
+							type: "POST",
+							xhrFields: {
+								withCredentials: true
+							},
+							data: {
+								serialNo: data.serialNo
+							},
+							success: function (response) {
+								layer.closeAll("loading");
+								if (response.status == 1) {
+									layer.msg('操作成功！');
+									_reload();//执行重载
+								} else {
+									layer.alert(response.msg);
+								}
+							}
+						});
+					}, function () {
+						// layer.msg('也可以这样', {
+						// 	time: 20000, //20s后自动关闭
+						// 	btn: ['明白了', '知道了']
+						// });
+					});
 				} else if (obj.event === 'edit') {// 分配权限
 				}
 			});

@@ -25,7 +25,6 @@
 		.layui-form-switch em {
 			width: 40px;
 		}
-	
 	</style>
 </head>
 
@@ -69,6 +68,16 @@
 						<input type="text" name="thirdCode" placeholder="请输入三级编号" class="layui-input">
 					</div>
 				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">类型</label>
+					<div class="layui-input-inline">
+						<select name="groupName" lay-verify="required" lay-search="">
+							<option value="">全部</option>
+							<option value="manager"">管理员</option>
+							<option value=" merchant">商户</option>
+						</select>
+					</div>
+				</div>
 			</div>
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
@@ -103,13 +112,14 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">一级编码</label>
 				<div class="layui-input-inline">
-					<input type="tel" name="firstCode" autocomplete="off" placeholder="请输入一级权限编码" class="layui-input" lay-verify="required">
+					<input type="tel" name="firstCode" autocomplete="off" placeholder="请输入一级权限编码" class="layui-input"
+						lay-verify="required">
 				</div>
 			</div>
 			<div class="layui-form-item">
 				<label class="layui-form-label">二级名称</label>
 				<div class="layui-input-inline">
-					<input type="text" name="secondName" autocomplete="off" placeholder="请输入二级权限名称"  class="layui-input"
+					<input type="text" name="secondName" autocomplete="off" placeholder="请输入二级权限名称" class="layui-input"
 						lay-verify="required">
 				</div>
 
@@ -117,21 +127,22 @@
 			<div class="layui-form-item">
 				<label class="layui-form-label">二级编码</label>
 				<div class="layui-input-inline">
-					<input type="tel" name="secondCode" autocomplete="off"  placeholder="请输入二级权限编码" class="layui-input" lay-verify="required">
+					<input type="tel" name="secondCode" autocomplete="off" placeholder="请输入二级权限编码" class="layui-input"
+						lay-verify="required">
 				</div>
 			</div>
 			<div class="layui-form-item">
 				<label class="layui-form-label">三级名称</label>
 				<div class="layui-input-inline">
-					<input type="text" name="thirdName" autocomplete="off"placeholder="请输入三级权限名称" class="layui-input"
+					<input type="text" name="thirdName" autocomplete="off" placeholder="请输入三级权限名称" class="layui-input"
 						lay-verify="required">
 				</div>
-
 			</div>
 			<div class="layui-form-item">
 				<label class="layui-form-label">三级编码</label>
 				<div class="layui-input-inline">
-					<input type="tel" name="thirdCode" autocomplete="off"   placeholder="请输入二级权限编码" class="layui-input" lay-verify="required">
+					<input type="tel" name="thirdCode" autocomplete="off" placeholder="请输入二级权限编码" class="layui-input"
+						lay-verify="required">
 				</div>
 			</div>
 			<div class="layui-form-item" style="text-align: center;">
@@ -139,7 +150,6 @@
 					lay-submit="">添加</button>
 				<button type="button" class="layui-btn layui-btn-sm" lay-filter="update_btn" name="update_btn"
 					lay-submit="">保存</button>
-
 				<button type="button" class="layui-btn layui-btn-sm layui-btn-primary close_add">关闭</button>
 			</div>
 			<!-- 录入物流信息 END-->
@@ -185,8 +195,6 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							// field: 'authorityId', title: '流水号', width: 170
-							// }, {
 							field: 'firstName', title: '一级名称', width: 95
 						}, {
 							field: 'firstCode', title: '一级编码', width: 100
@@ -254,25 +262,12 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var firstName = $('#form_sreach').find('[name=firstName]');
-				var firstCode = $('#form_sreach').find('[name=firstCode]');
-				var secondName = $('#form_sreach').find('[name=secondName]');
-				var secondCode = $('#form_sreach').find('[name=secondCode]');
-				var thirdName = $('#form_sreach').find('[name=thirdName]');
-				var thirdCode = $('#form_sreach').find('[name=thirdCode]');
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/authority/findInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
-					where: {
-						firstNameblurry: firstName.val(),
-						firstCode: firstCode.val(),
-						secondNameblurry: secondName.val(),
-						secondCode: secondCode.val(),
-						thirdNameblurry: thirdName.val(),
-						thirdCode: thirdCode.val()
-					}
+					where: queryParams()
 				});
 			}
 			window.customs_reload = function () {// 提交重载方法到全局，让子页面调用
@@ -288,29 +283,34 @@
 			// });
 			var active = {
 				reload: function () {
-					var firstName = $('#form_sreach').find('[name=firstName]');
-					var firstCode = $('#form_sreach').find('[name=firstCode]');
-					var secondName = $('#form_sreach').find('[name=secondName]');
-					var secondCode = $('#form_sreach').find('[name=secondCode]');
-					var thirdName = $('#form_sreach').find('[name=thirdName]');
-					var thirdCode = $('#form_sreach').find('[name=thirdCode]');
 					//执行重载
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/authority/findInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
-						where: {
-							firstNameblurry: firstName.val(),
-							firstCode: firstCode.val(),
-							secondNameblurry: secondName.val(),
-							secondCode: secondCode.val(),
-							thirdNameblurry: thirdName.val(),
-							thirdCode: thirdCode.val()
-						}
+						where: queryParams()
 					});
 				}
 			};
+			var queryParams = function () {
+				var firstName = $('#form_sreach').find('[name=firstName]').val();
+				var firstCode = $('#form_sreach').find('[name=firstCode]').val();
+				var secondName = $('#form_sreach').find('[name=secondName]').val();
+				var secondCode = $('#form_sreach').find('[name=secondCode]').val();
+				var thirdName = $('#form_sreach').find('[name=thirdName]').val();
+				var thirdCode = $('#form_sreach').find('[name=thirdCode]').val();
+				var groupName = $('#form_sreach').find('[name=groupName]').val();
+				var obj = {};
+				obj.firstNameblurry = firstName;
+				obj.firstCode = firstCode;
+				obj.secondNameblurry = secondName;
+				obj.secondCode = secondCode;
+				obj.thirdNameblurry = thirdName;
+				obj.thirdCode = thirdCode;
+				obj.groupName = groupName;
+				return obj;
+			}
 			// 监听查询按钮
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');
