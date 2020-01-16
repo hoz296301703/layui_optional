@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+<!--商品底价供货商品信息html-->
+
+<head>
+  <meta charset="UTF-8" />
+  <title>银盟跨境电商服务平台运营系统</title>
+  <meta name="Description" content="基于layUI数据表格操作" />
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <link rel="stylesheet" href="../../static/css/font.css" />
+  <link rel="stylesheet" href="../../static/css/weadmin.css" />
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style type="text/css">
+    .layui-form-switch {
+      width: 55px;
+    }
+
+    .layui-form-switch em {
+      width: 40px;
+    }
+
+    /* 私有样式 */
+    .layui-form-label {
+      width: 90px;
+    }
+
+    .layui-table-cell {
+      height: auto;
+      line-height: 80px;
+    }
+
+    th .layui-table-cell {
+      line-height: 28px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <form id="form_sreach" class="layui-form">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">名称</label>
+          <div class="layui-input-inline">
+            <input type="text" name="goodsName" placeholder="请输入商品名称" class="layui-input" />
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">商品自编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="goodsId" placeholder="请输入商品自编号" class="layui-input" />
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">供货商</label>
+          <div class="layui-input-inline">
+            <input type="text" name="goodsMerName" placeholder="请输入供货商名称" class="layui-input" />
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">供货商编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="goodsMerId" placeholder="请输入供货商编号" class="layui-input" />
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">标识</label>
+          <div class="layui-input-inline">
+            <select name="flag" lay-verify="required" lay-search="">
+              <option value="">全部</option>
+              <option value="0">正常</option>
+              <option value="1">停止</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">日期</label>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+              placeholder="年-月-日" />
+          </div>
+          <div class="layui-input-inline" style="width: 0;line-height: 38px;">
+            -
+          </div>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" placeholder="年-月-日" />
+          </div>
+        </div>
+      </div>
+      <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">
+          搜索
+        </button>
+      </div>
+      <table class="layui-hide" id="goods_reserve_price_list" lay-filter="goods_reserve_price_list"></table>
+    </form>
+  </div>
+  <script type="text/html" id="operateTpl">
+      <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
+      <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="update">修改</a>
+   </script>
+  <script type="text/html" id="goods_supply_toolbar">
+      <div class="layui-btn-container">
+      	<!-- <button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>下载</button> -->
+      </div>
+    </script>
+  <!-- <script type="text/html" id="flagTpl">
+  <input type="checkbox" data-serialNo="{{d.serialNo}}" name="flag" value="{{d.flag}}" lay-skin="switch"
+    lay-text="正常|停止" lay-filter="upFlag" {{ d.flag == '1' ? 'checked' : '' }}>
+  </script> -->
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../static/js/dateUtils.js" charset="utf-8"></script>
+  <script src="../../static/js/urlUtils.js" charset="utf-8"></script>
+  <script>
+    layui.use(["table", "jquery", "form", "tree", "laydate"], function () {
+      var table = layui.table,
+        $ = layui.jquery,
+        form = layui.form,
+        tree = layui.tree,
+        laydate = layui.laydate;
+      //日期时间选择器
+      laydate.render({
+        elem: "#startDate",
+        value: getDay(-7),
+        isInitValue: true,
+        max: 0
+      });
+      laydate.render({
+        elem: "#endDate",
+        max: 0
+      });
+      // 动态设置表格高度
+      // var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+      table.render({
+        elem: "#goods_reserve_price_list",
+        cellMinWidth: 80,
+        // height: tableHeight,
+        url: urlPrefix + "silver-web-shop/goodsResPrice/find",
+        toolbar: "#goods_supply_toolbar",
+        defaultToolbar: ["filter"],
+        method: "post",
+        cols: [
+          [
+            {
+              field: "zizeng", width: 40, title: "序号", fixed: "left", type: "numbers"
+            }, {
+              field: "createDate", width: 160, title: "日期", fixed: "left", templet: function (item) {
+                return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
+              }
+            }, {
+              field: "goodsImage", width: 90, title: "图片", templet: function (item) {
+                return ('<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + item.goodsName + '"  src="' +
+                  splitImg(item.goodsImage) + '" width="60px" height="60px"></div>'
+                );
+              }
+            }, {
+              field: "goodsName", title: "商品名称"
+            }, {
+              field: "goodsId", title: "商品自编号", width: 160
+            }, {
+              field: "createBy", title: "供货商"
+            }, {
+              field: "merchantId", title: "供货商编号", width: 175
+            }, {
+              field: "reservePrice", title: "底价", width: 80
+            }, {
+              field: "platformProfit", title: "平台利润", width: 90
+            }, {
+              field: "commission", title: "佣金", width: 80
+            }, {
+              field: "platformRetailPrice", title: "平台零售价", width: 100
+            }, {
+              field: "flag", title: "售卖标识", width: 100, templet: function (item) {
+                var flag = item.flag;
+                if (flag == 0) {
+                  return '停止';
+                } else if (flag == 1) {
+                  return '正常';
+                }
+              }
+            }, {
+              field: "operate", title: "操作", width: 130, toolbar: "#operateTpl", fixed: "right"
+            }
+          ]
+        ],
+        // skin: "row", //行边框风格
+        event: true,
+        page: true,
+        response: {
+          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+        },
+        request: {
+          pageName: "page", //页码的参数名称，默认：page
+          limitName: "size" //每页数据量的参数名，默认：limit
+        },
+        where: {
+          startDate: appendStartDate(getDay(-7))
+        },
+        parseData: function (res) {
+          //将原始数据解析成 table 组件所规定的数据
+          return {
+            code: res.status, //解析接口状态
+            msg: res.msg, //解析提示文本
+            count: res.totalCount, //解析数据长度
+            data: res.datas //解析数据列表
+          };
+        },
+        done: function (res, curr, count) {
+          //如果是异步请求数据方式，res即为你接口返回的信息。
+          //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+          // console.log(res);
+          // //得到当前页码
+          // console.log(curr);
+          // //得到数据总量
+          // console.log(count);
+        }
+      });
+      // 重载公共方法
+      var _reload = function () {
+        table.reload("goods_reserve_price_list", {
+          url: urlPrefix + "silver-web-shop/goodsResPrice/find",
+          page: {
+            curr: $(".layui-laypage-em").next().html() //重新从第 1 页开始
+          },
+          where: queryParams()
+        });
+      };
+      /*
+       *数据表格中form表单元素是动态插入,所以需要更新渲染下
+       * http://www.layui.com/doc/modules/form.html#render
+       * */
+      // $(function () {
+      // 	form.render();
+      // });
+      var active = {
+        reload: function () { //执行重载
+          table.reload("goods_reserve_price_list", {
+            url: urlPrefix + "silver-web-shop/goodsResPrice/find",
+            page: {
+              curr: 1 //重新从第 1 页开始
+            },
+            where: queryParams()
+          });
+        }
+      };
+      //查询条件
+      var queryParams = function () {
+        var goodsName = $("#form_sreach").find("[name=goodsName]").val();
+        var goodsId = $("#form_sreach").find("[name=goodsId]").val();
+        var goodsMerName = $("#form_sreach").find("[name=goodsMerName]").val();
+        var goodsMerId = $("#form_sreach").find("[name=goodsMerId]").val();
+        var flag = $("#form_sreach").find("[name=flag]").val();
+        var startDate = $("#form_sreach").find("[name=startDate]").val();
+        var endDate = $("#form_sreach").find("[name=endDate]").val();
+        startDate = appendStartDate(startDate);
+        endDate = appendEndDate(endDate);
+        var obj = {};
+        obj.goodsNameblurry = goodsName;
+        obj.goodsId = goodsId;
+        obj.goodsMerId = goodsMerId;
+        obj.flag = flag;
+        obj.goodsMerNameblurry = goodsMerName;
+        obj.startDate = startDate;
+        obj.endDate = endDate;
+        return obj;
+      };
+      // 监听查询按钮
+      $("#form_sreach .layui-btn").on("click", function () {
+        var type = $(this).data("type");
+        active[type] ? active[type].call(this) : "";
+      });
+      window.goods_reserve_price_reload = function (flag) {// 提交重载方法到全局，让子页面调用
+        layer.closeAll();
+        console.log(flag)
+        if (flag) {
+          _reload();
+        }
+      };
+
+      //图片浏览
+      $("#form_sreach").on(
+        "click",
+        '[lay-id="goods_reserve_price_list"] .checkImg img',
+        function (e) {
+          layer.photos({
+            photos: {
+              data: [
+                //相册包含的图片，数组格式
+                {
+                  alt: e.target.alt,
+                  src: e.target.src, //原图地址
+                  thumb: e.target.src //缩略图地址
+                }
+              ]
+            }
+          });
+        }
+      );
+      //监听工具条
+      table.on('tool(goods_reserve_price_list)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'update') {// 					
+          layer.open({
+            type: 2,
+            title: '更新信息',
+            skin: "layui-layer-rim", //加上边框
+            area: ["535px", "600px"], //宽高						
+            content: './goods_reserve_price_update.html',
+            success: function (layero, index) {
+              // 获取子页面的iframe
+              var iframe = window['layui-layer-iframe' + index];
+              // 向子页面的全局函数child传参
+              iframe.getParent_data(obj);
+            }
+          });
+        }
+      });
+
+    });
+  </script>
+</body>
+
+</html>

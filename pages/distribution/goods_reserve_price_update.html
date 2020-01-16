@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<!-- 海关信息更新html-->
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  <style>
+    /* 私有样式 */
+    .layui-form-label {
+      width: 70px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weadmin-body">
+    <form class="layui-form" lay-filter="goods_reserve_price_update" id="goods_reserve_price_update"
+      style="margin-top: 10px;width: 100%;">
+      <input type="hidden" name="serialNo">
+      <input type="hidden" name="goodsId">
+      <div class="layui-form-item">
+        <label class="layui-form-label">商品名称</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="goodsName" name="goodsName" autocomplete="off" class="layui-input layui-disabled"
+            style="margin-right:1%" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item" id="serviceCharge_pen_update">
+        <label class="layui-form-label">供货商</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="createBy" name="createBy" autocomplete=" off" class="layui-input layui-disabled"
+            style="margin-right:1%" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item" id="serviceCharge_pen_update">
+        <label class="layui-form-label">供货价</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="reservePrice" autocomplete="off" class="layui-input layui-disabled" name="reservePrice"
+            style="margin-right:1%" disabled>
+          <div class="layui-form-mid layui-word-aux">元</div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">平台利润</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="platformProfit" autocomplete="off" class="layui-input" name="platformProfit" lay-verify="number"
+            style="margin-right:1%">
+          <div class="layui-form-mid layui-word-aux">元</div>
+        </div>
+        <p id="profit_warning" style="margin-left: 110px;color: #e4393c;font-size: 12px;display: none"></p>
+      </div>
+      <div class="layui-form-item" style="margin-bottom: 10px;">
+        <label class="layui-form-label">平台供货价</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="platformSupplyPrice" value="0" autocomplete="off" class="layui-input layui-disabled"
+            name="platformSupplyPrice" style="margin-right:1%" disabled>
+          <div class="layui-form-mid layui-word-aux">元</div>
+        </div>
+        <p style="margin-left: 110px;color: #999!important;font-size: 12px;">平台供货价 = 供货价 + 平台利润</p>
+      </div>
+      <div class="layui-form-item" id="serviceCharge_pen_update">
+        <label class="layui-form-label">佣金</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="commission" autocomplete="off" class="layui-input" name="commission" style="margin-right:1%"
+            lay-verify="number">
+          <div class="layui-form-mid layui-word-aux">元</div>
+        </div>
+      </div>
+      <div class="layui-form-item" id="serviceCharge_pen_update">
+        <label class="layui-form-label">平台零售价</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="platformRetailPrice" autocomplete="off" class="layui-input  layui-disabled"
+            name="platformRetailPrice" style="margin-right:1%" disabled>
+          <div class="layui-form-mid layui-word-aux">元</div>
+        </div>
+        <p style="margin-left: 110px;color: #999!important;font-size: 12px;">平台零售价 = 平台供货价 + 佣金</p>
+      </div>
+      <div class="layui-form-item" id="serviceCharge_pen_update">
+        <label class="layui-form-label">Vip零售价</label>
+        <div class="layui-input-block" style="display: flex;align-items: center;">
+          <input id="vipRetailPrice" autocomplete="off" class="layui-input  layui-disabled" name="vipRetailPrice"
+            style="margin-right:1%" disabled>
+          <div class="layui-form-mid layui-word-aux">元</div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">分销标识</label>
+        <div class="layui-input-block">
+          <input type="checkbox" id="flag" name="flag" lay-skin="switch" lay-text="分销|停止">
+        </div>
+      </div>
+      <p id="profit_warning" style="margin-left: 110px;color: #e4393c;font-size: 13px;">注：点击更新后，将强制用<span
+          style="font-weight: bold;">平台零售价</span>替换<span style="font-weight: bold;">VIP零售价！！</span></p>
+      <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
+        <button type="button" id="update_btn" class="layui-btn" lay-filter="update_btn"" lay-submit="">更新</button>
+        <button type=" button" class="layui-btn layui-btn-primary" lay-filter="close" lay-submit="">关闭</button>
+      </div>
+    </form>
+  </div>
+  <script src="../../static/js/common.js" charset="utf-8"></script>
+  <script src="../../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    var g_data = '';// 全局数据变量
+    function getParent_data(obj) {
+      g_data = obj.data;
+    }
+    layui.use(['tree', 'form', 'jquery', 'util', 'element', 'layer', 'upload', 'table'], function () {
+      var form = layui.form,
+        $ = layui.jquery,
+        util = layui.util,
+        element = layui.element,
+        table = layui.table,
+        tree = layui.tree,
+        upload = layui.upload,
+        layer = layui.layer;
+      //表单初始赋值
+      form.val('goods_reserve_price_update', {
+        "serialNo": g_data.serialNo
+        , "goodsId": g_data.goodsId
+        , "goodsName": g_data.goodsName
+        , "createBy": g_data.createBy
+        , "reservePrice": g_data.reservePrice
+        , "platformProfit": g_data.platformProfit
+        , "platformSupplyPrice": accAdd(g_data.platformProfit, g_data.reservePrice)
+        , "commission": g_data.commission
+        , "platformRetailPrice": g_data.platformRetailPrice
+        , "flag": g_data.flag
+      })
+      $("#platformProfit").on("input", function (e) {//监听平台利润输入值
+        var profit = e.delegateTarget.value;//获取input输入的值  
+        if (!isEmpty(profit)) {//输入值不为空
+          if (profit <= 0) {
+            $(this).val(0);
+          } else if (profit != '-') {
+            form.val('goods_reserve_price_update', {
+              "platformSupplyPrice": accAdd(profit, g_data.reservePrice)
+            })
+            cal_platform_retail_price();
+          }
+        }
+      });
+      $("#commission").on("input", function (e) {//监听佣金输入值
+        var value = e.delegateTarget.value;
+        if (!isEmpty(value)) {//输入值不为空
+          cal_platform_retail_price();
+        }
+      });
+      var update_btn_flag = false;
+      //计算平台零售价
+      var cal_platform_retail_price = function () {
+        var platformSupplyPrice = $('#goods_reserve_price_update').find('[name=platformSupplyPrice]').val();
+        var commission = $('#goods_reserve_price_update').find('[name=commission]').val();
+        var platformProfit = $('#goods_reserve_price_update').find('[name=platformProfit]').val();
+        var price = accAdd(platformSupplyPrice, commission);
+        form.val('goods_reserve_price_update', {
+          "platformRetailPrice": price
+        })
+        var result = accAdd(accMul(price, 0.03), 5);
+        if (platformProfit < result) {//平台利润不能低于5块+(零售价乘以)3%
+          $('#profit_warning').show();
+          $('#profit_warning').html('利润不能低于(平台零售价的)3%+5,估算为：' + result + '元');
+          $('#update_btn').addClass('layui-btn-disabled')
+          update_btn_flag = true
+        } else {
+          $('#profit_warning').hide();
+          $('#update_btn').removeClass('layui-btn-disabled')
+          update_btn_flag = false;
+        }
+      }
+      //查询库存信息
+      var _query_stock = function () {
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/stock/findInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: { entGoodsNo: g_data.goodsId },
+          success: function (response) {
+            if (response.status == 1) {
+              var result = response.datas[0];
+              $('#vipRetailPrice').attr('value', result.regPrice)
+            } else {
+
+            }
+          }
+        });
+      };
+      _query_stock();
+      //更新
+      form.on('submit(update_btn)', function (data) {
+        if (update_btn_flag) {
+          return;
+        }
+        layer.load(0);
+        var field = data.field;
+        if (field.flag == 'on') {
+          field.flag = 1;
+        } else {
+          field.flag = 0;
+        }
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/goodsResPrice/setPrice",
+          method: 'post',
+          dataType: 'JSON',
+          xhrFields: {
+            withCredentials: true
+          },
+          data: field,
+          success: function (response) {
+            layer.closeAll("loading");
+            if (response.status == 1) {
+              layer.msg('更新成功！');
+              setTimeout(function () {
+                parent.goods_reserve_price_reload(true);// 添加成功调用父页面的重载方法
+              }, 1000);
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
+      form.on('submit(close)', function (data) {
+        parent.goods_reserve_price_reload();// 添加成功调用父页面的重载方法
+      });
+    });
+  </script>
+</body>
+
+</html>

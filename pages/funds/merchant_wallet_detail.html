@@ -94,12 +94,13 @@
           <li class="item" style="height: 26px;line-height: 26px;font-weight: bold;">
             日期
             <div class="layui-input-inline">
-              <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off" readonly="" 
+              <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off" readonly=""
                 placeholder="年-月-日">
             </div>
             <div class="layui-input-inline" style="width: 0;line-height: 24px;margin-right: 5px;">-</div>
             <div class="layui-input-inline">
-              <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" readonly="" placeholder="年-月-日">
+              <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" readonly=""
+                placeholder="年-月-日">
             </div>
           <li class="item">
             <a name="today">今天</a>
@@ -175,7 +176,7 @@
     <script type="text/html" id="operateTpl_df">
             <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">明细</a>					
           </script>
-  </div> 
+  </div>
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript">
@@ -247,7 +248,7 @@
               }, {
                 // field: 'serialNo', title: '流水号', width: 110
                 // }, {
-                field: 'orderId', title: '订单编号', width: 170
+                field: 'orderId', title: '订单编号'
               }, {
                 field: 'amount', title: '收入(元)', width: 90, templet: function (item) {
                   if (item.flag == 'in') {
@@ -269,9 +270,9 @@
                   return '<span style="font-size: 16px; font-weight: 400; color: #000;">' + item.afterChangeBalance + '</span>';
                 }
               }, {
-                field: 'targetName', title: '对方', width: 140,
+                field: 'targetName', title: '对方'
               }, {
-                field: 'status', title: '状态', fixed: 'right', templet: function (item) {
+                field: 'status', title: '状态', fixed: 'right', width: 80, templet: function (item) {
                   if (item.status == 'success') {
                     return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">成功</span>';
                   } else if (item.status == 'failure') {

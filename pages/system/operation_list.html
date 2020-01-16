@@ -210,26 +210,29 @@
 								},
 							}, {
 								field: 'module', width: 90, title: '模块', templet: function (item) {
-									if (item.module == 'stock') {
+									var module = item.module;
+									if (module == 'stock') {
 										return '库存';
-									} else if (item.module == 'goodsSupply') {
+									} else if (module == 'goodsSupply') {
 										return '商品供货';
-									} else if (item.module == 'order') {
+									} else if (module == 'order') {
 										return '订单';
-									} else if (item.module == 'merchant') {
+									} else if (module == 'merchant') {
 										return '商户';
-									} else if (item.module == 'manager') {
+									} else if (module == 'manager') {
 										return '管理员';
-									} else if (item.module == 'merDivRate') {
+									} else if (module == 'merDivRate') {
 										return '分润费率';
-									} else if (item.module == 'member') {
+									} else if (module == 'member') {
 										return '会员';
-									} else if (item.module == 'merCost') {
+									} else if (module == 'merCost') {
 										return '商户计费';
-									} else if (item.module == 'merPro') {
+									} else if (module == 'merPro') {
 										return '推广配置';
-									} else if (item.module == 'witFee') {
+									} else if (module == 'witFee') {
 										return '提现费率';
+									} else if (module = 'goodsResPrice') {
+										return '商品供货底价';
 									}
 								}
 							}, {

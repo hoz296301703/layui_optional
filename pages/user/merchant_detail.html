@@ -836,8 +836,18 @@
                 </div>
               </div>
             </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">
+                <span class="we-red">*</span>分润比例
+              </label>
+              <div class="layui-input-inline">
+                <input type="text" name="expend_rate" placeholder="分润比例" lay-verify="" required="" autocomplete="off"
+                  class="layui-input">
+              </div>
+              %
+            </div>
             <div class="layui-form-item" style="text-align: center;margin-top: 30px;">
-              <button type="button" class="layui-btn" lay-filter="up_merchant_promotion" lay-submit="">保存</button>
+              <button type="button" class="layui-btn" lay-filter="up_merchant_promotion" lay-submit="">更新</button>
             </div>
           </form>
         </div>
@@ -2431,7 +2441,28 @@
       //点击推广商配置信息
       $('#merchant_promotion_tab').click(function () {
         findMerProInfo();
+        _getMerRate();
       });
+      var _getMerRate = function () {//获取白金商户分润比例
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/merDivRate/getInfo",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: { merchantId: g_data.merchantId, page: 1, size: 1 },
+          success: function (response) {
+            if (response.status == 1) {
+              //表单初始赋值
+              form.val('merchant_promotion', {
+                "expend_rate": accMul(response.datas.rate, 100)//乘以100显示
+              })
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      }
       var findMerProInfo = function () {
         $.ajax({
           url: urlPrefix + "silver-web-shop/merPro/find",
