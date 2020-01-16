@@ -13,8 +13,10 @@
     <link rel="stylesheet" href="./static/css/font.css">
     <link rel="stylesheet" href="./static/css/weadmin.css">
     <script src="./static/js/common.js" charset="utf-8"></script>
+    <script src="../../static/js/urlUtils.js" charset="utf-8"></script>
+
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
-    
+    <script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
     <script src="https://www.recaptcha.net/recaptcha/api.js?render=6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD"></script>
 
 </head>
@@ -22,6 +24,17 @@
     /* .grecaptcha-badge {
         display: none;
     } */
+    .pTit {
+        display: block;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+    }
+
+    .layui-layer-content {
+        height: 109px !important;
+    }
 </style>
 
 <body class="login-bg">
@@ -29,24 +42,43 @@
     <div class="login">
         <div class="message">银盟跨境电商服务平台运营系统</div>
         <div id="darkbannerwrap"></div>
-
         <form method="post" class="layui-form">
             <input name="account" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
             <hr class="hr15">
             <input name="loginPassword" lay-verify="required" placeholder="密码" type="password" class="layui-input">
             <hr class="hr15">
-
             <input class="loginin" id="login" value="登录" lay-submit lay-filter="login" style="width:100%;"
                 type="button">
-        
+            <p class="pTit">其他帐号登录：</p>
+            <a
+                href="https://open.weixin.qq.com/connect/qrconnect?appid=wx00f18fb4f65ab436&redirect_uri=https%3A%2F%2Fsudo.191ec.com%2Fsilver-web-shop%2Fmanager%2FwxLogin&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect">
+                <i class="iconfont icon-weixin" style="font-size: 40px; color: #0c0;"></i>
+            </a>
         </form>
     </div>
 
+    <form class="layui-form" lay-filter="bun_wx" id="bun_wx" style="display:none; width: 90%; margin: 20px auto;">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-inline">
+                <input type="text" name="account" autocomplete="off" placeholder="账号" class="layui-input"
+                    lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="password" name="loginPassword" placeholder="输入密码" autocomplete=" off" placeholder=""
+                    class="layui-input" lay-verify="required">
+            </div>
+        </div>
+    </form>
     <script type="text/javascript">
         layui.use(['jquery', 'form'], function () {
             var $ = layui.jquery,
                 form = layui.form;
-            $(document).keydown(function (e) {
+
+            $(document).keydown(function (e) {//回车提交
                 if (e.keyCode === 13) {
                     $("#login").trigger("click");
                 }
@@ -56,8 +88,7 @@
                 requset(data);
             });
             var requset = function (data) {
-                //加载层-默认风格
-                layer.load();
+                layer.load(); //加载层-默认风格
                 // 请求Google reCaptcha 
                 grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'manager_login' }).then(function (token) {
                     data.field.token = token;
@@ -92,7 +123,55 @@
                 });
             }
             //---------------------------------
+            var redirect_uri = encodeURIComponent('https://sudo.191ec.com/silver-web-shop/manager/wxLogin');
+            console.log(redirect_uri);
+            var status = getQueryVariable('status');
+            var tem = function () {
+                if (status == '200') {
+                    layer.open({
+                        type: 1,
+                        title: "绑定已有管理员账号",
+                        content: $("#bun_wx"),
+                        btnAlign: 'c',
+                        area: ["300px", "209px"], //宽高
+                        btn: ['绑定', '关闭'],
+                        btn1: function (index, data) {
+                            grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'manager_login' }).then(function (token) {
+                                var params = { account: $('#bun_wx').find('[name=account]').val(), loginPassword: $('#bun_wx').find('[name=loginPassword]').val(), token: token };
+                                console.log(params)
+                                layer.load(2);
+                                $.ajax({
+                                    url: "https://sudo.191ec.com/silver-web-shop/manager/bindWx",
+                                    type: "POST",
+                                    xhrFields: {
+                                        withCredentials: true
+                                    },
+                                    data: params,
+                                    success: function (response) {
+                                        layer.closeAll("loading");
+                                        if (response.status == 1) {
+                                            layer.close();
+                                            layer.msg("操作成功");
+                                            setTimeout(function () {
+                                                location.href = './index.html';
+                                            }, 1000)
+                                        } else {
+                                            layer.alert(response.msg);
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                    });
+                } else if (!status) {//false为没有找到值、不进行操作
+                } else {
+                    layer.alert(msg);
+                    var msg = getQueryVariable('msg');
+                }
+            }
+            tem();
         });
+
     </script>
     <script>var _hmt = _hmt || [];
         (function () {

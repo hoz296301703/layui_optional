@@ -141,11 +141,9 @@
                 </div>
               </div>
             </div>
-
             <div class="layui-form-item">
-
               <div class="layui-inline">
-                <label class="layui-form-label">单价</label>
+                <label class="layui-form-label">售卖价</label>
                 <div class="layui-input-inline">
                   <input disabled type="text" name="regPrice" autocomplete="off" class="layui-input layui-disabled">
                 </div>
@@ -815,14 +813,14 @@
                 , "spareGoodsOriginCountry": goods.spareGoodsOriginCountry
                 , "spareGoodsBarCode": goods.spareGoodsBarCode
                 , "marketPrice": goods.marketPrice
-                , "regPrice": goods.regPrice
+                , "regPrice": stock.regPrice
                 , "sellFlag": sellFlag
                 , "totalStock": stock.totalStock
                 , "sellCount": stock.sellCount
                 , "doneCount": stock.doneCount
                 , "paymentCount": stock.paymentCount
                 , "shippedCount": stock.shippedCount
-                , "createDate": G_format(stock.createDate.time, 'yyyy-MM-dd hh:mm:ss')
+                , "createDate": G_format(stock.createDate.time, 'yyyy-MM-dd hh:mm:ss')//库存创建日期
               })
 
               // 商品主图

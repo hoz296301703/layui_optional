@@ -1,8 +1,12 @@
-// var urlPrefix = "http:///192.168.1.116:8080/";
-var urlPrefix = "https://ym.191ec.com/";
+var urlPrefix = "http:///192.168.1.116:8080/";
+// var urlPrefix = "https://ym.191ec.com/";
+// var urlPrefix = "https://sudo.191ec.com/";
 // var urlPrefix = "http://120.132.118.211:8080/";
 // var urlPrefix = 'http://120.132.118.214:8080/';
 
+document.write(
+  '<link rel="stylesheet" href="//at.alicdn.com/t/font_1449329_louqapa9c5.css">'
+);
 var imgPrefix = function(id) {
   var imgPrefix1 = "https://ym.191ec.com/img/merchant/";
   var imgPrefix2 = "/goods/";

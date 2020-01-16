@@ -186,9 +186,11 @@
 						{
 							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
-							field: 'createDate', title: '发行日期', fixed: 'left', width: 170, templet: function (item) {
+							field: 'createDate', title: '发行日期', fixed: 'left', width: 160, templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
+						}, {
+							field: 'serialNo', title: '流水号', width: 185
 						}, {
 							field: 'couponName', title: '名称'
 						}, {
