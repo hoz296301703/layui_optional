@@ -56,7 +56,10 @@
         <label class="layui-form-label">平台利润</label>
         <div class="layui-input-block" style="display: flex;align-items: center;">
           <input id="platformProfit" autocomplete="off" class="layui-input" name="platformProfit" lay-verify="number"
-            style="margin-right:1%">
+            style="margin-right:1%;padding-right: 80px;">
+          <button id="cal_platform_profit"
+            style="position: absolute;top: 4px;right: 30px;cursor: pointer;display: none;" type="button"
+            class="layui-btn layui-btn-normal layui-btn-sm">计算</button>
           <div class="layui-form-mid layui-word-aux">元</div>
         </div>
         <p id="profit_warning" style="margin-left: 110px;color: #e4393c;font-size: 12px;display: none"></p>
@@ -81,8 +84,8 @@
       <div class="layui-form-item" id="serviceCharge_pen_update">
         <label class="layui-form-label">平台零售价</label>
         <div class="layui-input-block" style="display: flex;align-items: center;">
-          <input id="platformRetailPrice" autocomplete="off" class="layui-input  layui-disabled"
-            name="platformRetailPrice" style="margin-right:1%" disabled>
+          <input id="platformRetailPrice" autocomplete="off" class="layui-input" name="platformRetailPrice"
+            style="margin-right:1%">
           <div class="layui-form-mid layui-word-aux">元</div>
         </div>
         <p style="margin-left: 110px;color: #999!important;font-size: 12px;">平台零售价 = 平台供货价 + 佣金</p>
@@ -138,26 +141,61 @@
         , "platformRetailPrice": g_data.platformRetailPrice
         , "flag": g_data.flag
       })
+
+      var update_btn_flag = false;
       $("#platformProfit").on("input", function (e) {//监听平台利润输入值
         var profit = e.delegateTarget.value;//获取input输入的值  
         if (!isEmpty(profit)) {//输入值不为空
-          if (profit <= 0) {
+          if (profit < 0) {
             $(this).val(0);
+            $('#cal_platform_profit').hide();
           } else if (profit != '-') {
-            form.val('goods_reserve_price_update', {
-              "platformSupplyPrice": accAdd(profit, g_data.reservePrice)
-            })
-            cal_platform_retail_price();
+            $('#cal_platform_profit').show();//
+            $('#update_btn').addClass('layui-btn-disabled')
+            update_btn_flag = true
+            cal_platform_profit_flag = true;
           }
         }
       });
+
+      var Deduction = function (profit) {
+        var commission = $('#goods_reserve_price_update').find('[name=commission]').val();//获取佣金值
+        var result = accSub(commission, profit);//佣金减掉利润
+        if (result < 0) {
+          result = 0
+        }
+        form.val('goods_reserve_price_update', {
+          "commission": result
+        })
+      }
+
+      var tolSupllyPrice = function () {//平台供货价
+        var platformProfit = $('#goods_reserve_price_update').find('[name=platformProfit]').val();
+        var reservePrice = $('#goods_reserve_price_update').find('[name=reservePrice]').val();
+        return accAdd(platformProfit, reservePrice);
+      }
+
       $("#commission").on("input", function (e) {//监听佣金输入值
-        var value = e.delegateTarget.value;
-        if (!isEmpty(value)) {//输入值不为空
+        var commission = e.delegateTarget.value;
+        if (!isEmpty(commission) && commission != '-') {//输入值不为空
           cal_platform_retail_price();
+        } else if (commission < 0) {
+          $(this).val(0);
         }
       });
-      var update_btn_flag = false;
+
+      //监控平台零售价input框
+      $("#platformRetailPrice").on("input", function (e) {//监听佣金输入值
+        var value = e.delegateTarget.value;
+        if (!isEmpty(value) && value != '-') {//输入值不为空
+          // 佣金 =  输入的平台零售价 - 平台供货价(平台利润 + 供货价)          
+          var r = accSub(value, tolSupllyPrice());
+          form.val('goods_reserve_price_update', {
+            "commission": r < 0 ? 0 : r
+          })
+        }
+      });
+
       //计算平台零售价
       var cal_platform_retail_price = function () {
         var platformSupplyPrice = $('#goods_reserve_price_update').find('[name=platformSupplyPrice]').val();
@@ -167,18 +205,19 @@
         form.val('goods_reserve_price_update', {
           "platformRetailPrice": price
         })
-        var result = accAdd(accMul(price, 0.03), 5);
-        if (platformProfit < result) {//平台利润不能低于5块+(零售价乘以)3%
-          $('#profit_warning').show();
-          $('#profit_warning').html('利润不能低于(平台零售价的)3%+5,估算为：' + result + '元');
-          $('#update_btn').addClass('layui-btn-disabled')
-          update_btn_flag = true
-        } else {
-          $('#profit_warning').hide();
-          $('#update_btn').removeClass('layui-btn-disabled')
-          update_btn_flag = false;
-        }
+        // var result = accAdd(accMul(price, 0.03), 5);
+        // if (platformProfit < result) {//平台利润不能低于5块+(零售价乘以)3%
+        //   $('#profit_warning').show();
+        //   $('#profit_warning').html('利润不能低于(平台零售价的)3%+5,估算为：' + result + '元');
+        //   $('#update_btn').addClass('layui-btn-disabled')
+        //   update_btn_flag = true
+        // } else {
+        //   $('#profit_warning').hide();
+        //   $('#update_btn').removeClass('layui-btn-disabled')
+        //   update_btn_flag = false;
+        // }
       }
+
       //查询库存信息
       var _query_stock = function () {
         $.ajax({
@@ -203,6 +242,9 @@
       form.on('submit(update_btn)', function (data) {
         if (update_btn_flag) {
           return;
+        }
+        if (cal_platform_profit_flag) {
+          cal_platform_profit_fun();
         }
         layer.load(0);
         var field = data.field;
@@ -235,6 +277,34 @@
       form.on('submit(close)', function (data) {
         parent.goods_reserve_price_reload();// 添加成功调用父页面的重载方法
       });
+      $('#cal_platform_profit').click(function () {
+        cal_platform_profit_fun();
+        $('#update_btn').removeClass('layui-btn-disabled')
+        update_btn_flag = false;
+      });
+      var cal_platform_profit_flag = true;
+      var cal_platform_profit_fun = function () {
+        var profit = $('#goods_reserve_price_update').find('[name=platformProfit]').val();
+        if (!isEmpty(profit)) {//输入值不为空
+          if (profit < 0) {
+            $(this).val(0);
+          } else if (profit != '-') {
+            form.val('goods_reserve_price_update', {
+              "platformSupplyPrice": tolSupllyPrice()
+            })
+            Deduction(profit);
+            cal_platform_retail_price();
+            cal_platform_profit_flag = false;
+          }
+          $('#cal_platform_profit').hide();
+          $('#commission').addClass('layui-bg-blue');
+          $('#platformRetailPrice').addClass('layui-bg-orange');
+          setTimeout(function () {
+            $('#commission').removeClass('layui-bg-blue');
+            $('#platformRetailPrice').removeClass('layui-bg-orange');
+          }, 200);
+        }
+      }
     });
   </script>
 </body>

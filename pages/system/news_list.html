@@ -158,7 +158,7 @@
 	<script type="text/html" id="operateTpl">
 		<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>			 -->
 	<!-- <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="top">置顶</a> -->
-	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="update">修改</a>
+	<a class="layui-btn  layui-btn-xs" lay-event="update">修改</a>
 	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
 	</script>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -190,11 +190,12 @@
 				tree = layui.tree,
 				admin = layui.admin;
 			// 动态设置表格高度
-			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			table.render({
 				elem: '#articleList',
 				cellMinWidth: 80,
-				height: tableHeight,
+				// height: tableHeight,
+				defaultToolbar: ["filter"],
 				toolbar: '#customsList_toolbar',
 				url: urlPrefix + 'silver-web-shop/news/findInfo',
 				method: 'post',

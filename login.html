@@ -31,10 +31,6 @@
         margin-inline-start: 0px;
         margin-inline-end: 0px;
     }
-
-    .layui-layer-content {
-        height: 109px !important;
-    }
 </style>
 
 <body class="login-bg">
@@ -56,23 +52,6 @@
             </a>
         </form>
     </div>
-
-    <form class="layui-form" lay-filter="bun_wx" id="bun_wx" style="display:none; width: 90%; margin: 20px auto;">
-        <div class="layui-form-item">
-            <label class="layui-form-label">用户名</label>
-            <div class="layui-input-inline">
-                <input type="text" name="account" autocomplete="off" placeholder="账号" class="layui-input"
-                    lay-verify="required">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">密码</label>
-            <div class="layui-input-inline">
-                <input type="password" name="loginPassword" placeholder="输入密码" autocomplete=" off" placeholder=""
-                    class="layui-input" lay-verify="required">
-            </div>
-        </div>
-    </form>
     <script type="text/javascript">
         layui.use(['jquery', 'form'], function () {
             var $ = layui.jquery,
@@ -124,52 +103,7 @@
             }
             //---------------------------------
             var redirect_uri = encodeURIComponent('https://sudo.191ec.com/silver-web-shop/manager/wxLogin');
-            console.log(redirect_uri);
-            var status = getQueryVariable('status');
-            var tem = function () {
-                if (status == '200') {
-                    layer.open({
-                        type: 1,
-                        title: "绑定已有管理员账号",
-                        content: $("#bun_wx"),
-                        btnAlign: 'c',
-                        area: ["300px", "209px"], //宽高
-                        btn: ['绑定', '关闭'],
-                        btn1: function (index, data) {
-                            grecaptcha.execute('6Le_2LQUAAAAAPMtvY6gLN7irDAzLinoDpDubUVD', { action: 'manager_login' }).then(function (token) {
-                                var params = { account: $('#bun_wx').find('[name=account]').val(), loginPassword: $('#bun_wx').find('[name=loginPassword]').val(), token: token };
-                                console.log(params)
-                                layer.load(2);
-                                $.ajax({
-                                    url: "https://sudo.191ec.com/silver-web-shop/manager/bindWx",
-                                    type: "POST",
-                                    xhrFields: {
-                                        withCredentials: true
-                                    },
-                                    data: params,
-                                    success: function (response) {
-                                        layer.closeAll("loading");
-                                        if (response.status == 1) {
-                                            layer.close();
-                                            layer.msg("操作成功");
-                                            setTimeout(function () {
-                                                location.href = './index.html';
-                                            }, 1000)
-                                        } else {
-                                            layer.alert(response.msg);
-                                        }
-                                    }
-                                });
-                            });
-                        }
-                    });
-                } else if (!status) {//false为没有找到值、不进行操作
-                } else {
-                    layer.alert(msg);
-                    var msg = getQueryVariable('msg');
-                }
-            }
-            tem();
+
         });
 
     </script>

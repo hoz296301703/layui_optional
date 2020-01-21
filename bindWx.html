@@ -107,15 +107,14 @@
             var status = getQueryVariable('status');
             var msg = getQueryVariable('msg');
             var tem = function () {
-                if (status == '200') {
+                if (isEmpty(status)) {
+                } else if (status == '200') {//false为没有找到值、不进行操作
                     $('.login').show();
-                } else if (!status) {//false为没有找到值、不进行操作
-
                 } else {
                     layer.alert(decodeURIComponent(getQueryVariable('msg')), {
                         time: 0 //不自动关闭
                         , btn: ['返回登录页面']
-                        ,btnAlign: 'c'
+                        , btnAlign: 'c'
                         , yes: function (index) {
                             location.href = './login.html';
                         }

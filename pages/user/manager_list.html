@@ -103,9 +103,12 @@
 				<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" onclick="WeAdminEdit2('查看','./manager_detail.html','{{d.toString()}}')">查看</a> -->
 				<a class="layui-btn layui-btn-xs" lay-event="edit">分配权限</a>
 				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置密码</a>
+				<a class="layui-btn layui-btn-xs" lay-event="permissions">授权</a>
 		</script>
 	<!-- 权限树盒子 -->
 	<ul id="maangerAllot" style="display: none;"></ul>
+	<!-- 权限树盒子 -->
+	<ul id="permissions" style="display: none;"></ul>
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	<!-- <script src="manager_list.js" type="text/javascript" charset="utf-8"></script> -->
@@ -128,7 +131,7 @@
 				elem: '#articleList',
 				toolbar: '#manager_list_toolbar',
 				cellMinWidth: 80,
-
+				defaultToolbar: ['filter'],
 				// height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/manager/findAllManagerInfo',
 				method: 'post',
@@ -164,7 +167,7 @@
 						}, {
 							field: 'status', width: 100, title: '状态', templet: '#statusTpl',
 						}, {
-							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', width: 300, title: '操作', toolbar: '#operateTpl', fixed: 'right'
 						}]
 				],
 				// skin: 'row', //行边框风格
@@ -199,7 +202,6 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-
 				var managerName = $('#form_sreach').find('[name=managerName]');
 				var realName = $('#form_sreach').find('[name=realName]');
 				var managerMarks = $('#form_sreach').find('[name=managerMarks]');
@@ -331,7 +333,6 @@
 							});
 						}
 					});
-
 				} else if (obj.event === 'edit') {// 分配权限
 					layer.load();
 					$('#maangerAllot').html('');
@@ -372,7 +373,6 @@
 									ii++;
 								});
 								// console.log(jsonArr)
-
 								//基本演示
 								tree.render({
 									elem: '#maangerAllot'
@@ -393,7 +393,6 @@
 							}
 						}
 					});
-
 					//页面层
 					layer.open({
 						type: 1,
@@ -430,16 +429,121 @@
 									}
 								}
 							});
-						}
-						, btn2: function () {
+						}, btn2: function () {
 						}, cancel: function () {
 						}
-
 					});
 					// layer.alert('编辑行：<br>' + JSON.stringify(data))
+				} else if (obj.event === 'permissions') {
+					$('#permissions').html('');
+					var _this = this;
+					var beginTime = new Date();
+					$.ajax({
+						url: urlPrefix + "silver-web-shop/authority/list",
+						type: "POST",
+						xhrFields: {
+							withCredentials: true
+						},
+						// async: true,
+						data: { userId: data.managerId },
+						success: function (response) {
+							if (response.status == 1) {
+
+								var jsonArr = [];
+								var ii = 0;
+								var result = response.datas;
+								var system = result.system;//系统权限树
+								var assigned = result.assigned;//当前用户拥有权限
+								$.each(system, function (i, one) {// 1级
+									var title = one.label;//第一级标题
+									var one_children = one.children;
+									jsonArr.push({ title: title, children: [] });
+									var jj = 0;
+									$.each(one_children, function (j, two) {// 2级
+										var two_title = two.label;
+										jsonArr[ii].children.push({ title: two_title, children: [] });//放入第二级的值
+										var three = two.children;// 3级
+										for (var tem in three) {
+											if (three[tem] instanceof Object) {//当遍历参数为对象时		
+												var code = three[tem].id;
+												var checkedss = false;
+												let index = assigned.indexOf(code);
+												if (index > -1) {//找不到值返回-1
+													checkedss = true;
+												}
+												jsonArr[ii].children[jj].children.push({
+													title: three[tem].label,
+													checked: checkedss,
+													id: code
+												});
+											}
+										}
+										jj++;
+									});
+									ii++;
+								});
+								tree.render({	//基本演示
+									elem: '#permissions'
+									, data: jsonArr
+									, check: "checkbox" //勾选风格
+									, showCheckbox: true  //是否显示复选框
+									, id: 'demoId55'
+									, checkboxName: "allot" //复选框的name属性值
+									, checkboxStyle: "" //设置复选框的样式，必须为字符串，css样式怎么写就怎么写
+									// , isJump: true //是否允许点击节点时弹出新窗口跳转
+									, click: function (obj) {
+										// var data = obj.data;  //获取当前点击的节点数据
+										// layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
+									}
+								});
+								layer.closeAll('loading');
+							} else {
+							}
+						}
+					});
+					var endTime = new Date();
+					console.log("用时共计" + (endTime - beginTime) + "ms");
+					layer.open({
+						type: 1,
+						title: '分配权限',
+						skin: "layui-layer-rim", //加上边框
+						area: ["490px", "585px"], //宽高
+						content: $("#permissions"),
+						btn: ["保存", "关闭"],
+						btnAlign: "c",
+						yes: function (index) {
+							layer.load();
+							var arr = [];
+							$.each($("#permissions").find('.layui-tree-main [type=checkbox]'), function (i, item) {
+								if (item.checked && item.value != "undefined") {
+									arr.push(item.value);
+								}
+							})
+							var allot_data = { userId: data.managerId, info: JSON.stringify(arr) };
+							$.ajax({
+								url: urlPrefix + "silver-web-shop/authority/authorize",
+								type: "POST",
+								xhrFields: {
+									withCredentials: true
+								},
+								data: allot_data,
+								success: function (response) {
+									layer.closeAll("loading");
+									if (response.status == 1) {
+										layer.closeAll();
+										layer.msg('分配权限成功！');
+										_reload();
+									} else {
+										layer.msg(response.msg);
+									}
+								}
+							});
+						}, btn2: function () {
+						}, cancel: function () {
+						}
+					});
 				}
 			});
-
 
 			//头工具栏事件
 			table.on('toolbar(articleList)', function (obj) {
@@ -451,9 +555,9 @@
 							type: 2,
 							skin: "layui-layer-rim", //加上边框
 							area: ["710px", "510px"], //宽高
-							scrollbar: false,							
+							scrollbar: false,
 							content: './manager_add.html',
-						
+
 						});
 						break;
 				}
