@@ -101,7 +101,7 @@
 	<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
 				<!-- <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" onclick="WeAdminEdit2('查看','./manager_detail.html','{{d.toString()}}')">查看</a> -->
-				<a class="layui-btn layui-btn-xs" lay-event="edit">分配权限</a>
+				<!-- <a class="layui-btn layui-btn-xs" lay-event="edit">分配权限</a> -->
 				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="reset">重置密码</a>
 				<a class="layui-btn layui-btn-xs" lay-event="permissions">授权</a>
 		</script>
@@ -334,110 +334,109 @@
 						}
 					});
 				} else if (obj.event === 'edit') {// 分配权限
-					layer.load();
-					$('#maangerAllot').html('');
-					var _this = this;
-					$.ajax({
-						url: urlPrefix + "silver-web-shop/authority/getUserAuthorityInfo",
-						type: "POST",
-						xhrFields: {
-							withCredentials: true
-						},
-						// async: true,
-						data: { userId: data.managerId, groupName: "manager" },
-						success: function (response) {
-							if (response.status == 1) {
-								var jsonArr = [];
-								var ii = 0;
-								$.each(response.datas, function (i, val1) {// 1级
-									jsonArr.push({ title: i, children: [] });
-									var jj = 0;
-									$.each(val1, function (j, val2) {// 2级
-										jsonArr[ii].children.push({ title: j, children: [] });
-										$.each(val2, function (k, val3) {// 3级
-											var checkedss = false;
-											// console.log((k.split("#")[1] == 'true') + '***' +val3)
-											if (k.split("#")[1] == 'true') {
-												// jsonArr[ii].checked = true;
-												// jsonArr[ii].children[jj].checked = true;
-												checkedss = true;
-											}
-											jsonArr[ii].children[jj].children.push({
-												title: val3,
-												checked: checkedss,
-												id: k.split("#")[0]
-											});
-										});
-										jj++;
-									});
-									ii++;
-								});
-								// console.log(jsonArr)
-								//基本演示
-								tree.render({
-									elem: '#maangerAllot'
-									, data: jsonArr
-									, check: "checkbox" //勾选风格
-									, showCheckbox: true  //是否显示复选框
-									, id: 'demoId1'
-									, checkboxName: "allot" //复选框的name属性值
-									, checkboxStyle: "" //设置复选框的样式，必须为字符串，css样式怎么写就怎么写
-									// , isJump: true //是否允许点击节点时弹出新窗口跳转
-									, click: function (obj) {
-										// var data = obj.data;  //获取当前点击的节点数据
-										// layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
-									}
-								});
-								layer.closeAll('loading');
-							} else {
-							}
-						}
-					});
+					// layer.load();
+					// $('#maangerAllot').html('');
+					// var _this = this;
+					// $.ajax({
+					// 	url: urlPrefix + "silver-web-shop/authority/getUserAuthorityInfo",
+					// 	type: "POST",
+					// 	xhrFields: {
+					// 		withCredentials: true
+					// 	},
+					// 	// async: true,
+					// 	data: { userId: data.managerId, groupName: "manager" },
+					// 	success: function (response) {
+					// 		if (response.status == 1) {
+					// 			var jsonArr = [];
+					// 			var ii = 0;
+					// 			$.each(response.datas, function (i, val1) {// 1级
+					// 				jsonArr.push({ title: i, children: [] });
+					// 				var jj = 0;
+					// 				$.each(val1, function (j, val2) {// 2级
+					// 					jsonArr[ii].children.push({ title: j, children: [] });
+					// 					$.each(val2, function (k, val3) {// 3级
+					// 						var checkedss = false;
+					// 						// console.log((k.split("#")[1] == 'true') + '***' +val3)
+					// 						if (k.split("#")[1] == 'true') {
+					// 							// jsonArr[ii].checked = true;
+					// 							// jsonArr[ii].children[jj].checked = true;
+					// 							checkedss = true;
+					// 						}
+					// 						jsonArr[ii].children[jj].children.push({
+					// 							title: val3,
+					// 							checked: checkedss,
+					// 							id: k.split("#")[0]
+					// 						});
+					// 					});
+					// 					jj++;
+					// 				});
+					// 				ii++;
+					// 			});
+					// 			// console.log(jsonArr)
+					// 			//基本演示
+					// 			tree.render({
+					// 				elem: '#maangerAllot'
+					// 				, data: jsonArr
+					// 				, check: "checkbox" //勾选风格
+					// 				, showCheckbox: true  //是否显示复选框
+					// 				, id: 'demoId1'
+					// 				, checkboxName: "allot" //复选框的name属性值
+					// 				, checkboxStyle: "" //设置复选框的样式，必须为字符串，css样式怎么写就怎么写
+					// 				// , isJump: true //是否允许点击节点时弹出新窗口跳转
+					// 				, click: function (obj) {
+					// 					// var data = obj.data;  //获取当前点击的节点数据
+					// 					// layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
+					// 				}
+					// 			});
+					// 			layer.closeAll('loading');
+					// 		} else {
+					// 		}
+					// 	}
+					// });
 					//页面层
-					layer.open({
-						type: 1,
-						title: '分配权限',
-						skin: "layui-layer-rim", //加上边框
-						area: ["690px", "450px"], //宽高
-						content: $("#maangerAllot"),
-						btn: ["保存", "关闭"],
-						btnAlign: "c",
-						yes: function (index) {
-							layer.load();
-							var arr = [];
-							$.each($("#maangerAllot").find('.layui-tree-main [type=checkbox]'), function (i, item) {
-								if (item.checked && item.value != "undefined") {
-									arr.push(item.value);
-								}
-							})
-							var allot_data = { type: 'manager', userId: data.managerId, authorityPack: JSON.stringify(arr) };
-							$.ajax({
-								url: urlPrefix + "silver-web-shop/authority/setAuthorityInfo",
-								type: "POST",
-								xhrFields: {
-									withCredentials: true
-								},
-								data: allot_data,
-								success: function (response) {
-									layer.closeAll("loading");
-									if (response.status == 1) {
-										layer.closeAll();
-										layer.msg('分配权限成功！');
-										_reload();
-									} else {
-										layer.msg(response.msg);
-									}
-								}
-							});
-						}, btn2: function () {
-						}, cancel: function () {
-						}
-					});
+					// layer.open({
+					// 	type: 1,
+					// 	title: '分配权限',
+					// 	skin: "layui-layer-rim", //加上边框
+					// 	area: ["690px", "450px"], //宽高
+					// 	content: $("#maangerAllot"),
+					// 	btn: ["保存", "关闭"],
+					// 	btnAlign: "c",
+					// 	yes: function (index) {
+					// 		layer.load();
+					// 		var arr = [];
+					// 		$.each($("#maangerAllot").find('.layui-tree-main [type=checkbox]'), function (i, item) {
+					// 			if (item.checked && item.value != "undefined") {
+					// 				arr.push(item.value);
+					// 			}
+					// 		})
+					// 		var allot_data = { type: 'manager', userId: data.managerId, authorityPack: JSON.stringify(arr) };
+					// 		$.ajax({
+					// 			url: urlPrefix + "silver-web-shop/authority/setAuthorityInfo",
+					// 			type: "POST",
+					// 			xhrFields: {
+					// 				withCredentials: true
+					// 			},
+					// 			data: allot_data,
+					// 			success: function (response) {
+					// 				layer.closeAll("loading");
+					// 				if (response.status == 1) {
+					// 					layer.closeAll();
+					// 					layer.msg('分配权限成功！');
+					// 					_reload();
+					// 				} else {
+					// 					layer.msg(response.msg);
+					// 				}
+					// 			}
+					// 		});
+					// 	}, btn2: function () {
+					// 	}, cancel: function () {
+					// 	}
+					// });
 					// layer.alert('编辑行：<br>' + JSON.stringify(data))
 				} else if (obj.event === 'permissions') {
 					$('#permissions').html('');
 					var _this = this;
-					var beginTime = new Date();
 					$.ajax({
 						url: urlPrefix + "silver-web-shop/authority/list",
 						type: "POST",
@@ -448,7 +447,6 @@
 						data: { userId: data.managerId },
 						success: function (response) {
 							if (response.status == 1) {
-
 								var jsonArr = [];
 								var ii = 0;
 								var result = response.datas;
@@ -501,8 +499,7 @@
 							}
 						}
 					});
-					var endTime = new Date();
-					console.log("用时共计" + (endTime - beginTime) + "ms");
+
 					layer.open({
 						type: 1,
 						title: '分配权限',

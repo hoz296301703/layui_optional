@@ -179,13 +179,13 @@
         var commission = e.delegateTarget.value;
         if (!isEmpty(commission) && commission != '-') {//输入值不为空
           cal_platform_retail_price();
+
         } else if (commission < 0) {
           $(this).val(0);
         }
       });
 
-      //监控平台零售价input框
-      $("#platformRetailPrice").on("input", function (e) {//监听佣金输入值
+      $("#platformRetailPrice").on("input", function (e) {//监听平台零售价input框
         var value = e.delegateTarget.value;
         if (!isEmpty(value) && value != '-') {//输入值不为空
           // 佣金 =  输入的平台零售价 - 平台供货价(平台利润 + 供货价)          
@@ -193,6 +193,10 @@
           form.val('goods_reserve_price_update', {
             "commission": r < 0 ? 0 : r
           })
+          $('#commission').addClass('layui-bg-blue');
+          setTimeout(function () {
+            $('#commission').removeClass('layui-bg-blue');
+          }, 200);
         }
       });
 

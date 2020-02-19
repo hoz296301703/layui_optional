@@ -113,7 +113,7 @@
 							<div class="layui-inline">
 								<label class="layui-form-label">结算状态</label>
 								<div class="layui-input-inline">
-									<select name="status" lay-verify="required" lay-search="" >
+									<select name="status" lay-verify="required" lay-search="">
 										<option value="">全部</option>
 										<option value="pending" selected>待处理</option>
 										<option value="process">处理中</option>
@@ -288,7 +288,7 @@
 							{
 								field: 'zizeng', width: 60, title: '序号', type: 'numbers'
 							}, {
-								field: 'dateSign', title: '订单日期', width: 105,  templet(item) {
+								field: 'dateSign', title: '订单日期', width: 105, templet(item) {
 									return formatTime(item.dateSign);
 								}
 							}, {
@@ -317,11 +317,9 @@
 								// 状态：success-成功、failure-失败、process-处理中、pending-待处理
 								field: 'status', title: '结算状态', width: 90, templet: function (item) {
 									if (item.status == 'pending') {
-										// return '待处理';
 										return '<span style="background: #1e9fff; padding: 2px 3px;color: #fff;border-radius: 3px ;">待处理</span>';
 									} else if (item.status == 'process') {
 										return '<span style="background: #ff5722; padding: 2px 3px;color: #fff;border-radius: 3px ;">处理中</span>';
-										// return '处理中';
 									} else if (item.status == 'success') {
 										return '<span style="background: #67C23A; padding: 2px 3px;color: #fff;border-radius: 3px ;">成功</span>';
 									} else if (item.status == 'failure') {
@@ -333,7 +331,7 @@
 							}, {
 								field: 'serialNo', title: '流水号', width: 180
 							}, {
-								field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right', width: 200
+								field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right', width: 210
 							}]
 					],
 					// skin: 'row', //行边框风格

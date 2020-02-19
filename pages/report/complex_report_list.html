@@ -309,10 +309,13 @@
 						}
 					} else if ($('#dateClass').find('.active').attr('data-type') == 'customized') {// 自定义
 						startDate = $('#userDefined_startDate').val();
-						endDate = $('#userDefined_endDate').val();
-						if (isEmpty(startDate) || isEmpty(endDate)) {
+						if (isEmpty(startDate)) {
 							layer.alert('请选择查询时间');
 							return false;
+						}
+						endDate = $('#userDefined_endDate').val();
+						if (isEmpty(endDate)) {
+							endDate = getDay(0);
 						}
 					} else if ($('#dateClass').find('.active').attr('data-type') == 'month') {// 月
 						startDate = $('#startDate_M_input').val();
@@ -406,12 +409,15 @@
 									url += '&type=day' + '&startDate=' + startDate;
 								} else if ($('#dateClass').find('.active').attr('data-type') == 'customized') {// 自定义
 									startDate = $('#userDefined').find('[name=userDefined_startDate]').val();
-									endDate = $('#userDefined').find('[name=userDefined_endDate]').val();
-									if (isEmpty(startDate) || isEmpty(endDate)) {
+									if (isEmpty(startDate)) {
 										layer.alert('请选择查询时间');
 										return false;
 									}
 									startDate = startDate.replace("-", "").replace("-", "");
+									endDate = $('#userDefined').find('[name=userDefined_endDate]').val();
+									if (isEmpty(endDate)) {
+										endDate = getDay(0);
+									}
 									endDate = endDate.replace("-", "").replace("-", "");
 									url += '&type=customized' + '&startDate=' + startDate + '&endDate=' + endDate;
 								} else if ($('#dateClass').find('.active').attr('data-type') == 'month') {// 月
