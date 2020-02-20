@@ -80,15 +80,15 @@
 								<div class="layui-input-inline">
 									<select name="module" lay-verify="required" lay-search="">
 										<option value="">全部</option>
-										<option value="stock">库存</option>
-										<option value="goodsSupply">商品供货</option>
-										<option value="pushorderLogi">推送物流</option>
 										<option value="merchant">商户</option>
 										<option value="manager">管理员</option>
-										<option value="merDivRate">分润费率</option>
 										<option value="member">会员</option>
+										<option value="stock">库存</option>
+										<option value="goodsSupply">商品供货</option>
+										<option value="merDivRate">分润费率</option>
 										<option value="merPro">推广配置</option>
 										<option value="witFee">提现费率</option>
+										<option value="goodsCouFee">商品运费</option>
 									</select>
 								</div>
 							</div>
@@ -213,18 +213,18 @@
 									var module = item.module;
 									if (module == 'stock') {
 										return '库存';
-									} else if (module == 'goodsSupply') {
-										return '商品供货';
-									} else if (module == 'order') {
-										return '订单';
 									} else if (module == 'merchant') {
 										return '商户';
 									} else if (module == 'manager') {
 										return '管理员';
-									} else if (module == 'merDivRate') {
-										return '分润费率';
 									} else if (module == 'member') {
 										return '会员';
+									} else if (module == 'goodsSupply') {
+										return '商品供货';
+									} else if (module == 'order') {
+										return '订单';
+									} else if (module == 'merDivRate') {
+										return '分润费率';
 									} else if (module == 'merCost') {
 										return '商户计费';
 									} else if (module == 'merPro') {
@@ -233,6 +233,8 @@
 										return '提现费率';
 									} else if (module = 'goodsResPrice') {
 										return '商品供货底价';
+									} else if (module = 'goodsCouFee') {
+										return '商品运费';
 									}
 								}
 							}, {
