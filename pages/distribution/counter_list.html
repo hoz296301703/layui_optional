@@ -97,14 +97,13 @@
 			//日期时间选择器
 			laydate.render({
 				elem: '#startDate'
-				, value: getDay(-7)
+				// , value: getDay(-7)
 				, isInitValue: true
 				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
 				, max: 0
-
 			});
 			// 动态设置表格高度
 			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
@@ -161,9 +160,9 @@
 					pageName: 'page', //页码的参数名称，默认：page
 					limitName: 'size' //每页数据量的参数名，默认：limit
 				},
-				where: {
-					startDate: appendStartDate(getDay(-7))
-				},
+				// where: {
+				// startDate: appendStartDate(getDay(-7))
+				// },
 				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
 					return {
 						"code": res.status, //解析接口状态

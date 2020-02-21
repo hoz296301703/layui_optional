@@ -58,6 +58,16 @@
 							</select>
 						</div>
 					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">上\下架</label>
+						<div class="layui-input-inline">
+							<select name="sellFlag" lay-verify="required" lay-search="">
+								<option value="">全部</option>
+								<option value="1">上架</option>
+								<option value="2">下架</option>
+							</select>
+						</div>
+					</div>
 					<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
 				</div>
 			</div>
@@ -110,8 +120,15 @@
 							field: 'entGoodsNo', title: '商品自编号'
 						}, {
 							field: 'moduleName', title: '分类',
-							// }, {
-							// 	field: 'goodsMerId', title: '供货商编号',
+						}, {
+							field: 'sellFlag', title: '上\下架', templet: function (item) {
+								var flag = item.sellFlag;
+								if (flag == 1) {
+									return '上架';
+								} else if (flag == 2) {
+									return '下架';
+								}
+							}
 						}, {
 							field: 'regPrice', title: '价格'
 						}, {
@@ -142,29 +159,12 @@
 			});
 			// 重载公共方法
 			var _reload = function () {
-				var goodsName = $('#counter_goods_form').find('[name=goodsName]');
-				var entGoodsNo = $('#counter_goods_form').find('[name=entGoodsNo]');
-				var moduleName = $('#counter_goods_form').find('[name=moduleName]');
-				var moduleNo = $('#counter_goods_form').find('[name=moduleNo]');
-
-				var startDate = $('#counter_goods_form').find('[name=startDate]');
-				var endDate = $('#counter_goods_form').find('[name=endDate]');
-				startDate = appendStartDate(startDate.val());
-				endDate = appendEndDate(endDate.val());
 				table.reload('counter_goods_list', {
 					url: urlPrefix + 'silver-web-shop/merchantCounter/findGoodsInfo',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
-					where: {
-						goodsName: goodsName.val(),//后台做了处理，不需要拼接模糊关键词（blurry）
-						entGoodsNo: entGoodsNo.val(),
-						moduleNameblurry: moduleName.val(),
-						moduleNo: moduleNo.val(),
-						type: 'merchant',
-						startDate: startDate,
-						endDate: endDate
-					}
+					where: queryParams()
 				});
 			}
 			/*
@@ -176,33 +176,37 @@
 			// });
 			var active = {
 				reload: function () {
-					var goodsName = $('#counter_goods_form').find('[name=goodsName]');
-					var entGoodsNo = $('#counter_goods_form').find('[name=entGoodsNo]');
-					var moduleName = $('#counter_goods_form').find('[name=moduleName]');
-					var moduleNo = $('#counter_goods_form').find('[name=moduleNo]');
-					var startDate = $('#counter_goods_form').find('[name=startDate]');
-					var endDate = $('#counter_goods_form').find('[name=endDate]');
-					//拼接时间
-					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());
-					//执行重载
 					table.reload('counter_goods_list', {
 						url: urlPrefix + 'silver-web-shop/merchantCounter/findGoodsInfo',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
-						where: {
-							goodsName: goodsName.val(),//后台做了处理，不需要拼接模糊关键词（blurry）
-							entGoodsNo: entGoodsNo.val(),
-							moduleNameblurry: moduleName.val(),
-							moduleNo: moduleNo.val(),
-							type: 'merchant',
-							startDate: startDate,
-							endDate: endDate
-						}
+						where: queryParams()
 					});
 				}
 			};
+			//查询参数
+			var queryParams = function () {
+				var goodsName = $('#counter_goods_form').find('[name=goodsName]').val();
+				var entGoodsNo = $('#counter_goods_form').find('[name=entGoodsNo]').val();
+				var moduleName = $('#counter_goods_form').find('[name=moduleName]').val();
+				var moduleNo = $('#counter_goods_form').find('[name=moduleNo]').val();
+				var sellFlag = $('#counter_goods_form').find('[name=sellFlag]').val();
+				var startDate = $('#form_sreach').find('[name=startDate]').val();
+				var endDate = $('#form_sreach').find('[name=endDate]').val();
+				startDate = appendStartDate(startDate);
+				endDate = appendEndDate(endDate);
+				var obj = {};
+				obj.goodsName = goodsName;
+				obj.entGoodsNo = entGoodsNo;
+				obj.moduleNameblurry = moduleName;
+				obj.moduleNo = moduleNo;
+				obj.sellFlag = sellFlag;
+				obj.type = 'merchant';
+				obj.startDate = startDate;
+				obj.endDate = endDate;
+				return obj;
+			}
 
 			// 监听查询按钮
 			$('#counter_goods_form .layui-btn').on('click', function () {
@@ -240,7 +244,7 @@
 						if (response.status == 1) {
 							// layer.msg("保存成功");
 							obj = response.datas;
-						} 						
+						}
 					}
 				});
 				return obj;
