@@ -197,12 +197,6 @@
       "url": "",
       "children": [
         {
-          "id": "system_1",
-          "name": "系统权限",
-          "icon": "",
-          "url": "./pages/system/authority_list.html"
-        },
-        {
           "id": "system_2",
           "name": "系统公告",
           "icon": "",

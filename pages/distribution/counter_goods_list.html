@@ -107,6 +107,8 @@
 						{
 							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
+							field: 'sortNo', width: 80, title: '排序号', fixed: 'left'
+						}, {
 							field: 'createDate', width: 160, title: '日期', fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
@@ -185,8 +187,7 @@
 					});
 				}
 			};
-			//查询参数
-			var queryParams = function () {
+			var queryParams = function () {//查询参数
 				var goodsName = $('#counter_goods_form').find('[name=goodsName]').val();
 				var entGoodsNo = $('#counter_goods_form').find('[name=entGoodsNo]').val();
 				var moduleName = $('#counter_goods_form').find('[name=moduleName]').val();

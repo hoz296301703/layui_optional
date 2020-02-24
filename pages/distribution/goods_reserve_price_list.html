@@ -111,10 +111,10 @@
       	<!-- <button type='button' class="layui-btn layui-btn-sm layui-btn-normal" lay-event="download"><i class="layui-icon">&#xe601;</i>下载</button> -->
       </div>
     </script>
-  <!-- <script type="text/html" id="flagTpl">
-  <input type="checkbox" data-serialNo="{{d.serialNo}}" name="flag" value="{{d.flag}}" lay-skin="switch"
-    lay-text="正常|停止" lay-filter="upFlag" {{ d.flag == '1' ? 'checked' : '' }}>
-  </script> -->
+  <script type="text/html" id="statusTpl">
+    <input type="checkbox" data-goodsId="{{d.goodsId}}" name="status" value="{{d.status}}" lay-skin="switch"
+      lay-text="正常|停止" lay-filter="upStatus" {{ d.status == 'enable' ? 'checked' : '' }}>
+  </script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../static/js/dateUtils.js" charset="utf-8"></script>
@@ -129,7 +129,7 @@
       //日期时间选择器
       laydate.render({
         elem: "#startDate",
-        value: getDay(-7),
+        // value: getDay(-7),
         isInitValue: true,
         max: 0
       });
@@ -187,6 +187,8 @@
                 }
               }
             }, {
+              field: "status", title: "供货状态", width: 100, templet: '#statusTpl'
+            }, {
               field: "operate", title: "操作", width: 130, toolbar: "#operateTpl", fixed: "right"
             }
           ]
@@ -201,9 +203,9 @@
           pageName: "page", //页码的参数名称，默认：page
           limitName: "size" //每页数据量的参数名，默认：limit
         },
-        where: {
-          startDate: appendStartDate(getDay(-7))
-        },
+        // where: {
+        //   startDate: appendStartDate(getDay(-7))
+        // },
         parseData: function (res) {
           //将原始数据解析成 table 组件所规定的数据
           return {
@@ -279,7 +281,6 @@
       });
       window.goods_reserve_price_reload = function (flag) {// 提交重载方法到全局，让子页面调用
         layer.closeAll();
-        console.log(flag)
         if (flag) {
           _reload();
         }
@@ -323,7 +324,36 @@
           });
         }
       });
-
+      //监听状态修改
+      form.on('switch(upStatus)', function (obj) {
+        layer.load()
+        var status = '';
+        if (this.checked) {
+          status = 'enable';
+        } else {
+          status = 'disable';
+        }
+        $.ajax({
+          url: urlPrefix + "silver-web-shop/goodsResPrice/upStatus",
+          type: "POST",
+          xhrFields: {
+            withCredentials: true
+          },
+          data: {
+            goodsId: $(obj.elem).attr('data-goodsId'),
+            status: status
+          },
+          success: function (response) {
+            layer.closeAll('loading');
+            if (response.status == 1) {
+              layer.msg('更新成功！');
+              _reload();//执行重载
+            } else {
+              layer.alert(response.msg);
+            }
+          }
+        });
+      });
     });
   </script>
 </body>
