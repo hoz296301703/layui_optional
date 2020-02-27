@@ -26,9 +26,9 @@
 			width: 40px;
 		}
 
-		body {
+		/* 	body {
 			overflow-y: scroll;
-		}
+		} */
 
 		/* 私有样式 */
 		.layui-form-label {
@@ -156,13 +156,9 @@
 					async: false,
 					data: { serialNo: serialNo },
 					success: function (response) {
-						// return '完成';
 						if (response.status == 1) {
-							// return '完成';
-							//状态等于0 继续调用
-							if (response.datas[0].status == '0') {
-								//更新进度条
-								//缓冲5秒再次查询
+							if (response.datas[0].status == '0') {//状态等于0 继续调用						
+								//缓冲3秒再次查询
 								setTimeout(function () {
 									update(serialNo);
 								}, 3000);
@@ -175,7 +171,7 @@
 								$('[lay-id=articleList]').find('#id_' + serialNo + '').html(progress)
 								setTimeout(function () {
 									_reload();
-								}, 400);
+								}, 1000);
 							}
 						}
 					}
@@ -306,12 +302,9 @@
 				}
 			});
 
-
 			// 重载公共方法
 			var _reload = function () {
 				var createBy = $('#form_sreach').find('[name=createBy]');
-				// var phone = $('#form_sreach').find('[name=phone]');
-				// var address = $('#form_sreach').find('[name=address]');
 				var startDate = $('#form_sreach').find('[name=startDate]');
 				var endDate = $('#form_sreach').find('[name=endDate]');
 				startDate = appendStartDate(startDate.val());
@@ -323,8 +316,6 @@
 					},
 					where: {
 						createByblurry: createBy.val(),
-						// phone: phone.val(),
-						// addressblurry: address.val(),
 						startDate: startDate,
 						endDate: endDate
 					}
@@ -344,8 +335,6 @@
 			var active = {
 				reload: function () {
 					var createBy = $('#form_sreach').find('[name=createBy]');
-					// var phone = $('#form_sreach').find('[name=phone]');
-					// var address = $('#form_sreach').find('[name=address]');
 					var startDate = $('#form_sreach').find('[name=startDate]');
 					var endDate = $('#form_sreach').find('[name=endDate]');
 					startDate = appendStartDate(startDate.val());
@@ -358,8 +347,6 @@
 						},
 						where: {
 							createByblurry: createBy.val(),
-							// phone: phone.val(),
-							// addressblurry: address.val(),
 							startDate: startDate,
 							endDate: endDate
 						}

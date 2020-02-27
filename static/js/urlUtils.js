@@ -3,7 +3,11 @@ document.write(
   '<script src="../../static/js/common.js" type="text/javascript" charset="utf-8"></script>'
 );
 
-//根据url与参数对象拼接完整的url查询参数
+/**
+ * 根据url与参数对象拼接完整的url查询参数
+ * @param {*} url
+ * @param {*} obj
+ */
 var appendUrl = function(url, obj) {
   if (isEmpty(url)) {
     return "";
@@ -11,8 +15,7 @@ var appendUrl = function(url, obj) {
   //获取url中最后一个字符是否为?拼接符号
   var last = url.substr(url.length - 1, 1);
   if (last != "?") {
-    //url最后一位不为?拼接符号时，进行参数拼接
-    url += "?";
+    url += "?"; //url最后一位不为?拼接符号时，进行参数拼接
   }
   for (var key in obj) {
     //遍历对象中参数
