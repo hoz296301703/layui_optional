@@ -38,23 +38,13 @@
 </head>
 
 <body>
-	<!-- <div class="weadmin-nav">
-		<span class="layui-breadcrumb">
-			<a href="">首页</a>
-			<a href="">用户管理</a>
-			<a>
-				<cite>运营管理</cite></a>
-		</span>
-		<a class="layui-btn layui-btn-sm" style="line-height:1.6em;margin-top:3px;float:right"
-			href="javascript:location.replace(location.href);" title="刷新">
-			<i class="layui-icon" style="line-height:30px">&#x1002;</i></a>
-	</div> -->
 	<div class="weadmin-body">
 		<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
 			<ul class="layui-tab-title">
 				<li class="layui-this">申报信息</li>
 				<li id="del_info_btn">删除信息</li>
 				<li id="rec_notify_btn">异步信息</li>
+				<li id="order_logi_resend_logs_btn">物流记录</li>
 			</ul>
 			<div class="layui-tab-content">
 				<div class="layui-tab-item layui-show">
@@ -196,7 +186,6 @@
 						</form>
 					</div>
 				</div>
-
 				<!----已删除申报订单信息------------start-------------------->
 				<div class="layui-tab-item" id="del_order_info">
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
@@ -207,6 +196,11 @@
 					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
 				</div>
 				<!-----线上API订单接入异步回调错误信息------------end---------------------->
+				<!----跨境订单推送物流日志------------start-------------------->
+				<div class="layui-tab-item" id="order_logi_resend_logs_info">
+					<iframe width="100%" height="100%" frameborder="no" border="0"></iframe>
+				</div>
+				<!-----跨境订单推送物流日志------------end---------------------->
 			</div>
 		</div>
 	</div>
@@ -651,6 +645,12 @@
 				var h = $(window).height() - 80;
 				$("#rec_notify_order_info").find('iframe').attr('src', "rec_notify_order_list.html").css('height', h + 'px');
 			})
+			//跳转至跨境订单推送物流界面
+			$('#order_logi_resend_logs_btn').on('click', function () {
+				var h = $(window).height() - 80;
+				$("#order_logi_resend_logs_info").find('iframe').attr('src', "order_logi_resend_logs_list.html").css('height', h + 'px');
+			})
+
 
 		});
 	</script>
