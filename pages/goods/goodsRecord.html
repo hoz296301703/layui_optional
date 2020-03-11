@@ -166,6 +166,7 @@
 
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
+	<script src="../../static/js/imageUtils.js" charset="utf-8"></script>
 
 	<script>
 		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
@@ -202,11 +203,10 @@
 							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
 							field: 'createDate', width: 160, title: '创建时间', fixed: 'left', templet: function (item) {
-								console.log(item)
 								return G_formatStr(item.createDate.value);
 							}
 						}, {
-							field: 'goodsMerchantName', title: '商户名称',  width: 220, templet: function (item) {
+							field: 'goodsMerchantName', title: '商户名称', width: 220, templet: function (item) {
 								return item.goodsMerchantName.value;
 							}
 						}, {
@@ -215,7 +215,7 @@
 							}
 						}, {
 							field: 'spareGoodsImage', width: 90, title: '图片', templet: function (item) {
-								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + g_imgSplit(item.spareGoodsImage.value, item.goodsMerchantId.value) + '"  src="' + g_imgSplit(item.spareGoodsImage.value, item.goodsMerchantId.value) + '" width="60px" height="60px"></div>';
+								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + g_imgSplit(item.spareGoodsImage.value, item.goodsMerchantId.value) + '"  src="' + shrink_img(g_imgSplit(item.spareGoodsImage.value, item.goodsMerchantId.value)) + '" width="60px" height="60px"></div>';
 							}
 						}, {
 							field: 'goodsName', title: '商品名称', width: 300, templet: function (item) {
@@ -224,9 +224,9 @@
 						}, {
 							field: 'entGoodsNo', title: '商品自编号', width: 185, templet: function (item) {
 								return item.entGoodsNo.value;
-							}						
+							}
 						}, {
-							field: 'barCode', title: '条形码', width : 140,  templet: function (item) {
+							field: 'barCode', title: '条形码', width: 140, templet: function (item) {
 								return item.barCode.value;
 							}
 						}, {
@@ -499,7 +499,7 @@
 						"data": [   //相册包含的图片，数组格式
 							{
 								"alt": e.target.alt,
-								"src": e.target.src, //原图地址
+								"src": e.target.alt, //原图地址
 								"thumb": e.target.src //缩略图地址
 							}
 						]

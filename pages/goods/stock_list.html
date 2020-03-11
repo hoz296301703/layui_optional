@@ -147,6 +147,7 @@
 	<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	<script src="../../static/js/urlUtils.js" charset="utf-8"></script>
+	<script src="../../static/js/imageUtils.js" charset="utf-8"></script>
 	</div>
 	<script>
 		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
@@ -159,9 +160,11 @@
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
+				, max: 0
 			});
 			form.val('example', {
 				"reviewerStatus": "process"
@@ -193,7 +196,7 @@
 							field: 'merchantId', title: '商户编号', width: 170
 						}, {
 							field: 'reMark', title: '主图', width: 90, templet: function (item) {
-								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + splitImg(item.reMark) + '"  src="' + splitImg(item.reMark) + '" width="60px" height="60px"></div>';
+								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + splitImg(item.reMark) + '"  src="' + shrink_img(splitImg(item.reMark)) + '" width="60px" height="60px"></div>';
 							}
 						}, {
 							field: 'entGoodsNo', title: '商品编号', width: 150
@@ -529,7 +532,7 @@
 						"data": [   //相册包含的图片，数组格式
 							{
 								"alt": e.target.alt,
-								"src": e.target.src, //原图地址
+								"src": e.target.alt, //原图地址
 								"thumb": e.target.src //缩略图地址
 							}
 						]

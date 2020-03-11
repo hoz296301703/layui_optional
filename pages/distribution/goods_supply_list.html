@@ -102,6 +102,8 @@
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	<script src="../../static/js/dateUtils.js" charset="utf-8"></script>
 	<script src="../../static/js/urlUtils.js" charset="utf-8"></script>
+
+	<script src="../../static/js/imageUtils.js" charset="utf-8"></script>
 	<script>
 		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
@@ -140,7 +142,7 @@
 							}
 						}, {
 							field: 'goodsImage', width: 90, title: '图片', templet: function (item) {
-								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + item.goodsName + '"  src="' + splitImg(item.goodsImage) + '" width="60px" height="60px"></div>';
+								return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + splitImg(item.goodsImage) + '"  src="' + shrink_img(splitImg(item.goodsImage)) + '" width="60px" height="60px"></div>';
 							}
 						}, {
 							field: 'goodsName', title: '商品名称',
@@ -260,7 +262,7 @@
 						"data": [   //相册包含的图片，数组格式
 							{
 								"alt": e.target.alt,
-								"src": e.target.src, //原图地址
+								"src": e.target.alt, //原图地址
 								"thumb": e.target.src //缩略图地址
 							}
 						]
