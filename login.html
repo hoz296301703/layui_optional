@@ -83,7 +83,9 @@
                         success: function (response) {
                             layer.closeAll('loading');
                             if (response.status == 1) {
+                                console.info(response.datas.token);
                                 location.href = './index.html';
+                                localStorage.setItem('X-Silver-Admin-Token', response.datas.token);// 本地存入token
                             } else {
                                 layer.alert(response.msg);
                             }

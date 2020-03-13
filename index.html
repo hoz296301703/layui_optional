@@ -140,9 +140,10 @@
 		</div>
 	</form>
 	<script src="./static/js/jquery.js" charset="utf-8"></script>
+	<script src="./static/js/ajax.js" charset="utf-8"></script>
+
 	<!-- 底部结束 -->
 	<script type="text/javascript">
-
 		//			layui扩展模块的两种加载方式-示例
 		//		    layui.extend({
 		//			  admin: '{/}../../static/js/admin' // {/}的意思即代表采用自有路径，即不跟随 base 路径
@@ -197,14 +198,14 @@
 				checkMerchantLogin();
 			}, 960000);
 			$(function () {
-				$.ajax({// 请求是否登录
+				console.info(localStorage.getItem('X-Silver-Admin-Token'));
+				HttpRequest({
 					url: urlPrefix + "silver-web-shop/manager/checkManagerLogin",
-					xhrFields: {
-						withCredentials: true
+					type: 'post',
+					data: {},
+					beforeSend: function () { // 可选
+						// loading 显示
 					},
-					type: "post",
-					contentType: "text/plain",
-					dataType: "json",
 					success: function (response) {
 						if (response.status != 1) {
 							window.location = "login.html";
@@ -214,8 +215,30 @@
 							menu.getMenu('./json/menu.json');
 						}
 					},
-					error: function (response) { }
-				});
+					complete: function () { // 可选
+						// loading 关闭
+					}
+				})
+				// $.ajax({// 请求是否登录
+				// 	url: urlPrefix + "silver-web-shop/manager/checkManagerLogin",
+				// 	xhrFields: {
+				// 		withCredentials: true
+				// 	},
+				// 	type: "post",
+				// 	headers: { 'x-silver-admin-token': 'sssss' },
+				// 	contentType: "text/plain",
+				// 	dataType: "json",
+				// 	success: function (response) {
+				// 		if (response.status != 1) {
+				// 			window.location = "login.html";
+				// 		} else {
+				// 			//将name属性设置为管理员标识
+				// 			$('#managerName').html(response.datas.managerName).attr('name', response.datas.managerMarks);
+				// 			menu.getMenu('./json/menu.json');
+				// 		}
+				// 	},
+				// 	error: function (response) { }
+				// });
 				// var login = JSON.parse(localStorage.getItem("login"));
 				// if (login) {
 				// 	if (login === 0) {

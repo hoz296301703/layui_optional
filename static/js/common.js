@@ -1,10 +1,15 @@
 // var urlPrefix = "http:///192.168.1.116:8080/";
-var urlPrefix = "https://sudo.191ec.com/";
+// var logs_url_prefix = "http:///192.168.1.116:8601/silver-ope-logs-web/";
+var logs_url_prefix = "http:///120.132.118.214:9286/silver-ope-logs-web/"; //操作日志系统
+var urlPrefix = "https://sudo.191ec.com/"; //商城系统
 // var urlPrefix = "http://120.132.118.211:8080/";
-// var urlPrefix = 'http://120.132.118.214:8080/';
+// var urlPrefix = "http://120.132.118.214:8080/";
 
 document.write(
   '<link rel="stylesheet" href="//at.alicdn.com/t/font_1449329_louqapa9c5.css">'
+);
+document.write(
+  '<script src="../../static/js/ajax.js"  type="text/javascript" charset="utf-8"></script>'
 );
 var imgPrefix = function(id) {
   var imgPrefix1 = "https://ym.191ec.com/img/merchant/";

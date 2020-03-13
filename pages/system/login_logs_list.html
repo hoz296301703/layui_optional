@@ -93,7 +93,6 @@
 
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
   <script src="../../static/js/common.js" charset="utf-8"></script>
-
   <script type="text/javascript">
     layui.use(['table', 'jquery', 'form', 'element', 'tree', 'laydate'], function () {
       var table = layui.table,
@@ -102,7 +101,7 @@
         tree = layui.tree,
         element = layui.element,
         laydate = layui.laydate;
-      //日期时间选择器
+      console.log(tokenKey());
       laydate.render({
         elem: '#startDate'
         , value: getDay(-7)
@@ -118,8 +117,10 @@
         elem: '#articleList',
         cellMinWidth: 80,
         // height: 450,
+        // contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         defaultToolbar: ['filter'],
-        url: urlPrefix + 'silver-web-shop/loginLogs/getInfo',
+        // url: urlPrefix + 'silver-web-shop/loginLogs/getInfo',
+        url: logs_url_prefix + 'loginLogs/getInfo',
         method: 'post',
         cols: [
           [
@@ -188,6 +189,7 @@
           pageName: 'page', //页码的参数名称，默认：page
           limitName: 'size' //每页数据量的参数名，默认：limit
         },
+        headers: tokenKey(),
         parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
           return {
             "code": res.status, //解析接口状态
@@ -211,7 +213,6 @@
       });
       // 重载公共方法
       var _reload = function () {
-        var ipAddress = $('#form_sreach').find('[name=ipAddress]');
         var ipAddress = $('#form_sreach').find('[name=ipAddress]');
         table.reload('articleList', {
           url: urlPrefix + 'silver-web-shop/loginLogs/getInfo',
@@ -258,6 +259,7 @@
         var type = $(this).data('type');
         active[type] ? active[type].call(this) : '';
       });
+
     });
   </script>
 </body>

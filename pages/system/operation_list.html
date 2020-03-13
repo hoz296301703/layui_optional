@@ -98,7 +98,7 @@
 								<div class="layui-input-inline">
 									<select name="action" lay-verify="required" lay-search="">
 										<option value="">全部</option>
-										<option value="login">登录</option>
+										<!-- <option value="login">登录</option> -->
 										<option value="update">更新</option>
 										<option value="pushLogi">推送物流</option>
 										<option value="changePrice">调价</option>
@@ -247,9 +247,10 @@
 								}
 							}, {
 								field: 'action', width: 100, title: '动作', templet: function (item) {
-									if (item.action == 'login') {
-										return '登录';
-									} else if (item.action == 'update') {
+									// if (item.action == 'login') {
+									// 	return '登录';
+									// } else
+									if (item.action == 'update') {
 										return '更新';
 									} else if (item.action == 'resLoginPwd') {
 										return '重置登录密码';
