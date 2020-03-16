@@ -28,12 +28,8 @@
 		}
 
 		.layui-form-switch em {
-			width: 40px;
+			width: 50px;
 		}
-
-		/* body {
-			overflow-y: scroll;
-		} */
 	</style>
 </head>
 
@@ -106,19 +102,19 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off" readonly=''
-							placeholder="年-月-日"> 
+						<input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+							readonly='' placeholder="年-月-日">
 					</div>
 					    <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
 					<div class="layui-input-inline">
-						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" readonly=''
-							placeholder="年-月-日">
+						<input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off"
+							readonly='' placeholder="年-月-日">
 					</div>
 				</div>
 			</div>
 			<div style="text-align: center;">
 				<button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
-				
+
 			</div>
 			<script type="text/html" id="fz_list_toolbar">
 				<div class="layui-btn-container">
@@ -126,7 +122,15 @@
 				</div>
 			</script>
 			<script type="text/html" id="operateTpl">
-				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>					
+				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>	
+				<!-- laytpl语法---START--- -->	
+				{{#  if((d.tradingStatus == 'pending' )){ }}
+				<!--待处理渲染-->
+				<a class="layui-btn layui-btn-xs layui-btn-warm"  lay-event="again">重发</a>	
+				{{#  }else{ }}
+			
+				{{#  } }}
+				<!-- laytpl语法---END--- -->	
 			</script>
 		</form>
 	</div>
@@ -136,7 +140,6 @@
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 	</div>
 	<script>
-
 		layui.use(['table', 'jquery', 'form', 'tree', 'laydate'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
@@ -167,11 +170,10 @@
 				method: 'post',
 				cols: [
 					[
-						{ type: 'checkbox', fixed: 'left' },
-						{
-							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
-						}, {
-							field: 'createDate', title: '日期', width: 170, fixed: 'left', templet: function (item) {
+						{ type: 'checkbox', fixed: 'left' }, {
+							// field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
+							// }, {
+							field: 'createDate', title: '日期', width: 160, fixed: 'left', templet: function (item) {
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss")
 							}
 						}, {
@@ -185,13 +187,13 @@
 						}, {
 							field: 'masterReceiptAmount', title: '主商户收款金额', width: 130
 						}, {
-							field: 'divMerchantName1', title: '参与商户一名称', width: 210
+							field: 'divMerchantName1', title: '参与商户一名称'
 						}, {
 							field: 'divMerchantCode1', title: '参与商户一编号', width: 175
 						}, {
 							field: 'divAmount1', title: '参与商户一收款金额', width: 130
 						}, {
-							field: 'divMerUserCode1', title: '参与商户一收款账号', width: 130
+							field: 'divMerUserCode1', title: '参与商户一收款账号'
 						}, {
 							field: 'tradingStatus', title: '结算状态', width: 90, fixed: 'right', templet: function (item) {
 								if (item.tradingStatus == 'success') {
@@ -219,7 +221,7 @@
 							// 		}
 							// 	}
 						}, {
-							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right', width: 120
 						}]
 				],
 				// skin: 'row', //行边框风格
@@ -328,7 +330,8 @@
 			//监听工具条
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
-				if (obj.event === 'detail') {// 查看详情
+				var event = obj.event;
+				if (event === 'detail') {// 查看详情
 					layer.open({
 						type: 2,
 						title: '分账信息',
@@ -339,7 +342,6 @@
 						btnAlign: 'c',
 						btn: ['关闭'],
 						success: function (layero, index) {
-							// console.log(obj)
 							// 获取子页面的iframe
 							var iframe = window['layui-layer-iframe' + index];
 							// 向子页面的全局函数child传参
@@ -347,6 +349,28 @@
 						},
 						btn1: function (index) {
 							layer.close(index);
+						}
+					});
+				} else if (event === 'again') {
+					layer.load();
+					$.ajax({
+						url: urlPrefix + "silver-web-shop/fz/again",
+						type: "POST",
+						xhrFields: {
+							withCredentials: true
+						},
+						data: { "orderId": data.orderId },
+						success: function (response) {
+							layer.closeAll('loading');
+							if (response.status == 1) {
+								layer.msg('操作成功', { icon: 1 });
+								//关闭弹窗
+								setTimeout(function () {
+									_reload();
+								}, 1000)
+							} else {
+								layer.alert(response.msg);
+							}
 						}
 					});
 				}

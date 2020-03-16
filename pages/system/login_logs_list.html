@@ -28,17 +28,18 @@
           </div>
         </div>
         <div class="layui-inline">
-          <label class="layui-form-label">编号</label>
-          <div class="layui-input-inline">
-            <input type="text" name="operatorId" placeholder="请输入操作人编号" class="layui-input">
-          </div>
-        </div>
-        <div class="layui-inline">
           <label class="layui-form-label">名称</label>
           <div class="layui-input-inline">
             <input type="text" name="operatorName" placeholder="请输入操作人名称" class="layui-input">
           </div>
         </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="operatorId" placeholder="请输入操作人编号" class="layui-input">
+          </div>
+        </div>
+
         <div class="layui-inline">
           <label class="layui-form-label">角色</label>
           <div class="layui-input-inline">
@@ -101,7 +102,6 @@
         tree = layui.tree,
         element = layui.element,
         laydate = layui.laydate;
-      console.log(tokenKey());
       laydate.render({
         elem: '#startDate'
         , value: getDay(-7)
@@ -213,15 +213,12 @@
       });
       // 重载公共方法
       var _reload = function () {
-        var ipAddress = $('#form_sreach').find('[name=ipAddress]');
         table.reload('articleList', {
-          url: urlPrefix + 'silver-web-shop/loginLogs/getInfo',
+          url: logs_url_prefix + 'loginLogs/getInfo',
           page: {
             curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
           },
-          where: {
-            ipAddress: ipAddress.val()
-          }
+          where: params()
         });
       }
       /*
@@ -233,27 +230,37 @@
       // });
       var active = {
         reload: function () {
-          var phone = $('#form_sreach').find('[name=phone]');
-          var action = $('#form_sreach').find('[name=action]');
-          var startDate = $('#form_sreach').find('[name=startDate]');
-          var endDate = $('#form_sreach').find('[name=endDate]');
-          startDate = appendStartDate(startDate.val());
-          endDate = appendEndDate(endDate.val());
-          //执行重载
           table.reload('articleList', {
-            url: urlPrefix + 'silver-web-shop/loginLogs/getInfo',
+            url: logs_url_prefix + 'loginLogs/getInfo',
             page: {
               curr: 1 //重新从第 1 页开始
             },
-            where: {
-              phone: phone.val(),
-              action: action.val(),
-              startDate: startDate,
-              endDate: endDate
-            }
+            where: params()
           });
         }
       };
+      var params = function () {
+        var obj = {};
+        var ipAddress = $('#form_sreach').find('[name=ipAddress]').val();
+        var operatorId = $('#form_sreach').find('[name=operatorId]').val();
+        var operatorName = $('#form_sreach').find('[name=operatorName]').val();
+        var role = $('#form_sreach').find('[name=role]').val();
+        var module = $('#form_sreach').find('[name=module]').val();
+        var action = $('#form_sreach').find('[name=action]').val();
+        var startDate = $('#form_sreach').find('[name=startDate]').val();
+        var endDate = $('#form_sreach').find('[name=endDate]').val();
+        startDate = appendStartDate(startDate);
+        endDate = appendEndDate(endDate);
+        obj.ipAddress = ipAddress;
+        obj.operatorId = operatorId;
+        obj.operatorNameblurry = operatorName;
+        obj.role = role;
+        obj.module = module;
+        obj.action = action;
+        obj.startDate = startDate;
+        obj.endDate = endDate;
+        return obj;
+      }
       // 监听查询按钮
       $('#form_sreach .layui-btn').on('click', function () {
         var type = $(this).data('type');

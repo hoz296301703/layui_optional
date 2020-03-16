@@ -109,8 +109,8 @@
 					<div class="layui-input-inline">
 						<select name="reviewerStatus" lay-verify="required" lay-search="">
 							<option value="">全部</option>
-							<option value="pending">待审核</option>
-							<option value="process">审核中</option>
+							<option value="pending">待处理</option>
+							<option value="process">待审核</option>
 							<option value="success">通过</option>
 							<option value="failure">不通过</option>
 						</select>
@@ -158,7 +158,7 @@
 				laydate = layui.laydate;
 			laydate.render({
 				elem: '#startDate'
-				, value: getDay(-7)
+				// , value: getDay(-7)
 				, isInitValue: true
 				, max: 0
 			});
@@ -217,9 +217,9 @@
 								} else if (item.reviewerStatus == 'failure') {
 									return "不通过";
 								} else if (item.reviewerStatus == 'process') {
-									return "审核中";
-								} else if (item.reviewerStatus == 'pending') {
 									return "待审核";
+								} else if (item.reviewerStatus == 'pending') {
+									return "待处理";
 								}
 							}
 						}, {
@@ -248,7 +248,7 @@
 					limitName: 'size' //每页数据量的参数名，默认：limit
 				},
 				where: {
-					startDate: appendStartDate(getDay(-7)),
+					// startDate: appendStartDate(getDay(-7)),
 					reviewerStatus: 'process'
 				},
 				parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
@@ -367,7 +367,7 @@
 						} else {
 							layer.alert('确定下架商品？', {
 								time: 0 //不自动关闭
-								, btn: ['保存', '取消']
+								, btn: ['提交', '取消']
 								, yes: function (index) {
 									layer.prompt({
 										value: '',
