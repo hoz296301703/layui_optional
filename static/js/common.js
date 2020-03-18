@@ -1,6 +1,6 @@
-// var url = "http:///192.168.1.116:8080/";
+var urlPrefix = "http:///192.168.1.116:8080/";
+// var urlPrefix = "https://sudo.191ec.com/";
 // var logs_url_prefix = "http:///192.168.1.116:8601/silver-ope-logs-web/";
-var urlPrefix = "https://sudo.191ec.com/";
 var logs_url_prefix = urlPrefix + "silver-ope-logs-web/"; //操作日志系统
 // var urlPrefix = "http://120.132.118.211:8080/";
 // var urlPrefix = "http://120.132.118.214:8080/";

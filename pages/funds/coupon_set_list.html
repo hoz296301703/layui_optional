@@ -62,12 +62,12 @@
 			<div class="layui-inline">
 				<label class="layui-form-label">审核状态</label>
 				<div class="layui-input-inline">
-					<select name="revStatus" lay-verify="required" lay-search="">
+					<select name="processNode" lay-verify="required" lay-search="">
 						<option value="">全部</option>
-						<option value="firstTrial">运营初审</option>
-						<option value="financialAudit">财务审核</option>
-						<option value="termination">终止</option>
-						<option value="complete">完成</option>
+						<option value="1">运营初审</option>
+						<option value="2">财务审核</option>
+						<option value="200">完成</option>
+						<option value="400">终止</option>
 					</select>
 				</div>
 			</div>
@@ -76,10 +76,10 @@
 				<div class="layui-input-inline">
 					<select name="status" lay-verify="required" lay-search="">
 						<option value="">全部</option>
+						<option value="pending">待处理</option>
+						<option value="process">处理中</option>
 						<option value="success">成功</option>
 						<option value="failure">关闭</option>
-						<option value="process">处理中</option>
-						<option value="pending">待处理</option>
 					</select>
 				</div>
 			</div>
@@ -181,8 +181,8 @@
 				cols: [
 					[
 						{ type: 'checkbox', fixed: 'left' }, {
-							field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
-						}, {
+							// 	field: 'zizeng', width: 60, title: '序号', fixed: 'left', type: 'numbers'
+							// }, {
 							field: 'dateSign', title: '订单日期', width: 105, fixed: 'left', templet(item) {
 								return toStringDay(item.head.dateSign);
 							}
@@ -208,12 +208,11 @@
 							}
 						}, {
 							field: 'amount', title: '回款金额(元)', width: 110, templet(item) {
-								return accSub(item.head.amount, item.head.fee);
+								return accSub(item.head.amount, accAdd(item.head.fee, item.head.divAmount));
 							}
 						}, {
 							// 流程节点：1-运营审核、2-财务审核、200-完成、400-终止
 							field: 'processNode', title: '审核状态', width: 90, templet: function (item) {
-
 								if (item.head.processNode == '1') {
 									return '运营初审';
 								} else if (item.head.processNode == '2') {
@@ -284,32 +283,14 @@
 			};
 			// 重载公共方法
 			var _reload = function () {
-				var merchantName = $('#form_sreach').find('[name=merchantName]');
-				var merchantId = $('#form_sreach').find('[name=merchantId]');
-				var serialNo = $('#form_sreach').find('[name=serialNo]');
-				var revStatus = $('#form_sreach').find('[name=revStatus]');
-				var status = $('#form_sreach').find('[name=status]');
-				var startDate = $('#form_sreach').find('[name=startDate]');
-				var endDate = $('#form_sreach').find('[name=endDate]');
-				startDate = appendStartDate(startDate.val());
-				endDate = appendEndDate(endDate.val());
 				table.reload('articleList', {
 					url: urlPrefix + 'silver-web-shop/couOrderSet/find',
 					page: {
 						curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
 					},
-					where: {
-						merchantNameblurry: merchantName.val(),
-						merchantId: merchantId.val(),
-						serialNo: serialNo.val(),
-						revStatus: revStatus.val(),
-						status: status.val(),
-						startDate: startDate,
-						endDate: endDate
-					}
+					where: params()
 				});
 			}
-
 			// 监听查询按钮
 			$('#form_sreach .layui-btn').on('click', function () {
 				var type = $(this).data('type');
@@ -324,33 +305,36 @@
 			// });
 			var active = {
 				reload: function () {
-					var merchantName = $('#form_sreach').find('[name=merchantName]');
-					var merchantId = $('#form_sreach').find('[name=merchantId]');
-					var serialNo = $('#form_sreach').find('[name=serialNo]');
-					var revStatus = $('#form_sreach').find('[name=revStatus]');
-					var status = $('#form_sreach').find('[name=status]');
-					var startDate = $('#form_sreach').find('[name=startDate]');
-					var endDate = $('#form_sreach').find('[name=endDate]');
-					startDate = appendStartDate(startDate.val());
-					endDate = appendEndDate(endDate.val());
 					//执行重载					
 					table.reload('articleList', {
 						url: urlPrefix + 'silver-web-shop/couOrderSet/find',
 						page: {
 							curr: 1 //重新从第 1 页开始
 						},
-						where: {
-							merchantNameblurry: merchantName.val(),
-							merchantId: merchantId.val(),
-							serialNo: serialNo.val(),
-							revStatus: revStatus.val(),
-							status: status.val(),
-							startDate: startDate,
-							endDate: endDate
-						}
+						where: params()
 					});
 				}
 			};
+			var params = function () {
+				var merchantName = $('#form_sreach').find('[name=merchantName]').val();
+				var merchantId = $('#form_sreach').find('[name=merchantId]').val();
+				var serialNo = $('#form_sreach').find('[name=serialNo]').val();
+				var processNode = $('#form_sreach').find('[name=processNode]').val();
+				var status = $('#form_sreach').find('[name=status]').val();
+				var startDate = $('#form_sreach').find('[name=startDate]').val();
+				var endDate = $('#form_sreach').find('[name=endDate]').val();
+				startDate = appendStartDate(startDate);
+				endDate = appendEndDate(endDate);
+				var obj = {};
+				obj.merchantNameblurry = merchantName;
+				obj.merchantId = merchantId;
+				obj.serialNo = serialNo;
+				obj.processNode = processNode;
+				obj.status = status;
+				obj.startDate = startDate;
+				obj.endDate = endDate;
+				return obj;
+			}
 			var wind = null;
 			//提供一个全局参数
 			var _tools = {
@@ -444,46 +428,47 @@
 				var enent = obj.event;
 				switch (enent) {
 					case 'sendDf':
-						//流水号信息包
-						var serialNoPack = [];
-						//总金额
-						var amount = 0;
+
+						var serialNoPack = [];//流水号信息包						
+						var amount = 0;//总金额
 						var fee = 0;
-						//商户名称
-						var merchantName = null;
-						//遍历流水号
-						for (var key in data) {
-							var datas = data[key];
+						var merchantName = null;	//商户名称
+
+						for (var key in data) {//遍历流水号
+							var datas = data[key].head;
 							serialNoPack.push(datas.serialNo);
 							merchantName = datas.merchantName;
 							amount = accAdd(amount, datas.amount);
-							fee = accAdd(fee, datas.fee);;
+							fee = accSub(datas.amount, accAdd(datas.fee, datas.divAmount));
 						}
-						amount = accSub(amount, fee);
-						//转换格式
-						serialNoPack = JSON.stringify(serialNoPack);
-						layer.alert("确认是否为【" + merchantName + "】发起金额为【" + amount + "】结算指令？", {
+						serialNoPack = JSON.stringify(serialNoPack);	//转换格式
+						console.log(serialNoPack);
+						layer.alert("确认是否给【" + merchantName + "】，代付金额【<span style='color: #FF7B0E; font-size: 18px;'>" + fee + "</span>】发起结算指令？", {
 							time: 0, //不自动关闭
 							btn: ["确定", "关闭"],
 							area: ['500px', '200px'],//宽高
 							yes: function (index) {
-								//加载动画
-								layer.load(2);
+								layer.load(2);	//加载动画
 								$.ajax({
-									url: urlPrefix + "silver-web-shop/dfOrder/sendDf",
+									url: urlPrefix + "silver-web-shop/couOrderSet/send",
 									type: "POST",
 									xhrFields: {
 										withCredentials: true
 									},
-									data: { serialNoPack: serialNoPack },
+									data: { serialNo: serialNoPack },
 									success: function (response) {
-										//关闭加载动画
-										layer.closeAll("loading");
+										layer.closeAll("loading");//关闭加载动画
 										if (response.status == 1) {
-											layer.msg("发送成功！");
-											setTimeout(function () {
-												_reload();//重载表格
-											}, 1000);
+											var error = response.error;
+											if (isEmpty(error)) {
+												layer.msg("发送成功！");
+												setTimeout(function () {
+													_reload();//重载表格
+												}, 1000);
+											} else {
+												// layer.alert(error);
+												layer.alert(error[0]);
+											}
 										} else {
 											layer.alert(response.msg);
 										}

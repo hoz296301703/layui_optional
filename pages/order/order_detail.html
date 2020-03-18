@@ -304,10 +304,9 @@
           <div class="layui-tab-item">
             <div class="weadmin-nav" style="margin-bottom: 10px;">
               <span class="layui-breadcrumb">
-                <a>物流企业：<cite id="logisticsCompanyName"></cite></a>
-                <a>快递公司：<cite id="exp_com_name"></cite></a>
-                <a>运单号码：<cite id="waybillNo"></cite></a>
-                <!-- <a>发货时间：<cite id="sendingDate"></cite></a> -->
+                <a>物流企业：<cite id="logisticsCompanyName">--</cite></a>
+                <a>快递公司：<cite id="exp_com_name">--</cite></a>
+                <a>运单号码：<cite id="waybillNo">--</cite></a>
               </span>
             </div>
             <ul class="layui-timeline" id="order_traces">
@@ -605,13 +604,10 @@
         var logi = null;
         //点击物流详情事件
         $('#waybillNo_detail').click(function () {
-          getTraces(g_data.order.waybillNo);
-          //渲染物流企业名称、发货日期
           $('#logisticsCompanyName').html(logi.logisticsCompanyName);
-          $('#exp_com_name').html(logi.expressCompanyName);
           $('#waybillNo').html(logi.waybillNo);
-
           form.render();
+          getTraces(g_data.order.waybillNo);
         })
 
         //获取订单物流信息
