@@ -124,8 +124,7 @@
 			<script type="text/html" id="operateTpl">
 				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>	
 				<!-- laytpl语法---START--- -->	
-				{{#  if((d.tradingStatus == 'pending' )){ }}
-				<!--待处理渲染-->
+				{{#  if((d.tradingStatus == 'pending' || d.tradingStatus == 'failure' )){ }}
 				<a class="layui-btn layui-btn-xs layui-btn-warm"  lay-event="again">重发</a>	
 				{{#  }else{ }}
 			

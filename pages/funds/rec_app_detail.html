@@ -373,8 +373,7 @@
           var divStr;
           for (var key in logs) {
             var obj = logs[key];
-            // 审核标识：1-待审核、2-通过、3-不通过
-            var flag = obj.reviewerFlag;
+            var flag = obj.reviewerFlag;// 审核标识：1-待审核、2-通过、3-不通过
             var state = "";
             if (flag == 1) {
               state = "待审核";
