@@ -405,7 +405,7 @@
 					$("#select_upfile").html(
 						'<p style="line-height:110px;text-align:center;">上传汇款回单+</p>'
 					);
-					$("#offlineBox_pop").find('[name=merchantName]').val(g_merchantName);		
+					$("#offlineBox_pop").find('[name=merchantName]').val(g_merchantName);
 					layer.open({
 						title: "线下加款申请",
 						type: 1,
@@ -423,7 +423,7 @@
 						return;
 					} else {
 						layer.load();
-						$("#offlineBox_pop").find('[name=merchantId]').val(g_merchantId);				
+						$("#offlineBox_pop").find('[name=merchantId]').val(g_merchantId);
 
 						$("#offlineBox_pop").attr('action', urlPrefix + 'silver-web-shop/offlineRecharge/insApp');
 						$("#offlineBox_pop").submit();

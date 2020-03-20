@@ -31,13 +31,10 @@
 <body>
   <div class="layui-collapse" lay-filter="test">
     <form class="layui-form" id="rec_app_detail_form" lay-filter="example">
-      <!-- <div class="layui-colla-item">
-      <h2 class="layui-colla-title">汇款详情</h2>
-      <div class="layui-colla-content layui-show"> -->
       <div class="weadmin-body">
         <div class="layui-form-item">
           <div class="layui-inline">
-            <label class="layui-form-label">银行汇款流水号</label>
+            <label class="layui-form-label">汇款流水号</label>
             <div class="layui-input-inline">
               <input type="text" name="remittanceSerialNo" autocomplete="off" class="layui-input layui-disabled"
                 disabled>
@@ -56,6 +53,7 @@
             </div>
           </div>
         </div>
+
         <div class="layui-form-item">
           <div class="layui-inline">
             <label class="layui-form-label">汇款账号</label>
@@ -76,6 +74,8 @@
               <input type="text" name="remittanceName" autocomplete="off" class="layui-input layui-disabled" disabled>
             </div>
           </div>
+        </div>
+        <div class="layui-form-item">
           <div class="layui-inline">
             <label class="layui-form-label">汇款开户行</label>
             <div class="layui-input-inline">
@@ -86,17 +86,18 @@
             <label class="layui-form-label">充值类型</label>
             <div class="layui-input-inline">
               <select name="type" lay-filter="aihao" class="layui-disabled" disabled>
-                <!-- 类型：recResAmo-会员代付货款、recMerBal-商户余额 -->
                 <option value="">全部</option>
                 <option value="recResAmo">会员代付货款</option>
                 <option value="recMerBal">商户余额</option>
-                <!-- <option value="10">待发货</option>
-                      <option value="3">待清关</option>
-                      <option value="4">快件运输中</option>
-                      <option value="5">快件已签收</option>
-                      <option value="200">交易成功</option>
-                      <option value="400">交易关闭</option> -->
               </select>
+            </div>
+          </div>
+          <div class="layui-inline">
+            <div class="layui-inline">
+              <label class="layui-form-label">创建日期</label>
+              <div class="layui-input-inline">
+                <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+              </div>
             </div>
           </div>
         </div>
@@ -129,46 +130,47 @@
             <p id="remittanceReceipt" style="display: inline-block;"></p>
           </div>
         </div>
-        <hr class="layui-bg-blue">
-        <div class="layui-form">
-          <table class="layui-table" id="rec_app_rev_table" lay-size="sm">
-            <colgroup>
-              <col width="140">
-              <col width="210">
-              <col width="210">
-              <col width="210">
-              <col width="210">
-              <col>
-            </colgroup>
-            <thead>
-              <tr>
-                <th>日期<span class="we-red"></span></th>
-                <th>节点<span class="we-red"></span></th>
-                <th>处理人<span class="we-red"></span></th>
-                <th>状态<span class="we-red"></span></th>
-                <th>备注<span class="we-red"></span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- 内容 -->
-            </tbody>
-          </table>
+      </div>
+      <hr class="layui-bg-blue">
+      <div class="layui-form">
+        <table class="layui-table" id="rec_app_rev_table" lay-size="sm">
+          <colgroup>
+            <col width="140">
+            <col width="210">
+            <col width="210">
+            <col width="210">
+            <col width="210">
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th>日期<span class="we-red"></span></th>
+              <th>节点<span class="we-red"></span></th>
+              <th>处理人<span class="we-red"></span></th>
+              <th>状态<span class="we-red"></span></th>
+              <th>备注<span class="we-red"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 内容 -->
+          </tbody>
+        </table>
+      </div>
+      <div id="note" class="layui-form-item layui-form-text" style="display: none">
+        <hr class="layui-bg-orange">
+        <label class="layui-form-label">说明</label>
+        <div class="layui-input-block">
+          <textarea name="note" placeholder="不通过时必须填写" class="layui-textarea"></textarea>
         </div>
-        <div id="note" class="layui-form-item layui-form-text" style="display: none">
-          <hr class="layui-bg-orange">
-          <label class="layui-form-label">说明</label>
-          <div class="layui-input-block">
-            <textarea name="note" placeholder="不通过时必须填写" class="layui-textarea"></textarea>
-          </div>
-        </div>
-        <div id="rev_btn" class="layui-form-item"
-          style="text-align: center;  position: fixed; bottom: 0;left: 50%; transform: translate(-50%);">
-          <button type="button" id="passed" class="layui-btn layui-btn-sm" lay-filter="passed" lay-submit=""
-            style="display: none">通过</button>
-          <button type="button" id='failure' class="layui-btn layui-btn-sm layui-btn-warm" lay-filter="failure"
-            lay-submit="" style="display: none">不通过</button>
-          <button type="button" id='close' class="layui-btn layui-btn-sm layui-btn-primary close">关闭</button>
-        </div>
+      </div>
+      <div id="rev_btn" class="layui-form-item"
+        style="text-align: center;  position: fixed; bottom: 0;left: 50%; transform: translate(-50%);">
+        <button type="button" id="passed" class="layui-btn layui-btn-sm" lay-filter="passed" lay-submit=""
+          style="display: none">通过</button>
+        <button type="button" id='failure' class="layui-btn layui-btn-sm layui-btn-warm" lay-filter="failure"
+          lay-submit="" style="display: none">不通过</button>
+        <button type="button" id='close' class="layui-btn layui-btn-sm layui-btn-primary close">关闭</button>
+      </div>
     </form>
   </div>
   <script src="../../static/js/common.js" charset="utf-8"></script>
@@ -232,14 +234,16 @@
           });
         });
 
+        var close = function () {//关闭弹窗
+          var index = parent.layer.getFrameIndex(window.name);//获取frame索引
+          parent.layer.close(index);//关闭当前页
+        }
         // 关闭弹窗
         $('#rev_btn .close').click(function () {
-          tools.func1();
+          close();
         })
-        // 通过
-        form.on('submit(passed)', function (data) {
+        form.on('submit(passed)', function (data) {    // 通过
           var typeName = '';
-          //  类型：recResAmo-会员代付货款、recMerBal-商户余额 
           if (content.type == 'recResAmo') {
             typeName = '会员代付货款';
           } else if (content.type == 'recMerBal') {
@@ -301,7 +305,6 @@
         //运营审核
         var managerReview = function (datas, flag, note) {
           var params = { offlineRechargeId: datas.offlineRechargeId, reviewerFlag: flag, note: note };
-          //加载层-默认风格
           layer.load();
           $.ajax({
             url: urlPrefix + "silver-web-shop/offlineRecharge/managerReview",
@@ -314,21 +317,24 @@
               layer.closeAll('loading');
               if (response.status == 1) {
                 layer.msg('操作成功', { icon: 1 });
-                //关闭弹窗
-                setTimeout(function () {
-                  parent.tools.func1();
-                  parent.rec_app_reload();
-                }, 1500)
+                reload_table();
               } else {
                 layer.alert(response.msg);
               }
             }
           });
         }
+        //成功后重置表单
+        var reload_table = function () {
+          setTimeout(function () {
+            close();//关闭弹窗
+            var WeTabTip = window.parent.document.getElementById("WeTabTip")
+            $(WeTabTip).find('[src="./pages/funds/rec_app_list.html"]')[0].contentWindow.rec_app_reload();
+          }, 1500)
+        }
         //财务审核
         var financialReview = function (datas, flag, note) {
           var params = { offlineRechargeId: datas.offlineRechargeId, reviewerFlag: flag, note: note };
-          //加载层-默认风格
           layer.load();
           $.ajax({
             url: urlPrefix + "silver-web-shop/offlineRecharge/financialReview",
@@ -341,11 +347,7 @@
               layer.closeAll('loading');
               if (response.status == 1) {
                 layer.msg('操作成功', { icon: 1 });
-                //关闭弹窗
-                setTimeout(function () {
-                  parent.tools.func1();
-                  parent.rec_app_reload();
-                }, 1500)
+                reload_table();
               } else {
                 layer.alert(response.msg);
               }
@@ -367,6 +369,7 @@
           , "remittanceReceipt": content.remittanceReceipt
           , "capitalAmount": digitUppercase(content.remittanceAmount)
           , "type": content.type
+          , "createDate": G_format(content.createDate.time, 'yyyy-MM-dd hh:mm:ss')
         })
         //渲染审核日志信息
         function logs_info() {
@@ -406,10 +409,8 @@
           form.render();
         }
         logs_info();
-
         function img() {
-          var url = content.remittanceReceipt;
-          // 银行回执
+          var url = content.remittanceReceipt;// 银行回执
           if (!isEmpty(url)) {// 判断是否有上传的图片
             $("#remittanceReceipt").attr("src", url.replace("#", '')); // 渲染图片
           } else {

@@ -430,24 +430,23 @@
 			table.on('tool(articleList)', function (obj) {
 				var data = obj.data;
 				if (obj.event === 'detail') {// 查看详情
-					var detail_full = layer.open({
+					var detail_full = parent.layer.open({
 						type: 2,
 						title: '订单信息',
-						area: ['100%', '100%'],
+						area: ['85%', '80%'],//宽高
 						// fixed: false, //不固定
 						maxmin: true,
-						content: './order_dec_detail.html',
+						// content: './order_dec_detail.html',
+						content: 'pages/order/order_dec_detail.html',
 						btnAlign: 'c',
 						btn: ['关闭'],
 						success: function (layero, index) {
-							// 获取子页面的iframe
-							var iframe = window['layui-layer-iframe' + index];
-							// 向子页面的全局函数child传参
-							console.log(iframe)
-							iframe.getParent_data(obj);
+							var ip = window.parent.document.getElementById("WeTabTip");//获取父元素
+							var iframe = $(ip).parent().siblings('#layui-layer' + index).find('iframe')[0];//获取父元素中兄弟元素的iframe
+							iframe.contentWindow.getParent_data(obj);
 						},
 						btn1: function (index) {
-							layer.close(index);
+							parent.layer.close(index);
 						}
 					});
 					// layer.full(detail_full);// 全屏显示

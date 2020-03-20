@@ -64,24 +64,6 @@
 						<input type="text" name="applicantId" placeholder="请输入商户/会员编号" class="layui-input">
 					</div>
 				</div>
-				<!-- <div class="layui-inline">
-					<label class="layui-form-label">交易流水号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="tradeNo" placeholder="请输入交易流水号" class="layui-input">
-					</div>
-				</div>
-				<div class="layui-inline">
-					<label class="layui-form-label">订单编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="orderId" placeholder="请输入订单编号" class="layui-input">
-					</div>
-				</div> -->
-				<!-- <div class="layui-inline">
-					<label class="layui-form-label">收款方编号</label>
-					<div class="layui-input-inline">
-						<input type="text" name="sellerId" placeholder="请输入收款方编号" class="layui-input">
-					</div>
-				</div> -->
 				<div class="layui-inline">
 					<label class="layui-form-label">类型</label>
 					<div class="layui-input-inline">
@@ -157,6 +139,7 @@
 			table.render({
 				elem: '#rec_app_List',
 				toolbar: '#manager_list_toolbar',
+				defaultToolbar: ['filter'],
 				cellMinWidth: 80,
 				height: tableHeight,
 				url: urlPrefix + 'silver-web-shop/offlineRecharge/findInfo',
@@ -302,12 +285,12 @@
 				active[type] ? active[type].call(this) : '';
 			});
 			var wind = null;
-			var _tools = {
-				func1: function () {
-					parent.layer.close(wind);
-				}
-			}
-			window.tools = _tools;
+			// var _tools = {
+			// 	func1: function () {
+			// 		parent.layer.close(wind);
+			// 	}
+			// }
+			// window.tools = _tools;
 
 			//监听工具条
 			table.on('tool(rec_app_List)', function (obj) {
@@ -320,7 +303,6 @@
 				if (obj.event === 'detail') {// 查看详情
 					wind = parent.layer.open({
 						type: 2,
-						id: "ABC",
 						title: '详情',
 						// area: ['1055px', '550px'],
 						area: ['82%', '80%'],
@@ -331,12 +313,8 @@
 						btnAlign: 'c',
 						// btn: ["通过", "不通过", "关闭"],
 						success: function (layero, index) {
-							// 获取子页面的iframe
-							// var iframe = window['layui-layer-iframe' + index];
-							// 向子页面的全局函数child传参						
 							var ip = window.parent.document.getElementById("WeTabTip")
-							var iframe = $(ip).parent().siblings('#layui-layer1').find('#ABC').find('iframe')[0];
-							console.log(iframe.contentWindow);
+							var iframe = $(ip).parent().siblings('#layui-layer' + index).find('iframe')[0];
 							iframe.contentWindow.getParent_data(obj);
 						}
 					});
