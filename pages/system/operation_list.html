@@ -90,6 +90,7 @@
 										<option value="merPro">推广配置</option>
 										<option value="witFee">提现费率</option>
 										<option value="goodsCouFee">商品运费</option>
+										<option value="merchantCounter">专柜</option>
 									</select>
 								</div>
 							</div>
@@ -98,7 +99,6 @@
 								<div class="layui-input-inline">
 									<select name="action" lay-verify="required" lay-search="">
 										<option value="">全部</option>
-										<!-- <option value="login">登录</option> -->
 										<option value="update">更新</option>
 										<option value="pushLogi">推送物流</option>
 										<option value="changePrice">调价</option>
@@ -239,10 +239,12 @@
 										return '推广配置';
 									} else if (module == 'witFee') {
 										return '提现费率';
-									} else if (module = 'goodsResPrice') {
+									} else if (module == 'goodsResPrice') {
 										return '商品供货底价';
-									} else if (module = 'goodsCouFee') {
+									} else if (module == 'goodsCouFee') {
 										return '商品运费';
+									} else if (module == 'merchantCounter') {
+										return '专柜';
 									}
 								}
 							}, {

@@ -304,7 +304,7 @@
 			var wind = null;
 			var _tools = {
 				func1: function () {
-					layer.close(wind);
+					parent.layer.close(wind);
 				}
 			}
 			window.tools = _tools;
@@ -318,20 +318,26 @@
 				var flag = $('#managerName', window.parent.document).attr("name");
 				obj.managerFlag = flag;
 				if (obj.event === 'detail') {// 查看详情
-					wind = layer.open({
+					wind = parent.layer.open({
 						type: 2,
+						id: "ABC",
 						title: '详情',
-						area: ['1055px', '600px'],
+						// area: ['1055px', '550px'],
+						area: ['82%', '80%'],
 						// fixed: false, //不固定
 						maxmin: true,
-						content: './rec_app_detail.html',
+						// content: './rec_app_detail.html',
+						content: 'pages/funds/rec_app_detail.html',
 						btnAlign: 'c',
 						// btn: ["通过", "不通过", "关闭"],
 						success: function (layero, index) {
 							// 获取子页面的iframe
-							var iframe = window['layui-layer-iframe' + index];
-							// 向子页面的全局函数child传参
-							iframe.getParent_data(obj);
+							// var iframe = window['layui-layer-iframe' + index];
+							// 向子页面的全局函数child传参						
+							var ip = window.parent.document.getElementById("WeTabTip")
+							var iframe = $(ip).parent().siblings('#layui-layer1').find('#ABC').find('iframe')[0];
+							console.log(iframe.contentWindow);
+							iframe.contentWindow.getParent_data(obj);
 						}
 					});
 				} else if (obj.event === 'reset') {// 重置密码

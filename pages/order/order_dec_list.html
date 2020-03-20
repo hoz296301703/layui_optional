@@ -435,7 +435,7 @@
 						title: '订单信息',
 						area: ['100%', '100%'],
 						// fixed: false, //不固定
-						// maxmin: true,
+						maxmin: true,
 						content: './order_dec_detail.html',
 						btnAlign: 'c',
 						btn: ['关闭'],
@@ -443,6 +443,7 @@
 							// 获取子页面的iframe
 							var iframe = window['layui-layer-iframe' + index];
 							// 向子页面的全局函数child传参
+							console.log(iframe)
 							iframe.getParent_data(obj);
 						},
 						btn1: function (index) {

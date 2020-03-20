@@ -71,6 +71,8 @@
                   <input type="text" name="payer_name" autocomplete="off" class="layui-input layui-disabled" disabled>
                 </div>
               </div>
+            </div>
+            <div class="layui-form-item">
               <div class="layui-inline">
                 <label class="layui-form-label">支付人证件类型</label>
                 <div class="layui-input-inline">
@@ -181,7 +183,6 @@
                 </div>
               </div>
               <div class="layui-form-item">
-
                 <div class="layui-inline">
                   <label class="layui-form-label">电商平台名称</label>
                   <div class="layui-input-inline">
@@ -200,6 +201,8 @@
                     <input type="text" name="ebpPayNo" autocomplete="off" class="layui-input layui-disabled" disabled>
                   </div>
                 </div>
+              </div>
+              <div class="layui-form-item">
                 <div class="layui-inline">
                   <label class="layui-form-label">支付海关备案名称</label>
                   <div class="layui-input-inline">
@@ -207,11 +210,12 @@
                   </div>
                 </div>
                 <div class="layui-inline">
-                    <label class="layui-form-label">创建日期</label>
-                    <div class="layui-input-inline">
-                      <input type="text" name="create_date" autocomplete="off" class="layui-input layui-disabled" disabled>
-                    </div>
+                  <label class="layui-form-label">创建日期</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="create_date" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
                   </div>
+                </div>
 
               </div>
             </div>
@@ -311,7 +315,7 @@
           // , "freight": g_data.order.freight
         })
 
-      
+
         //申报回执信息
         function decNote(note) {
           if (isEmpty(note)) {
@@ -324,7 +328,7 @@
             divStr += '<div class="layui-card-body" id="pay_dec_note">' + arr[i] + ' </div>';
           }
           $('#pay_dec_note').html(divStr);
-        }        
+        }
         decNote(g_data.pay_re_note);
       });
     }
