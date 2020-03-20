@@ -26,13 +26,13 @@
 			width: 40px;
 		}
 
-		/* body {
-			overflow-y: scroll;
-		} */
-
 		/* 私有样式 */
 		.layui-form-label {
 			width: 90px;
+		}
+
+		.weadmin-body {
+			padding: 0;
 		}
 	</style>
 </head>
@@ -87,7 +87,7 @@
 						<input type="text" name="supMerchantId" placeholder="请输入上级商户编号" class="layui-input">
 					</div>
 				</div>
-				
+
 				<div class="layui-inline">
 					<label class="layui-form-label">日期</label>
 					<div class="layui-input-inline">
@@ -114,7 +114,7 @@
 	<script src="../../static/js/common.js" charset="utf-8"></script>
 
 	</div>
-	<script>		
+	<script>
 
 		layui.use(['table', 'jquery', 'form', 'element', 'tree', 'laydate'], function () {
 			var table = layui.table,
@@ -128,12 +128,12 @@
 				elem: '#startDate'
 				, value: getDay(-7)
 				, isInitValue: true
-				,max :0
+				, max: 0
 			});
 			laydate.render({
 				elem: '#endDate'
 				, type: 'datetime'
-				
+
 			});
 			// 动态设置表格高度
 			// var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
@@ -154,29 +154,29 @@
 								return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
 							}
 						}, {
-							field: 'expadndMerchantName', title: '名称',width:120
+							field: 'expadndMerchantName', title: '名称', width: 120
 						}, {
-							field: 'expadndMerchantCode', title: '编号',width:180
+							field: 'expadndMerchantCode', title: '编号', width: 180
 						}, {
-							field: 'loginName', title: '登录账号',width:120
+							field: 'loginName', title: '登录账号', width: 120
 						}, {
-							field: 'phone', title: '手机号码',width:120
+							field: 'phone', title: '手机号码', width: 120
 						}, {
 							field: 'level', title: '等级', width: 80, templet: function (item) {
 								if (item.level == 'one') {
 									return '一级';
 								} else if (item.level == 'two') {
 									return '二级';
-								}else{
+								} else {
 									return '';
 								}
 							}
 						}, {
-							field: 'supMerchantName', title: '上级商户名称',width:170
+							field: 'supMerchantName', title: '上级商户名称', width: 170
 						}, {
-							field: 'supMerchantId', title: '上级商户编号',width:170
+							field: 'supMerchantId', title: '上级商户编号', width: 170
 						}, {
-							field: 'operate', title: '操作', width:120,toolbar: '#operateTpl', fixed: 'right'
+							field: 'operate', title: '操作', width: 120, toolbar: '#operateTpl', fixed: 'right'
 						}
 					]
 				],

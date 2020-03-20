@@ -137,32 +137,32 @@
 							field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
 						}, {
 							field: 'date', title: '日期', fixed: 'left', width: 105, templet: function (item) {
-								return item.date.value;
+								return item.date;
 							}
 						}, {
 							field: 'count', title: '数量', templet: function (item) {
-								return item.count.value;
+								return item.count;
 							}
 						}, {
 							field: 'counterId', title: '专柜编号', templet: function (item) {
-								if (isEmpty(item.counterId.value)) {
+								if (isEmpty(item.counterId)) {
 									return '';
 								}
-								return item.counterId.value
+								return item.counterId
 							}
 						}, {
 							field: 'merchantId', title: '商户编号', templet: function (item) {
-								if (isEmpty(item.merchantId.value)) {
+								if (isEmpty(item.merchantId)) {
 									return '';
 								}
-								return item.merchantId.value;
+								return item.merchantId;
 							}
 						}, {
 							field: 'merchantName', title: '商户名称', templet: function (item) {
-								if (isEmpty(item.merchantName.value)) {
+								if (isEmpty(item.merchantName)) {
 									return '';
 								}
-								return item.merchantName.value;
+								return item.merchantName;
 							}
 						}, {
 							field: 'operate', title: '操作', toolbar: '#operateTpl', fixed: 'right'

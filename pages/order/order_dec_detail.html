@@ -34,334 +34,347 @@
 </head>
 
 <body>
+
   <div class="layui-collapse" lay-filter="test">
-    <div class="layui-colla-item">
-      <h2 class="layui-colla-title">订单详情</h2>
-      <div class="layui-colla-content layui-show">
-        <div class="weadmin-body">
-          <form class="layui-form" id="manager_detail_form" lay-filter="example">
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">商户名称</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="merchantName" autocomplete="off" class="layui-input layui-disabled" disabled>
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+      <ul class="layui-tab-title">
+        <li class="layui-this">订单详情</li>
+        <li id="order_goods_item">商品详情</li>
+        <li id="dec_order_details">申报详情</li>
+      </ul>
+      <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+          <div class="weadmin-body">
+            <form class="layui-form" id="manager_detail_form" lay-filter="example">
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">商户名称</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="merchantName" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">商户编号</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="merchant_no" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">订单编号</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="entOrderNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">交易流水号</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="trade_no" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
                 </div>
               </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">商户编号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="merchant_no" autocomplete="off" class="layui-input layui-disabled" disabled>
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">商品总额</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="orderTotalPrice" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">税费</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="tax" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">运费</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="freight" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">优惠金额</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="otherPayment" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
                 </div>
               </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">订单编号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="entOrderNo" autocomplete="off" class="layui-input layui-disabled" disabled>
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">优惠说明</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="otherPayNotes" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">实际支付金额</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="actualAmountPaid" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">收货人姓名</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="recipientName" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">收货人身份证号</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="recipientCardId" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
                 </div>
               </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">交易流水号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="trade_no" autocomplete="off" class="layui-input layui-disabled" disabled>
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">收货人电话</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="recipientTel" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">收货人省份</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="recProvincesName" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">城市</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="recCityName" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">区/县</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="recAreaName" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">商品总额</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="orderTotalPrice" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">详细地址</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="recipientAddr" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">下单人姓名</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="ordererName" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">下单人身份证号</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="ordererIdCardNumber" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">下单人电话</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="ordererTel" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
                 </div>
               </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">税费</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="tax" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">运费</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="freight" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">优惠金额</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="otherPayment" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">优惠说明</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="otherPayNotes" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">实际支付金额</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="actualAmountPaid" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">收货人姓名</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="recipientName" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">收货人身份证号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="recipientCardId" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">收货人电话</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="recipientTel" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">收货人省份</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="recProvincesName" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">城市</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="recCityName" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">区/县</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="recAreaName" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">详细地址</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="recipientAddr" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">下单人姓名</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="ordererName" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">下单人身份证号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="ordererIdCardNumber" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">下单人电话</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="ordererTel" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
+              <div class="layui-form-item">
 
-              <div class="layui-inline">
-                <label class="layui-form-label">订单日期</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="orderDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+                <div class="layui-inline">
+                  <label class="layui-form-label">订单日期</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="orderDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">平台接收日期</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">来源</label>
+                  <div class="layui-input-inline">
+                    <select name="orderSourceType" lay-filter="aihao" class="layui-disabled" disabled>
+                      <option value="online">线上</option>
+                      <option value="offline">线下</option>
+                      <option value="expand">推广</option>
+                      <option value="mall">商城</option>
+                      <option value="excelImport">excel</option>
+                      <option value="seckill">秒杀</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">申报状态</label>
+                  <div class="layui-input-inline">
+                    <select name="order_record_status" lay-filter="aihao" class="layui-disabled" disabled>
+                      <option value="1">未申报</option>
+                      <option value="2">申报中</option>
+                      <option value="3">申报成功</option>
+                      <option value="4">申报失败</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">平台接收日期</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="createDate" autocomplete="off" class="layui-input layui-disabled" disabled>
+              <div class="layui-form-item">
+                <div class="layui-inline">
+                  <label class="layui-form-label">海关口岸</label>
+                  <div class="layui-input-inline">
+                    <select name="eport" lay-filter="aihao" class="layui-disabled" disabled>
+                      <option value="1">电子口岸</option>
+                      <option value="2">南沙智检</option>
+                      <option value="3">辽宁口岸</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">关区代码</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="customsCode" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">国检代码</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="ciqOrgCode" autocomplete="off" class="layui-input layui-disabled" disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">结算状态</label>
+                  <div class="layui-input-inline">
+                    <select name="settleStatus" lay-filter="aihao" class="layui-disabled" disabled>
+                      <option value="pending">待结算</option>
+                      <option value="process">结算中</option>
+                      <option value="success">完成</option>
+                      <option value="failure">失败</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">来源</label>
-                <div class="layui-input-inline">
-                  <select name="orderSourceType" lay-filter="aihao" class="layui-disabled" disabled>
-                    <option value="online">线上</option>
-                    <option value="offline">线下</option>
-                    <option value="expand">推广</option>
-                    <option value="mall">商城</option>
-                    <option value="excelImport">excel</option>
-                    <option value="seckill">秒杀</option>
-                  </select>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">申报状态</label>
-                <div class="layui-input-inline">
-                  <select name="order_record_status" lay-filter="aihao" class="layui-disabled" disabled>
-                    <option value="1">未申报</option>
-                    <option value="2">申报中</option>
-                    <option value="3">申报成功</option>
-                    <option value="4">申报失败</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
-              <div class="layui-inline">
-                <label class="layui-form-label">海关口岸</label>
-                <div class="layui-input-inline">
-                  <select name="eport" lay-filter="aihao" class="layui-disabled" disabled>
-                    <option value="1">电子口岸</option>
-                    <option value="2">南沙智检</option>
-                    <option value="3">辽宁口岸</option>
-                  </select>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">关区代码</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="customsCode" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">国检代码</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="ciqOrgCode" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">结算状态</label>
-                <div class="layui-input-inline">
-                  <select name="settleStatus" lay-filter="aihao" class="layui-disabled" disabled>
-                    <option value="pending">待结算</option>
-                    <option value="process">结算中</option>
-                    <option value="success">完成</option>
-                    <option value="failure">失败</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
+              <div class="layui-form-item">
 
-              <div class="layui-inline">
-                <label class="layui-form-label">跨境业务类型</label>
-                <div class="layui-input-inline">
-                  <select name="businessType" lay-filter="aihao" class="layui-disabled" disabled>
-                    <option value="1">特殊监管区域BBC保税进口</option>
-                    <option value="2">保税仓库BBC保税进口</option>
-                    <option value="3">BC直购进口</option>
-                  </select>
+                <div class="layui-inline">
+                  <label class="layui-form-label">跨境业务类型</label>
+                  <div class="layui-input-inline">
+                    <select name="businessType" lay-filter="aihao" class="layui-disabled" disabled>
+                      <option value="1">特殊监管区域BBC保税进口</option>
+                      <option value="2">保税仓库BBC保税进口</option>
+                      <option value="3">BC直购进口</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">支付类型</label>
+                  <div class="layui-input-inline">
+                    <select name="type" lay-filter="aihao" class="layui-disabled" disabled>
+                      <option value="normal">正常支付</option>
+                      <option value="coupon">优惠券</option>
+                      <option value="wallet">钱包支付</option>
+                      <option value="thirdParty">第三方支付</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">计费类型</label>
+                  <div class="layui-input-inline">
+                    <select name="tollType" lay-filter="aihao" class="layui-disabled" disabled>
+                      <option value="pen">笔</option>
+                      <option value="rate">比例</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">申报服务费</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="declareCost" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
                 </div>
               </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">支付类型</label>
-                <div class="layui-input-inline">
-                  <select name="type" lay-filter="aihao" class="layui-disabled" disabled>
-                    <option value="normal">正常支付</option>
-                    <option value="coupon">优惠券</option>
-                    <option value="wallet">钱包支付</option>
-                    <option value="thirdParty">第三方支付</option>
-                  </select>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">计费类型</label>
-                <div class="layui-input-inline">
-                  <select name="tollType" lay-filter="aihao" class="layui-disabled" disabled>
-                    <option value="pen">笔</option>
-                    <option value="rate">比例</option>
-                  </select>
-                </div>
-              </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">申报服务费</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="declareCost" autocomplete="off" class="layui-input layui-disabled" disabled>
-                </div>
-              </div>
-            </div>
-            <div class="layui-form-item">
+              <div class="layui-form-item">
 
-              <div class="layui-inline">
-                <label class="layui-form-label">收款方名称</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="collectionName" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
+                <div class="layui-inline">
+                  <label class="layui-form-label">收款方名称</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="collectionName" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
+                </div>
+                <div class="layui-inline">
+                  <label class="layui-form-label">收款账号</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="collectionAccount" autocomplete="off" class="layui-input layui-disabled"
+                      disabled>
+                  </div>
                 </div>
               </div>
-              <div class="layui-inline">
-                <label class="layui-form-label">收款账号</label>
-                <div class="layui-input-inline">
-                  <input type="text" name="collectionAccount" autocomplete="off" class="layui-input layui-disabled"
-                    disabled>
-                </div>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="layui-colla-item">
-      <h2 class="layui-colla-title">商品详情</h2>
-      <div class="layui-colla-content ">
-        <div class="layui-form">
-          <table class="layui-table" id="order_goods_table" lay-size="sm">
-            <colgroup>
-              <col width="140">
-              <col width="210">
-              <col width="100">
-              <col width="100">
-              <col width="170">
-              <col width="50">
-              <col width="50">
-              <col width="210">
-              <col>
-            </colgroup>
-            <thead>
-              <tr>
-                <th>自编号<span class="we-red"></span></th>
-                <th>名称<span class="we-red"></span></th>
-                <th>HS编码<span class="we-red"></span></th>
-                <th>海关备案号<span class="we-red"></span></th>
-                <th>国检备案号<span class="we-red"></span></th>
-                <th>原产国<span class="we-red"></span></th>
-                <th>数量<span class="we-red"></span></th>
-                <th>单价<span class="we-red"></span></th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
+        <div class="layui-tab-item">
+          <div class="layui-form">
+            <table class="layui-table" id="order_goods_table" lay-size="sm">
+              <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>序号<span class="we-red"></span></th>
+                  <th>自编号<span class="we-red"></span></th>
+                  <th>商品名称<span class="we-red"></span></th>
+                  <th>HS编码<span class="we-red"></span></th>
+                  <th>海关备案号<span class="we-red"></span></th>
+                  <th>国检备案号<span class="we-red"></span></th>
+                  <th>原产国<span class="we-red"></span></th>
+                  <th>数量<span class="we-red"></span></th>
+                  <th>单价<span class="we-red"></span></th>
+                  <th>合计<span class="we-red"></span></th>
+                  <th>税费<span class="we-red"></span></th>
+                </tr>
+              </thead>
+              <tbody> </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="layui-colla-item">
-      <h2 class="layui-colla-title">申报详情</h2>
-      <div class="layui-colla-content ">
-        <div style="padding: 20px; background-color: #F2F2F2;">
-          <div class="layui-row layui-col-space15">
-            <div class="layui-col-md12">
-              <div class="layui-card" id="order_dec_note">
-                <!--申报内容-->
+        <div class="layui-tab-item">
+          <div style="padding: 20px; background-color: #F2F2F2;">
+            <div class="layui-row layui-col-space15">
+              <div class="layui-col-md12">
+                <div class="layui-card" id="order_dec_note">
+                  <!--申报内容-->
+                </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
     </div>
-  </div>
-
   </div>
   <script src="../../static/js/common.js" charset="utf-8"></script>
   <script src="../../lib/layui/layui.js" charset="utf-8"></script>
@@ -433,8 +446,8 @@
           , "eport": order.eport
           , "customsCode": order.customsCode
           , "ciqOrgCode": order.ciqOrgCode
-          , "merchantName": order.merchant_no
-          , "merchant_no": order.create_by
+          , "merchantName": order.create_by
+          , "merchant_no": order.merchant_no
           , "trade_no": order.trade_no
           , "orderSourceType": order.orderSourceType
           , "settleStatus": order.settleStatus
@@ -451,33 +464,42 @@
           for (var key in datas) {
             var obj = datas[key];
             divStr += `
-                 <tr >
-                    <td>
-                    <div class="layui-input-inline"><input style="width: 140px" lay-verify="required"  value="${obj.entGoodsNo}" name="ebpEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                 <tr >                  
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 30px" lay-verify="required"  value="${obj.seq}" name="seq" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input style="width: 250px" lay-verify="required"  value="${obj.goodsName}" name="ebpEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input lay-verify="required"  value="${obj.entGoodsNo}" name="entGoodsNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input style="width: 100px"  lay-verify="required"  value="${obj.HSCode}" name="ebEntName" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input   style="width: 250px" lay-verify="required"  value="${obj.goodsName}" name="goodsName" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input type=""  style="width: 100px"  lay-verify="required"  value="${obj.cusGoodsNo}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input  lay-verify="required"  value="${obj.HSCode}" name="HSCode" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input type="" style="width: 170px"lay-verify="required"  value="${obj.CIQGoodsNo}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input lay-verify="required"  value="${obj.cusGoodsNo}" name="cusGoodsNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
                   <td>
-                    <div class="layui-input-inline"><input type="" style="width: 50px"lay-verify="required"  value="${obj.originCountry}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                    <div class="layui-input-inline"><input lay-verify="required"  value="${obj.CIQGoodsNo}" name="CIQGoodsNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
                   </td>
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 50px" lay-verify="required"  value="${obj.originCountry}" name="originCountry" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>                  
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 50px" lay-verify="required"  value="${obj.qty}" name="qty" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>                  
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 70px" lay-verify="required"  value="${obj.price}" name="price" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>    
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 70px" lay-verify="required"  value="${obj.total}" name="total" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>              
+                  <td>
+                    <div class="layui-input-inline"><input style="width: 60px" lay-verify="required"  value="${obj.tax}" name="tax" autocomplete="off" class="layui-input layui-disabled" disabled></div>
+                  </td>  
+
                   
-                  <td>
-                    <div class="layui-input-inline"><input style="width: 50px" lay-verify="required"  value="${obj.qty}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
-                  </td>
-                  
-                  <td>
-                    <div class="layui-input-inline"><input style="width: 80px" lay-verify="required"  value="${obj.price}" name="ebEntNo" autocomplete="off" class="layui-input layui-disabled" disabled></div>
-                  </td>                 
                 </tr>`
           }
           $('#order_goods_table tbody').html(divStr);
