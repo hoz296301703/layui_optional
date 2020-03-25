@@ -403,6 +403,7 @@
                   <option value="orderDeclare">订单申报</option>
                   <option value="paymentDeclare">支付单申报</option>
                   <option value="certification">实名认证</option>
+                  <option value="serviceFee">平台服务费</option>
                   <option value="paymentServiceCharge">支付服务费</option>
                 </select>
               </div>
@@ -475,6 +476,8 @@
                   <option value="orderDeclare">订单申报</option>
                   <option value="paymentDeclare">支付单申报</option>
                   <option value="certification">实名认证</option>
+                  <option value="serviceFee">平台服务费</option>
+
                   <option value="paymentServiceCharge">支付服务费</option>
                 </select>
               </div>
@@ -1599,6 +1602,8 @@
                   return '实名认证';
                 } else if (item.costType == 'paymentServiceCharge') {
                   return '支付服务费';
+                } else if (item.costType == 'serviceFee') {  
+                  return '平台服务费';
                 }
               }
             }, {
@@ -1695,7 +1700,7 @@
           title: "添加商户计费信息",
           type: 1,
           skin: "layui-layer-rim", //加上边框
-          area: ["460px", "351px"], //宽高
+          area: ["460px", "413px"], //宽高
           content: $("#merchantCost_add")
         });
       });
@@ -1799,6 +1804,7 @@
       form.on('select(costType)', function (data) {
         $("#serviceCharge_rate,#serviceCharge_pen").hide();
         $("#serviceCharge_rateVal,#serviceCharge_penVal,#backCoverFlag_val").val("");
+        console.log(data.value)
         if (data.value == "paymentServiceCharge") {
           $("#tollType").html(
             '<option value="">请选择</option><option value="rate">比例</option>'
@@ -1874,7 +1880,7 @@
           addIndex = layer.open({
             type: 1,
             title: '修改商户计费信息',
-            area: ["460px", "351px"], //宽高
+            area: ["460px", "413px"], //宽高
             fixed: false, //不固定
             maxmin: true,
             content: $('#merchantCost_update')
