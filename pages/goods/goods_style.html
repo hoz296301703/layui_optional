@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>银盟跨境电商服务平台运营系统</title>
+  <meta name="Description" content="基于layUI数据表格操作" />
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/weadmin.css">
+  <style type="text/css">
+    .layui-form-switch {
+      width: 55px;
+    }
+
+    .layui-form-switch em {
+      width: 40px;
+    }
+
+    /* 私有样式 */
+    .layui-form-label {
+      width: 60px;
+    }
+
+    /* 规格详情 */
+    .goodsStyle_box {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .goodsStyle_box>label {
+      margin: 0;
+    }
+
+    .goodsStyle_box .list {
+      display: flex;
+    }
+
+    .goodsStyle_box .list li {
+      margin-right: 6px;
+      position: relative;
+    }
+
+    .goodsStyle_box .list li>i {
+      position: absolute;
+      z-index: 10;
+      right: -4px;
+      top: -5px;
+      cursor: pointer;
+    }
+
+    .goodsStyle_box .list li>span {
+      padding: 3px 8px;
+    }
+
+    .layui-table-page select {
+      height: auto;
+    }
+
+    /* 商品表格  */
+    #goodsTable_div {
+      height: auto;
+      padding: 0 10px;
+    }
+
+    #goodsTable_div tbody .layui-table-cell {
+      height: auto;
+      line-height: 80px;
+    }
+
+    #goodsTable_div .layui-form-item .layui-input-inline {
+      width: 145px;
+    }
+  </style>
+</head>
+<div class="weadmin-body" style="padding: 10px;">
+  <!-- 规格库 -->
+  <div id="goodsStyleGroup_id">
+    <form id="form_sreach" class="layui-form">
+      <div class="layui-form-item">
+        <div class="layui-inline">
+          <label class="layui-form-label">商户名称</label>
+          <div class="layui-input-inline">
+            <input type="text" name="createBy" placeholder="请输入商户名称" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">商户编号</label>
+          <div class="layui-input-inline">
+            <input type="text" name="merchantId" placeholder="请输入商户编号" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">规格名称</label>
+          <div class="layui-input-inline">
+            <input type="text" name="nameBlurry" placeholder="请输入规格名称" class="layui-input">
+          </div>
+        </div>
+        <div class="layui-inline">
+          <label class="layui-form-label">日期</label>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="startDate" name="startDate" autocomplete="off"
+              placeholder="年-月-日">
+          </div>
+              <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+          <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="endDate" name="endDate" autocomplete="off" placeholder="年-月-日">
+          </div>
+        </div>
+      </div>
+
+
+      <div style="text-align: center;">
+        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload">搜索</button>
+      </div>
+      <table class="layui-hide" id="articleList" lay-filter="articleList"></table>
+    </form>
+    <form class="layui-form" action="" lay-filter="example" style="display: none;padding: 20px;"
+      id="addGoodsStyleGroup">
+      <div class="layui-form-item">
+        <label class="layui-form-label">名称</label>
+        <div class="layui-input-block" style="margin-left: 60px;">
+          <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入名称"
+            class="layui-input">
+        </div>
+      </div>
+    </form>
+    <!-- 表格行内工具栏 -->
+    <script type="text/html" id="clickTool">
+      <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+      <!-- <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+      <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a> -->
+    </script>
+    <!-- 头部工具栏 -->
+    <script type="text/html" id="toolbarDemo">
+      <div class="layui-btn-container">
+        <!-- <button type="button" class="layui-btn layui-btn-sm" lay-event="add" id="add">添加规格库</button> -->
+      </div>
+    </script>
+  </div>
+  <!-- 规格详情 -->
+  <div id="goodsStyleDetails_id" style="display: none;">
+    <!-- 添加按钮 -->
+    <div class="clearfix">
+      <!-- <button id="add_style" type="button" class="layui-btn layui-btn-normal layui-btn-sm">添加规格</button> -->
+      <button id="return" type="button" class="layui-btn layui-btn-primary layui-btn-sm"
+        style="float: right;">返回</button>
+    </div>
+    <!-- 规格列表 -->
+    <fieldset class="layui-elem-field site-demo-button" style="margin-top: 10px;">
+      <legend id="style_boxName" style="width: auto;border-bottom: 0;margin-bottom: 0;"></legend>
+      <div id="styleList" style="margin: 10px;margin-top: 0;">
+        <!-- <div class="goodsStyle_box">
+          <label>尺码：</label>
+          <ul class="list">
+            <li><span class="layui-badge">S</span></li>
+            <li><span class="layui-badge">M</span></li>
+            <li><span class="layui-badge">L</span></li>
+          </ul>
+          <button type="button" class="layui-btn layui-btn-normal layui-btn-sm"
+            style="padding: 0 6px;height: 26px;line-height: 26px;"><i class="layui-icon layui-icon-add-circle"
+              style="font-size: 20px; margin: 0;"></i></button>
+        </div> -->
+
+      </div>
+    </fieldset>
+    <!-- 动态规格表格 -->
+    <table id="goods_style_table" class="layui-table" lay-size="sm">
+      <!-- <colgroup>
+        <col width="100">
+        <col width="150">
+        <col width="150">
+        <col width="150">
+        <col>
+      </colgroup> -->
+      <thead>
+        <tr>
+          <!-- <th>颜色</th>
+          <th>尺码</th>
+          <th>商品</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <tr>
+          <td rowspan="3">红色</td>
+          <td>S</td>
+          <td>sss</td>
+        </tr> -->
+      </tbody>
+    </table>
+    <!-- 添加规格表单 -->
+    <!-- <div id="add_style_div" style="display: none;">
+      <form id="add_style_form" class="layui-form" style="padding: 20px;">
+        <div class="layui-form-item">
+          <label style="width: 48px;" class="layui-form-label">级别</label>
+          <div class="layui-input-block" style="margin-left: 80px;">
+            <select name="grade">
+              <option value="one">一级</option>
+              <option value="two">二级</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label style="width: 48px;" class="layui-form-label">规格名称</label>
+          <div class="layui-input-block" style="margin-left: 80px;">
+            <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入规格名称"
+              class="layui-input">
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label style="width: 48px;" class="layui-form-label">规格样式</label>
+          <div class="layui-input-block" style="margin-left: 80px;">
+            <input type="text" name="style" lay-verify="required" autocomplete="off" placeholder="请输入规格样式"
+              class="layui-input">
+          </div>
+        </div>
+      </form>
+    </div> -->
+    <!-- 区分添加规格表单 -->
+    <!-- <div id="add_style2_div" style="display: none;">
+      <form id="add_style2_form" class="layui-form" style="padding: 20px;">
+        <div class="layui-form-item">
+          <label style="width: 48px;" class="layui-form-label">规格样式</label>
+          <div class="layui-input-block" style="margin-left: 80px;">
+            <input type="text" name="style" lay-verify="required" autocomplete="off" placeholder="请输入规格样式"
+              class="layui-input">
+          </div>
+        </div>
+      </form>
+    </div> -->
+    <!-- 修改规格样式表单 -->
+    <!-- <div id="update_style2_div" style="display: none;">
+      <form id="update_style2_form" class="layui-form" style="padding: 20px;">
+        <div class="layui-form-item">
+          <label style="width: 48px;" class="layui-form-label">规格样式</label>
+          <div class="layui-input-block" style="margin-left: 80px;">
+            <input type="text" name="style" lay-verify="required" autocomplete="off" placeholder="请输入规格样式"
+              class="layui-input">
+          </div>
+        </div>
+      </form>
+    </div> -->
+    <!-- 商品表格 -->
+    <div id="goodsTable_div" style='display:none;'>
+      <form id="form_sreach_goods" class="layui-form" style="padding-top: 10px;">
+        <div class="layui-form-item" style="margin: 0;">
+          <div class="layui-inline">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+              <input type="text" name="goodsName" placeholder="请输入商品名称" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label style="width:36px" class="layui-form-label">自编号</label>
+            <div class="layui-input-inline">
+              <input type="text" name="entGoodsNo" placeholder="请输入商品自编号" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">日期</label>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="goods_startDate" name="startDate" autocomplete="off"
+                readonly="" placeholder="年-月-日">
+            </div>
+                <div class="layui-input-inline" style="width: 0;line-height: 38px;">-</div>
+            <div class="layui-input-inline">
+              <input type="text" class="layui-input" id="goods_endDate" name="endDate" autocomplete="off" readonly=""
+                placeholder="年-月-日">
+            </div>
+          </div>
+        </div>
+        <div style="text-align: center;">
+          <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload"
+            id="reload">搜索</button>
+        </div>
+      </form>
+      <table class="layui-hide" id="test" lay-filter="test"></table>
+
+    </div>
+  </div>
+</div>
+<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+<script src="../../static/js/common.js" charset="utf-8"></script>
+<script src="../../static/js/imageUtils.js" charset="utf-8"></script>
+</div>
+<script>
+  layui.use(['table', 'jquery', 'form', 'tree', 'laydate', 'element'], function () {
+    var table = layui.table,
+      $ = layui.jquery,
+      form = layui.form,
+      element = layui.element,
+      tree = layui.tree,
+      laydate = layui.laydate;
+    // ** 规格库列表 start ** //
+    //日期时间选择器
+    laydate.render({
+      elem: '#startDate'
+      // , value: getDay(-7)
+      , isInitValue: true, max: 0
+      , trigger: 'click'//呼出事件改成click
+    });
+    laydate.render({
+      elem: '#endDate', max: 0
+      , trigger: 'click'//呼出事件改成click
+    });
+    laydate.render({
+      elem: '#goods_startDate'
+      , isInitValue: true, max: 0
+      , trigger: 'click'//呼出事件改成click
+    });
+    laydate.render({
+      elem: '#goods_endDate', max: 0
+      , trigger: 'click'//呼出事件改成click
+    });
+    var update = function (serialNo) {
+      var progress = '';
+      $.ajax({
+        url: urlPrefix + 'silver-web-shop/goodsStyleGroup/find',
+        type: "POST",
+        xhrFields: {
+          withCredentials: true
+        },
+        async: false,
+        data: { serialNo: serialNo },
+        success: function (response) {
+          // return '完成';
+          if (response.status == 1) {
+            // return '完成';
+            //状态等于0 继续调用
+            if (response.datas[0].status == '0') {
+              //更新进度条
+              //缓冲5秒再次查询
+              setTimeout(function () {
+                update(serialNo);
+              }, 3000);
+              progress = `<div id="id_${serialNo}"><div class="layui-progress layui-progress-big" lay-showPercent="yes">
+											<div class="layui-progress-bar" lay-percent="${((response.datas[0].completionNumber / response.datas[0].total) * 100).toFixed(0)}%" style="width:${((response.datas[0].completionNumber / response.datas[0].total) * 100).toFixed(0)}%;"><span class="layui-progress-text">${((response.datas[0].completionNumber / response.datas[0].total) * 100).toFixed(0)}%</span></div>
+										</div></div>`;
+              $('[lay-id=articleList]').find('#id_' + serialNo + '').html(progress)
+            } else if (response.datas[0].status == '1') {
+              progress = '<div id="id_' + serialNo + '">完成</div>';
+              $('[lay-id=articleList]').find('#id_' + serialNo + '').html(progress)
+              setTimeout(function () {
+                _reload();
+              }, 400);
+            }
+          }
+        }
+      });
+      return progress;
+    }
+    // 动态设置表格高度
+    table.render({
+      elem: '#articleList',
+      cellMinWidth: 80,
+      toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
+      url: urlPrefix + 'silver-web-shop/goodsStyleGroup/find',
+      method: 'post',
+      defaultToolbar: ['filter'],
+      cols: [
+        [
+          {
+            field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
+          }, {
+            field: 'createDate', title: '创建日期', fixed: 'left', width: 170, templet: function (item) {
+              return G_format(item.createDate.time, "yyyy-MM-dd hh:mm:ss");
+            }
+          }, {
+            field: 'createBy', title: '商户名称'
+          }, {
+            field: 'merchantId', title: '商户编号'
+          }, {
+            field: 'name', title: '规格库名称'
+          }, {
+            field: 'operate', title: '操作', toolbar: '#clickTool', fixed: 'right'
+          }
+        ]
+      ],
+      // skin: 'row', //行边框风格
+      event: true,
+      page: true,
+      response: {
+        statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+      },
+      request: {
+        pageName: 'page', //页码的参数名称，默认：page
+        limitName: 'size' //每页数据量的参数名，默认：limit
+      },
+      where: {
+        // startDate: appendStartDate(getDay(-7))
+      },
+      parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+        return {
+          "code": res.status, //解析接口状态
+          "msg": res.msg, //解析提示文本
+          "count": res.totalCount, //解析数据长度
+          "data": res.datas //解析数据列表
+        };
+      },
+      done: function (res, curr, count) {
+
+      }
+    });
+    // 重载公共方法
+    var _reload = function () {
+      table.reload('articleList', {
+        url: urlPrefix + 'silver-web-shop/goodsStyleGroup/find',
+        page: {
+          curr: $(".layui-laypage-em").next().html()//重新从第 1 页开始
+        },
+        where: params()
+      });
+    }
+    /*
+     *数据表格中form表单元素是动态插入,所以需要更新渲染下
+     * http://www.layui.com/doc/modules/form.html#render
+     * */
+    var active = {
+      reload: function () {
+        //执行重载
+        table.reload('articleList', {
+          url: urlPrefix + 'silver-web-shop/goodsStyleGroup/find',
+          page: {
+            curr: 1 //重新从第 1 页开始
+          },
+          where: params()
+        });
+      }
+    };
+    var params = function () {
+      var obj = {};
+      var nameBlurry = $('#form_sreach').find('[name=nameBlurry]').val();
+      var merchantId = $('#form_sreach').find('[name=merchantId]').val();
+      var createBy = $('#form_sreach').find('[name=createBy]').val();
+      var startDate = $('#form_sreach').find('[name=startDate]').val();
+      var endDate = $('#form_sreach').find('[name=endDate]').val();
+      startDate = appendStartDate(startDate);
+      endDate = appendEndDate(endDate);
+      obj.nameBlurry = nameBlurry;
+      obj.merchantId = merchantId;
+      obj.createByBlurry = createBy;
+      obj.startDate = startDate;
+      obj.endDate = endDate;
+      return obj;
+    }
+    // 监听查询按钮
+    $('#form_sreach .layui-btn').on('click', function () {
+      var type = $(this).data('type');
+      active[type] ? active[type].call(this) : '';
+    });
+    $('#add').click(function () {
+      $('#addGoodsStyleGroup').find('[name=name]').val('');
+      layer.open({
+        title: "添加",
+        type: 1,
+        area: ["505px", "200px"], //宽高
+        content: $('#addGoodsStyleGroup'),
+        btnAlign: 'c',
+        btn: ['保存', '关闭'],
+        yes: function (index) {
+          if (!isEmpty($.trim($('#addGoodsStyleGroup').find('[name=name]').val()))) {
+            layer.alert('请输入组名称');
+          } else {
+            $.ajax({
+              url: urlPrefix + "silver-web-shop/goodsStyleGroup/insert",
+              type: "POST",
+              xhrFields: {
+                withCredentials: true
+              },
+              data: { name: $.trim($('#addGoodsStyleGroup').find('[name=name]').val()) },
+              success: function (response) {
+                if (response.status == 1) {
+                  layer.msg("添加成功！");
+                  layer.close(index);
+                  _reload();//重载表格
+                } else {
+                  layer.alert(response.msg);
+                }
+              }
+            });
+          }
+        }
+      });
+    })
+
+    //监听工具条
+    table.on('tool(articleList)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'detail') {
+        goodsStyleDetails_fun(data.serialNo)
+        $('#style_boxName').html('规格库名称：' + data.name);
+        $('#goodsStyleGroup_id').hide();
+        $('#goodsStyleDetails_id').attr('name', data.serialNo).fadeIn();
+      } else if (obj.event === 'del') {
+        layer.confirm('真的删除行么', function (index) {
+          obj.del();
+          layer.close(index);
+        });
+      } else if (obj.event === 'edit') {
+        layer.alert('编辑行：<br>' + JSON.stringify(data))
+      }
+    });
+    // ** 规格库列表 end ** //
+    // ** 规格详情 start ** //
+    // 查询规格关联的商品
+    var goodsStyle_find_fun = function (relSerNo) {
+      $.ajax({
+        url: urlPrefix + "silver-web-shop/goodsStyle/get",
+        type: "POST",
+        xhrFields: {
+          withCredentials: true
+        },
+        data: { relSerNo: relSerNo },
+        success: function (response) {
+          if (response.status == 1) {
+            $('#add_style').hide();
+            var datas = response.datas;
+            var len = datas.length;
+            var tableArr = $('#goods_style_table tbody').find('tr');
+            for (var i = 0; i < len; i++) {
+              for (var j = 0; j < tableArr.length; j++) {
+                if (datas[i].twoName == '') {// 如果datas[i].twoName==’‘，只有一个等级
+                  if ($(tableArr[j]).find('.oneStyle').html() == datas[i].oneStyle) {// 匹配到等级一值相等就赋值图片、名称、编号
+                    if (!isEmpty(datas[i].goodsImage)) {
+                      $(tableArr[j]).find('.img').html('<img src="' + shrink_img(datas[i].goodsImage.split(";")[0]) + '">');
+                    }
+                    $(tableArr[j]).find('.price').html(JSON.parse(datas[i].note).price.toFixed(2));
+                    $(tableArr[j]).find('.name').html(datas[i].goodsName);
+                    $(tableArr[j]).find('.id').html(datas[i].goodsId);
+                    $(tableArr[j]).find('.createBy').html(datas[i].createBy);
+                    $(tableArr[j]).find('.merchantId').html(datas[i].merchantId);
+                    $(tableArr[j]).find('.createDate').html(G_format(datas[i].createDate == null ? '' : datas[i].createDate.time));
+                    $(tableArr[j]).find('.del').show().attr('name', datas[i].serialNo);
+                  }
+                } else {// 否则有两个等级
+                  if ($(tableArr[j]).find('.twoStyle').attr('data-oneStyle') == datas[i].oneStyle && $(tableArr[j]).find('.twoStyle').html() == datas[i].twoStyle) {// 匹配到等级一和等级二值相等就赋值图片、名称、编号
+                    if (!isEmpty(datas[i].goodsImage)) {
+                      $(tableArr[j]).find('.img').html('<img src="' + shrink_img(datas[i].goodsImage.split(";")[0]) + '">');
+                    }
+                    $(tableArr[j]).find('.price').html(JSON.parse(datas[i].note).price.toFixed(2));
+                    $(tableArr[j]).find('.name').html(datas[i].goodsName);
+                    $(tableArr[j]).find('.id').html(datas[i].goodsId);
+                    $(tableArr[j]).find('.createBy').html(datas[i].createBy);
+                    $(tableArr[j]).find('.merchantId').html(datas[i].merchantId);
+                    // $(tableArr[j]).find('.createDate').html(G_format(datas[i].createDate == null ? '' : datas[i].createDate.time));
+                    $(tableArr[j]).find('.del').show().attr('name', datas[i].serialNo);
+                  }
+                }
+              }
+            }
+          }
+          // else {
+          //   $('#add_style').show();
+          // }
+        }
+      })
+    }
+    // 查询规格详情方法
+    var goodsStyleDetails_fun = function (relSerNo) {
+      $('#styleList').html('')
+      $('#goods_style_table tbody').html('')
+      $.ajax({
+        url: urlPrefix + "silver-web-shop/goodsStyleDetails/find",
+        type: "POST",
+        xhrFields: {
+          withCredentials: true
+        },
+        data: { relSerNo: relSerNo },
+        success: function (response) {
+          if (response.status == 1) {
+            var obj = {};// 组合成新的对象数组
+            var datas = response.datas;
+            var len = datas.length;
+            for (var i = 0; i < len; i++) {// 遍历数据，处理成对象
+              if (datas[i].oneName == '') {// 2级规格
+                if (!obj.hasOwnProperty('twoName_' + datas[i].twoName)) {// 不存在
+                  obj['twoName_' + datas[i].twoName] = [datas[i]]
+                } else {
+                  obj['twoName_' + datas[i].twoName].push(datas[i])
+                }
+              } else {// 1级规格
+                if (!obj.hasOwnProperty('oneName_' + datas[i].oneName)) {// 不存在
+                  obj['oneName_' + datas[i].oneName] = [datas[i]]
+                } else {
+                  obj['oneName_' + datas[i].oneName].push(datas[i])
+                }
+              }
+            }
+            var styleListStr = '';// 规格组
+            var styleTH = '';// 表格头
+            var styleTr = '';// 表格内容
+            var arr = [];// 缓存规格数据key值，用作分开遍历生成表格
+            for (var key in obj) {//遍历对象渲染规格和表格
+              arr.push(key)
+              styleTH += '<th>' + key.split('_')[1] + '</th>'
+              styleListStr += '<div class="goodsStyle_box" data-style="' + key.split('_')[0] + '" name="' + key.split('_')[1] + '">' +
+                '<label>' + key.split('_')[1] + '：</label>' +
+                '<ul class="list">';
+              for (var index = 0; index < obj[key].length; index++) {
+                if (key.split('_')[0] == 'oneName') {// 一级
+                  styleListStr += '<li><i class="iconfont icon-xiugai" title="修改" name="' + obj[key][index].serialNo + '" ></i><span class="layui-badge">' + obj[key][index].oneStyle + '</span></li>';
+                } else {// 二级
+                  styleListStr += '<li><i class="iconfont icon-xiugai" title="修改" name="' + obj[key][index].serialNo + '" ></i><span class="layui-badge">' + obj[key][index].twoStyle + '</span></li>';
+                }
+              }
+              // styleListStr += '</ul>' +
+              //   '<button type="button" class="layui-btn layui-btn-normal layui-btn-sm addStyle" style="padding: 0 6px;height: 26px;line-height: 26px;"><i class="layui-icon layui-icon-add-circle" style="font-size: 20px; margin: 0;"></i></button>' +
+              //   '</div>';
+            }
+            styleTH += '<th>商品图片</th><th>商品售价（元）</th><th>商品名称</th><th>商品编号</th><th>商户名称</th><th>商户编号</th><th>创建日期</th>';
+            // +'<th>操作</th>';
+            if (arr.length == 2) {//有两级
+              // 遍历渲染表格
+              for (var ii = 0; ii < obj[arr[0]].length; ii++) {// 遍历一级
+                obj[arr[0]][ii]
+                styleTr += '<tr>' +
+                  '<td class="oneStyle" rowspan="' + obj[arr[1]].length + '">' + obj[arr[0]][ii].oneStyle + '</td>';
+                for (var jj = 0; jj < obj[arr[1]].length; jj++) {
+                  styleTr += '<td data-oneStyle="' + obj[arr[0]][ii].oneStyle + '" class="twoStyle">' + obj[arr[1]][jj].twoStyle + '</td>' +
+                    '<td class="img">...</td>' +
+                    '<td class="price">...</td>' +
+                    '<td class="name">...</td>' +
+                    '<td class="id">...</td>' +
+                    '<td class="merchantId">...</td>' +
+                    '<td class="createBy">...</td>' +
+                    '<td class="createDate">...</td>' +
+                    // '<td><button name="two"  type="button" class="set layui-btn layui-btn-normal layui-btn-sm">选择商品</button>'+
+                    // '<button style="display:none;"  type="button" class="del layui-btn layui-btn-danger layui-btn-sm">移除商品</button></td>' +
+                    '</tr>';
+                }
+              }
+            } else {// 只有一级
+              // 遍历渲染表格
+              for (var ii = 0; ii < obj[arr[0]].length; ii++) {// 遍历一级
+                obj[arr[0]][ii]
+                styleTr += '<tr>' +
+                  '<td class="oneStyle">' + obj[arr[0]][ii].oneStyle + '</td>' +
+                  '<td class="img">...</td>' +
+                  '<td class="price">...</td>' +
+                  '<td class="name">...</td>' +
+                  '<td class="id">...</td>' +
+                  '<td class="merchantId">...</td>' +
+                  '<td class="createBy">...</td>' +
+                  '<td class="createDate">...</td>' +
+                  // '<td><button name="one" type="button" class="set layui-btn layui-btn-normal layui-btn-sm">选择商品</button>'+
+                  //'<button style="display:none;" type="button" class="del layui-btn layui-btn-danger layui-btn-sm">移除商品</button></td>' +
+                  '</tr>';
+              }
+            }
+            $('#goods_style_table').find('thead').find('tr').html(styleTH);// 渲染表格头
+            $('#goods_style_table').find('tbody').html(styleTr);// 渲染表格头
+            $('#styleList').html(styleListStr);// 渲染规格组
+
+            goodsStyle_find_fun(datas[0].relSerNo);
+          } else {
+            $('#add_style').show();
+            $('#goods_style_table').find('thead').find('tr').html('');// 渲染表格头
+            $('#goods_style_table').find('tbody').html('');// 渲染表格头
+            $('#styleList').html('');// 渲染规格组
+          }
+        }
+      });
+    }
+    // 返回规格库
+    $('#return').click(function () {
+      $('#goodsStyleDetails_id').hide();
+      $('#goodsStyleGroup_id').fadeIn();
+    })
+    // 添加规格
+    // $('#add_style').click(function () {
+    //   $('#add_style_form').find('[name=name]').val('')
+    //   $('#add_style_form').find('[name=style]').val('')
+    //   var _this = this;
+    //   layer.open({
+    //     title: "添加规格",
+    //     type: 1,
+    //     area: ["505px", "328px"], //宽高
+    //     content: $('#add_style_div'),
+    //     btnAlign: 'c',
+    //     btn: ['保存', '关闭'],
+    //     yes: function (index) {
+    //       if (!isNull($.trim($('#add_style_form').find('[name=name]').val()))) {
+    //         layer.alert('请输入规格名称');
+    //       } else if (!isNull($.trim($('#add_style_form').find('[name=style]').val()))) {
+    //         layer.alert('请输入规格样式');
+    //       } else {
+    //         var data = {
+    //           relSerNo: $('#goodsStyleDetails_id').attr('name'),
+    //         };
+    //         if ($('#add_style_form').find('[name=grade]').val() == 'one') {// 一级
+    //           data.oneName = $.trim($('#add_style_form').find('[name=name]').val());
+    //           data.oneStyle = $.trim($('#add_style_form').find('[name=style]').val());
+    //         } else {// 二级
+    //           data.twoName = $.trim($('#add_style_form').find('[name=name]').val());
+    //           data.twoStyle = $.trim($('#add_style_form').find('[name=style]').val());
+    //         }
+    //         $.ajax({
+    //           url: urlPrefix + "silver-web-shop/goodsStyleDetails/insert",
+    //           type: "POST",
+    //           xhrFields: {
+    //             withCredentials: true
+    //           },
+    //           data: data,
+    //           success: function (response) {
+    //             if (response.status == 1) {
+    //               goodsStyleDetails_fun($('#goodsStyleDetails_id').attr('name'));
+    //               layer.msg("添加成功！");
+    //               layer.close(index);
+    //             } else {
+    //               layer.alert(response.msg);
+    //             }
+    //           }
+    //         });
+
+    //       }
+    //     }
+    //   });
+    // })
+    // 区分规格添加一级二级
+    // $('#styleList').on('click', '.addStyle', function () {
+    //   $('#add_style2_form').find('[name=style]').val('');
+    //   var style_name = $(this).parents('.goodsStyle_box').attr('name');// 当前规格样式
+    //   var grade = $(this).parents('.goodsStyle_box').attr('data-style');// 当前等级
+    //   layer.open({
+    //     title: "添加",
+    //     type: 1,
+    //     area: ["505px", "200px"], //宽高
+    //     content: $('#add_style2_div'),
+    //     btnAlign: 'c',
+    //     btn: ['保存', '关闭'],
+    //     yes: function (index) {
+    //       if (!isNull($.trim($('#add_style2_form').find('[name=style]').val()))) {
+    //         layer.alert('请输入规格样式');
+    //       } else {
+    //         var data = {
+    //           relSerNo: $('#goodsStyleDetails_id').attr('name'),
+    //         };
+    //         if (grade == 'oneName') {// 一级
+    //           data.oneName = style_name;
+    //           data.oneStyle = $.trim($('#add_style2_form').find('[name=style]').val());
+    //         } else {// 二级
+    //           data.twoName = style_name;
+    //           data.twoStyle = $.trim($('#add_style2_form').find('[name=style]').val());
+    //         }
+    //         $.ajax({
+    //           url: urlPrefix + "silver-web-shop/goodsStyleDetails/insert",
+    //           type: "POST",
+    //           xhrFields: {
+    //             withCredentials: true
+    //           },
+    //           data: data,
+    //           success: function (response) {
+    //             if (response.status == 1) {
+    //               goodsStyleDetails_fun($('#goodsStyleDetails_id').attr('name'));
+    //               layer.msg("添加成功！");
+    //               layer.close(index);
+    //             } else {
+    //               layer.alert(response.msg);
+    //             }
+    //           }
+    //         });
+
+    //       }
+    //     }
+    //   });
+    // })
+    // 修改规格样式
+    // $('#styleList').on('click', '.icon-xiugai', function () {
+    //   var _this = this;
+    //   $('#update_style2_form').find('[name=style]').val($(this).siblings('span.layui-badge').html())
+    //   var style_name = $(this).parents('.goodsStyle_box').attr('name');// 当前规格样式
+    //   var grade = $(this).parents('.goodsStyle_box').attr('data-style');// 当前等级
+    //   layer.open({
+    //     title: "修改",
+    //     type: 1,
+    //     area: ["505px", "200px"], //宽高
+    //     content: $('#update_style2_div'),
+    //     btnAlign: 'c',
+    //     btn: ['保存', '关闭'],
+    //     yes: function (index) {
+    //       if (!isNull($.trim($('#update_style2_form').find('[name=style]').val()))) {
+    //         layer.alert('请输入规格样式');
+    //       } else {
+    //         var data = {
+    //           relSerNo: $('#goodsStyleDetails_id').attr('name'),
+    //           serialNo: $(_this).attr('name')
+    //         };
+    //         if (grade == 'oneName') {// 一级
+    //           data.oneName = style_name;
+    //           data.oneStyle = $.trim($('#update_style2_form').find('[name=style]').val());
+    //         } else {// 二级
+    //           data.twoName = style_name;
+    //           data.twoStyle = $.trim($('#update_style2_form').find('[name=style]').val());
+    //         }
+    //         $.ajax({
+    //           url: urlPrefix + "silver-web-shop/goodsStyleDetails/update",
+    //           type: "POST",
+    //           xhrFields: {
+    //             withCredentials: true
+    //           },
+    //           data: data,
+    //           success: function (response) {
+    //             if (response.status == 1) {
+    //               goodsStyleDetails_fun($('#goodsStyleDetails_id').attr('name'));
+    //               layer.msg("修改成功！");
+    //               layer.close(index);
+    //             } else {
+    //               layer.alert(response.msg);
+    //             }
+    //           }
+    //         });
+
+    //       }
+    //     }
+    //   });
+    // })
+    // 移除关联规格商品
+    $('#goods_style_table').on('click', '.del', function () {
+      var _this = this;
+      layer.alert('确定移除已关联的商品吗？', {
+        time: 0 //不自动关闭
+        , btnAlign: 'c'
+        , btn: ['保存', '取消']
+        , yes: function (index) {
+          $.ajax({
+            url: urlPrefix + "silver-web-shop/goodsStyle/delete",
+            type: "POST",
+            xhrFields: {
+              withCredentials: true
+            },
+            data: {
+              serialNo: $(_this).attr('name')
+            },
+            success: function (response) {
+              if (response.status == 1) {
+                layer.msg("保存成功！");
+                layer.close(index);
+                goodsStyleDetails_fun($('#goodsStyleDetails_id').attr('name'));
+              } else {
+                layer.alert(response.msg);
+              }
+            }
+          });
+        }
+      });
+
+    })
+    // 规格关联商品 添加商品到规格
+    $('#goods_style_table').on('click', '.set', function () {
+      $('#form_sreach_goods').find('input').val('');
+      table.render({
+        elem: '#test'
+        , method: 'post'
+        , url: urlPrefix + 'silver-web-shop/stock/get'
+        , cols: [
+          [
+            { type: 'radio', fixed: 'left' },
+            {
+              field: 'zizeng', width: 40, title: '序号', fixed: 'left', type: 'numbers'
+            }, {
+              field: 'createDate', width: 160, title: '创建时间', fixed: 'left', templet: function (item) {
+                return G_format(item.createDate, "yyyy-MM-dd hh:mm:ss");
+              }
+            }, {
+              field: 'spareGoodsImage', width: 90, title: '图片', templet: function (item) {
+                return '<div class="layer-photos-demo checkImg"  style="cursor:pointer;"><img layer-pid="" alt="' + g_imgSplit(item.reMark, item.goodsMerchantId) + '"  src="' + g_imgSplit(item.reMark, item.goodsMerchantId) + '" width="60px" height="60px"></div>';
+              }
+            }, {
+              field: 'regPrice', title: '商品售价（元）', width: 140, templet: function (item) {
+                return item.regPrice.toFixed(2);
+              }
+            }, {
+              field: 'goodsName', title: '商品名称', width: 300, templet: function (item) {
+                return item.goodsName;
+              }
+            }, {
+              field: 'entGoodsNo', title: '商品自编号', templet: function (item) {
+                return item.entGoodsNo;
+              }
+            }
+          ]
+        ],
+        // skin: 'row', //行边框风格
+        event: true,
+        page: true,
+        response: {
+          statusCode: 1 //重新规定成功的状态码为 200，table 组件默认为 0
+        },
+        request: {
+          pageName: 'page', //页码的参数名称，默认：page
+          limitName: 'size' //每页数据量的参数名，默认：limit
+        },
+        where: {
+
+        },
+        parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+          if (res.status == 1) {
+            return {
+              "code": res.status, //解析接口状态
+              "msg": res.msg, //解析提示文本
+              "count": res.totalCount, //解析数据长度
+              "data": res.datas //解析数据列表
+            };
+          } else {
+            return {
+              "code": res.status, //解析接口状态
+              "msg": res.msg, //解析提示文本
+              "count": res.totalCount //解析数据长度
+            };
+          }
+        },
+        done: function (res, curr, count) {
+
+        }
+      });
+      var _this = this;
+      layer.open({
+        title: "商品列表",
+        type: 1,
+        area: ["80%", "90%"], //宽高
+        content: $('#goodsTable_div'),
+        btnAlign: 'c',
+        btn: ['保存', '关闭'],
+        yes: function (index) {
+          var goodsId = $('#test').siblings('[lay-id=test]').find('.layui-table-body tbody .layui-table-click').find('[data-field=entGoodsNo]').find('div').html();
+          var data = {
+            goodsId: goodsId,
+            relSerNo: $('#goodsStyleDetails_id').attr('name'),
+          }
+          if ($(_this).attr('name') == 'one') {// 只有一级
+            data.oneName = $($('#styleList').find('.goodsStyle_box')[0]).attr('name');
+            data.oneStyle = $(_this).parents('td').siblings('.oneStyle').html();
+          } else {// 二级
+            data.oneName = $($('#styleList').find('.goodsStyle_box')[0]).attr('name');
+            data.twoName = $($('#styleList').find('.goodsStyle_box')[1]).attr('name');
+            data.oneStyle = $(_this).parents('td').siblings('.twoStyle').attr('data-oneStyle');// 为了避免第二行开始的一级样式俾第一行占用了，所以利用第二列的data-oneStyle属性值赋值
+            data.twoStyle = $(_this).parents('td').siblings('.twoStyle').html();
+          }
+          $.ajax({
+            url: urlPrefix + "silver-web-shop/goodsStyle/insert",
+            type: "POST",
+            xhrFields: {
+              withCredentials: true
+            },
+            data: data,
+            success: function (response) {
+              if (response.status == 1) {
+                layer.msg("保存成功！");
+                layer.close(index);
+                goodsStyleDetails_fun($('#goodsStyleDetails_id').attr('name'));
+              } else {
+                layer.alert(response.msg);
+              }
+            }
+          });
+        }
+      });
+    })
+    //图片浏览
+    $('#goodsTable_div').on('click', '[lay-id="articleList"] .checkImg img', function (e) {
+      layer.photos({
+        photos: {
+          "data": [   //相册包含的图片，数组格式
+            {
+              "alt": e.target.alt,
+              "src": e.target.src, //原图地址
+              "thumb": e.target.src //缩略图地址
+            }
+          ]
+        }
+      });
+    });
+    // 查询商品数据
+    $('#reload').click(function () {
+      var goodsName = $('#form_sreach_goods').find('[name=goodsName]').val();
+      var entGoodsNo = $('#form_sreach_goods').find('[name=entGoodsNo]').val();
+      var startDate = $('#form_sreach_goods').find('[name=startDate]').val();
+      var endDate = $('#form_sreach_goods').find('[name=endDate]').val();
+      //拼接时间
+      startDate = appendStartDate(startDate);
+      endDate = appendEndDate(endDate);
+      table.reload('test', {
+        url: urlPrefix + 'silver-web-shop/stock/get',
+        page: {
+          curr: 1 //重新从第 1 页开始
+        },
+        where: {
+          goodsName: goodsName,
+          entGoodsNo: entGoodsNo,
+          startDate: startDate,
+          endDate: endDate
+        }
+      });
+    })
+    // 单选框点击行触发
+    $('#goodsTable_div').on("click", ".layui-table-body table.layui-table tbody tr", function () {
+      /*当单击表格行时,把单选按钮设为选中状态*/
+      var tableDiv;
+      var index = $(this).attr('data-index');
+      var tableBox = $(this).parents('.layui-table-box');
+      //存在固定列
+      if (tableBox.find(".layui-table-fixed.layui-table-fixed-l").length > 0) {
+        tableDiv = tableBox.find(".layui-table-fixed.layui-table-fixed-l");
+      } else {
+        tableDiv = tableBox.find(".layui-table-body.layui-table-main");
+      }
+      var checkCell = tableDiv.find("tr[data-index=" + index + "]").find("td div.layui-table-cell div.layui-form-radio I");
+      if (checkCell.length > 0) {
+        checkCell.click();
+      }
+    });
+    //对td的单击事件进行拦截停止，防止事件冒泡再次触发上述的单击事件  将此代码在页面初始化后执行一次即可以。
+    $('#goodsTable_div').on("click", "td div.layui-table-cell div.layui-form-radio", function (e) {
+      e.stopPropagation();
+    });
+    // ** 规格详情 end ** //
+  });
+</script>

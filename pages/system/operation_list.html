@@ -86,6 +86,7 @@
 										<option value="member">会员</option>
 										<option value="stock">库存</option>
 										<option value="goodsSupply">商品供货</option>
+										<option value="supplyStock">供货库存</option>
 										<option value="merDivRate">分润费率</option>
 										<option value="merPro">推广配置</option>
 										<option value="witFee">提现费率</option>
@@ -245,6 +246,8 @@
 										return '商品运费';
 									} else if (module == 'merchantCounter') {
 										return '专柜';
+									} else if (module == 'supplyStock') {
+										return '供货库存';
 									}
 								}
 							}, {

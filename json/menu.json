@@ -51,6 +51,12 @@
           "name": "库存信息",
           "icon": "",
           "url": "./pages/goods/stock_list.html"
+        },
+        {
+          "id": "goods_4",
+          "name": "规格信息",
+          "icon": "",
+          "url": "./pages/goods/goods_style.html"
         }
       ]
     },

@@ -23,6 +23,9 @@ var G_format = function(datetime, fmt) {
   if (isEmpty(datetime)) {
     return "";
   }
+  if (isEmpty(fmt)) {
+    fmt = "yyyy-MM-dd hh:mm:ss";
+  }
   if (parseInt(datetime) == datetime) {
     if (datetime.length == 10) {
       datetime = parseInt(datetime) * 1000;
