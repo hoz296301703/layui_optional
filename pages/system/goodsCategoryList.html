@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html>
+<!--系统省市区信息html-->
+
+<head>
+	<meta charset="UTF-8">
+	<title>银盟跨境电商服务平台运营系统</title>
+	<meta name="Description" content="基于layUI数据表格操作" />
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<link rel="stylesheet" href="../../static/css/font.css">
+	<link rel="stylesheet" href="../../static/css/weadmin.css">
+	<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+	<!--[if lt IE 9]>
+	      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+	      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	<style type="text/css">
+		.layui-form-switch {
+			width: 55px;
+		}
+
+		.layui-form-switch em {
+			width: 40px;
+		}
+
+		.layui-tree-setHide>.layui-tree-showLine .layui-tree-lineExtend .layui-tree-entry .layui-tree-btnGroup .layui-icon-add-1 {
+			display: none;
+		}
+
+		.layui-form-label {
+			width: 100px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="weadmin-body">
+
+
+		<form id="form_sreach" class="layui-form">
+			<div class="layui-form-item">
+				<div id="test7" class="demo-tree"></div>
+				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+					<legend>商品分类信息</legend>
+				</fieldset>
+				<button id="addLogisticsBtn" type="button" class="layui-btn layui-btn-sm">新增一级</button>
+				<div id="test9" class="demo-tree demo-tree-box">
+				</div>
+			</div>
+		</form>
+		<!-- 新增一级 -->
+		<form class="layui-form" id="addLogistics" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">一级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="firstTypeName" lay-verify="required" autocomplete="off"
+							placeholder="请输入一级菜单名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">序号</label>
+					<div class="layui-input-inline">
+						<input type="number" name="firstSerialNo" lay-verify="required" autocomplete="off"
+							class="layui-input" value="1">
+					</div>
+					<div style="margin-left: 110px;" class="layui-form-mid layui-word-aux">类别按照序号排序，序号越小越前</div>
+				</div>
+			</div>
+
+		</form>
+		<!-- 修改省份 -->
+		<form class="layui-form" id="updateProvince" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">一级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="firstTypeName" lay-verify="required" autocomplete="off"
+							placeholder="请输入一级菜单名称" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label">序号</label>
+					<div class="layui-input-inline">
+						<input type="number" name="firstSerialNo" lay-verify="required" autocomplete="off"
+							class="layui-input" value="1">
+					</div>
+					<div style="margin-left: 110px;" class="layui-form-mid layui-word-aux">类别按照序号排序，序号越小越前</div>
+				</div>
+			</div>
+
+		</form>
+		<!-- 新增二级 -->
+		<form class="layui-form" id="addCity" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">一级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="firstTypeName" disabled="disabled" class="layui-input layui-disabled">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">二级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="goodsSecondTypeName" lay-verify="required" autocomplete="off"
+							placeholder="请输入二级名称" class="layui-input">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">序号</label>
+					<div class="layui-input-inline">
+						<input type="number" name="secondSerialNo" lay-verify="required" autocomplete="off"
+							class="layui-input" value="1">
+					</div>
+					<div style="margin-left: 110px;" class="layui-form-mid layui-word-aux">类别按照序号排序，序号越小越前</div>
+				</div>
+			</div>
+		</form>
+		<!-- 修改城市 -->
+		<form class="layui-form" id="updateCity" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">一级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="firstTypeName" disabled="disabled" class="layui-input layui-disabled">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">二级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="goodsSecondTypeName" lay-verify="required" autocomplete="off"
+							placeholder="请输入二级名称" class="layui-input">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">序号</label>
+					<div class="layui-input-inline">
+						<input type="number" name="secondSerialNo" lay-verify="required" autocomplete="off"
+							class="layui-input" value="1">
+					</div>
+					<div style="margin-left: 110px;" class="layui-form-mid layui-word-aux">类别按照序号排序，序号越小越前</div>
+				</div>
+			</div>
+		</form>
+		<!-- 新增三级 -->
+		<form class="layui-form" id="addRecArea" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">二级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="secondTypeName" class="layui-input layui-disabled">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">三级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="goodsThirdTypeName" class="layui-input">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">序号</label>
+					<div class="layui-input-inline">
+						<input type="number" name="thirdSerialNo" lay-verify="required" autocomplete="off"
+							class="layui-input" value="1">
+					</div>
+					<div style="margin-left: 110px;" class="layui-form-mid layui-word-aux">类别按照序号排序，序号越小越前</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">增值税</label>
+					<div class="layui-input-inline">
+						<input type="text" name="vat" class="layui-input" value="0">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">消费税</label>
+					<div class="layui-input-inline">
+						<input type="text" name="consumptionTax" class="layui-input" value="0">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">综合税</label>
+					<div class="layui-input-inline">
+						<input type="text" name="consolidatedTax" class="layui-input" value="0">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">关税税率</label>
+					<div class="layui-input-inline">
+						<input type="text" name="tariff" class="layui-input" value="0">
+					</div>
+				</div>
+			</div>
+		</form>
+		<!-- 修改三级 -->
+		<form class="layui-form" id="updateArea" style="display: none;margin-top: 30px;">
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">二级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" disabled="disabled" name="secondTypeName" class="layui-input layui-disabled">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">三级名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="goodsThirdTypeName" class="layui-input">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">序号</label>
+					<div class="layui-input-inline">
+						<input type="number" name="thirdSerialNo" lay-verify="required" autocomplete="off"
+							class="layui-input" value="1">
+					</div>
+					<div style="margin-left: 110px;" class="layui-form-mid layui-word-aux">类别按照序号排序，序号越小越前</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">增值税</label>
+					<div class="layui-input-inline">
+						<input type="text" name="vat" class="layui-input" value="0">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">消费税</label>
+					<div class="layui-input-inline">
+						<input type="text" name="consumptionTax" class="layui-input" value="0">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">综合税</label>
+					<div class="layui-input-inline">
+						<input type="text" name="consolidatedTax" class="layui-input" value="0">
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-inline">
+					<label class="layui-form-label">关税税率</label>
+					<div class="layui-input-inline">
+						<input type="text" name="tariff" class="layui-input" value="0">
+					</div>
+				</div>
+			</div>
+		</form>
+		</script>
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<script src="../../static/js/common.js" charset="utf-8"></script>
+
+	</div>
+	<script>
+		layui.extend({
+			admin: '{/}../../static/js/admin'
+		});
+
+		layui.use(['table', 'jquery', 'form', 'admin', 'tree'], function () {
+			var table = layui.table,
+				$ = layui.jquery,
+				form = layui.form,
+				tree = layui.tree,
+				admin = layui.admin;
+			// 动态设置表格高度
+			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
+			// var render = function () {
+
+			// }
+
+
+			window.customs_reload = function () {// 提交重载方法到全局，让子页面调用
+				layer.closeAll();
+				_reload();
+			};
+
+			// // 监听查询按钮
+			// $('#form_sreach .layui-btn').on('click', function () {
+			// 	var type = $(this).data('type');
+			// 	active[type] ? active[type].call(this) : '';
+			// });
+
+			// 新增一级
+			$('#addLogisticsBtn').on('click', function () {
+				$('#addLogistics').find('[name=firstTypeName]').val('');
+				layer.open({
+					title: "新增一级",
+					type: 1,
+					closeBtn: 0,
+					btnAlign: "c",
+					skin: "layui-layer-rim", //加上边框
+					area: ["354px", "256px"], //宽高
+					content: $("#addLogistics"),
+					btn: ["保存", "关闭"],
+					yes: function (index) {
+						var sign = true;
+						$.each($("#addLogistics").find("[name]"), function (i, item) {
+							if (isEmpty($(item).val())) {
+								sign = false;
+								layer.alert('请填写新增的一级信息');
+								return false;
+							}
+						});
+						if (sign) {
+							layer.load();
+							var datas = {
+								type: 1,
+								firstTypeName: $('#addLogistics').find('[name=firstTypeName]').val(),
+								serialNo: $('#addLogistics').find('[name=firstSerialNo]').val()
+							}
+							$.ajax({
+								url: urlPrefix + "silver-web-shop/category/addGoodsCategory",
+								type: "POST",
+								xhrFields: {
+									withCredentials: true
+								},
+								data: datas,
+								success: function (response) {
+									layer.closeAll();
+									if (response.status == 1) {
+										layer.msg('添加成功', function () {
+											//关闭后的操作
+											$("#addLogistics").hide();
+											layer.closeAll();
+											render();
+										});
+									} else {
+										layer.msg(response.msg);
+									}
+								}
+							});
+						}
+
+					}
+
+				});
+			});
+			function getDatas() {
+				var datas = null;
+				var jsonData = {};
+				$.ajax({
+					url: urlPrefix + "silver-web-shop/category/AllGoodsCategory",
+					type: "POST",
+					async: false,
+					success: function (response) {
+						if (response.status == 1) {
+							datas = response.datas;
+						} else {
+							layer.alert(response.msg);
+						}
+					}
+				});
+				return datas;
+			}
+			function tem() {
+				var result = [];
+				var datas = getDatas();
+				//遍历后台数据
+				let provinceindex = 0;// 一级下标
+				for (let key in datas) {// 一级
+					//一级名称
+					var provincename = key.split('_')[1];
+					//一级编号
+					var provinceCode = key.split('_')[0];
+					result.push({
+						addr: 1, title: provincename, id: provinceCode, children: []
+					});
+
+					let cityindex = 0;// 二级下标 
+					for (let key2 in datas[key]) {// 二级
+						if (key2 == 'null_null') {
+							continue
+						}
+						result[provinceindex].children.push({
+							addr: 2,
+							title: key2.split('_')[1],
+							id: key2.split('_')[0],
+							children: []
+						})
+						for (let key3 = 0; key3 < datas[key][key2].length; key3++) {// 三级
+							if (JSON.parse(datas[key][key2][key3].thirdId) == 'null') {
+								continue
+							}
+							result[provinceindex].children[cityindex].children.push({
+								addr: 3,
+								title: datas[key][key2][key3].thirdName,
+								id: datas[key][key2][key3].thirdId,
+								vat: datas[key][key2][key3].vat,
+								consumptionTax: datas[key][key2][key3].consumptionTax,
+								consolidatedTax: datas[key][key2][key3].consolidatedTax,
+								tariff: datas[key][key2][key3].tariff,
+							})
+						}
+						cityindex++;
+
+					}
+					provinceindex++;
+				}
+				return result;
+			}
+
+			var render = function () {
+				//开启节点操作图标
+				tree.render({
+					elem: '#test9'
+					, data: tem()
+					, customOperate: true// 操作节点关闭
+					, edit: ['add', 'update', 'del'] //操作节点的图标
+					, click: function (obj) {
+						// layer.msg(JSON.stringify(obj.data));
+					}, operate: function (obj) {
+						var type = obj.type; //得到操作类型：add、edit、del
+						var data = obj.data; //得到当前节点的数据
+						var elem = obj.elem; //得到当前节点元素
+
+						//Ajax 操作
+						var id = data.id; //得到节点索引
+						if (type === 'add') { //增加节点
+							if (data.addr == 1) {// 新增二级
+								$('#addCity').find('[name=goodsSecondTypeName]').val('');
+								$("#addCity").find('[name=firstTypeName]').val(data.title)
+								layer.open({
+									title: "新增二级",
+									type: 1,
+									closeBtn: 0,
+									btnAlign: "c",
+									skin: "layui-layer-rim", //加上边框
+									area: ["374px", "290px"], //宽高
+									content: $("#addCity"),
+									btn: ["保存", "关闭"],
+									yes: function (index) {
+										var sign = true;
+										$.each($("#addCity").find("[name]"), function (i, item) {
+											if (isEmpty($(item).val())) {
+												sign = false;
+												layer.alert('请填写新增的二级信息');
+												return false;
+											}
+										});
+										if (sign) {
+											layer.load();
+											var datas = {
+												type: 2,
+												firstTypeId: data.id,
+												goodsSecondTypeName: $('#addCity').find('[name=goodsSecondTypeName]').val(),
+												serialNo: $('#addCity').find('[name=secondSerialNo]').val()
+											}
+											$.ajax({
+												url: urlPrefix + "silver-web-shop/category/addGoodsCategory",
+												type: "POST",
+												xhrFields: {
+													withCredentials: true
+												},
+												data: datas,
+												success: function (response) {
+													if (response.status == 1) {
+														layer.closeAll();
+														layer.msg('添加成功', function () {
+															//关闭后的操作
+															$("#addCity").hide();
+															layer.closeAll();
+															render();
+														});
+													} else {
+														layer.alert(response.msg)
+													}
+
+												},
+												error: function () {
+													layer.closeAll('loading');
+													layer.msg(response.msg);
+												}
+											});
+										}
+
+									},
+									btn2: function () {
+										$("#addCity").hide();
+									}
+								});
+							} else if (data.addr == 2) {// 新增三级
+								$('#addRecArea').find('[name=goodsThirdTypeName]').val('');
+								$("#addRecArea").find('[name=secondTypeName]').val(data.title)
+								layer.open({
+									title: "新增三级",
+									type: 1,
+									closeBtn: 0,
+									btnAlign: "c",
+									skin: "layui-layer-rim", //加上边框
+									area: ["360px", "461px"], //宽高
+									content: $("#addRecArea"),
+									btn: ["保存", "关闭"],
+									yes: function (index) {
+
+										var sign = true;
+										$.each($("#addRecArea").find("[name]"), function (i, item) {
+											if (isEmpty($(item).val())) {
+												sign = false;
+												layer.alert('请填写新增的三级信息');
+												return false;
+											}
+										});
+										if (sign) {
+											layer.load();
+											var datas = {
+												type: 3,
+												firstTypeId: $(elem).parents('.layui-tree-spread').attr('data-id'),// 第一级id
+												secondTypeId: data.id,// 第二级id
+												goodsThirdTypeName: $('#addRecArea').find('[name=goodsThirdTypeName]').val(),
+												serialNo: $('#addRecArea').find('[name=thirdSerialNo]').val(),
+												vat: $('#addRecArea').find('[name=vat]').val(),
+												consumptionTax: $('#addRecArea').find('[name=consumptionTax]').val(),
+												consolidatedTax: $('#addRecArea').find('[name=consolidatedTax]').val(),
+												tariff: $('#addRecArea').find('[name=tariff]').val(),
+											}
+											$.ajax({
+												url: urlPrefix + "silver-web-shop/category/addGoodsCategory",
+												type: "POST",
+												xhrFields: {
+													withCredentials: true
+												},
+												data: datas,
+												success: function (response) {
+													layer.closeAll();
+													if (response.status == 1) {
+														layer.msg('添加成功', function () {
+															$("#addRecArea").hide();
+															layer.closeAll();
+															render();
+														});
+
+													} else {
+														layer.alert(response.msg)
+													}
+
+												},
+												error: function () {
+													layer.closeAll('loading');
+													layer.msg(response.msg);
+												}
+											});
+										}
+									},
+									btn2: function () {
+										$("#addRecArea").hide();
+									}
+								});
+							}
+						} else if (type === 'update') { //修改节点
+
+							if (data.addr == 1) {// 修改一级
+								$("#updateProvince").find('[name=firstTypeName]').val(data.title);
+								layer.open({
+									title: "修改省份",
+									type: 1,
+									closeBtn: 0,
+									btnAlign: "c",
+									skin: "layui-layer-rim", //加上边框
+									area: ["357px", "252px"], //宽高
+									content: $("#updateProvince"),
+									btn: ["保存", "关闭"],
+									yes: function (index) {
+										var sign = true;
+										$.each($("#updateProvince").find("[name]"), function (i, item) {
+											if (isEmpty($(item).val())) {
+												sign = false;
+												layer.alert('请填写省份信息');
+												return false;
+											}
+										});
+										if (sign) {
+											layer.load();
+											var datas = {
+												type: 1,
+												firstTypeName: $('#updateProvince [name=firstTypeName]').val(),
+												serialNo: $('#updateProvince [name=firstSerialNo]').val(),
+												firstTypeId: data.id
+
+											}
+											$.ajax({
+												url: urlPrefix + "silver-web-shop/category/editGoodsCategory",
+												type: "POST",
+												xhrFields: {
+													withCredentials: true
+												},
+												data: datas,
+												success: function (response) {
+													layer.closeAll();
+													if (response.status == 1) {
+														layer.msg('修改成功', function () {
+															$("#updateProvince").hide();
+															layer.closeAll();
+															render();
+														});
+													} else {
+														layer.msg(response.msg);
+													}
+												},
+												error: function () {
+													layer.msg(response.msg);
+												}
+											});
+										}
+									},
+									btn2: function () {
+										$("#addRecArea").hide();
+									}
+								});
+							} else if (data.addr == 2) {// 修改二级
+								var province = $(elem).parent().siblings('.layui-tree-entry').find('.layui-tree-txt').html();// 一级名称		
+								$('#updateCity').find('[name=goodsSecondTypeName]').val(data.title);
+								$("#updateCity").find('[name=firstTypeName]').val(province)
+								layer.open({
+									title: "修改城市",
+									type: 1,
+									closeBtn: 0,
+									btnAlign: "c",
+									skin: "layui-layer-rim", //加上边框
+									area: ["374px", "290px"], //宽高
+									content: $("#updateCity"),
+									btn: ["保存", "关闭"],
+									yes: function (index) {
+										var sign = true;
+										$.each($("#updateCity").find("[name]"), function (i, item) {
+											if (isEmpty($(item).val())) {
+												sign = false;
+												layer.alert('请填写城市信息');
+												return false;
+											}
+										});
+										if (sign) {
+											var datas = {// flag 1=省 2=城市  3=区域
+												type: 2,
+												firstTypeId: $(elem).parents('.layui-tree-spread').attr('data-id'),
+												firstTypeName: province,
+												goodsSecondTypeId: data.id,
+												goodsSecondTypeName: $('#updateCity [name=goodsSecondTypeName]').val(),
+												serialNo: $('#updateCity [name=secondSerialNo]').val()
+											}
+											$.ajax({
+												url: urlPrefix + "silver-web-shop/category/editGoodsCategory",
+												type: "POST",
+												xhrFields: {
+													withCredentials: true
+												},
+												data: datas,
+												success: function (response) {
+													if (response.status == 1) {
+														layer.msg('修改成功', function () {
+															$("#updateCity").hide();
+															layer.closeAll();
+															render();
+														});
+													} else {
+														layer.msg(response.msg);
+													}
+												},
+												error: function () {
+													layer.msg(response.msg);
+												}
+											});
+										}
+									},
+									btn2: function () {
+										$("#addRecArea").hide();
+									}
+								});
+							} else if (data.addr == 3) {// 修改区域
+								var city = $(elem).parent().siblings('.layui-tree-entry').find('.layui-tree-txt').html();// 二级
+
+								$('#updateArea').find('[name=goodsThirdTypeName]').val(data.title);
+								$("#updateArea").find('[name=secondTypeName]').val(city);
+								$("#updateArea").find('[name=consolidatedTax]').val(data.consolidatedTax);
+								$("#updateArea").find('[name=consumptionTax]').val(data.consumptionTax);
+								$("#updateArea").find('[name=tariff]').val(data.tariff);
+								$("#updateArea").find('[name=vat]').val(data.vat);
+								layer.open({
+									title: "修改三级",
+									type: 1,
+									closeBtn: 0,
+									btnAlign: "c",
+									skin: "layui-layer-rim", //加上边框
+									area: ["360px", "461px"], //宽高
+									content: $("#updateArea"),
+									btn: ["保存", "关闭"],
+									yes: function (index) {
+										var sign = true;
+										$.each($("#updateArea").find("[name]"), function (i, item) {
+											if (isEmpty($(item).val())) {
+												sign = false;
+												layer.alert('请填写三级信息');
+												return false;
+											}
+										});
+										if (sign) {
+											var datas = {// flag 1=省 2=城市  3=区域
+												type: 3,
+												goodsThirdTypeId: data.id,// 第一级id
+												goodsThirdTypeName: $('#updateArea').find('[name=goodsThirdTypeName]').val(),
+												serialNo: $('#updateArea').find('[name=thirdSerialNo]').val(),
+												vat: $('#updateArea').find('[name=vat]').val(),
+												consumptionTax: $('#updateArea').find('[name=consumptionTax]').val(),
+												consolidatedTax: $('#updateArea').find('[name=consolidatedTax]').val(),
+												tariff: $('#updateArea').find('[name=tariff]').val(),
+											}
+											$.ajax({
+												url: urlPrefix + "silver-web-shop/category/editGoodsCategory",
+												type: "POST",
+												xhrFields: {
+													withCredentials: true
+												},
+												data: datas,
+												success: function (response) {
+													if (response.status == 1) {
+														layer.msg('修改成功', function () {
+															$("#updateArea").hide();
+															layer.closeAll();
+															render();
+														});
+													} else {
+														layer.msg(response.msg);
+													}
+												},
+												error: function () {
+													layer.msg(response.msg);
+												}
+											});
+										}
+									},
+									btn2: function () {
+										$("#addRecArea").hide();
+									}
+								});
+							}
+
+
+						} else if (type === 'del') { //删除节点
+							layer.alert('确定删除类别为<span style="color:#e4393c;font-weight:bold;">' + data.title + '</span>吗？', {
+								time: 0 //不自动关闭
+								, btn: ['确定', '取消']
+								, yes: function (index) {
+									var datas = null;
+									if (data.addr == 1) {
+										datas = { firstTypeId: data.id };
+									} else if (data.addr == 2) {
+										datas = { secondTypeId: data.id };
+									} else if (data.addr == 3) {
+										datas = { thirdTypeId: data.id };
+									}
+									$.ajax({
+										url: urlPrefix + "silver-web-shop/category/deleteGoodsCategory",
+										type: "POST",
+										xhrFields: {
+											withCredentials: true
+										},
+										data: datas,
+										success: function (response) {
+											layer.closeAll();
+											if (response.status == 1) {
+												layer.msg('删除成功', function () {
+													//关闭后的操作
+													render();
+												});
+											} else {
+												layer.alert(response.msg)
+											}
+										},
+										error: function () {
+											layer.closeAll('loading');
+											layer.msg(response.msg);
+										}
+									});
+								}
+							});
+
+						};
+					}
+				});
+			}
+			render();
+
+		});
+	</script>
+</body>
+
+</html>

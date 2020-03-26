@@ -237,6 +237,12 @@
           "name": "提现费率",
           "icon": "",
           "url": "./pages/system/wit_fee_list.html"
+        },
+        {
+          "id": "system_9",
+          "name": "商品分类",
+          "icon": "",
+          "url": "./pages/system/goodsCategoryList.html"
         }
       ]
     },
