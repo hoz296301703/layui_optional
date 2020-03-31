@@ -242,7 +242,7 @@
           "id": "system_9",
           "name": "商品分类",
           "icon": "",
-          "url": "./pages/system/goodsCategoryList.html"
+          "url": "./pages/system/goods_category_list.html"
         }
       ]
     },

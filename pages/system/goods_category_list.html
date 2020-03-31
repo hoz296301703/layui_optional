@@ -275,29 +275,21 @@
 				</div>
 			</div>
 		</form>
-		</script>
 		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
 		<script src="../../static/js/common.js" charset="utf-8"></script>
-
 	</div>
 	<script>
-		layui.extend({
-			admin: '{/}../../static/js/admin'
-		});
-
-		layui.use(['table', 'jquery', 'form', 'admin', 'tree'], function () {
+		layui.use(['table', 'jquery', 'form', 'tree', 'element'], function () {
 			var table = layui.table,
 				$ = layui.jquery,
 				form = layui.form,
 				tree = layui.tree,
-				admin = layui.admin;
+				element = layui.element;
 			// 动态设置表格高度
 			var tableHeight = $(window).height() - $('.layui-tab-title').height() - 30 - $('#form_sreach').outerHeight(true) - $('.weadmin-block').outerHeight(true);
 			// var render = function () {
 
 			// }
-
-
 			window.customs_reload = function () {// 提交重载方法到全局，让子页面调用
 				layer.closeAll();
 				_reload();
@@ -338,7 +330,7 @@
 								serialNo: $('#addLogistics').find('[name=firstSerialNo]').val()
 							}
 							$.ajax({
-								url: urlPrefix + "silver-web-shop/category/addGoodsCategory",
+								url: urlPrefix + "silver-web-shop/category/insert",
 								type: "POST",
 								xhrFields: {
 									withCredentials: true
@@ -348,8 +340,7 @@
 									layer.closeAll();
 									if (response.status == 1) {
 										layer.msg('添加成功', function () {
-											//关闭后的操作
-											$("#addLogistics").hide();
+											$("#addLogistics").hide();	//关闭后的操作
 											layer.closeAll();
 											render();
 										});
@@ -421,7 +412,6 @@
 							})
 						}
 						cityindex++;
-
 					}
 					provinceindex++;
 				}
@@ -441,7 +431,6 @@
 						var type = obj.type; //得到操作类型：add、edit、del
 						var data = obj.data; //得到当前节点的数据
 						var elem = obj.elem; //得到当前节点元素
-
 						//Ajax 操作
 						var id = data.id; //得到节点索引
 						if (type === 'add') { //增加节点
@@ -467,7 +456,7 @@
 											}
 										});
 										if (sign) {
-											layer.load();
+											var load = layer.load();
 											var datas = {
 												type: 2,
 												firstTypeId: data.id,
@@ -475,7 +464,7 @@
 												serialNo: $('#addCity').find('[name=secondSerialNo]').val()
 											}
 											$.ajax({
-												url: urlPrefix + "silver-web-shop/category/addGoodsCategory",
+												url: urlPrefix + "silver-web-shop/category/insert",
 												type: "POST",
 												xhrFields: {
 													withCredentials: true
@@ -491,12 +480,12 @@
 															render();
 														});
 													} else {
+														layer.close(load);
 														layer.alert(response.msg)
 													}
-
 												},
 												error: function () {
-													layer.closeAll('loading');
+													layer.close(load);
 													layer.msg(response.msg);
 												}
 											});
@@ -520,7 +509,6 @@
 									content: $("#addRecArea"),
 									btn: ["保存", "关闭"],
 									yes: function (index) {
-
 										var sign = true;
 										$.each($("#addRecArea").find("[name]"), function (i, item) {
 											if (isEmpty($(item).val())) {
@@ -543,7 +531,7 @@
 												tariff: $('#addRecArea').find('[name=tariff]').val(),
 											}
 											$.ajax({
-												url: urlPrefix + "silver-web-shop/category/addGoodsCategory",
+												url: urlPrefix + "silver-web-shop/category/insert",
 												type: "POST",
 												xhrFields: {
 													withCredentials: true
@@ -576,11 +564,10 @@
 								});
 							}
 						} else if (type === 'update') { //修改节点
-
 							if (data.addr == 1) {// 修改一级
 								$("#updateProvince").find('[name=firstTypeName]').val(data.title);
 								layer.open({
-									title: "修改省份",
+									title: "修改一级分类",
 									type: 1,
 									closeBtn: 0,
 									btnAlign: "c",
@@ -604,10 +591,9 @@
 												firstTypeName: $('#updateProvince [name=firstTypeName]').val(),
 												serialNo: $('#updateProvince [name=firstSerialNo]').val(),
 												firstTypeId: data.id
-
 											}
 											$.ajax({
-												url: urlPrefix + "silver-web-shop/category/editGoodsCategory",
+												url: urlPrefix + "silver-web-shop/category/update",
 												type: "POST",
 												xhrFields: {
 													withCredentials: true
@@ -658,22 +644,24 @@
 											}
 										});
 										if (sign) {
-											var datas = {// flag 1=省 2=城市  3=区域
+											layer.load();
+											var datas = {
 												type: 2,
 												firstTypeId: $(elem).parents('.layui-tree-spread').attr('data-id'),
 												firstTypeName: province,
-												goodsSecondTypeId: data.id,
-												goodsSecondTypeName: $('#updateCity [name=goodsSecondTypeName]').val(),
+												secondTypeId: data.id,
+												secondTypeName: $('#updateCity [name=goodsSecondTypeName]').val(),
 												serialNo: $('#updateCity [name=secondSerialNo]').val()
 											}
 											$.ajax({
-												url: urlPrefix + "silver-web-shop/category/editGoodsCategory",
+												url: urlPrefix + "silver-web-shop/category/update",
 												type: "POST",
 												xhrFields: {
 													withCredentials: true
 												},
 												data: datas,
 												success: function (response) {
+													layer.closeAll();
 													if (response.status == 1) {
 														layer.msg('修改成功', function () {
 															$("#updateCity").hide();
@@ -696,7 +684,6 @@
 								});
 							} else if (data.addr == 3) {// 修改区域
 								var city = $(elem).parent().siblings('.layui-tree-entry').find('.layui-tree-txt').html();// 二级
-
 								$('#updateArea').find('[name=goodsThirdTypeName]').val(data.title);
 								$("#updateArea").find('[name=secondTypeName]').val(city);
 								$("#updateArea").find('[name=consolidatedTax]').val(data.consolidatedTax);
@@ -722,10 +709,11 @@
 											}
 										});
 										if (sign) {
-											var datas = {// flag 1=省 2=城市  3=区域
+											var load = layer.load();
+											var datas = {
 												type: 3,
-												goodsThirdTypeId: data.id,// 第一级id
-												goodsThirdTypeName: $('#updateArea').find('[name=goodsThirdTypeName]').val(),
+												thirdTypeId: data.id,// 第一级id
+												thirdTypeName: $('#updateArea').find('[name=goodsThirdTypeName]').val(),
 												serialNo: $('#updateArea').find('[name=thirdSerialNo]').val(),
 												vat: $('#updateArea').find('[name=vat]').val(),
 												consumptionTax: $('#updateArea').find('[name=consumptionTax]').val(),
@@ -733,20 +721,21 @@
 												tariff: $('#updateArea').find('[name=tariff]').val(),
 											}
 											$.ajax({
-												url: urlPrefix + "silver-web-shop/category/editGoodsCategory",
+												url: urlPrefix + "silver-web-shop/category/update",
 												type: "POST",
 												xhrFields: {
 													withCredentials: true
 												},
 												data: datas,
 												success: function (response) {
-													if (response.status == 1) {
+													if (response.status == "1") {
+														layer.closeAll();
 														layer.msg('修改成功', function () {
 															$("#updateArea").hide();
-															layer.closeAll();
 															render();
 														});
 													} else {
+														layer.close(load);
 														layer.msg(response.msg);
 													}
 												},
@@ -761,46 +750,45 @@
 									}
 								});
 							}
-
-
 						} else if (type === 'del') { //删除节点
-							layer.alert('确定删除类别为<span style="color:#e4393c;font-weight:bold;">' + data.title + '</span>吗？', {
-								time: 0 //不自动关闭
-								, btn: ['确定', '取消']
-								, yes: function (index) {
-									var datas = null;
-									if (data.addr == 1) {
-										datas = { firstTypeId: data.id };
-									} else if (data.addr == 2) {
-										datas = { secondTypeId: data.id };
-									} else if (data.addr == 3) {
-										datas = { thirdTypeId: data.id };
-									}
-									$.ajax({
-										url: urlPrefix + "silver-web-shop/category/deleteGoodsCategory",
-										type: "POST",
-										xhrFields: {
-											withCredentials: true
-										},
-										data: datas,
-										success: function (response) {
-											layer.closeAll();
-											if (response.status == 1) {
-												layer.msg('删除成功', function () {
-													//关闭后的操作
-													render();
-												});
-											} else {
-												layer.alert(response.msg)
-											}
-										},
-										error: function () {
-											layer.closeAll('loading');
-											layer.msg(response.msg);
-										}
-									});
-								}
-							});
+							layer.msg('删除功能暂开放！');
+							// layer.alert('确定删除类别为<span style="color:#e4393c;font-weight:bold;">' + data.title + '</span>吗？', {
+							// 	time: 0 //不自动关闭
+							// 	, btn: ['确定', '取消']
+							// 	, yes: function (index) {
+							// 		var datas = null;
+							// 		if (data.addr == 1) {
+							// 			datas = { firstTypeId: data.id };
+							// 		} else if (data.addr == 2) {
+							// 			datas = { secondTypeId: data.id };
+							// 		} else if (data.addr == 3) {
+							// 			datas = { thirdTypeId: data.id };
+							// 		}
+							// 		$.ajax({
+							// 			url: urlPrefix + "silver-web-shop/category/deleteGoodsCategory",
+							// 			type: "POST",
+							// 			xhrFields: {
+							// 				withCredentials: true
+							// 			},
+							// 			data: datas,
+							// 			success: function (response) {
+							// 				layer.closeAll();
+							// 				if (response.status == 1) {
+							// 					layer.msg('删除成功', function () {
+							// 						//关闭后的操作
+							// 						render();
+							// 					});
+							// 				} else {
+							// 					layer.alert(response.msg)
+							// 				}
+							// 			},
+							// 			error: function () {
+							// 				layer.closeAll('loading');
+							// 				layer.msg(response.msg);
+							// 			}
+							// 		});
+							// 	}
+							// });
 
 						};
 					}
