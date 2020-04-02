@@ -217,13 +217,14 @@
           if (isEmpty(note)) {
             layer.msg('说明不能为空！');
           } else {
-            unite(3, note);
+            unite(2, note);
           }
         });
 
         //运营审核
         var managerReview = function (datas, flag, note) {
           var params = { serialNo: datas.serialNo, flag: flag, note: note };
+          // console.log(params)
           //加载层-默认风格
           layer.load();
           $.ajax({
