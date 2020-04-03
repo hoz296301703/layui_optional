@@ -283,6 +283,12 @@
           "name": "会员注册",
           "icon": "",
           "url": "./pages/statistics/mem_reg_list.html"
+        },
+        {
+          "id": "systemStatistics_4",
+          "name": "搜索关键词",
+          "icon": "",
+          "url": "./pages/statistics/search_key_word_list.html"
         }
       ]
     }
