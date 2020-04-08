@@ -76,7 +76,7 @@
 				<div class="layui-inline">
 					<label class="layui-form-label">结算状态</label>
 					<div class="layui-input-inline">
-						<select  id='status' name="status" lay-verify="required" lay-search="">
+						<select id='status' name="status" lay-verify="required" lay-search="">
 							<option value="">全部</option>
 							<option value="success">成功</option>
 							<option value="failure">关闭</option>
@@ -237,6 +237,10 @@
 							field: 'amount', title: '金额(元)', width: 90
 						}, {
 							field: 'fee', title: '服务费(元)', width: 100
+						}, {
+							field: 'result', title: '结算金额(元)', width: 100, templet: function (item) {
+								return accSub(item.amount, item.fee);
+							}
 						}, {
 							// 审核状态：firstTrial-运营初审、financialAudit-财务审核、termination-终止、complete-完成
 							field: 'revStatus', title: '审核状态', width: 90, templet: function (item) {
@@ -498,10 +502,10 @@
 						console.info(entity);
 						var type = entity.type;
 						var amount = entity.amount;
-						var merchantName = entity.merchantName;		
-						if(type == '2'){
+						var merchantName = entity.merchantName;
+						if (type == '2') {
 							amount = accSub(amount, entity.fee);
-						}			
+						}
 						layer.alert("确认是否为【" + merchantName + "】发起金额为【" + amount + "】结算指令？", {
 							time: 0, //不自动关闭
 							btn: ["确定", "关闭"],
